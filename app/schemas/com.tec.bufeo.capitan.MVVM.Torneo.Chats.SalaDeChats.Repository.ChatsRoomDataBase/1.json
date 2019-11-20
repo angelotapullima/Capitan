@@ -1,0 +1,93 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "48bbad00200158dadfa3f77377d76bae",
+    "entities": [
+      {
+        "tableName": "Chats",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`chat_id` TEXT NOT NULL, `chat_usuario` TEXT, `chat_fecha` TEXT, `chat_mensaje` TEXT, `chat_estado` TEXT, `chat_ultimo_mensaje` TEXT, `chat_ultimo_mensaje_fecha` TEXT, `chat_ultimo_mensaje_hora` TEXT, `chat_ultimo_mensaje_id` TEXT, `chat_ultimo_mensaje_usuario` TEXT, `mensaje_id` TEXT, PRIMARY KEY(`chat_id`))",
+        "fields": [
+          {
+            "fieldPath": "chat_id",
+            "columnName": "chat_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chat_usuario",
+            "columnName": "chat_usuario",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chat_fecha",
+            "columnName": "chat_fecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chat_mensaje",
+            "columnName": "chat_mensaje",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chat_estado",
+            "columnName": "chat_estado",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chat_ultimo_mensaje",
+            "columnName": "chat_ultimo_mensaje",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chat_ultimo_mensaje_fecha",
+            "columnName": "chat_ultimo_mensaje_fecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chat_ultimo_mensaje_hora",
+            "columnName": "chat_ultimo_mensaje_hora",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chat_ultimo_mensaje_id",
+            "columnName": "chat_ultimo_mensaje_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chat_ultimo_mensaje_usuario",
+            "columnName": "chat_ultimo_mensaje_usuario",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mensaje_id",
+            "columnName": "mensaje_id",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "chat_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"48bbad00200158dadfa3f77377d76bae\")"
+    ]
+  }
+}

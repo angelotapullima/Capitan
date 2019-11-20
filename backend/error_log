@@ -1,0 +1,21 @@
+[16-May-2019 16:56:32 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:26:43 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:31:34 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:40:17 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:40:23 America/Chicago] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:46:20 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:48:00 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:50:43 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:51:09 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:51:38 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:51:53 America/Chicago] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:56:44 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[16-May-2019 17:56:50 America/Chicago] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[17-May-2019 09:58:38 America/Lima] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[17-May-2019 09:58:43 America/Chicago] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[17-May-2019 10:08:53 America/Chicago] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[17-May-2019 10:09:08 America/Chicago] PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /home/guabba/public_html/capitan/core/Database.php on line 3
+[21-Aug-2019 12:49:40 America/Chicago] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 20480 bytes) in /home/guabba/public_html/capitan/app/models/Empresa.php on line 103
+[21-Aug-2019 12:50:26 America/Chicago] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 20480 bytes) in /home/guabba/public_html/capitan/app/models/Empresa.php on line 103
+[21-Aug-2019 13:03:14 America/Chicago] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 20480 bytes) in /home/guabba/public_html/capitan/app/models/Empresa.php on line 103
+[21-Aug-2019 13:04:40 America/Chicago] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 20480 bytes) in /home/guabba/public_html/capitan/app/models/Empresa.php on line 103

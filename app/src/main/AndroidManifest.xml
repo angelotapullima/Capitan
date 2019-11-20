@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tec.bufeo.capitan">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name=".Util.InitializerGotev"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Activity.DetallesTorneo.DetalleTorneoNuevo"></activity>
+        <activity android:name=".Activity.ResutadoRetos" />
+        <activity
+            android:name=".MVVM.Torneo.Chats.Mensajes.Views.ChatsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MVVM.Foro.comentarios.Views.ComentariosActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.Splash"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activity.Login"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.MenuPrincipal"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.RegistroUsuario"
+            android:configChanges="orientation|screenSize"
+            android:label="Registro de Usuarios"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.RegistroNegocio"
+            android:configChanges="orientation|screenSize"
+            android:label="Registro de Negocio"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.DetalleNegocio"
+            android:configChanges="orientation|screenSize"
+            android:label="Detalle de Negocio"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.RegistroCancha"
+            android:configChanges="orientation|screenSize"
+            android:label="Registro de Cancha"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.DetalleCanchas"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.RegistroReserva"
+            android:configChanges="orientation|screenSize"
+            android:label="Reservar Cancha"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.RegistroEquipo"
+            android:configChanges="orientation|screenSize"
+            android:label="Registro de Equipo"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.DetalleEquipo"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
+            android:name=".Activity.AgregarJugador"
+            android:configChanges="orientation|screenSize"
+            android:label="Agregar Jugador"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.RegistroReto"
+            android:label="Retar a un Equipo" />
+        <activity
+            android:name=".Activity.RegistroTorneo"
+            android:label="Registro Torneo" />
+        <activity android:name=".Activity.AgregarEquipos" />
+        <activity
+            android:name=".Activity.DetallesTorneo.DetalleTorneo"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".Activity.RegistroForo" />
+        <activity android:name=".Activity.PerfilEdit" />
+        <activity android:name=".Activity.ReporteDiario" />
+        <activity android:name=".Activity.ReporteDiario2" />
+        <activity android:name=".Activity.DetalleFotoUsuario" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <service
+            android:name=".Services.FireBaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

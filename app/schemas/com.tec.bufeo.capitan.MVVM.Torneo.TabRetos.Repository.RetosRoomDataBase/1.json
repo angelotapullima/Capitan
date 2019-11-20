@@ -1,0 +1,99 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "50f38432ba67254e7a8afb661da01713",
+    "entities": [
+      {
+        "tableName": "retos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`retos_id` TEXT NOT NULL, `retador_id` TEXT, `retado_id` TEXT, `retos_foto_retador` TEXT, `retos_nombre_retador` TEXT, `retos_foto_retado` TEXT, `retos_nombre_retado` TEXT, `retos_fecha` TEXT, `retos_hora` TEXT, `retos_lugar` TEXT, `retos_estado` TEXT, `retos_respuesta` TEXT, PRIMARY KEY(`retos_id`))",
+        "fields": [
+          {
+            "fieldPath": "retos_id",
+            "columnName": "retos_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "retador_id",
+            "columnName": "retador_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retado_id",
+            "columnName": "retado_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_foto_retador",
+            "columnName": "retos_foto_retador",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_nombre_retador",
+            "columnName": "retos_nombre_retador",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_foto_retado",
+            "columnName": "retos_foto_retado",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_nombre_retado",
+            "columnName": "retos_nombre_retado",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_fecha",
+            "columnName": "retos_fecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_hora",
+            "columnName": "retos_hora",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_lugar",
+            "columnName": "retos_lugar",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_estado",
+            "columnName": "retos_estado",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_respuesta",
+            "columnName": "retos_respuesta",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "retos_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"50f38432ba67254e7a8afb661da01713\")"
+    ]
+  }
+}

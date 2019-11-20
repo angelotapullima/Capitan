@@ -1,0 +1,111 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "602d4221caf16c3e9cf0a9a00c1d36f6",
+    "entities": [
+      {
+        "tableName": "Estadisticas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `nombre` TEXT, `foto` TEXT, `temporada` TEXT, `semana` TEXT, `puntaje_acumulado` TEXT, `puntaje_semanal` TEXT, `retos_enviados` TEXT, `retos_recibidos` TEXT, `retos_ganados` TEXT, `retos_empatados` TEXT, `retos_perdidos` TEXT, `torneos` TEXT, `posicion` TEXT, PRIMARY KEY(`equipo_id`))",
+        "fields": [
+          {
+            "fieldPath": "equipo_id",
+            "columnName": "equipo_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "foto",
+            "columnName": "foto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "temporada",
+            "columnName": "temporada",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "semana",
+            "columnName": "semana",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "puntaje_acumulado",
+            "columnName": "puntaje_acumulado",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "puntaje_semanal",
+            "columnName": "puntaje_semanal",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_enviados",
+            "columnName": "retos_enviados",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_recibidos",
+            "columnName": "retos_recibidos",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_ganados",
+            "columnName": "retos_ganados",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_empatados",
+            "columnName": "retos_empatados",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "retos_perdidos",
+            "columnName": "retos_perdidos",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "torneos",
+            "columnName": "torneos",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "posicion",
+            "columnName": "posicion",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "equipo_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"602d4221caf16c3e9cf0a9a00c1d36f6\")"
+    ]
+  }
+}

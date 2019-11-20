@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:design="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context="com.tec.bufeo.capitan.Activity.MenuPrincipal">
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </FrameLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bnv_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            design:itemBackground="@android:color/white"
+            design:itemIconTint="@color/colorPrimary"
+            design:itemTextColor="@color/colorPrimary"
+            design:menu="@menu/bottom_navigation_menu"
+            design:elevation="4dp">
+        </android.support.design.widget.BottomNavigationView>
+
+</LinearLayout>

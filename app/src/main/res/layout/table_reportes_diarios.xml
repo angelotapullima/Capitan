@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="2dp"
+    android:id="@+id/tabla_fila">
+
+    <Space android:layout_width="1dp"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txt_nombre_reservaR"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="1"
+        android:lines="1"
+        android:padding="3dp"
+        android:ellipsize="end"
+        android:textSize="12sp"
+        android:background="#fafafa"
+        android:textColor="@color/colorAccent"
+        android:layout_span="1"
+        android:text="RESERVA jdnjdsjsnjnjjdssjsdddssdsdjnd" />
+
+    <Space android:layout_width="1dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_nombreCanchaR"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:layout_span="1"
+        android:padding="3dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:background="#fafafa"
+        android:textColor="@color/colorAccent"
+        android:text="CANCHAllllllllllllllllllllllllllllllllllllllllllllll" />
+
+    <Space android:layout_width="1dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_hora_reservaR"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:lines="1"
+        android:layout_span="1"
+        android:ellipsize="end"
+        android:padding="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:background="#fafafa"
+        android:textColor="@color/colorAccent"
+        android:text="HORA jdnjdndjndjfjfjdnfjfjdnjddfjdf" />
+
+    <Space android:layout_width="1dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_costo_reservaR"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:lines="1"
+        android:layout_span="1"
+        android:ellipsize="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:background="#fafafa"
+        android:padding="3dp"
+        android:textColor="@color/colorAccent"
+        android:text="COSTO jdjdfjddjdnfjfdnjfndjfndjfdn" />
+
+    <Space android:layout_width="1dp"
+        android:layout_height="wrap_content"/>
+
+</TableRow>

@@ -1,0 +1,63 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "0062784cc207dd3005c4f72f4c81891e",
+    "entities": [
+      {
+        "tableName": "Comments",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`comments_id` TEXT NOT NULL, `publicacion_id` TEXT, `comments_foto` TEXT, `comments_fecha` TEXT, `comments_nombre` TEXT, `comments_comentario` TEXT, PRIMARY KEY(`comments_id`))",
+        "fields": [
+          {
+            "fieldPath": "comments_id",
+            "columnName": "comments_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "publicacion_id",
+            "columnName": "publicacion_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comments_foto",
+            "columnName": "comments_foto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comments_fecha",
+            "columnName": "comments_fecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comments_nombre",
+            "columnName": "comments_nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comments_comentario",
+            "columnName": "comments_comentario",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "comments_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0062784cc207dd3005c4f72f4c81891e\")"
+    ]
+  }
+}

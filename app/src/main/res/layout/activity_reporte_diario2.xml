@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llscrol"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorFondo"
+    tools:context=".Activity.ReporteDiario2">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seleccione Fecha inicio   "
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btn_fechaReporte"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:textSize="12sp"
+                android:backgroundTint="@color/colorCeniza"
+                android:drawableRight="@drawable/calendar"
+                android:layout_marginRight="8dp"
+                android:elevation="2dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seleccione Fecha fin  "
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btn_fecha2Reporte"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:textSize="12sp"
+                android:backgroundTint="@color/colorCeniza"
+                android:drawableRight="@drawable/calendar"
+                android:layout_marginRight="8dp"
+                android:elevation="2dp" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_buscar"
+            android:layout_width="35dp"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:background="@drawable/table_search"
+            android:layout_height="35dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TableLayout
+                            android:id="@+id/tably_listadoabonos"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        </TableLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Space android:layout_width="1dp"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorPrimaryDark"
+                                android:gravity="center"
+                                android:visibility="invisible"
+                                android:padding="3dp"
+                                android:text="RESERVA"
+                                android:textColor="#ffffff"
+                                android:textStyle="bold" />
+
+                            <Space
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorPrimaryDark"
+                                android:gravity="center"
+                                android:padding="3dp"
+                                android:visibility="invisible"
+                                android:text="CANCHA"
+                                android:textColor="#ffffff"
+                                android:textStyle="bold" />
+
+                            <Space
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorPrimaryDark"
+                                android:gravity="center"
+                                android:padding="3dp"
+                                android:visibility="invisible"
+                                android:text="HORA"
+                                android:textColor="#ffffff"
+                                android:textStyle="bold" />
+
+                            <Space
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:id="@+id/txt_totalRecaudado"
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorPrimaryDark"
+                                android:gravity="center"
+                                android:padding="3dp"
+                                android:textSize="12sp"
+                                android:visibility="gone"
+                                android:text="TOTAL : S/ 0"
+                                android:textColor="#ffffff"
+                                android:textStyle="bold" />
+
+                            <Space android:layout_width="1dp"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

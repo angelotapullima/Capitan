@@ -1,0 +1,99 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "5d0575f551ceea1f41ca412c50e32723",
+    "entities": [
+      {
+        "tableName": "equipos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `torneo_equipo_id` TEXT, `torneo_id` TEXT, `equipo_nombre` TEXT, `equipo_foto` TEXT, `equipo_valoracion` TEXT, `equipo_join` TEXT, `equipo_fechaCreacion` TEXT, `equipo_estado` TEXT, `usuario_nombre` TEXT, `capitan_id` TEXT, `mi_equipo` TEXT, PRIMARY KEY(`equipo_id`))",
+        "fields": [
+          {
+            "fieldPath": "equipo_id",
+            "columnName": "equipo_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "torneo_equipo_id",
+            "columnName": "torneo_equipo_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "torneo_id",
+            "columnName": "torneo_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_nombre",
+            "columnName": "equipo_nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_foto",
+            "columnName": "equipo_foto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_valoracion",
+            "columnName": "equipo_valoracion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_join",
+            "columnName": "equipo_join",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_fechaCreacion",
+            "columnName": "equipo_fechaCreacion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_estado",
+            "columnName": "equipo_estado",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "usuario_nombre",
+            "columnName": "usuario_nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "capitan_id",
+            "columnName": "capitan_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mi_equipo",
+            "columnName": "mi_equipo",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "equipo_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5d0575f551ceea1f41ca412c50e32723\")"
+    ]
+  }
+}

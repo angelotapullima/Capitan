@@ -1,0 +1,111 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "24518e7e877ac4714517cdad02f5f119",
+    "entities": [
+      {
+        "tableName": "feed",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`publicacion_id` TEXT NOT NULL, `foro_foto` TEXT, `usuario_nombre` TEXT, `usuario_id` TEXT, `foro_titulo` TEXT, `foro_descripcion` TEXT, `foro_feccha` TEXT, `foro_conteo` TEXT, `foro_tipo` TEXT, `cant_likes` TEXT, `cant_Comentarios` TEXT, `dio_like` TEXT, `usuario_foto` TEXT, `orden` TEXT, PRIMARY KEY(`publicacion_id`))",
+        "fields": [
+          {
+            "fieldPath": "publicacion_id",
+            "columnName": "publicacion_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "foro_foto",
+            "columnName": "foro_foto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "usuario_nombre",
+            "columnName": "usuario_nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "usuario_id",
+            "columnName": "usuario_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "foro_titulo",
+            "columnName": "foro_titulo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "foro_descripcion",
+            "columnName": "foro_descripcion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "foro_feccha",
+            "columnName": "foro_feccha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "foro_conteo",
+            "columnName": "foro_conteo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "foro_tipo",
+            "columnName": "foro_tipo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cant_likes",
+            "columnName": "cant_likes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cant_Comentarios",
+            "columnName": "cant_Comentarios",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dio_like",
+            "columnName": "dio_like",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "usuario_foto",
+            "columnName": "usuario_foto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "orden",
+            "columnName": "orden",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "publicacion_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"24518e7e877ac4714517cdad02f5f119\")"
+    ]
+  }
+}

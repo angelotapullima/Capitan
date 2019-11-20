@@ -1,0 +1,212 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.Login">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/mascotafondo" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/colorTransparente">
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="8dp"
+                        android:padding="16dp"
+                        android:layout_margin="20dp"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="15dp"
+                            android:visibility="visible"
+                            android:src="@drawable/logo"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorTextIcons"
+                            android:textStyle="bold"
+                            android:text="HiPet"
+                            android:layout_marginBottom="15dp"
+                            android:textSize="35sp"
+                            android:visibility="gone"
+                            android:gravity="center"/>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:background="@drawable/edt_bordes_original"
+                                android:layout_marginTop="15dp">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/usuariop"/>
+
+                                <EditText
+                                    android:id="@+id/edt_usuario"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="15dp"
+                                    android:background="@android:color/transparent"
+                                    android:drawablePadding="10dp"
+                                    android:hint="Usuario"
+                                    android:textColor="@color/colorTextIcons"
+                                    android:textColorHint="@color/colorTextIcons"
+                                    android:textColorHighlight="@color/colorTextIcons"
+                                    android:inputType="textPersonName"
+                                    android:maxLines="1"/>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:background="@drawable/edt_bordes_original"
+                                android:layout_marginTop="15dp">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/passwordp"
+                                    />
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:passwordToggleEnabled="true"
+                                    android:gravity="center_vertical"
+                                    android:textColorHint="@color/colorTextIcons"
+                                    app:passwordToggleTint="@color/colorTextIcons">
+
+                                    <EditText
+                                        android:id="@+id/edt_password"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@android:color/transparent"
+                                        android:textColor="@color/colorTextIcons"
+                                        android:paddingBottom="10dp"
+                                        android:paddingLeft="10dp"
+                                        android:textColorHint="@color/colorTextIcons"
+                                        android:textColorHighlight="@color/colorTextIcons"
+                                        android:inputType="textPassword"
+                                        android:maxLines="1"/>
+
+                                </android.support.design.widget.TextInputLayout>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                        <Button
+                            android:id="@+id/btn_login"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_gravity="center"
+                            android:text="INICIAR SESION"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:textColor="@color/colorTextIcons"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:padding="8dp"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/card_bordes">
+
+                        <TextView
+                            android:id="@+id/txt_resgistrate"
+                            android:text="Registrarte"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="italic|bold"
+                            android:layout_weight="1"
+                            android:textColor="@color/colorTextIcons"
+                            android:textSize="18dp" />
+
+                        <Switch
+                            android:id="@+id/swc_recordarClave"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No Recordar  "
+                            android:textSize="18sp"
+                            android:checked="false"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorTextIcons" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+
+
+            </ScrollView>
+
+        </LinearLayout>
+    </FrameLayout>
+
+
+
+
+</LinearLayout>
+
+
+
+
+

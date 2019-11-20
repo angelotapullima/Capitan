@@ -1,0 +1,223 @@
+package com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Views;
+
+import android.app.Activity;
+import android.app.Application;
+import android.app.Dialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.tec.bufeo.capitan.Activity.Login;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosWebServiceRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
+import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.WebService.VolleySingleton;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+
+
+public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
+
+    RetosViewModel retosViewModel;
+    RecyclerView rcv_duelos_pendientes;
+    AdaptadorRetos adaptadorRetos;
+    Preferences preferences;
+    Activity activity;
+    Context context;
+
+    SwipeRefreshLayout RefreshLayoutPendientes;
+    public FragmentPendientes() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        retosViewModel = ViewModelProviders.of(getActivity()).get(RetosViewModel.class);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_fragment_pendientes, container, false);
+        context =  getContext();
+        preferences = new Preferences(context);
+        initViews(view);
+        setAdapter();
+        cargarvista();
+        return view;
+    }
+
+
+    private void initViews(View view){
+
+        RefreshLayoutPendientes =  view.findViewById(R.id.RefreshLayoutPendientes);
+
+        RefreshLayoutPendientes.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
+        RefreshLayoutPendientes.setOnRefreshListener(this);
+        rcv_duelos_pendientes =(RecyclerView)view.findViewById(R.id.rcv_duelos_pendientes);
+        activity = getActivity();
+        context = getContext();
+    }
+
+    public void cargarvista(){
+
+        retosViewModel.getAllRetos("0").observe(this, new Observer<List<Retos>>() {
+            @Override
+            public void onChanged(@Nullable List<Retos> retos) {
+                adaptadorRetos.setWords(retos);
+            }
+        });
+
+    }
+
+    private void setAdapter() {
+        adaptadorRetos =  new AdaptadorRetos(getActivity(), new AdaptadorRetos.OnItemClickListener() {
+            @Override
+            public void onItemClick(Retos retos, int position) {
+
+                String retos_id = retos.getRetos_id();
+                String usuario= retos.getRetador_id();
+
+                if (!usuario.equals(preferences.getIdUsuarioPref())){
+                    dialogoAceptar(retos_id);
+                }
+
+
+
+            }
+        });
+
+        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
+        rcv_duelos_pendientes.setLayoutManager(linearLayoutManager);
+        rcv_duelos_pendientes.setAdapter(adaptadorRetos);
+
+
+    }
+
+    public void dialogoAceptar(final String id_reto){
+        final Dialog dialogr = new Dialog(getActivity());
+        dialogr.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogr.setContentView(R.layout.dialogo_mensaje);
+
+        Button btn_cancela = dialogr.findViewById(R.id.btn_cancelar);
+        Button btn_acepta =  dialogr.findViewById(R.id.btn_aceptar);
+        Button btn_ver_mas_tarde =  dialogr.findViewById(R.id.btn_ver_mas_tarde);
+        TextView txtMensaje = dialogr.findViewById(R.id.txtMensaje);
+        txtMensaje.setText("¿Desea Aceptar el reto?");
+
+        btn_cancela.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogr.dismiss();
+                EnviarEstadoReto(id_reto,"2");
+            }
+        });
+
+        btn_ver_mas_tarde.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogr.dismiss();
+            }
+        });
+
+        btn_acepta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                //Eliminamos los datos de la SharedPreferences
+                //preferencesUser.edit().clear().apply();
+                EnviarEstadoReto(id_reto,"1");
+                dialogr.dismiss();
+
+
+
+            }
+        });
+        dialogr.show();
+
+    }
+
+    StringRequest stringRequest;
+    private void EnviarEstadoReto(final String id, final String respuesta) {
+        String url =IP+"/index.php?c=Torneo&a=responder_reto&key_mobile=123456asdfgh";
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("mensajes: ",""+response);
+
+
+
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
+                Log.i("RESPUESTA: ",""+error.toString());
+
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //String imagen=convertirImgString(bitmap);
+
+
+                Map<String,String> parametros=new HashMap<>();
+                parametros.put("id_reto",id);
+                parametros.put("respuesta",respuesta);
+
+                return parametros;
+
+            }
+        };
+        //requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
+    }
+    Application application;
+
+    @Override
+    public void onRefresh() {
+        //retosViewModel.ElimarRetos();
+
+        RetosWebServiceRepository retosWebServiceRepository = new RetosWebServiceRepository(application);
+        retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());
+        RefreshLayoutPendientes.setRefreshing(false);
+    }
+}

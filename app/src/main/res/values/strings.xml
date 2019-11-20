@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Capitan</string>
+
+    <string name="cargando">Cargando Imagen</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string-array name="ciudad">
+        <item>Iquitos</item>
+        <item>Tarapoto</item>
+        <item>Yurimaguas</item>
+        <item>Nauta</item>
+    </string-array>
+    <string-array name="posicion">
+        <item>Portero</item>
+        <item>Delatero</item>
+        <item>Defensa</item>
+        <item>Volante</item>
+    </string-array>
+    <string-array name="habilidad">
+        <item>Goleador</item>
+        <item>Remate </item>
+        <item>Drible</item>
+    </string-array>
+    <string-array name="distrito">
+        <item>Iquitos</item>
+        <item>Belen</item>
+        <item>San Juan Bautista</item>
+        <item>Punchana</item>
+    </string-array>
+    <string-array name="sexoUsuario">
+        <item>Masculino</item>
+        <item>Femenino</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string-array name="sexo">
+        <item>M</item>
+        <item>F</item>
+    </string-array>
+
+
+</resources>

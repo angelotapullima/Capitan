@@ -1,0 +1,93 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "c66fdd5f80f5a7f38b59f6b65e2affaa",
+    "entities": [
+      {
+        "tableName": "torneo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_torneo` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `torneo_id` TEXT, `usuario_id` TEXT, `torneo_nombre` TEXT, `torneo_descripcion` TEXT, `torneo_fecha` TEXT, `torneo_hora` TEXT, `torneo_lugar` TEXT, `torneo_equipos` TEXT, `torneo_organizador` TEXT, `mi_torneo` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_torneo",
+            "columnName": "id_torneo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "torneo_id",
+            "columnName": "torneo_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "usuario_id",
+            "columnName": "usuario_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "torneo_nombre",
+            "columnName": "torneo_nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "torneo_descripcion",
+            "columnName": "torneo_descripcion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "torneo_fecha",
+            "columnName": "torneo_fecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "torneo_hora",
+            "columnName": "torneo_hora",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "torneo_lugar",
+            "columnName": "torneo_lugar",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "torneo_equipos",
+            "columnName": "torneo_equipos",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "torneo_organizador",
+            "columnName": "torneo_organizador",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mi_torneo",
+            "columnName": "mi_torneo",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_torneo"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c66fdd5f80f5a7f38b59f6b65e2affaa\")"
+    ]
+  }
+}

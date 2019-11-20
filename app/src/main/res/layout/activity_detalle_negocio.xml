@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".Activity.DetalleNegocio">
+    
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/abl_detalleEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:visibility="gone"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp">
+
+
+            <ImageView
+                android:id="@+id/img_fotoEmpresa"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/brain"
+                app:layout_collapseMode="parallax"/>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cdv_detalleEmpresa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/home_city" />
+                        <TextView
+                            android:id="@+id/txt_nombreEmpresa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="25dp"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/colorPrimaryText"
+                            android:text="Amazon Cares" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/account" />
+                        <TextView
+                            android:id="@+id/txt_nombreUsuarioEmpresa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="20dp"
+                            android:textStyle="normal|italic"
+                            android:textColor="#f11d1c1c"
+                            android:text="Aristoteles" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/account" />
+                        <TextView
+                            android:id="@+id/txt_descripcionEmpresa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="18dp"
+                            android:textStyle="normal|italic"
+                            android:textColor="#f11d1c1c"
+                            android:text="jjfdjfjd jfdnjffdnjf jfnjdfndjf  jfnjdndj  jfnjdfndjfdnjd jfndjdnfdjdnjdndjndjnfdjnfj fdjndjnjfddfnjdfnjdfnjfnfdjdfnjdfn fdjdfnjdfndfj fjdndfjdfndfj fjdndfjfdndfj" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/map_marker" />
+                        <TextView
+                            android:id="@+id/txt_direccionEmpresa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:textStyle="normal|italic"
+                            android:textColor="#f11d1c1c"
+                            android:text="Jr Putumayo 240" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/alarm_check" />
+                        <TextView
+                            android:id="@+id/txt_horario"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:textStyle="normal|italic"
+                            android:textColor="#f11d1c1c"
+                            android:text="09:30-18:30" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lny_telefono"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/phone" />
+                        <TextView
+                            android:id="@+id/txt_telefonoEmpresa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:textStyle="normal|italic"
+                            android:textColor="#f11d1c1c"
+                            android:text="12365478" />
+                    </LinearLayout>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:text="Valorar Negocio"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textStyle="normal|bold"
+                                    android:textSize="20sp"
+                                    android:textColor="@color/colorPrimaryText"
+                                    android:layout_height="wrap_content" />
+                                <Button
+                                    android:id="@+id/btn_editVal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="24dp"
+                                    android:hint="Editar Valoracion"
+                                    android:layout_weight="9"
+                                    android:layout_marginRight="10dp"
+                                    android:visibility="invisible"
+                                    android:background="@drawable/playlist_edit" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:gravity="center_horizontal">
+
+                                <RatingBar
+                                    android:id="@+id/rtb_valorar"
+                                    android:isIndicator="false"
+                                    style="?android:attr/ratingBarStyleIndicator"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:numStars="5"
+                                    android:rating="0"
+                                    android:layout_marginBottom="10dp"
+                                    android:textAlignment="center"
+                                    android:stepSize="1" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="horizontal">
+                                <Button
+                                    android:id="@+id/btn_enviarV"
+                                    android:visibility="visible"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:background="@drawable/check_circle_outline"
+                                    android:layout_width="24dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_height="24dp" />
+                                <Button
+                                    android:id="@+id/btn_cancelarV"
+                                    android:visibility="visible"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:background="@drawable/close_circle_outline"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                  <android.support.v7.widget.CardView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content">
+
+                      <LinearLayout
+                          android:layout_width="match_parent"
+                          android:orientation="vertical"
+                          android:layout_height="wrap_content">
+                          <TextView
+                              android:layout_width="match_parent"
+                              android:text="Valoraciones"
+                              android:layout_gravity="center"
+                              android:gravity="center"
+                              android:textStyle="normal|bold"
+                              android:textSize="20sp"
+                              android:textColor="@color/colorPrimaryText"
+                              android:layout_height="wrap_content" />
+                          <TextView
+                              android:id="@+id/txt_promedio"
+                              android:layout_width="match_parent"
+                              android:textStyle="italic|bold"
+                              android:layout_gravity="center"
+                              android:gravity="center"
+                              android:text="4,4"
+                              android:textColor="@color/colorSecondaryText"
+                              android:textSize="45sp"
+                              android:layout_height="wrap_content" />
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:orientation="vertical"
+                              android:gravity="center_horizontal">
+
+                              <RatingBar
+                                  android:id="@+id/rtb_valoracion"
+                                  android:isIndicator="false"
+                                  style="?android:attr/ratingBarStyleIndicator"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="40dp"
+                                  android:numStars="5"
+                                  android:rating="0"
+                                  android:textAlignment="center" />
+                          </LinearLayout>
+                          <TextView
+                              android:id="@+id/txt_conteo"
+                              android:layout_width="match_parent"
+                              android:text="2345"
+                              android:layout_gravity="center"
+                              android:gravity="center"
+                              android:textStyle="normal|bold"
+                              android:textSize="15sp"
+                              android:textColor="@color/colorPrimaryText"
+                              android:layout_height="wrap_content" />
+                      </LinearLayout>
+                  </android.support.v7.widget.CardView>
+
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:background="@color/colorPrimary">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:text="LISTA DE CANCHAS"/>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_canchas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:layout_anchor="@id/rcv_canchas"
+                app:layout_anchorGravity="center_horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cdv_mensaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="65dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="No hay canchas disponibles"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+            </FrameLayout>
+
+
+
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/cdv_detalleEmpresa"
+        app:layout_anchorGravity="center_horizontal"
+        android:layout_gravity="center">
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:indeterminate="true"
+            android:theme="@style/CircularProgress" />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/rcv_canchas"
+        app:layout_anchorGravity="center_horizontal"
+        android:layout_gravity="center">
+
+        <ProgressBar
+            android:id="@+id/progressbarCanchas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:theme="@style/CircularProgress" />
+    </FrameLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_registrarCancha"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:elevation="8dp"
+        android:layout_gravity="bottom|right|end"
+        android:src="@drawable/plus_circle"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:clickable="true" />
+
+</android.support.design.widget.CoordinatorLayout>
+

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "616857520776",
+    "firebase_url": "https://capitan-aa86c.firebaseio.com",
+    "project_id": "capitan-aa86c",
+    "storage_bucket": "capitan-aa86c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616857520776:android:5caa482814f09bf3",
+        "android_client_info": {
+          "package_name": "com.tec.bufeo.capitan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616857520776-9ortsnbavhcvadp1peejnneut3mbgspt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tec.bufeo.capitan",
+            "certificate_hash": "f357e3281b0fbc3d79808dffbb1ee89f8e37b2c5"
+          }
+        },
+        {
+          "client_id": "616857520776-gph3rb4ah3ni3bmn4dt4ii4lq0v0lcuf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBA4u09NrXgQ-60T45l-lLcM3V6SOus74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616857520776-gph3rb4ah3ni3bmn4dt4ii4lq0v0lcuf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

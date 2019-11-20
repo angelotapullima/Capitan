@@ -1,0 +1,69 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "04e63f663add8edf4bd474cd3f0fbe52",
+    "entities": [
+      {
+        "tableName": "Mensajes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mensaje_id` TEXT NOT NULL, `chat_id` TEXT, `mensajes_id_usuario` TEXT, `mensaje_estado` TEXT, `mensaje_fecha` TEXT, `mensaje_hora` TEXT, `mensaje_contenido` TEXT, PRIMARY KEY(`mensaje_id`))",
+        "fields": [
+          {
+            "fieldPath": "mensaje_id",
+            "columnName": "mensaje_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chat_id",
+            "columnName": "chat_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mensajes_id_usuario",
+            "columnName": "mensajes_id_usuario",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mensaje_estado",
+            "columnName": "mensaje_estado",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mensaje_fecha",
+            "columnName": "mensaje_fecha",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mensaje_hora",
+            "columnName": "mensaje_hora",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mensaje_contenido",
+            "columnName": "mensaje_contenido",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "mensaje_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"04e63f663add8edf4bd474cd3f0fbe52\")"
+    ]
+  }
+}

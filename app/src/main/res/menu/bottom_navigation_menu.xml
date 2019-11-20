@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/action_foro"
+        android:enabled="true"
+        android:icon="@drawable/action_foro"
+        android:title="Foro"/>
+    <item
+        android:id="@+id/action_buscar"
+        android:enabled="true"
+        android:icon="@drawable/soccer_field"
+        android:title="Buscar"/>
+
+    <item
+        android:id="@+id/action_Torneo"
+        android:enabled="true"
+        android:icon="@drawable/trophy"
+        android:title="Torneo"/>
+    <item
+        android:id="@+id/action_negocios"
+        android:enabled="true"
+        android:icon="@drawable/action_negocios"
+        android:title="Negocios"/>
+    <item
+        android:id="@+id/action_info"
+        android:enabled="true"
+        android:icon="@drawable/information_variant"
+        android:title="Info"/>
+
+</menu>

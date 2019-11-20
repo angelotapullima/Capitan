@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
+    tools:context=".MVVM.Torneo.Chats.Mensajes.Views.ChatsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:background="#FFF"
+        android:paddingTop="10dp"
+        app:elevation="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="0dp"
+        android:layout_weight="10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/nombre_charla"
+                android:layout_height="match_parent"
+                android:text="Comentarios "
+                android:gravity="center_vertical"
+                android:textSize="18dp" />
+
+
+
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:id="@+id/vista"
+            android:layout_height="1dp"
+            android:background="#f6f6f6" />
+        <!---->
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_list_mensajes"
+        android:layout_height="0dp"
+        android:layout_weight="78"
+        android:layout_width="match_parent"
+        tools:listitem="@layout/mensajes"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:weightSum="10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+
+            <EditText
+                android:id="@+id/mensaje_chat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:paddingLeft="10dp"
+                android:background="@drawable/search_input_style"
+                android:hint="Comentarios"
+                android:textColor="#999da4"
+                />
+
+            <ImageView
+                android:id="@+id/enviar_mensaje"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_chat" />
+
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+
+
+
+
+
+
+</LinearLayout>

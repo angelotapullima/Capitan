@@ -1,0 +1,165 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "f32230371958f85e9895cc5565a65607",
+    "entities": [
+      {
+        "tableName": "Versus",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`versus_id` INTEGER NOT NULL, `versus_equipo1` TEXT, `versus_foto_equipo1` TEXT, `versus_jugador1a` TEXT, `versus_jugador1b` TEXT, `versus_jugador1c` TEXT, `versus_jugador1d` TEXT, `versus_jugador1e` TEXT, `versus_jugador1f` TEXT, `versus_jugador1g` TEXT, `versus_jugador1h` TEXT, `versus_equipo2` TEXT, `versus_foto_equipo2` TEXT, `versus_jugador2a` TEXT, `versus_jugador2b` TEXT, `versus_jugador2c` TEXT, `versus_jugador2d` TEXT, `versus_jugador2e` TEXT, `versus_jugador2f` TEXT, `versus_jugador2g` TEXT, `versus_jugador2h` TEXT, `versus_lugar` TEXT, `versus_fecha` TEXT, PRIMARY KEY(`versus_id`))",
+        "fields": [
+          {
+            "fieldPath": "versus_id",
+            "columnName": "versus_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versus_equipo1",
+            "columnName": "versus_equipo1",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_foto_equipo1",
+            "columnName": "versus_foto_equipo1",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador1a",
+            "columnName": "versus_jugador1a",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador1b",
+            "columnName": "versus_jugador1b",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador1c",
+            "columnName": "versus_jugador1c",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador1d",
+            "columnName": "versus_jugador1d",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador1e",
+            "columnName": "versus_jugador1e",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador1f",
+            "columnName": "versus_jugador1f",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador1g",
+            "columnName": "versus_jugador1g",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador1h",
+            "columnName": "versus_jugador1h",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_equipo2",
+            "columnName": "versus_equipo2",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_foto_equipo2",
+            "columnName": "versus_foto_equipo2",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador2a",
+            "columnName": "versus_jugador2a",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador2b",
+            "columnName": "versus_jugador2b",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador2c",
+            "columnName": "versus_jugador2c",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador2d",
+            "columnName": "versus_jugador2d",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador2e",
+            "columnName": "versus_jugador2e",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador2f",
+            "columnName": "versus_jugador2f",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador2g",
+            "columnName": "versus_jugador2g",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_jugador2h",
+            "columnName": "versus_jugador2h",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_lugar",
+            "columnName": "versus_lugar",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versus_fecha",
+            "columnName": "versus_fecha",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "versus_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f32230371958f85e9895cc5565a65607\")"
+    ]
+  }
+}

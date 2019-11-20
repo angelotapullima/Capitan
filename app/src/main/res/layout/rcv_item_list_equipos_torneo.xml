@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:cardCornerRadius="15dp"
+    android:layout_marginBottom="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="?android:attr/activatedBackgroundIndicator"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_fotoEquipo"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:padding="2dp"
+                android:src="@mipmap/ic_launcher"
+                android:elevation="8dp"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFF" />
+
+
+            <TextView
+                android:id="@+id/txt_nombreEquipo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="#1b1a1a"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textAlignment="textStart"
+                android:text="Sport San Juna Butista ddkndkndkkddkn"
+                android:textStyle="bold|italic" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:src="@drawable/alpha_c_circle" />
+
+            <TextView
+                android:id="@+id/txt_capitan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Capitan"
+                android:textColor="@color/colorPrimaryText" />
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
