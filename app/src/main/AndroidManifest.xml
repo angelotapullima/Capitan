@@ -15,7 +15,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.DetallesTorneo.DetalleTorneoNuevo"></activity>
+        <activity android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo"></activity>
+        <activity android:name=".Activity.DetallesTorneo.DetalleTorneoNuevo" />
         <activity android:name=".Activity.ResutadoRetos" />
         <activity
             android:name=".MVVM.Torneo.Chats.Mensajes.Views.ChatsActivity"
@@ -82,7 +83,7 @@
             android:label="Registro de Equipo"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activity.DetalleEquipo"
+            android:name=".Activity.DetalleEquipo.DetalleEquipo"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
@@ -90,17 +91,13 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
-            android:name=".Activity.AgregarJugador"
-            android:configChanges="orientation|screenSize"
-            android:label="Agregar Jugador"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".Activity.RegistroReto"
             android:label="Retar a un Equipo" />
         <activity
             android:name=".Activity.RegistroTorneo"
             android:label="Registro Torneo" />
         <activity android:name=".Activity.AgregarEquipos" />
+        <activity android:name=".Activity.DetalleEquipo.AgregarJugador" />
         <activity
             android:name=".Activity.DetallesTorneo.DetalleTorneo"
             android:configChanges="orientation|screenSize"

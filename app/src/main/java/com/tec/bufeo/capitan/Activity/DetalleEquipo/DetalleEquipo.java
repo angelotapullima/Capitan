@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity;
+package com.tec.bufeo.capitan.Activity.DetalleEquipo;
 
 import android.app.Activity;
 import android.content.Context;
@@ -81,7 +81,7 @@ public class DetalleEquipo extends AppCompatActivity {
         fab_agregarParticipantesEquipo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AgregarJugador.class);
+                Intent intent = new Intent(getApplicationContext(), AgregarJugador.class);
                // intent.putExtra("id_empresa",id_empresa);
                 startActivity(intent);
             }

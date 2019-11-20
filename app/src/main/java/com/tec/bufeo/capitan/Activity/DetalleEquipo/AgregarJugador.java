@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity;
+package com.tec.bufeo.capitan.Activity.DetalleEquipo;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -25,7 +25,7 @@ import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.util.ArrayList;
 
-import static com.tec.bufeo.capitan.Activity.DetalleEquipo.id_equipo;
+import static com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipo.id_equipo;
 
 public class AgregarJugador extends AppCompatActivity  implements SearchView.OnQueryTextListener{
 

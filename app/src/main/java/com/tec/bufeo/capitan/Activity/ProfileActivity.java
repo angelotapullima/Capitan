@@ -14,10 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipo;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.AdaptadorForo;

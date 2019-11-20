@@ -17,15 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.tec.bufeo.capitan.Activity.DetalleEquipo;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipo;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipoNuevo;
 import com.tec.bufeo.capitan.Activity.RegistroEquipo;
 import com.tec.bufeo.capitan.Activity.RegistroReto;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquipos.MisEquiposWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.OtrosEquipos.OtrosEquiposWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.OtrosEquipos.OtrosEquiposViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquipos.MisEquiposViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Views.AdaptadorRetos;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
@@ -126,7 +125,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
             @Override
             public void onItemClick(Mequipos mequipos, int position) {
 
-                Intent intent = new Intent(getContext(), DetalleEquipo.class);
+                Intent intent = new Intent(getContext(), DetalleEquipoNuevo.class);
                 intent.putExtra("id_equipo", mequipos.getEquipo_id());
                 intent.putExtra("nombre_equipo", mequipos.getEquipo_nombre());
                 intent.putExtra("foto_equipo", mequipos.getEquipo_foto());

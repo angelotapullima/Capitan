@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.DetallesTorneo.DetalleTorneoNuevo">
+    tools:context=".Activity.DetalleEquipo.DetalleEquipoNuevo">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/imagen_Dtorneo"
+                    android:id="@+id/imagen_Dequipo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -45,16 +45,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="left"
-                            android:id="@+id/fecha_Dtorneo"
-                            android:text="13 de Octubre"/>
+                            android:id="@+id/btn_retarDequipo"
+                            android:text="Retar"/>
 
                         <Button
                             android:layout_width="wrap_content"
                             android:gravity="end"
-                            android:id="@+id/unirse_Dtorneo"
+                            android:id="@+id/unirse_Dequipo"
                             android:layout_alignParentEnd="true"
                             android:layout_height="wrap_content"
-                            android:text="unirse al torneo"/>
+                            android:text="unirse al Equipo"/>
                     </RelativeLayout>
 
 
@@ -69,7 +69,7 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs_Dtorneo"
+            android:id="@+id/tabs_Dequipo"
             android:background="#FFF"
             app:tabTextColor="@color/colorPrimary"
             app:tabSelectedTextColor="@color/colorPrimary"
@@ -83,14 +83,14 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/container_Dtorneo"
+        android:id="@+id/container_Dequipo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:visibility="visible"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_agregarParticipantesTorneo"
+        android:id="@+id/fab_agregarParticipantesEquipo"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:elevation="8dp"
@@ -99,4 +99,5 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:clickable="true"
         android:visibility="visible"/>
+
 </android.support.design.widget.CoordinatorLayout>

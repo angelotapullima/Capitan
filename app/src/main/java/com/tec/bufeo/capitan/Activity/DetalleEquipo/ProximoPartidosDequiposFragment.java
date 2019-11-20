@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.DetallesTorneo;
+package com.tec.bufeo.capitan.Activity.DetalleEquipo;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,12 +11,14 @@ import android.view.ViewGroup;
 import com.tec.bufeo.capitan.R;
 
 
-public class resultadosDtorneoFragment extends Fragment {
+public class ProximoPartidosDequiposFragment extends Fragment {
 
 
-    public resultadosDtorneoFragment() {
+
+    public ProximoPartidosDequiposFragment() {
         // Required empty public constructor
     }
+
 
 
 
@@ -24,14 +26,16 @@ public class resultadosDtorneoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_resultados_dtorneo, container, false);
+        return inflater.inflate(R.layout.fragment_proximo_partidos_dequipos, container, false);
     }
+
 
 
 }

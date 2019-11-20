@@ -1,8 +1,7 @@
 package com.tec.bufeo.capitan.Activity.DetallesTorneo;
 
-import android.app.Activity;
-
-import android.content.Context;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,14 +9,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.tec.bufeo.capitan.Activity.AgregarEquipos;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.EquiposDtorneoFragment;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.InfoDtorneoFragment;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.TablaDtorneoFragment;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.Preferences;
 
 public class DetalleTorneoNuevo extends AppCompatActivity {
 
@@ -26,15 +26,15 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
     ImageView imagen_Dtorneo;
     public ViewPager container_Dtorneo;
     private SectionsDetalleTorneoAdapter sectionsDetalleTorneoAdapter;
-    Activity activity;
-    Context context;
-    Preferences preferences;
+
+    FloatingActionButton fab_agregarParticipantesTorneo;
+
 
 
 
 
     private   String[] tituloIds = {
-            "Info",
+            "Información",
             "Equipos",
             "Tabla",
             "Resultados"
@@ -56,6 +56,7 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
         imagen_Dtorneo =  findViewById(R.id.imagen_Dtorneo);
         fecha_Dtorneo =  findViewById(R.id.fecha_Dtorneo);
         unirse_Dtorneo =  findViewById(R.id.unirse_Dtorneo);
+        fab_agregarParticipantesTorneo =  findViewById(R.id.fab_agregarParticipantesTorneo);
 
         for(int i=0;i<4;i++) {
             tabs_Dtorneo.addTab(tabs_Dtorneo.newTab().setText(tituloIds[i]) );
@@ -83,6 +84,14 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
         });
 
         tabs_Dtorneo.getSelectedTabPosition();
+
+        fab_agregarParticipantesTorneo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(DetalleTorneoNuevo.this, AgregarEquipos.class);
+                startActivity(i);
+            }
+        });
     }
 
 
@@ -108,7 +117,7 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
                     fragment = new TablaDtorneoFragment();
                     break;
                 case 3:
-                    fragment = new resultadosDtorneoFragment();
+                    fragment = new ResultadosDtorneoFragment();
                     break;
 
             }
