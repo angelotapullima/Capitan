@@ -1,25 +1,28 @@
 package com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 
 import java.util.List;
 
-//import com.andr.mvvm.RetrofitRoom.Models.ModelFeed;
+//import com.andr.mvvm.RetrofitRoom.Models.PublicacionesTorneo;
 
 @Dao
 public interface FeedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(ModelFeed modelFeed);
+    void insert(ModelFeed feedTorneo);
 
     @Query("SELECT * from feed ORDER BY orden DESC")
     LiveData<List<ModelFeed>> getAllPosts();
+
+    @Query("SELECT * from feed where id_torneo =:id_torneo ")
+    LiveData<List<ModelFeed>> getIdTorneo(String id_torneo);
 
     @Query("DELETE FROM feed")
     void deleteAll();
@@ -31,7 +34,20 @@ public interface FeedDao {
     LiveData<List<ModelFeed>> searchFeeds(String query);
 
 
+    @Query("SELECT publicacion_id,limite_inf,limite_sup from feed")
+    LiveData<List<ModelFeed>> getAllIdPosts();
+
+    @Query("Update feed set limite_sup = :sup")
+    void actualizarSup(String sup);
+
+    @Query("Update feed set limite_inf = :sup")
+    void actualizarInf(String sup);
+
+
+    @Query("Update feed set nuevos_datos = :nuevos")
+    void NuevosDatos(String nuevos);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertPosts(List<ModelFeed> modelFeed);
+    void insertPosts(List<ModelFeed> feedTorneo);
 
 }

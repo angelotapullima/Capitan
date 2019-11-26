@@ -7,7 +7,7 @@ public class MisEquiposDbAsync extends AsyncTask<Void, Void, Void> {
 
     private final MisEquiposDao mDao;
 
-    MisEquiposDbAsync(MisEquiposRoomDataBase db) {
+    public MisEquiposDbAsync(MisEquiposRoomDataBase db) {
         mDao = db.postInfoDao();
     }
 

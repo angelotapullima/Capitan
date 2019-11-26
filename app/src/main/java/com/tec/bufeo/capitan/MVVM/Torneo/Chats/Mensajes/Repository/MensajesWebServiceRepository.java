@@ -1,8 +1,8 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Repository;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;

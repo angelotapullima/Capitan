@@ -3,7 +3,7 @@ package com.tec.bufeo.capitan.Activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,13 +19,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.StringRes;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.StringRes;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
@@ -42,8 +43,11 @@ import com.tec.bufeo.capitan.WebService.DataConnection;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.ServerResponse;
+import net.gotev.uploadservice.UploadInfo;
 import net.gotev.uploadservice.UploadNotificationAction;
 import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadStatusDelegate;
 
 import org.apache.commons.io.FileUtils;
 
@@ -52,7 +56,6 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_nombre;
 //import static com.tec.bufeo.capitan.others.FragmentForo.Actualizarforo;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
@@ -112,23 +115,23 @@ public class RegistroForo extends AppCompatActivity   implements View.OnClickLis
                 String to = intent.getStringExtra("tipo");
                 Toast.makeText(context, "funciona" + to, Toast.LENGTH_SHORT).show();
                 Log.i("registro", "onMessageReceived:  funcionando la huevada de Registro" +to );
-                ModelFeed modelFeed =  new ModelFeed();
-                modelFeed.setPublicacion_id("1");
-                modelFeed.setForo_foto("ubbbbjbfhh");
-                modelFeed.setUsuario_nombre("angelo");
-                modelFeed.setUsuario_id("18");
-                modelFeed.setForo_titulo("x2");
-                modelFeed.setForo_descripcion("x3");
-                modelFeed.setForo_feccha("Hace 0 min");
-                modelFeed.setForo_conteo("vamonos");
-                modelFeed.setForo_tipo("1");
-                modelFeed.setCant_likes("0");
-                modelFeed.setCant_Comentarios("0");
-                modelFeed.setDio_like("0");
-                modelFeed.setOrden("1");
+                ModelFeed feedTorneo =  new ModelFeed();
+                feedTorneo.setPublicacion_id("1");
+                feedTorneo.setForo_foto("ubbbbjbfhh");
+                feedTorneo.setUsuario_nombre("angelo");
+                feedTorneo.setUsuario_id("18");
+                feedTorneo.setForo_titulo("x2");
+                feedTorneo.setForo_descripcion("x3");
+                feedTorneo.setForo_feccha("Hace 0 min");
+                feedTorneo.setForo_conteo("vamonos");
+                feedTorneo.setForo_tipo("1");
+                feedTorneo.setCant_likes("0");
+                feedTorneo.setCant_Comentarios("0");
+                feedTorneo.setDio_like("0");
+                feedTorneo.setOrden("1");
 
-                Log.i("registro", "onMessageReceived:  funcionando la huevada de tipo" + modelFeed.toString() );
-                RegistroForope(modelFeed);
+                Log.i("registro", "onMessageReceived:  funcionando la huevada de tipo" + feedTorneo.toString() );
+                RegistroForope(feedTorneo);
             }
         };
 
@@ -161,22 +164,7 @@ public class RegistroForo extends AppCompatActivity   implements View.OnClickLis
 
                     Toast.makeText(context, "" + path, Toast.LENGTH_SHORT).show();
                     uploadMultipart();
-                    ModelFeed modelFeed =  new ModelFeed();
-                    //modelFeed.setForo_publicacion_id("1");
-                    modelFeed.setForo_foto(path);
-                    modelFeed.setUsuario_nombre(usuario_nombre);
-                    modelFeed.setUsuario_id(usuario_id);
-                    modelFeed.setForo_titulo(edt_tituloForo.getText().toString());
-                    modelFeed.setForo_descripcion(edt_descripcionForo.getText().toString());
-                    modelFeed.setForo_feccha("Hace 0 min");
-                    modelFeed.setForo_conteo(edt_tituloForo.getText().toString());
-                    modelFeed.setForo_tipo("1");
-                    modelFeed.setCant_likes("0");
-                    modelFeed.setCant_Comentarios("0");
-                    modelFeed.setDio_like("0");
-                    modelFeed.setOrden("1");
-                    //feedListViewModel.insert(modelFeed);
-                    RegistroForope(modelFeed);
+
                     finish();
                 }else {
                     Toast.makeText(getApplicationContext(), "Llene los campos", Toast.LENGTH_LONG).show();
@@ -188,8 +176,8 @@ public class RegistroForo extends AppCompatActivity   implements View.OnClickLis
 
     }
 
-    public void RegistroForope(ModelFeed modelFeed){
-        feedListViewModel.insert(modelFeed);
+    public void RegistroForope(ModelFeed feedTorneo){
+        feedListViewModel.insert(feedTorneo);
     }
     @Override
     public boolean onOptionsItemSelected (MenuItem item){
@@ -354,9 +342,33 @@ public class RegistroForo extends AppCompatActivity   implements View.OnClickLis
                     .addParameter("usuario_id", usuario_id) //Adding text parameter to the request
                     .addParameter("titulo", edt_tituloForo.getText().toString()) //Adding text parameter to the request
                     .addParameter("descripcion", edt_descripcionForo.getText().toString()) //Adding text parameter to the request
+                    .addParameter("concepto", "publicacion") //Adding text parameter to the request
+                    .addParameter("id_torneo", "0") //Adding text parameter to the request
 
                     .setNotificationConfig(getNotificationConfig(uploadId,R.string.cargando))
                     .setMaxRetries(2)
+                    .setDelegate(new UploadStatusDelegate() {
+                        @Override
+                        public void onProgress(Context context, UploadInfo uploadInfo) {
+
+                        }
+
+                        @Override
+                        public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
+
+                        }
+
+                        @Override
+                        public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
+                            Log.e("foro", "multipart Completed: " + serverResponse.getBodyAsString() );
+                            //Toast.makeText(RegistroForo.this, "completo", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancelled(Context context, UploadInfo uploadInfo) {
+
+                        }
+                    })
 
                     .startUpload(); //Starting the upload
                             /*getNotificationConfig().setTitleForAllStatuses("Cargando Imagen")

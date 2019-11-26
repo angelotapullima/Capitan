@@ -1,7 +1,7 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquipos;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,7 +20,7 @@ public class MisEquiposRoomDBRepository {
 
      }
 
-    /*public LiveData<List<Mequipos>> getAllEquipos(String mi_equipo) {
+    /*public LiveData<List<EquiposTorneo>> getAllEquipos(String mi_equipo) {
         boolean online = ForoFragment.isOnLine();
 
         if (online){

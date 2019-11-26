@@ -1,9 +1,9 @@
 package com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -22,20 +22,13 @@ public class ModelFeed {
     @SerializedName("publicacion_id")
     private String publicacion_id;
 
-    @ColumnInfo(name = "foro_foto")
-    @SerializedName("foro_foto")
-    private String foro_foto;
-
-
     @ColumnInfo(name = "usuario_nombre")
     @SerializedName("usuario_nombre")
     private String usuario_nombre;
 
-
-    @ColumnInfo(name = "usuario_id")
-    @SerializedName("usuario_id")
-    private String usuario_id;
-
+    @ColumnInfo(name = "foro_foto")
+    @SerializedName("foro_foto")
+    private String foro_foto;
 
     @ColumnInfo(name = "foro_titulo")
     @SerializedName("foro_titulo")
@@ -45,6 +38,28 @@ public class ModelFeed {
     @ColumnInfo(name = "foro_descripcion")
     @SerializedName("foro_descripcion")
     private String foro_descripcion;
+
+    @ColumnInfo(name = "publicacion_concepto")
+    @SerializedName("publicacion_concepto")
+    private String publicacion_concepto;
+
+
+    @ColumnInfo(name = "id_torneo")
+    @SerializedName("id_torneo")
+    private String id_torneo;
+
+    @ColumnInfo(name = "publicacion_torneo")
+    @SerializedName("publicacion_torneo")
+    private String publicacion_torneo;
+
+
+
+    @ColumnInfo(name = "usuario_id")
+    @SerializedName("usuario_id")
+    private String usuario_id;
+
+
+
 
 
     @ColumnInfo(name = "foro_feccha")
@@ -80,6 +95,18 @@ public class ModelFeed {
     @ColumnInfo(name = "orden")
     @SerializedName("orden")
     private String orden;
+
+    @ColumnInfo(name = "limite_sup")
+    @SerializedName("limite_sup")
+    private String limite_sup;
+
+    @ColumnInfo(name = "limite_inf")
+    @SerializedName("limite_inf")
+    private String limite_inf;
+
+    @ColumnInfo(name = "nuevos_datos")
+    @SerializedName("nuevos_datos")
+    private String nuevos_datos;
 
 
     @NonNull
@@ -195,133 +222,51 @@ public class ModelFeed {
         this.orden = orden;
     }
 
-    @Override
-    public String toString() {
-        return "ModelFeed{" +
-                "foro_publicacion_id='" + publicacion_id + '\'' +
-                ", foro_foto='" + foro_foto + '\'' +
-                ", usuario_nombre='" + usuario_nombre + '\'' +
-                ", usuario_id='" + usuario_id + '\'' +
-                ", foro_titulo='" + foro_titulo + '\'' +
-                ", foro_descripcion='" + foro_descripcion + '\'' +
-                ", foro_feccha='" + foro_feccha + '\'' +
-                ", foro_conteo='" + foro_conteo + '\'' +
-                ", foro_tipo='" + foro_tipo + '\'' +
-                ", cant_likes='" + cant_likes + '\'' +
-                ", cant_Comentarios='" + cant_Comentarios + '\'' +
-                ", dio_like='" + dio_like + '\'' +
-                ", usuario_foto='" + usuario_foto + '\'' +
-                ", orden='" + orden + '\'' +
-                '}';
+    public String getPublicacion_concepto() {
+        return publicacion_concepto;
     }
 
+    public void setPublicacion_concepto(String publicacion_concepto) {
+        this.publicacion_concepto = publicacion_concepto;
+    }
 
-    /*@Override
-    public String toString()
-    {
-        return "ClassPojo [id = "+id+", body = "+body+", title = "+title+"]";
-    }*/
+    public String getPublicacion_torneo() {
+        return publicacion_torneo;
+    }
+
+    public void setPublicacion_torneo(String publicacion_torneo) {
+        this.publicacion_torneo = publicacion_torneo;
+    }
+
+    public String getId_torneo() {
+        return id_torneo;
+    }
+
+    public void setId_torneo(String id_torneo) {
+        this.id_torneo = id_torneo;
+    }
+
+    public String getLimite_sup() {
+        return limite_sup;
+    }
+
+    public void setLimite_sup(String limite_sup) {
+        this.limite_sup = limite_sup;
+    }
+
+    public String getLimite_inf() {
+        return limite_inf;
+    }
+
+    public void setLimite_inf(String limite_inf) {
+        this.limite_inf = limite_inf;
+    }
+
+    public String getNuevos_datos() {
+        return nuevos_datos;
+    }
+
+    public void setNuevos_datos(String nuevos_datos) {
+        this.nuevos_datos = nuevos_datos;
+    }
 }
-
-/*
-@Entity(tableName = "post_info")
-
-
-return "ClassPojo [id = "+id+", body = "+body+", title = "+title+"]";
-
- public class ModelFeed implements Parcelable{
-        @NonNull
-        @ColumnInfo(name = "userId")
-        @SerializedName("userId")
-        @Expose
-        private Integer userId;
-
-        @PrimaryKey
-        @NonNull
-        @ColumnInfo(name = "id")
-        @SerializedName("id")
-        @Expose
-        private Integer id;
-
-        @NonNull
-        @ColumnInfo(name = "title")
-        @SerializedName("title")
-        @Expose
-        private String title;
-
-        @NonNull
-        @ColumnInfo(name = "body")
-        @SerializedName("body")
-        @Expose
-        private String body;
-
-        public final Creator<ModelFeed> CREATOR = new Creator<ModelFeed>() {
-
-            @SuppressWarnings({
-                    "unchecked"
-            })
-            public ModelFeed createFromParcel(Parcel in) {
-                ModelFeed instance = new ModelFeed();
-
-                instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
-
-                instance.title = ((String) in.readValue((String.class.getClassLoader())));
-
-                instance.body = ((String) in.readValue((String.class.getClassLoader())));
-
-                return instance;
-            }
-
-            public ModelFeed[] newArray(int size) {
-                return (new ModelFeed[size]);
-            }
-
-        };
-
-
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-
-        public String getBody() {
-            return body;
-        }
-
-        public void setBody(String body) {
-            this.body = body;
-        }
-
-
-
-        public void writeToParcel(Parcel dest, int flags) {
-
-            dest.writeValue(id);
-
-            dest.writeValue(title);
-
-            dest.writeValue(body);
-
-        }
-
-        public int describeContents() {
-            return 0;
-        }
-    }
-
-*/

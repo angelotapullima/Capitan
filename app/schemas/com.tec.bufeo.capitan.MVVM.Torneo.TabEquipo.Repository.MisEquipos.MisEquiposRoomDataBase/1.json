@@ -2,29 +2,17 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5d0575f551ceea1f41ca412c50e32723",
+    "identityHash": "fe618bbad53f17a421b45a0da281f94a",
     "entities": [
       {
         "tableName": "equipos",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `torneo_equipo_id` TEXT, `torneo_id` TEXT, `equipo_nombre` TEXT, `equipo_foto` TEXT, `equipo_valoracion` TEXT, `equipo_join` TEXT, `equipo_fechaCreacion` TEXT, `equipo_estado` TEXT, `usuario_nombre` TEXT, `capitan_id` TEXT, `mi_equipo` TEXT, PRIMARY KEY(`equipo_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `equipo_nombre` TEXT, `equipo_foto` TEXT, `capitan_nombre` TEXT, `capitan_id` TEXT, `mi_equipo` TEXT, PRIMARY KEY(`equipo_id`))",
         "fields": [
           {
             "fieldPath": "equipo_id",
             "columnName": "equipo_id",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "torneo_equipo_id",
-            "columnName": "torneo_equipo_id",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "torneo_id",
-            "columnName": "torneo_id",
-            "affinity": "TEXT",
-            "notNull": false
           },
           {
             "fieldPath": "equipo_nombre",
@@ -39,32 +27,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "equipo_valoracion",
-            "columnName": "equipo_valoracion",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "equipo_join",
-            "columnName": "equipo_join",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "equipo_fechaCreacion",
-            "columnName": "equipo_fechaCreacion",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "equipo_estado",
-            "columnName": "equipo_estado",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "usuario_nombre",
-            "columnName": "usuario_nombre",
+            "fieldPath": "capitan_nombre",
+            "columnName": "capitan_nombre",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -93,7 +57,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5d0575f551ceea1f41ca412c50e32723\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fe618bbad53f17a421b45a0da281f94a\")"
     ]
   }
 }

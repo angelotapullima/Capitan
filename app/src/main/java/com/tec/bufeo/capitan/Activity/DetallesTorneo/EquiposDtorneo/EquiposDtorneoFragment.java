@@ -1,22 +1,23 @@
 package com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.net.Uri;
+import android.app.Application;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.Models.EquiposTorneo;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.Repository.EquiposTorneoWebServiceRepository;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.ViewModels.EquiposTorneoViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.OtrosEquipos.OtrosEquiposViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views.AdaptadorEquipos;
 import com.tec.bufeo.capitan.R;
 
@@ -28,11 +29,13 @@ public class EquiposDtorneoFragment extends Fragment {
 
     TextView numero_equiposDtorneo;
     RecyclerView rcv_equipostorneo;
-    OtrosEquiposViewModel otrosEquiposViewModel;
+    EquiposTorneoViewModel equiposTorneoViewModel;
     AdaptadorEquipos adaptadorEquipos;
+    String id_torneo;
     public EquiposDtorneoFragment() {
         // Required empty public constructor
     }
+
 
 
 
@@ -40,7 +43,8 @@ public class EquiposDtorneoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        otrosEquiposViewModel = ViewModelProviders.of(this).get(OtrosEquiposViewModel.class);
+
+        equiposTorneoViewModel = ViewModelProviders.of(this).get(EquiposTorneoViewModel.class);
 
     }
 
@@ -49,10 +53,15 @@ public class EquiposDtorneoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_equipos_dtorneo, container, false);
+        final Bundle bdl = getArguments();
+
+
+        id_torneo = bdl.getString("id_torneo");
 
         initViews(view);
         setAdapter();
         cargarvista();
+        equiposTorneo();
 
         return  view;
     }
@@ -78,20 +87,12 @@ public class EquiposDtorneoFragment extends Fragment {
 
 
     private void cargarvista() {
-        otrosEquiposViewModel.getAllOtrosEquipos("no").observe(this, new Observer<List<Mequipos>>() {
+        equiposTorneoViewModel.getAllEquiposTorneo(id_torneo).observe(this, new Observer<List<EquiposTorneo>>() {
             @Override
-            public void onChanged(@Nullable List<Mequipos> mequipos) {
-                adaptadorEquipos.setWords(mequipos);
-                if (mequipos.size()>0){
-                    numero_equiposDtorneo.setText(String.valueOf(mequipos.size()));
-                }else {
-                    numero_equiposDtorneo.setText("0");
-                }
-
+            public void onChanged(@Nullable List<EquiposTorneo> equiposTorneos) {
 
             }
         });
-
 
 
     }
@@ -100,6 +101,13 @@ public class EquiposDtorneoFragment extends Fragment {
         numero_equiposDtorneo = view.findViewById(R.id.numero_equiposDtorneo);
         rcv_equipostorneo = view.findViewById(R.id.rcv_equipostorneo);
 
+    }
+
+    Application application;
+    public void equiposTorneo(){
+
+        EquiposTorneoWebServiceRepository equiposTorneoWebServiceRepository =  new EquiposTorneoWebServiceRepository(application);
+        equiposTorneoWebServiceRepository.providesWebService(id_torneo);
     }
 
 

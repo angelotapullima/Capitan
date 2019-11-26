@@ -2,22 +2,22 @@ package com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views;
 
 import android.app.Activity;
 import android.app.Application;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,8 +25,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
@@ -59,7 +61,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     View view = null;
     ImageView fotoPerfil;
     EditText floating_search_view;
-
+    FrameLayout FrameNuevosDatos;
 
     public ForoFragment() {
     }
@@ -94,6 +96,26 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         activity = getActivity();
 
         preferences = new Preferences(context);
+
+        feedListViewModel.getAllIdPosts().observe(this, new Observer<List<ModelFeed>>() {
+            @Override
+            public void onChanged(List<ModelFeed> modelFeeds) {
+                if (modelFeeds.size()>0){
+
+                    limite_sup = modelFeeds.get(modelFeeds.size()-1).getLimite_sup();
+                    limite_inf = modelFeeds.get(modelFeeds.size()-1).getLimite_inf();
+
+                    //Toast.makeText(getContext(), "sup: " + limite_sup + " inf: " + limite_inf, Toast.LENGTH_SHORT).show();
+                }else{
+                    limite_sup= "0";
+                    limite_inf= "0";
+                }
+
+                preferences.saveValuePORT("lim_sup",limite_sup);
+                preferences.saveValuePORT("lim_inf",limite_inf);
+            }
+        });
+
         initViews(view);
         setAdapter();
         cargarvista();
@@ -104,8 +126,14 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
 
+    
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        onRefresh();
+        Toast.makeText(getContext(), "resume", Toast.LENGTH_SHORT).show();
+    }
 
     private void initViews(View view){
 
@@ -114,6 +142,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         partidos = view.findViewById(R.id.partidos);
         rcv_foro = (RecyclerView) view.findViewById(R.id.rcv_foro);
         progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
+        FrameNuevosDatos =  view.findViewById(R.id.FrameNuevosDatos);
         floating_search_view =  view.findViewById(R.id.floating_search_view);
         cdv_mensaje = (CardView) view.findViewById(R.id.cdv_mensaje);
         swipeRefreshLayout =  view.findViewById(R.id.SwipeRefreshLayout);
@@ -170,6 +199,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
 
+        //feed();
     }
 
 
@@ -184,40 +214,54 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void buscar(String s){
         feedListViewModel.getSearh(s).observe(this, new Observer<List<ModelFeed>>() {
             @Override
-            public void onChanged(@Nullable List<ModelFeed> modelFeeds) {
+            public void onChanged(List<ModelFeed> modelFeeds) {
                 adapter.setWords(modelFeeds);
 
             }
         });
+
+
     }
 
 
+    String valorNuevo;
     public void cargarvista(){
         feedListViewModel.getAllPosts().observe(this, new Observer<List<ModelFeed>>() {
             @Override
-            public void onChanged(@Nullable List<ModelFeed> modelFeeds) {
+            public void onChanged(List<ModelFeed> modelFeeds) {
                 adapter.setWords(modelFeeds);
-                /*if(progressDialog!=null && progressDialog.isShowing()){
-                    progressDialog.dismiss();
-                }*/
+                if (modelFeeds.size()>0){
+                    valorNuevo = modelFeeds.get(0).getNuevos_datos();
+                    if (valorNuevo!=null){
+                        if (valorNuevo.equals("1")){
+                            FrameNuevosDatos.setVisibility(View.VISIBLE);
+                        }else{
+                            FrameNuevosDatos.setVisibility(View.GONE);
+                        }
+                    }
+
+                }
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 cdv_mensaje.setVisibility(View.INVISIBLE);
             }
         });
+
     }
 
 
 
     private void setAdapter(){
 
-
-        adapter = new AdaptadorForo(getActivity(), new AdaptadorForo.OnItemClickListener() {
+        adapter= new AdaptadorForo(getActivity(), new AdaptadorForo.OnItemClickListener() {
             @Override
-            public void onItemClick(ModelFeed modelFeed,  int position) {
-
-
+            public void onItemClick(String dato, ModelFeed feedTorneo, int position) {
+                if (dato.equals("dato")){
+                    feed();
+                }
             }
         });
+
+
 
         rcv_foro.setAdapter(adapter);
         rcv_foro.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -227,12 +271,27 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
 
         //feedListViewModel.deleteAllFeed();
-        FeedWebServiceRepository feedWebServiceRepository = new FeedWebServiceRepository(application);
-        feedWebServiceRepository.providesWebService();
+        FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0","refresh");
         setAdapter();
         cargarvista();
         Log.e("prueba", "onRefresh: funciona" );
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    String limite_sup,limite_inf,superior_envio,inferior_envio;
+    public void feed(){
+
+        if (preferences.getLimite_sup().equals("")|| preferences.getLimite_sup()==null){
+            superior_envio = "0";
+            inferior_envio = "0";
+        }else {
+            superior_envio = preferences.getLimite_sup();
+            inferior_envio = preferences.getLimite_inf();
+        }
+
+        FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),superior_envio,inferior_envio,"datos");
     }
 
 

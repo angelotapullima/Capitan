@@ -1,8 +1,8 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Repository;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.APIUrl;

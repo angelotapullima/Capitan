@@ -1,13 +1,13 @@
 package com.tec.bufeo.capitan.Activity.DetallesTorneo;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 import com.tec.bufeo.capitan.Activity.AgregarEquipos;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.EquiposDtorneoFragment;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.InfoDtorneoFragment;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Views.InfoDtorneoFragment;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.TablaDtorneoFragment;
 import com.tec.bufeo.capitan.R;
 
@@ -26,10 +26,9 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
     ImageView imagen_Dtorneo;
     public ViewPager container_Dtorneo;
     private SectionsDetalleTorneoAdapter sectionsDetalleTorneoAdapter;
+    String id_torneo,nombre,descripcion,lugar,fecha,hora,organizador, id_usuario;
 
     FloatingActionButton fab_agregarParticipantesTorneo;
-
-
 
 
 
@@ -45,6 +44,15 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_torneo_nuevo);
+
+        id_torneo = getIntent().getStringExtra("id_torneo");
+        id_usuario = getIntent().getStringExtra("id_usuario");
+        nombre = getIntent().getStringExtra("nombre");
+        descripcion = getIntent().getStringExtra("descripcion");
+        lugar = getIntent().getStringExtra("lugar");
+        fecha = getIntent().getStringExtra("fecha");
+        hora = getIntent().getStringExtra("hora");
+        organizador = getIntent().getStringExtra("organizador");
 
 
         sectionsDetalleTorneoAdapter = new SectionsDetalleTorneoAdapter(getSupportFragmentManager());
@@ -97,6 +105,7 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
 
     public class SectionsDetalleTorneoAdapter extends FragmentPagerAdapter {
 
+
         public SectionsDetalleTorneoAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -109,15 +118,27 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
             switch (position){
                 case 0:
                     fragment = new InfoDtorneoFragment();
+                    Bundle bundle =  new Bundle();
+                    bundle.putString("id_torneo", id_torneo);
+                    fragment.setArguments(bundle);
                     break;
                 case 1:
                     fragment = new EquiposDtorneoFragment();
+                    Bundle bundle1 =  new Bundle();
+                    bundle1.putString("id_torneo", id_torneo);
+                    fragment.setArguments(bundle1);
                     break;
                 case 2:
                     fragment = new TablaDtorneoFragment();
+                    Bundle bundle2 =  new Bundle();
+                    bundle2.putString("id_torneo", id_torneo);
+                    fragment.setArguments(bundle2);
                     break;
                 case 3:
                     fragment = new ResultadosDtorneoFragment();
+                    Bundle bundle3 =  new Bundle();
+                    bundle3.putString("id_torneo", id_torneo);
+                    fragment.setArguments(bundle3);
                     break;
 
             }

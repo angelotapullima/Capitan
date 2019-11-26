@@ -1,8 +1,8 @@
 package com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
@@ -41,7 +41,7 @@ public class FeedWebServiceRepository {
 
     List<ModelFeed> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<ModelFeed>> providesWebService() {
+ public LiveData<List<ModelFeed>> providesWebService(String id_usuario, String limite_sup, String limite_inf, final String carga) {
 
      final MutableLiveData<List<ModelFeed>> data = new MutableLiveData<>();
 
@@ -55,14 +55,13 @@ public class FeedWebServiceRepository {
                  .client(providesOkHttpClientBuilder())
                  .build();
 
-         //Defining retrofit api service
          APIServiceFeed service = retrofit.create(APIServiceFeed.class);
-        //  response = service.makeRequest().execute().body();
-         service.savePost("10").enqueue(new Callback<String>() {
+         //  response = service.makeRequest().execute().body();
+         service.savePost(id_usuario,limite_sup,limite_inf).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.d("Repository","feed::::"+response.body());
-                 webserviceResponseList = parseJson(response.body());
+                 Log.e("Repository","feed::::"+response.body());
+                 webserviceResponseList = parseJson(response.body(),carga);
                  FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
                  feedRoomDBRepository.insertPosts(webserviceResponseList);
                  data.setValue(webserviceResponseList);
@@ -74,17 +73,21 @@ public class FeedWebServiceRepository {
                  Log.d("Repository","Failed:::");
              }
          });
+         //Defining retrofit api service
+
      }catch (Exception e){
          e.printStackTrace();
      }
 
-     //  return retrofit.create(ModelFeed.class);
+     //  return retrofit.create(PublicacionesTorneo.class);
      return  data;
 
     }
 
 
-    private List<ModelFeed> parseJson(String response) {
+
+    String datosNuevos;
+    private List<ModelFeed> parseJson(String response, String carga) {
 
         List<ModelFeed> apiResults = new ArrayList<>();
 
@@ -93,6 +96,12 @@ public class FeedWebServiceRepository {
 
         try {
             jsonObject = new JSONObject(response);
+
+            String limite_sup2 = jsonObject.optString("limite_sup");
+            String limite_inf2 = jsonObject.optString("limite_inf");
+            int nuevos  = jsonObject.optInt("nuevos");
+
+
             JSONArray resultJSON = jsonObject.getJSONArray("results");
 
             int count = resultJSON.length();
@@ -104,19 +113,33 @@ public class FeedWebServiceRepository {
                 //mMovieModel.setId(object.getString("id"));
                 foro.setPublicacion_id(jsonNode.optString("id_publicacion"));
                 foro.setUsuario_nombre(jsonNode.optString("usuario_nombre"));
+                foro.setUsuario_foto(jsonNode.optString("usuario_foto"));
                 foro.setForo_titulo(jsonNode.optString("titulo"));
                 foro.setForo_descripcion(jsonNode.optString("descripcion"));
+                foro.setPublicacion_concepto(jsonNode.optString("concepto"));
+                foro.setId_torneo(jsonNode.optString("id_torneo"));
+                foro.setPublicacion_torneo(jsonNode.optString("torneo"));
                 foro.setForo_foto(jsonNode.optString("foto"));
                 foro.setForo_feccha(jsonNode.optString("fecha"));
                 foro.setForo_tipo(jsonNode.optString("tipo"));
                 foro.setCant_likes(jsonNode.optString("cant_likes"));
                 foro.setDio_like(jsonNode.optString("dio_like"));
                 foro.setCant_Comentarios(jsonNode.optString("cant_comentarios"));
-                foro.setUsuario_foto(jsonNode.optString("usuario_foto"));
                 foro.setOrden("0");
+                foro.setLimite_sup(limite_sup2);
+                foro.setLimite_inf(limite_inf2);
 
                 apiResults.add(foro);
             }
+            datosNuevos= String.valueOf( nuevos);
+            FeedRoomDBRepository feedTorneoRoomDBRepository = new FeedRoomDBRepository(application);
+            feedTorneoRoomDBRepository.actualizarSup(limite_sup2);
+            if (carga.equals("datos")){
+
+                feedTorneoRoomDBRepository.ActualizarInf(limite_inf2);
+                Log.e("datos","se hizo la luz");
+            }
+            feedTorneoRoomDBRepository.NuevosDatos(datosNuevos);
 
         } catch (JSONException e) {
             e.printStackTrace();

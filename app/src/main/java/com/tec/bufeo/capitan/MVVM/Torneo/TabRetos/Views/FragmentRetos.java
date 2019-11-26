@@ -1,43 +1,22 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Views;
 
 
-import android.app.Activity;
-import android.app.Application;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
-import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscar;
-import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscarFechas;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Views.AdaptadorRetos;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.Preferences;
-
-import java.util.List;
-
-import static com.tec.bufeo.capitan.Activity.DetalleCanchas.tituloIds;
 
 
 public class FragmentRetos extends Fragment  {

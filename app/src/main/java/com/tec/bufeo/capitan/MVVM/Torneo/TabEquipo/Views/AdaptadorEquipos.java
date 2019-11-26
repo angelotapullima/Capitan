@@ -2,13 +2,12 @@ package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -102,7 +101,7 @@ public class AdaptadorEquipos extends RecyclerView.Adapter<AdaptadorEquipos.Equi
 
             //Picasso.with(context).load("http://"+IP+"/"+ obj.getEquipo_foto()).into(holder.img_fotoEquipo);
             holder.txt_nombreEquipoRetar.setText(current.getEquipo_nombre());
-            holder.txt_capitanReto.setText(current.getUsuario_nombre());
+            holder.txt_capitanReto.setText(current.getCapitan_nombre());
             holder.bid(current,listener);
 
 

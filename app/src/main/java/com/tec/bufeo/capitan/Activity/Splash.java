@@ -1,18 +1,20 @@
 package com.tec.bufeo.capitan.Activity;
 
 import android.app.Application;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,7 +24,7 @@ public class Splash extends AppCompatActivity {
     public TimerTask task;
     private static final long TIEMPO = 1;
     SharedPreferences preferencesUser;
-
+    Preferences preferences;
     FeedListViewModel feedListViewModel;
 
     @Override
@@ -31,6 +33,7 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
 
+        preferences =  new Preferences(this);
        //Obtenemos los datos del sharetpreferense, si el usuario se logueo antes, nops manda directo al menu principal, caso contrario denbe loguearse
         preferencesUser = getSharedPreferences("User", Context.MODE_PRIVATE);
         feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
@@ -93,8 +96,8 @@ public class Splash extends AppCompatActivity {
 
     Application application;
     public void cargarFeed(){
-        FeedWebServiceRepository feedWebServiceRepository = new FeedWebServiceRepository(application);
-        feedWebServiceRepository.providesWebService();
+        FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0","0");
     }
 
 }

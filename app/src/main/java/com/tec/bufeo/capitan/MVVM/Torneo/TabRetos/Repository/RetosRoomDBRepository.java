@@ -1,14 +1,13 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RetosRoomDBRepository {

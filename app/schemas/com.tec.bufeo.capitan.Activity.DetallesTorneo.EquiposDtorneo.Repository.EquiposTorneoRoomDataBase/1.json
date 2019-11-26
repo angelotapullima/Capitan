@@ -1,0 +1,69 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "078f6e9626e48db328b5f6a18ea96251",
+    "entities": [
+      {
+        "tableName": "EquiposTorneo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `equipo_nombre` TEXT, `equipo_foto` TEXT, `equipo_torneo` TEXT, `capitan_nombre` TEXT, `capitan_id` TEXT, `mi_equipo` TEXT, PRIMARY KEY(`equipo_id`))",
+        "fields": [
+          {
+            "fieldPath": "equipo_id",
+            "columnName": "equipo_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "equipo_nombre",
+            "columnName": "equipo_nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_foto",
+            "columnName": "equipo_foto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_torneo",
+            "columnName": "equipo_torneo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "capitan_nombre",
+            "columnName": "capitan_nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "capitan_id",
+            "columnName": "capitan_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mi_equipo",
+            "columnName": "mi_equipo",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "equipo_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"078f6e9626e48db328b5f6a18ea96251\")"
+    ]
+  }
+}

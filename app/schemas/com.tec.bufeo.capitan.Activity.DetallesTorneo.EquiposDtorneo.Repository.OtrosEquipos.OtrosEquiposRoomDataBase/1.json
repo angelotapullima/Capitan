@@ -1,0 +1,57 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "27810a64a80d81e47bfe8e6e8a94d96d",
+    "entities": [
+      {
+        "tableName": "equipos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `equipo_nombre` TEXT, `equipo_foto` TEXT, `equipo_capitan` TEXT, `mi_equipo` TEXT, PRIMARY KEY(`equipo_id`))",
+        "fields": [
+          {
+            "fieldPath": "equipo_id",
+            "columnName": "equipo_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "equipo_nombre",
+            "columnName": "equipo_nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_foto",
+            "columnName": "equipo_foto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equipo_capitan",
+            "columnName": "equipo_capitan",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mi_equipo",
+            "columnName": "mi_equipo",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "equipo_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"27810a64a80d81e47bfe8e6e8a94d96d\")"
+    ]
+  }
+}

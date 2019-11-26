@@ -6,7 +6,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:id="@+id/cardMensajesCliente"
             android:background="@android:color/transparent"
@@ -42,6 +42,6 @@
                     android:text="@string/app_name"/>
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

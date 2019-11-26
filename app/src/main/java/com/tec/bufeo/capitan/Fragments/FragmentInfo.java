@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +30,6 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_foto;
 import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_nombre;
 import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_posicion;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;

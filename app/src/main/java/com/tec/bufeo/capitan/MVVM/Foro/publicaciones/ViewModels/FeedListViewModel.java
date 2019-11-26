@@ -1,11 +1,13 @@
 package com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
+
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
 
 import java.util.List;
@@ -14,47 +16,59 @@ import java.util.List;
 
 public class FeedListViewModel extends AndroidViewModel {
 
-    private FeedRoomDBRepository feedRoomDBRepository;
+
+    private FeedRoomDBRepository feedTorneoRoomDBRepository;
     private LiveData<List<ModelFeed>> mAllPosts;
-    FeedWebServiceRepository feedWebServiceRepository;
+    FeedWebServiceRepository feedTorneoWebServiceRepository;
     private LiveData<List<ModelFeed>> retroObservable;
 
 
     public FeedListViewModel(Application application){
         super(application);
-        feedRoomDBRepository = new FeedRoomDBRepository(application);
-        feedWebServiceRepository = new FeedWebServiceRepository(application);
-        //retroObservable = feedWebServiceRepository.providesWebService();
-        //feedRoomDBRepository.insertPosts(retroObservable.getValue());
-        //mAllPosts = feedRoomDBRepository.getAllPosts();
+        feedTorneoRoomDBRepository = new FeedRoomDBRepository(application);
+        feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
+        //retroObservable = feedTorneoWebServiceRepository.providesWebService();
+        //feedTorneoRoomDBRepository.insertPosts(retroObservable.getValue());
+        //mAllPosts = feedTorneoRoomDBRepository.getAllPosts();
 
     }
 
+    public LiveData<List<ModelFeed>> getAllIdPosts() {
+        //retroObservable = feedTorneoWebServiceRepository.providesWebService();
+        mAllPosts = feedTorneoRoomDBRepository.getAllIdPosts();
+        return mAllPosts;
+    }
     public LiveData<List<ModelFeed>> getAllPosts() {
-        //retroObservable = feedWebServiceRepository.providesWebService();
-        mAllPosts = feedRoomDBRepository.getAllPosts();
+        //retroObservable = feedTorneoWebServiceRepository.providesWebService();
+        mAllPosts = feedTorneoRoomDBRepository.getAllPosts();
+        return mAllPosts;
+    }
+
+    public LiveData<List<ModelFeed>> getIdTorneo(String id_torneo) {
+        //retroObservable = feedTorneoWebServiceRepository.providesWebService();
+        mAllPosts = feedTorneoRoomDBRepository.getIdTorneo(id_torneo);
         return mAllPosts;
     }
 
     public LiveData<List<ModelFeed>> getSearh(String query) {
 
-        mAllPosts = feedRoomDBRepository.getSearch(query);
+        mAllPosts = feedTorneoRoomDBRepository.getSearch(query);
         return mAllPosts;
     }
 
-    public void insert(ModelFeed modelFeed){
-        feedRoomDBRepository.insert(modelFeed);
+    public void insert(ModelFeed feedTorneo){
+        feedTorneoRoomDBRepository.insert(feedTorneo);
     }
 
 
     public void deleteAllFeed() {
-        feedRoomDBRepository.deleteAllFeed();
+        feedTorneoRoomDBRepository.deleteAllFeed();
     }
 
     public void deleteOneFeed(String foro_id){
-        feedRoomDBRepository.deleteOneFeed(foro_id);
+        feedTorneoRoomDBRepository.deleteOneFeed(foro_id);
     }
-   /*public LiveData<List<ModelFeed>> getProjectRetroListObservable() {
+   /*public LiveData<List<PublicacionesTorneo>> getProjectRetroListObservable() {
         return retroObservable;
     }*/
 

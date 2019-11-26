@@ -8,7 +8,7 @@
     android:gravity="center"
     tools:context=".MVVM.Foro.comentarios.Views.ComentariosActivity">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#FFF"
@@ -22,7 +22,7 @@
             android:orientation="vertical"
             >
 
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:background="#FFF"
                 android:paddingLeft="20dp"
@@ -56,7 +56,7 @@
                 </LinearLayout>
                 <!---->
 
-            </android.support.design.widget.AppBarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
             <View
                 android:layout_width="match_parent"
                 android:id="@+id/vista"
@@ -64,7 +64,7 @@
                 android:layout_height="1dp"
                 android:background="#f6f6f6" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/news_rv"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -115,7 +115,7 @@
         </RelativeLayout>
 
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 

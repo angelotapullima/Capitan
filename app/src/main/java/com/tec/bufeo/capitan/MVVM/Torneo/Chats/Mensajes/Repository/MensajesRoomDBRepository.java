@@ -1,11 +1,10 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Repository;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 
 import java.util.List;
 

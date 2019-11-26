@@ -1,8 +1,8 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.OtrosEquipos;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.APIUrl;
@@ -107,7 +107,7 @@ public class OtrosEquiposWebServiceRepository {
                 mMovieModel.setEquipo_id(jsonNode.optString("equipo_id"));
                 mMovieModel.setEquipo_nombre(jsonNode.optString("nombre"));
                 mMovieModel.setEquipo_foto(jsonNode.optString("foto"));
-                mMovieModel.setUsuario_nombre(jsonNode.optString("capitan"));
+                mMovieModel.setCapitan_nombre(jsonNode.optString("capitan"));
                 mMovieModel.setCapitan_id(jsonNode.optString("capitan_id"));
                 //mMovieModel.set(jsonNode.optString("capitan"));
                 mMovieModel.setMi_equipo("no");

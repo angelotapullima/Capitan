@@ -1,11 +1,11 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.OtrosEquipos;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 
@@ -16,7 +16,7 @@ public abstract class OtrosEquiposRoomDataBase extends RoomDatabase {
     private static OtrosEquiposRoomDataBase INSTANCE;
 
 
-    static OtrosEquiposRoomDataBase getDatabase(final Context context) {
+    public static OtrosEquiposRoomDataBase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (OtrosEquiposRoomDataBase.class) {
                 if (INSTANCE == null) {

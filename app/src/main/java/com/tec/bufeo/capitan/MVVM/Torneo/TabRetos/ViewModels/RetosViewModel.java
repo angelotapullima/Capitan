@@ -1,14 +1,13 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosWebServiceRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RetosViewModel extends AndroidViewModel {

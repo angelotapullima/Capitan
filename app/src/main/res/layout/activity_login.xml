@@ -119,7 +119,7 @@
                                     android:src="@drawable/passwordp"
                                     />
 
-                                <android.support.design.widget.TextInputLayout
+                                <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     app:passwordToggleEnabled="true"
@@ -140,7 +140,7 @@
                                         android:inputType="textPassword"
                                         android:maxLines="1"/>
 
-                                </android.support.design.widget.TextInputLayout>
+                                </com.google.android.material.textfield.TextInputLayout>
                             </LinearLayout>
 
 

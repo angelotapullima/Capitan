@@ -1,15 +1,12 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.ViewModels;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Models.Estadisticas;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Repository.EstadisticasRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Repository.EstadisticasWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquipos.MisEquiposRoomDBRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquipos.MisEquiposWebServiceRepository;
 
 import java.util.List;
 

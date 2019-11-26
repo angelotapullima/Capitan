@@ -2,12 +2,15 @@ package com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -21,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Views.ComentariosActivity;
+
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -59,6 +63,9 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
         private TextView txt_tituloForo, txt_usuarioForo, txt_descripcionForo, txt_fechaHora,txt_totallike,txt_totalcoment;
         private ProgressBar prog_like;
         private ImageButton imgbt_like,imgbt_comment;
+        FrameLayout frame_mas_contenido,progress_mas_contenido;
+        Button btn_mas_contenido;
+        CardView materialCardView;
 
         private foroViewHolder(View itemView) {
             super(itemView);
@@ -72,15 +79,21 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             txt_totallike = itemView.findViewById(R.id.txt_totallike);
             imgbt_comment=itemView.findViewById(R.id.imgbt_comment);
             txt_totalcoment=itemView.findViewById(R.id.txt_totalcoment);
+            frame_mas_contenido=itemView.findViewById(R.id.frame_mas_contenido);
+            progress_mas_contenido=itemView.findViewById(R.id.progress_mas_contenido);
             foto_perfil_publicacion=itemView.findViewById(R.id.foto_perfil_publicacion);
+            btn_mas_contenido=itemView.findViewById(R.id.btn_mas_contenido);
+            materialCardView=itemView.findViewById(R.id.materialCardView);
         }
 
-        public void bid(final ModelFeed modelFeed,final OnItemClickListener listener){
-            itemView.setOnClickListener(new View.OnClickListener() {
+        public void bid(final ModelFeed feedTorneo, final OnItemClickListener listener){
+            btn_mas_contenido.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    listener.onItemClick("prueba2", feedTorneo, getAdapterPosition());
+                    frame_mas_contenido.setVisibility(View.GONE);
+                    progress_mas_contenido.setVisibility(View.VISIBLE);
 
-                    listener.onItemClick(modelFeed , getAdapterPosition());
                 }
             });
 
@@ -116,6 +129,9 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
         if (mUsers != null) {
             current = mUsers.get(position);
 
+            if(position == mUsers.size()-1){
+                holder.materialCardView.setVisibility(View.GONE);
+            }
             holder.imgbt_like.setId(position);
             holder.imgbt_comment.setId(position);
 
@@ -323,7 +339,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
 
 
     public interface  OnItemClickListener{
-        void onItemClick(ModelFeed modelFeed, int position);
+        void onItemClick(String dato, ModelFeed feedTorneo, int position);
     }
 
 }

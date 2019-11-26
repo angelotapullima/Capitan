@@ -1,9 +1,7 @@
 package com.tec.bufeo.capitan.Activity.DetallesTorneo;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +12,7 @@ import com.tec.bufeo.capitan.R;
 public class ResultadosDtorneoFragment extends Fragment {
 
 
+    String id_torneo;
     public ResultadosDtorneoFragment() {
         // Required empty public constructor
     }
@@ -30,7 +29,12 @@ public class ResultadosDtorneoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_resultados_dtorneo, container, false);
+        View view= inflater.inflate(R.layout.fragment_resultados_dtorneo, container, false);
+        final Bundle bdl = getArguments();
+
+
+        id_torneo = bdl.getString("id_torneo");
+        return  view;
     }
 
 

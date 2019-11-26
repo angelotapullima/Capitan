@@ -1,15 +1,13 @@
 package com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo;
 
-import android.app.Activity;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.net.Uri;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,7 @@ public class TablaDtorneoFragment extends Fragment {
 
     RecyclerView rcv_estadisticas1;
     EstadisticasAdapter1 estadisticasAdapter1;
-
+    String id_torneo;
     public TablaDtorneoFragment() {
         // Required empty public constructor
     }
@@ -47,6 +45,11 @@ public class TablaDtorneoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tabla_dtorneo, container, false);
+
+        final Bundle bdl = getArguments();
+
+
+        id_torneo = bdl.getString("id_torneo");
         initViews(view);
         setAdapter();
         cargarvista();

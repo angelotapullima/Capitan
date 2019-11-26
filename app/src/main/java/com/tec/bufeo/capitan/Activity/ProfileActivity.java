@@ -1,17 +1,17 @@
 package com.tec.bufeo.capitan.Activity;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -92,10 +92,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setAdapter() {
+
         adaptadorForo = new AdaptadorForo(this, new AdaptadorForo.OnItemClickListener() {
             @Override
-            public void onItemClick(ModelFeed modelFeed, int position) {
-
+            public void onItemClick(String dato, ModelFeed feedTorneo, int position) {
 
             }
         });
@@ -125,17 +125,14 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void cargarvista() {
-        feedListViewModel.getAllPosts().observe(this, new Observer<List<ModelFeed>>() {
+
+        feedListViewModel.getAllIdPosts().observe(this, new Observer<List<ModelFeed>>() {
             @Override
-            public void onChanged(@Nullable List<ModelFeed> modelFeeds) {
-                adaptadorForo.setWords(modelFeeds);
-                /*if(progressDialog!=null && progressDialog.isShowing()){
-                    progressDialog.dismiss();
-                }*/
-                //a.setVisibility(ProgressBar.INVISIBLE);
-                //cdv_mensaje.setVisibility(View.INVISIBLE);
+            public void onChanged(List<ModelFeed> modelFeeds) {
+
             }
         });
+
 
         misEquiposViewModel.getAllMiEquipo("si").observe(this, new Observer<List<Mequipos>>() {
             @Override

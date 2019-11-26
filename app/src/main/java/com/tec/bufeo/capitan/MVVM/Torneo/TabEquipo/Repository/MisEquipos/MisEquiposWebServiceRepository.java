@@ -1,8 +1,8 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquipos;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.APIUrl;
@@ -104,7 +104,7 @@ public class MisEquiposWebServiceRepository {
                 misequipos.setEquipo_id(jsonNode.optString("equipo_id"));
                 misequipos.setEquipo_nombre(jsonNode.optString("nombre"));
                 misequipos.setEquipo_foto(jsonNode.optString("foto"));
-                misequipos.setUsuario_nombre(jsonNode.optString("capitan"));
+                misequipos.setCapitan_nombre(jsonNode.optString("capitan"));
                 misequipos.setMi_equipo("si");
 
 

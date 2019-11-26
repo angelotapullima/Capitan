@@ -1,12 +1,12 @@
 package com.tec.bufeo.capitan.Activity;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.lifecycle.ViewModelStoreOwner;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -21,10 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
@@ -35,10 +32,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_foto;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 
 public class ResutadoRetos extends AppCompatActivity {

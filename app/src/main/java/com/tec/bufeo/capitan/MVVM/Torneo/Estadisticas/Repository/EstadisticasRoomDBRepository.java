@@ -1,11 +1,10 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Repository;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Models.Estadisticas;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class EstadisticasRoomDBRepository {
 
      }
 
-    /*public LiveData<List<Mequipos>> getAllEquipos(String mi_equipo) {
+    /*public LiveData<List<EquiposTorneo>> getAllEquipos(String mi_equipo) {
         boolean online = ForoFragment.isOnLine();
 
         if (online){

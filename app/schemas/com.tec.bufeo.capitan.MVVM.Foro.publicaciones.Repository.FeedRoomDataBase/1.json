@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "24518e7e877ac4714517cdad02f5f119",
+    "identityHash": "b8d81c11a1c527d235b36c9ea0b2f035",
     "entities": [
       {
         "tableName": "feed",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`publicacion_id` TEXT NOT NULL, `foro_foto` TEXT, `usuario_nombre` TEXT, `usuario_id` TEXT, `foro_titulo` TEXT, `foro_descripcion` TEXT, `foro_feccha` TEXT, `foro_conteo` TEXT, `foro_tipo` TEXT, `cant_likes` TEXT, `cant_Comentarios` TEXT, `dio_like` TEXT, `usuario_foto` TEXT, `orden` TEXT, PRIMARY KEY(`publicacion_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`publicacion_id` TEXT NOT NULL, `usuario_nombre` TEXT, `foro_foto` TEXT, `foro_titulo` TEXT, `foro_descripcion` TEXT, `publicacion_concepto` TEXT, `id_torneo` TEXT, `publicacion_torneo` TEXT, `usuario_id` TEXT, `foro_feccha` TEXT, `foro_conteo` TEXT, `foro_tipo` TEXT, `cant_likes` TEXT, `cant_Comentarios` TEXT, `dio_like` TEXT, `usuario_foto` TEXT, `orden` TEXT, `limite_sup` TEXT, `limite_inf` TEXT, `nuevos_datos` TEXT, PRIMARY KEY(`publicacion_id`))",
         "fields": [
           {
             "fieldPath": "publicacion_id",
@@ -15,20 +15,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "foro_foto",
-            "columnName": "foro_foto",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "usuario_nombre",
             "columnName": "usuario_nombre",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "usuario_id",
-            "columnName": "usuario_id",
+            "fieldPath": "foro_foto",
+            "columnName": "foro_foto",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -41,6 +35,30 @@
           {
             "fieldPath": "foro_descripcion",
             "columnName": "foro_descripcion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "publicacion_concepto",
+            "columnName": "publicacion_concepto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_torneo",
+            "columnName": "id_torneo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "publicacion_torneo",
+            "columnName": "publicacion_torneo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "usuario_id",
+            "columnName": "usuario_id",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -91,6 +109,24 @@
             "columnName": "orden",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "limite_sup",
+            "columnName": "limite_sup",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "limite_inf",
+            "columnName": "limite_inf",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nuevos_datos",
+            "columnName": "nuevos_datos",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -105,7 +141,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"24518e7e877ac4714517cdad02f5f119\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b8d81c11a1c527d235b36c9ea0b2f035\")"
     ]
   }
 }
