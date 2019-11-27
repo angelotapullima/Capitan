@@ -27,9 +27,9 @@ public class EquiposTorneo
     @SerializedName("equipo_foto")
     private String equipo_foto;
 
-    @ColumnInfo(name = "equipo_torneo")
-    @SerializedName("equipo_torneo")
-    private String equipo_torneo;
+    @ColumnInfo(name = "equipo_torneo_id")
+    @SerializedName("equipo_torneo_id")
+    private String equipo_torneo_id;
 
 
 
@@ -42,9 +42,7 @@ public class EquiposTorneo
     private String capitan_id;
 
 
-    @ColumnInfo(name = "mi_equipo")
-    @SerializedName("mi_equipo")
-    private String mi_equipo;
+
 
     @NonNull
     public String getEquipo_id() {
@@ -87,19 +85,11 @@ public class EquiposTorneo
         this.capitan_id = capitan_id;
     }
 
-    public String getMi_equipo() {
-        return mi_equipo;
+    public String getEquipo_torneo_id() {
+        return equipo_torneo_id;
     }
 
-    public void setMi_equipo(String mi_equipo) {
-        this.mi_equipo = mi_equipo;
-    }
-
-    public String getEquipo_torneo() {
-        return equipo_torneo;
-    }
-
-    public void setEquipo_torneo(String equipo_torneo) {
-        this.equipo_torneo = equipo_torneo;
+    public void setEquipo_torneo_id(String equipo_torneo_id) {
+        this.equipo_torneo_id = equipo_torneo_id;
     }
 }

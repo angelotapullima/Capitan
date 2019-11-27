@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "078f6e9626e48db328b5f6a18ea96251",
+    "identityHash": "64ad2b7d35efaea177e5e6cdc95a4d35",
     "entities": [
       {
         "tableName": "EquiposTorneo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `equipo_nombre` TEXT, `equipo_foto` TEXT, `equipo_torneo` TEXT, `capitan_nombre` TEXT, `capitan_id` TEXT, `mi_equipo` TEXT, PRIMARY KEY(`equipo_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `equipo_nombre` TEXT, `equipo_foto` TEXT, `equipo_torneo_id` TEXT, `capitan_nombre` TEXT, `capitan_id` TEXT, PRIMARY KEY(`equipo_id`))",
         "fields": [
           {
             "fieldPath": "equipo_id",
@@ -27,8 +27,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "equipo_torneo",
-            "columnName": "equipo_torneo",
+            "fieldPath": "equipo_torneo_id",
+            "columnName": "equipo_torneo_id",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -41,12 +41,6 @@
           {
             "fieldPath": "capitan_id",
             "columnName": "capitan_id",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "mi_equipo",
-            "columnName": "mi_equipo",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -63,7 +57,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"078f6e9626e48db328b5f6a18ea96251\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"64ad2b7d35efaea177e5e6cdc95a4d35\")"
     ]
   }
 }

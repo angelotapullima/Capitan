@@ -7,6 +7,7 @@ import android.util.Log;
 
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.FeedTorneo;
+import com.tec.bufeo.capitan.Util.APIUrl;
 
 import org.json.JSONArray;
 import org.json.JSONException;

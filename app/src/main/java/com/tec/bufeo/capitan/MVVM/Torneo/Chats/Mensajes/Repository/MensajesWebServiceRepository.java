@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.APIUrl;
+import com.tec.bufeo.capitan.Util.APIUrl;
 
 import org.json.JSONArray;
 import org.json.JSONException;

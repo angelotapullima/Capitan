@@ -7,7 +7,7 @@ import android.util.Log;
 
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.Models.EquiposTorneo;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.APIUrl;
+import com.tec.bufeo.capitan.Util.APIUrl;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -110,8 +110,8 @@ public class EquiposTorneoWebServiceRepository {
                 mMovieModel.setEquipo_foto(jsonNode.optString("foto"));
                 mMovieModel.setCapitan_nombre(jsonNode.optString("capitan"));
                 mMovieModel.setCapitan_id(jsonNode.optString("capitan_id"));
+                mMovieModel.setEquipo_torneo_id(jsonNode.optString("id_torneo"));
                 //mMovieModel.set(jsonNode.optString("capitan"));
-                mMovieModel.setMi_equipo("no");
 
 
                 apiResults.add(mMovieModel);

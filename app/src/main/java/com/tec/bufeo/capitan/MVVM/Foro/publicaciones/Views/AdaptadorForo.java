@@ -22,6 +22,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.button.MaterialButton;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Views.ComentariosActivity;
 
@@ -64,7 +65,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
         private ProgressBar prog_like;
         private ImageButton imgbt_like,imgbt_comment;
         FrameLayout frame_mas_contenido,progress_mas_contenido;
-        Button btn_mas_contenido;
+        MaterialButton btn_mas_contenido;
         CardView materialCardView;
 
         private foroViewHolder(View itemView) {

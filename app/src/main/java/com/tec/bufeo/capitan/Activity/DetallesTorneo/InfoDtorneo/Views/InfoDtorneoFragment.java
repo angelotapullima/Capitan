@@ -32,7 +32,7 @@ public class InfoDtorneoFragment extends Fragment {
     TextView titulo_infotorneo,fecha_infotorneo,hora_infotorneo,organizador_infotorneo,lugar_infotorneo,costo_infotorneo;
     Button unirme_infotorneo;
     RecyclerView rcv_infotorneo;
-    String id_torneo;
+    String id_torneo,organizador,lugar,fecha,hora,titulo;
     Application application;
     Preferences preferences;
     FeedTorneoListViewModel feedTorneoListViewModel;
@@ -64,6 +64,11 @@ public class InfoDtorneoFragment extends Fragment {
 
 
         id_torneo = bdl.getString("id_torneo");
+        organizador = bdl.getString("organizador");
+        lugar = bdl.getString("lugar");
+        fecha = bdl.getString("fecha");
+        hora = bdl.getString("hora");
+        titulo = bdl.getString("titulo");
 
         initViews(view);
         setAdapter();
@@ -75,6 +80,22 @@ public class InfoDtorneoFragment extends Fragment {
 
     }
 
+    private void initViews(View view) {
+        titulo_infotorneo = view.findViewById(R.id.titulo_infotorneo);
+        fecha_infotorneo = view.findViewById(R.id.fecha_infotorneo);
+        hora_infotorneo = view.findViewById(R.id.hora_infotorneo);
+        organizador_infotorneo = view.findViewById(R.id.organizador_infotorneo);
+        lugar_infotorneo = view.findViewById(R.id.lugar_infotorneo);
+        costo_infotorneo = view.findViewById(R.id.costo_infotorneo);
+        rcv_infotorneo = view.findViewById(R.id.rcv_infotorneo);
+
+
+        titulo_infotorneo.setText(titulo);
+        fecha_infotorneo.setText(fecha);
+        hora_infotorneo.setText(hora);
+        organizador_infotorneo.setText(organizador);
+        lugar_infotorneo.setText(lugar);
+    }
     public void feed(){
         FeedTorneoWebServiceRepository feedTorneoWebServiceRepository = new FeedTorneoWebServiceRepository(application);
         feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),id_torneo,"0","0","datos");
@@ -114,13 +135,5 @@ public class InfoDtorneoFragment extends Fragment {
 
     }
 
-    private void initViews(View view) {
-        titulo_infotorneo = view.findViewById(R.id.titulo_infotorneo);
-        fecha_infotorneo = view.findViewById(R.id.fecha_infotorneo);
-        hora_infotorneo = view.findViewById(R.id.hora_infotorneo);
-        organizador_infotorneo = view.findViewById(R.id.organizador_infotorneo);
-        lugar_infotorneo = view.findViewById(R.id.lugar_infotorneo);
-        costo_infotorneo = view.findViewById(R.id.costo_infotorneo);
-        rcv_infotorneo = view.findViewById(R.id.rcv_infotorneo);
-    }
+
 }

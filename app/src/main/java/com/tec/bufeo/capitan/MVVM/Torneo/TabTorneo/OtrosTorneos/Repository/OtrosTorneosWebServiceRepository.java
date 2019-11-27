@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.APIUrl;
+import com.tec.bufeo.capitan.Util.APIUrl;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
 
 import org.json.JSONArray;

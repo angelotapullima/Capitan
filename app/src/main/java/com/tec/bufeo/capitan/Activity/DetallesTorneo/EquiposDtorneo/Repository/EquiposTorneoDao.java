@@ -19,7 +19,7 @@ public interface EquiposTorneoDao {
     /*@Query("SELECT * from equipos WHERE mi_equipo = :mi_equipo")
     LiveData<List<EquiposTorneo>> getAllEquipos(String mi_equipo);*/
 
-    @Query("SELECT * from equipostorneo WHERE equipo_torneo = :equipo_torneo ")
+    @Query("SELECT * from equipostorneo WHERE equipo_torneo_id = :equipo_torneo ")
     LiveData<List<EquiposTorneo>> getAllEquiposTorneo(String equipo_torneo);
 
 

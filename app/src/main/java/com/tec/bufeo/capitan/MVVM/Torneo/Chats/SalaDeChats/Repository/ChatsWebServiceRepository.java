@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Models.Chats;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.APIUrl;
+import com.tec.bufeo.capitan.Util.APIUrl;
 
 import org.json.JSONArray;
 import org.json.JSONException;

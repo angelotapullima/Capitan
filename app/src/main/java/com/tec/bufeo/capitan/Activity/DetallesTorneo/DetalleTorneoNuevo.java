@@ -6,6 +6,8 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +16,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.tec.bufeo.capitan.Activity.AgregarEquipos;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.EquiposDtorneoFragment;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.Views.EquiposDtorneoFragment;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Views.InfoDtorneoFragment;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.TablaDtorneoFragment;
+
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Views.TablaDtorneoFragment;
 import com.tec.bufeo.capitan.R;
 
 public class DetalleTorneoNuevo extends AppCompatActivity {
@@ -27,6 +30,7 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
     public ViewPager container_Dtorneo;
     private SectionsDetalleTorneoAdapter sectionsDetalleTorneoAdapter;
     String id_torneo,nombre,descripcion,lugar,fecha,hora,organizador, id_usuario;
+
 
     FloatingActionButton fab_agregarParticipantesTorneo;
 
@@ -100,6 +104,8 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
     }
 
 
@@ -120,6 +126,11 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
                     fragment = new InfoDtorneoFragment();
                     Bundle bundle =  new Bundle();
                     bundle.putString("id_torneo", id_torneo);
+                    bundle.putString("organizador", organizador);
+                    bundle.putString("lugar", lugar);
+                    bundle.putString("fecha", fecha);
+                    bundle.putString("hora", hora);
+                    bundle.putString("titulo", nombre);
                     fragment.setArguments(bundle);
                     break;
                 case 1:

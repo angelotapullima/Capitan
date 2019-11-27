@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.Models.EquiposTorneo;
 
-@Database(entities = {EquiposTorneo.class}, version = 1)
+@Database(entities = {EquiposTorneo.class}, version = 1,exportSchema = false)
 public abstract class EquiposTorneoRoomDataBase extends RoomDatabase {
     public abstract EquiposTorneoDao postInfoDao();
 
@@ -23,6 +23,7 @@ public abstract class EquiposTorneoRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             EquiposTorneoRoomDataBase.class, "equipos_torneo_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
 
                 }

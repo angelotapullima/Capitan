@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo;
+package com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.Views;
 
 import android.app.Application;
 import androidx.lifecycle.Observer;
@@ -30,7 +30,7 @@ public class EquiposDtorneoFragment extends Fragment {
     TextView numero_equiposDtorneo;
     RecyclerView rcv_equipostorneo;
     EquiposTorneoViewModel equiposTorneoViewModel;
-    AdaptadorEquipos adaptadorEquipos;
+    AdapterEquiposTorneo adapterEquiposTorneo;
     String id_torneo;
     public EquiposDtorneoFragment() {
         // Required empty public constructor
@@ -68,33 +68,30 @@ public class EquiposDtorneoFragment extends Fragment {
 
     private void setAdapter() {
 
-        adaptadorEquipos = new AdaptadorEquipos(getContext(), new AdaptadorEquipos.OnItemClickListener() {
+        adapterEquiposTorneo = new AdapterEquiposTorneo(getContext(), new AdapterEquiposTorneo.OnItemClickListener() {
             @Override
-            public void onItemClick(Mequipos mequipos, int position) {
+            public void onItemClick(EquiposTorneo mequipos, int position) {
 
             }
         });
-        rcv_equipostorneo.setAdapter(adaptadorEquipos);
+        rcv_equipostorneo.setAdapter(adapterEquiposTorneo);
         rcv_equipostorneo.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
-
-
-
-
-
-
-
 
     private void cargarvista() {
         equiposTorneoViewModel.getAllEquiposTorneo(id_torneo).observe(this, new Observer<List<EquiposTorneo>>() {
             @Override
             public void onChanged(@Nullable List<EquiposTorneo> equiposTorneos) {
+                if (equiposTorneos.size()>0){
 
+                    adapterEquiposTorneo.setWords(equiposTorneos);
+                    numero_equiposDtorneo.setText(String.valueOf(equiposTorneos.size()));
+                }else{
+                    numero_equiposDtorneo.setText("0");
+                }
             }
         });
-
-
     }
 
     private void initViews(View view) {

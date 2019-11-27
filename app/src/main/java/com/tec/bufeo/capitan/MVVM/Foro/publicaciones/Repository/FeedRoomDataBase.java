@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 
-@Database(entities = {ModelFeed.class}, version = 1)
+@Database(entities = {ModelFeed.class}, version = 1,exportSchema = false)
 public abstract class FeedRoomDataBase extends RoomDatabase {
     public abstract FeedDao postInfoDao();
 
@@ -23,6 +23,7 @@ public abstract class FeedRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             FeedRoomDataBase.class, "feed_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
 
                 }

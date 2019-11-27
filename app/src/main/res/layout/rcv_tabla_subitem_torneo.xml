@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:weightSum="10">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/logoEquipo"
+                android:src="@drawable/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:id="@+id/nombre_equipo"
+                android:text="Club"
+                android:textColor="#000"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="PJ"
+            android:id="@+id/PJ"
+            android:gravity="center"
+            android:textColor="#000"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="PG"
+            android:id="@+id/PG"
+            android:gravity="center"
+            android:textColor="#000"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="PE"
+            android:id="@+id/PE"
+            android:gravity="center"
+            android:textColor="#000"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="PP"
+            android:id="@+id/PP"
+
+            android:gravity="center"
+            android:textColor="#000"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="GF"
+            android:id="@+id/GF"
+
+            android:gravity="center"
+            android:textColor="#000"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="GC"
+            android:id="@+id/GC"
+            android:gravity="center"
+            android:textColor="#000"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="DG"
+            android:id="@+id/DG"
+            android:gravity="center"
+            android:textColor="#000"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Ptos"
+            android:textStyle="bold"
+            android:id="@+id/puntos"
+            android:gravity="center"
+            android:textColor="#000"/>
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
