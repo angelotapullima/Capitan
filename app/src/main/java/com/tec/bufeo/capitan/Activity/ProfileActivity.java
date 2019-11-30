@@ -134,7 +134,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        misEquiposViewModel.getAllMiEquipo("si").observe(this, new Observer<List<Mequipos>>() {
+        misEquiposViewModel.getAllEquipo("si").observe(this, new Observer<List<Mequipos>>() {
             @Override
             public void onChanged(@Nullable List<Mequipos> mequipos) {
                 adaptadorMiEquipo.setWords(mequipos);

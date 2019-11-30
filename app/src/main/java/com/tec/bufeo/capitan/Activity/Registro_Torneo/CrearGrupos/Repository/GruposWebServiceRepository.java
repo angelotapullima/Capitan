@@ -1,12 +1,11 @@
-package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.OtrosEquipos;
+package com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Repository;
 
 import android.app.Application;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
+
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Models.Grupos;
 import com.tec.bufeo.capitan.Util.APIUrl;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,10 +25,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class OtrosEquiposWebServiceRepository {
+public class GruposWebServiceRepository {
 
+    //Preferences preferencesUser;
     Application application;
-    public OtrosEquiposWebServiceRepository(Application application){
+    public GruposWebServiceRepository(Application application){
         this.application = application;
     }
     private static OkHttpClient providesOkHttpClientBuilder(){
@@ -39,13 +41,14 @@ public class OtrosEquiposWebServiceRepository {
     }
 
 
-    List<Mequipos> webserviceResponseList = new ArrayList<>();
+    List<Grupos> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Mequipos>> providesWebService(String id_usuario) {
+ public LiveData<List<Grupos>> providesWebService(final String id_torneo) {
 
-     final MutableLiveData<List<Mequipos>> data = new MutableLiveData<>();
+     final MutableLiveData<List<Grupos>> data = new MutableLiveData<>();
 
      String response = "";
+     //String id = preferencesUser.getIdUsuarioPref();
      try {
          Retrofit retrofit = new Retrofit.Builder()
                  .baseUrl(APIUrl.BASE_URL)
@@ -54,16 +57,15 @@ public class OtrosEquiposWebServiceRepository {
                  .client(providesOkHttpClientBuilder())
                  .build();
 
-         //Defining retrofit api service
-         OtrosEquiposAPIService service = retrofit.create(OtrosEquiposAPIService.class);
-        //  response = service.makeRequest().execute().body();
-         service.getEquipo(id_usuario).enqueue(new Callback<String>() {
+         APIServiceGrupos service = retrofit.create(APIServiceGrupos.class);
+         //  response = service.makeRequest().execute().body();
+         service.savePost(id_torneo).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.d("Repository","Response::::"+response.body());
-                 webserviceResponseList = parseJson(response.body());
-                 OtrosEquiposRoomDBRepository otrosEquiposRoomDBRepository = new OtrosEquiposRoomDBRepository(application);
-                 otrosEquiposRoomDBRepository.insertEquipos(webserviceResponseList);
+                 Log.e("Repository","feed::::"+response.body());
+                 webserviceResponseList = parseJson(response.body(), id_torneo);
+                 GruposRoomDBRepository gruposRoomDBRepository = new GruposRoomDBRepository(application);
+                 gruposRoomDBRepository.insertPosts(webserviceResponseList);
                  data.setValue(webserviceResponseList);
 
              }
@@ -73,47 +75,48 @@ public class OtrosEquiposWebServiceRepository {
                  Log.d("Repository","Failed:::");
              }
          });
+         //Defining retrofit api service
+
      }catch (Exception e){
          e.printStackTrace();
      }
 
-     //  return retrofit.create(ResultModel.class);
+     //  return retrofit.create(PublicacionesTorneo.class);
      return  data;
 
     }
 
 
-    private List<Mequipos> parseJson(String response) {
 
-        List<Mequipos> apiResults = new ArrayList<>();
 
+    private List<Grupos> parseJson(String response,String id_tor) {
+
+        List<Grupos> apiResults = new ArrayList<>();
+
+        GruposRoomDBRepository gruposRoomDBRepository= new GruposRoomDBRepository(application);
+        gruposRoomDBRepository.deleteAllGrupos();
         JSONObject jsonObject;
-
-        JSONArray jsonArray;
 
         try {
             jsonObject = new JSONObject(response);
+
             JSONArray resultJSON = jsonObject.getJSONArray("results");
 
             int count = resultJSON.length();
 
-
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
-                Mequipos mMovieModel = new Mequipos();
+                Grupos grupos = new Grupos();
 
 
-                mMovieModel = new Mequipos();
-                mMovieModel.setEquipo_id(jsonNode.optString("equipo_id"));
-                mMovieModel.setEquipo_nombre(jsonNode.optString("nombre"));
-                mMovieModel.setEquipo_foto(jsonNode.optString("foto"));
-                mMovieModel.setCapitan_nombre(jsonNode.optString("capitan"));
-                mMovieModel.setCapitan_id(jsonNode.optString("capitan_id"));
-                //mMovieModel.set(jsonNode.optString("capitan"));
-                mMovieModel.setMi_equipo("no");
+                grupos.setId_grupo(jsonNode.optString("id_torneo_grupo"));
+                grupos.setNombre_grupo(jsonNode.optString("grupo_nombre"));
+                grupos.setId_torneo(id_tor);
+                grupos.setEstado("0");
 
 
-                apiResults.add(mMovieModel);
+
+                apiResults.add(grupos);
             }
 
 
@@ -125,5 +128,7 @@ public class OtrosEquiposWebServiceRepository {
         return apiResults;
 
     }
+
+
 
 }

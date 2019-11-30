@@ -15,8 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
-import com.tec.bufeo.capitan.Activity.RegistroTorneo;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.ViewModels.MisTorneoViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.ViewModels.OtrosTorneosViewModel;
@@ -37,6 +38,7 @@ public class FragmentTorneoRoque extends Fragment  {
     MisTorneoViewModel misTorneoViewModel;
     OtrosTorneosViewModel otrosTorneosViewModel;
     AdaptadorMisTorneos adaptadorMisTorneos;
+    FloatingActionButton reg_torneo;
 
 
     AdaptadorOtrosTorneos adaptadorOtrosTorneos;
@@ -75,8 +77,9 @@ public class FragmentTorneoRoque extends Fragment  {
         rcv_torneos = (RecyclerView) view.findViewById(R.id.rcv_torneos);
         imb_ver_equipofav = (ImageButton) view.findViewById(R.id.imb_ver_equipofav);
         imb_agregar_torneo = (ImageButton) view.findViewById(R.id.imb_agregar_torneo);
+        reg_torneo = (FloatingActionButton) view.findViewById(R.id.reg_torneo);
 
-        imb_agregar_torneo.setOnClickListener(new View.OnClickListener() {
+        reg_torneo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, RegistroTorneo.class);

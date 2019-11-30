@@ -18,11 +18,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipoNuevo;
-import com.tec.bufeo.capitan.Activity.RegistroEquipo;
 import com.tec.bufeo.capitan.Activity.RegistroReto;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquipos.MisEquiposWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.OtrosEquipos.OtrosEquiposWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.OtrosEquipos.OtrosEquiposViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquipos.MisEquiposViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
@@ -36,7 +33,6 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
 
 
     MisEquiposViewModel misEquiposViewModel;
-    OtrosEquiposViewModel otrosEquiposViewModel;
     RetosViewModel retosViewModel;
     RecyclerView rcv_equipo, rcv_equipoFav;
     Preferences preferences;
@@ -58,7 +54,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         misEquiposViewModel = ViewModelProviders.of(getActivity()).get(MisEquiposViewModel.class);
-        otrosEquiposViewModel = ViewModelProviders.of(getActivity()).get(OtrosEquiposViewModel.class);
+        //otrosEquiposViewModel = ViewModelProviders.of(getActivity()).get(OtrosEquiposViewModel.class);
         retosViewModel = ViewModelProviders.of(getActivity()).get(RetosViewModel.class);
 
     }
@@ -99,20 +95,20 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
     public void cargarvista(){
 
 
-        misEquiposViewModel.getAllMiEquipo("si").observe(this, new Observer<List<Mequipos>>() {
+        misEquiposViewModel.getAllEquipo("si").observe(this, new Observer<List<Mequipos>>() {
             @Override
             public void onChanged(@Nullable List<Mequipos> mequipos) {
                 adaptadorMiEquipo.setWords(mequipos);
             }
         });
 
-        otrosEquiposViewModel.getAllOtrosEquipos("no").observe(this, new Observer<List<Mequipos>>() {
+        misEquiposViewModel.getAllEquipo("no").observe(this, new Observer<List<Mequipos>>() {
             @Override
             public void onChanged(@Nullable List<Mequipos> mequipos) {
                 adaptadorEquipos.setWords(mequipos);
-
             }
         });
+
 
 
     }
@@ -161,9 +157,9 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
 
             case R.id.imb_agregar_equipo:
                 //Toast.makeText(getActivity(),"foto:"+usuario_foto,Toast.LENGTH_SHORT).show();
-                Intent intent2 = new Intent(getContext(), RegistroEquipo.class);
+                /*Intent intent2 = new Intent(getContext(), old.class);
                 startActivity(intent2);
-                break;
+                break;*/
 
             case R.id.imb_ver_equipo:
                 //Toast.makeText(getActivity(),"foto:"+usuario_foto,Toast.LENGTH_SHORT).show();
@@ -179,10 +175,11 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
         //retosViewModel.ElimarRetos();
 
         MisEquiposWebServiceRepository misEquiposWebServiceRepository= new MisEquiposWebServiceRepository(application);
-        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo");
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo");
 
-        OtrosEquiposWebServiceRepository otrosEquiposWebServiceRepository = new OtrosEquiposWebServiceRepository(application);
-        otrosEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());
+        /*OtrosEquiposWebServiceRepository otrosEquiposWebServiceRepository = new OtrosEquiposWebServiceRepository(application);
+        otrosEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());*/
         swipeEquipos.setRefreshing(false);
 
     }

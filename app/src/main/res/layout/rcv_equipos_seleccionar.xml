@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:weightSum="10"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_fotoEquipo"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:src="@mipmap/ic_launcher"
+            android:elevation="8dp"
+            android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FFF" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6.5"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/nombreEquipo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#1b1a1a"
+                android:textSize="20dp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:text="Juan Perez hjjjjjjkkkkkkkkkkkjjj"
+                android:textStyle="bold|italic" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:src="@drawable/alpha_c_circle" />
+                <TextView
+                    android:id="@+id/capitanEquipo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryText"
+                    android:text="Capitan"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:id="@+id/btn_seleccionar"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_centerInParent="true"
+                android:layout_height="50dp"
+                android:id="@+id/seleccionado"
+                android:visibility="gone"
+                android:src="@drawable/check_circle"/>
+            <ProgressBar
+                android:layout_width="50dp"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:id="@+id/carga_seleccionado"
+                android:layout_height="50dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/sin_seleccionar"
+                android:layout_centerInParent="true"
+                android:src="@drawable/check_circle_outline"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

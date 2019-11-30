@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity;
+package com.tec.bufeo.capitan.Activity.old;
 
 import android.Manifest;
 import android.app.Activity;
@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.tec.bufeo.capitan.Activity.MenuPrincipal;
 import com.tec.bufeo.capitan.others.Equipo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.WebService.DataConnection;
@@ -47,7 +48,7 @@ import cz.msebera.android.httpclient.Header;
 import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 
-public class RegistroEquipo extends AppCompatActivity   implements View.OnClickListener{
+public class old extends AppCompatActivity   implements View.OnClickListener{
     EditText edt_nombreEquipo;
     Button btn_registrarEquipo,btn_Camara;
     ImageView img_equipoFoto;
@@ -61,7 +62,7 @@ public class RegistroEquipo extends AppCompatActivity   implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registro_equipo);
+        setContentView(R.layout.activity_old);
         /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);*/
 
@@ -73,10 +74,10 @@ public class RegistroEquipo extends AppCompatActivity   implements View.OnClickL
         btn_Camara.setOnClickListener(this);
         context = getApplicationContext();
 
-        if((ContextCompat.checkSelfPermission(RegistroEquipo.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
-                || (ContextCompat.checkSelfPermission(RegistroEquipo.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED) ){
+        if((ContextCompat.checkSelfPermission(old.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(old.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED) ){
 
-            ActivityCompat.requestPermissions(RegistroEquipo.this,new String[]{
+            ActivityCompat.requestPermissions(old.this,new String[]{
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
             },1);
@@ -120,7 +121,7 @@ public class RegistroEquipo extends AppCompatActivity   implements View.OnClickL
                         @Override
                         public void onStart() {
                             super.onStart();
-                            loading = new ProgressDialog(RegistroEquipo.this);
+                            loading = new ProgressDialog(old.this);
                             loading.setTitle("Capitan");
                             loading.setMessage("Por favor espere...");
                             loading.setIndeterminate(false);
@@ -263,7 +264,7 @@ public class RegistroEquipo extends AppCompatActivity   implements View.OnClickL
     private void selectImage() {
         final CharSequence[] items = { "Camara", "Galería","Cancelar" };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(RegistroEquipo.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(old.this);
         builder.setTitle("Seleccione :");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override

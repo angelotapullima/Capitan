@@ -41,7 +41,7 @@ public class MisEquiposWebServiceRepository {
 
     List<Mequipos> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Mequipos>> providesWebService(String id_usuario) {
+ public LiveData<List<Mequipos>> providesWebService(String id_usuario, final String tipo_equipo) {
 
      final MutableLiveData<List<Mequipos>> data = new MutableLiveData<>();
 
@@ -54,25 +54,47 @@ public class MisEquiposWebServiceRepository {
                  .client(providesOkHttpClientBuilder())
                  .build();
 
+         if (tipo_equipo.equals("mi_equipo")){
+             MisEquiposAPIService service = retrofit.create(MisEquiposAPIService.class);
+             //  response = service.makeRequest().execute().body();
+             service.getEquipo(id_usuario).enqueue(new Callback<String>() {
+                 @Override
+                 public void onResponse(Call<String> call, Response<String> response) {
+                     Log.d("Repository","Response::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo_equipo);
+                     MisEquiposRoomDBRepository menuRoomDBRepository = new MisEquiposRoomDBRepository(application);
+                     menuRoomDBRepository.insertEquipos(webserviceResponseList);
+                     data.setValue(webserviceResponseList);
+
+                 }
+
+                 @Override
+                 public void onFailure(Call<String> call, Throwable t) {
+                     Log.d("Repository","Failed:::");
+                 }
+             });
+         }else{
+             OtrosEquiposAPIService service = retrofit.create(OtrosEquiposAPIService.class);
+             service.getEquipo(id_usuario).enqueue(new Callback<String>() {
+                 @Override
+                 public void onResponse(Call<String> call, Response<String> response) {
+                     Log.d("Repository","Response::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo_equipo);
+                     MisEquiposRoomDBRepository menuRoomDBRepository = new MisEquiposRoomDBRepository(application);
+                     menuRoomDBRepository.insertEquipos(webserviceResponseList);
+                     data.setValue(webserviceResponseList);
+
+                 }
+
+                 @Override
+                 public void onFailure(Call<String> call, Throwable t) {
+                     Log.d("Repository","Failed:::");
+                 }
+             });
+         }
          //Defining retrofit api service
-         MisEquiposAPIService service = retrofit.create(MisEquiposAPIService.class);
-        //  response = service.makeRequest().execute().body();
-         service.getEquipo(id_usuario).enqueue(new Callback<String>() {
-             @Override
-             public void onResponse(Call<String> call, Response<String> response) {
-                 Log.d("Repository","Response::::"+response.body());
-                 webserviceResponseList = parseJson(response.body());
-                 MisEquiposRoomDBRepository menuRoomDBRepository = new MisEquiposRoomDBRepository(application);
-                 menuRoomDBRepository.insertEquipos(webserviceResponseList);
-                 data.setValue(webserviceResponseList);
 
-             }
 
-             @Override
-             public void onFailure(Call<String> call, Throwable t) {
-                 Log.d("Repository","Failed:::");
-             }
-         });
      }catch (Exception e){
          e.printStackTrace();
      }
@@ -83,7 +105,7 @@ public class MisEquiposWebServiceRepository {
     }
 
 
-    private List<Mequipos> parseJson(String response) {
+    private List<Mequipos> parseJson(String response ,String tipo) {
 
         List<Mequipos> apiResults = new ArrayList<>();
 
@@ -105,11 +127,19 @@ public class MisEquiposWebServiceRepository {
                 misequipos.setEquipo_nombre(jsonNode.optString("nombre"));
                 misequipos.setEquipo_foto(jsonNode.optString("foto"));
                 misequipos.setCapitan_nombre(jsonNode.optString("capitan"));
-                misequipos.setMi_equipo("si");
+                misequipos.setEstado_seleccion("0");
+
+                if (tipo.equals("mi_equipo")) {
+                    misequipos.setMi_equipo("si");
+                } else {
+                    misequipos.setMi_equipo("no");
+                }
 
 
                 apiResults.add(misequipos);
             }
+
+
 
 
         } catch (JSONException e) {

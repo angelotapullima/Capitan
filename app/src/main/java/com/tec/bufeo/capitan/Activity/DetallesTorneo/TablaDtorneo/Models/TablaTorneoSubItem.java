@@ -18,6 +18,7 @@ public class TablaTorneoSubItem {
     private String gc;
     private String puntos;
     private String diferencia_goles;
+    private String posicion_lista;
 
     public TablaTorneoSubItem() {
     }
@@ -34,6 +35,18 @@ public class TablaTorneoSubItem {
         this.puntos = puntos;
     }
 
+    public TablaTorneoSubItem(String equipo_nombre, String posicion_lista) {
+        this.equipo_nombre=equipo_nombre;
+        this.posicion_lista=posicion_lista;
+    }
+
+    public String getPosicion_lista() {
+        return posicion_lista;
+    }
+
+    public void setPosicion_lista(String posicion_lista) {
+        this.posicion_lista = posicion_lista;
+    }
     public String getEquipo_id() {
         return equipo_id;
     }

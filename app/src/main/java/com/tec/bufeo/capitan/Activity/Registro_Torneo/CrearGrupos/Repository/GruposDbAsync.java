@@ -1,19 +1,19 @@
-package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.OtrosEquipos;
+package com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Repository;
 
 import android.os.AsyncTask;
 
 
-public class OtrosEquiposDbAsync extends AsyncTask<Void, Void, Void> {
+public class    GruposDbAsync extends AsyncTask<Void, Void, Void> {
 
-    private final OtrosEquiposDao mDao;
+    private final GruposTorneoDao mDao;
 
-    public OtrosEquiposDbAsync(OtrosEquiposRoomDataBase db) {
+    GruposDbAsync(GruposRoomDataBase db) {
         mDao = db.postInfoDao();
     }
 
     @Override
     protected Void doInBackground(final Void... params) {
-        //mDao.deleteAll();
+        //mDao.deleteAll(); //esto borra todo lo guardado
        /* User user = new User("Chandra","SW");
         mDao.insert(user);
         user = new User("Mohan","student");

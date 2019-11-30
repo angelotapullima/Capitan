@@ -89,6 +89,7 @@ public class TablaDtorneoFragment extends Fragment {
                     jsonObject = new JSONObject(response);
                     resultJSON = jsonObject.getJSONArray("results");
 
+                    listaItem.clear();
                     int count = resultJSON.length();
 
                     for (int i = 0; i < count; i++) {
@@ -97,10 +98,11 @@ public class TablaDtorneoFragment extends Fragment {
 
 
                         String nombre_grupo = jsonNode.optString("nombre_grupo");
+                        String id_grupo = jsonNode.optString("id_grupo");
                         jsonArray = jsonNode.getJSONArray("equipos");
 
 
-                        tablaTorneoItem = new TablaTorneoItem(nombre_grupo,buildSubItemList(jsonArray));
+                        tablaTorneoItem = new TablaTorneoItem(nombre_grupo,id_grupo,buildSubItemList(jsonArray));
                         listaItem.add(tablaTorneoItem);
                         //listaSubItem.clear();
 

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fe618bbad53f17a421b45a0da281f94a",
+    "identityHash": "63fab40be1224d0d6bb775115d86a75a",
     "entities": [
       {
         "tableName": "equipos",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `equipo_nombre` TEXT, `equipo_foto` TEXT, `capitan_nombre` TEXT, `capitan_id` TEXT, `mi_equipo` TEXT, PRIMARY KEY(`equipo_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`equipo_id` TEXT NOT NULL, `equipo_nombre` TEXT, `equipo_foto` TEXT, `capitan_nombre` TEXT, `capitan_id` TEXT, `mi_equipo` TEXT, `estado_seleccion` TEXT, PRIMARY KEY(`equipo_id`))",
         "fields": [
           {
             "fieldPath": "equipo_id",
@@ -43,6 +43,12 @@
             "columnName": "mi_equipo",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "estado_seleccion",
+            "columnName": "estado_seleccion",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -57,7 +63,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fe618bbad53f17a421b45a0da281f94a\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"63fab40be1224d0d6bb775115d86a75a\")"
     ]
   }
 }

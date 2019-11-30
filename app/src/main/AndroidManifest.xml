@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -15,7 +16,17 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo"></activity>
+        <activity android:name=".Activity.Registro_Torneo.CrearInstancias.CrearInstancias"></activity>
+        <activity android:name=".Activity.RegistrarEquipo.RegistroEquipoPadre"></activity>
+        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago" />
+        <activity android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo" />
         <activity android:name=".Activity.DetallesTorneo.DetalleTorneoNuevo" />
         <activity android:name=".Activity.ResutadoRetos" />
         <activity
@@ -78,7 +89,7 @@
             android:label="Reservar Cancha"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activity.RegistroEquipo"
+            android:name=".Activity.old.old"
             android:configChanges="orientation|screenSize"
             android:label="Registro de Equipo"
             android:windowSoftInputMode="stateHidden" />
@@ -94,12 +105,12 @@
             android:name=".Activity.RegistroReto"
             android:label="Retar a un Equipo" />
         <activity
-            android:name=".Activity.RegistroTorneo"
+            android:name=".Activity.Registro_Torneo.RegistroTorneo"
             android:label="Registro Torneo" />
         <activity android:name=".Activity.AgregarEquipos" />
         <activity android:name=".Activity.DetalleEquipo.AgregarJugador" />
         <activity
-            android:name=".Activity.DetallesTorneo.DetalleTorneo"
+            android:name=".Activity.old.old2"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />

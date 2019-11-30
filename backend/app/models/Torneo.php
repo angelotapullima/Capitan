@@ -27,7 +27,7 @@ class Torneo{
         }
         return $result;
     }
-    public function registrar_torneo($usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$tipo){
+    public function registrar_torneo($usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$tipo,$file_path){
         $result = 2;
         try {
             $fecha_hora= date('Y-m-d H:i:s');
@@ -42,11 +42,12 @@ class Torneo{
                     torneo_costo,
                     torneo_fechahora,
                     torneo_tipo,
+                    torneo_imagen,
                     torneo_estado
-                    ) values(?,?,?,?,?,?,?,?,?,?,1)';
+                    ) values(?,?,?,?,?,?,?,?,?,?,?,1)';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([
-                $usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$fecha_hora,$tipo
+                $usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$fecha_hora,$tipo,$file_path
             ]);
             $result = 1;
         } catch (Exception $e){
@@ -68,13 +69,13 @@ class Torneo{
         }
         return $result;
     }
-    public function registrar_instancia($id_torneo,$instancia_nombre){
+    public function registrar_instancia($id_torneo,$instancia_nombre,$instancia_tipo){
         $result = 2;
         try {
-            $sql = 'insert into torneo_instancia(torneo_id,torneo_instancia_nombre) values(?,?)';
+            $sql = 'insert into torneo_instancia(torneo_id,torneo_instancia_nombre,torneo_instancia_tipo) values(?,?,?)';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([
-                $id_torneo,$instancia_nombre
+                $id_torneo,$instancia_nombre,$instancia_tipo
             ]);
             $result = 1;
         } catch (Exception $e){
@@ -311,7 +312,7 @@ class Torneo{
     public function listar_equipos_por_torneo($id_torneo){
         $result = [];
         try {
-            $stm = $this->pdo->prepare("select * from equipo e inner join torneo_equipo te on e.equipo_id = te.equipo_id inner join usuario u on e.usuario_id = u.usuario_id where te.torneo_id = ? and e.equipo_estado = 1");
+            $stm = $this->pdo->prepare("select * from equipo e inner join torneo_equipo te on e.equipo_id = te.equipo_id inner join torneo_grupo tg on tg.id_torneo_grupo=te.id_torneo_grupo inner join torneo t on t.torneo_id=tg.id_torneo inner join usuario u on e.usuario_id = u.usuario_id where t.torneo_id = ? and e.equipo_estado = 1");
             $stm->execute([$id_torneo]);
             $result = $stm->fetchAll();
         } catch (Exception $e){
@@ -524,6 +525,96 @@ class Torneo{
             $stm = $this->pdo->prepare('select * from estadisticas where equipo_id =?');
             $stm->execute([$equipo_id]);
             $result = $stm->fetch();
+        } catch (Exception $e){
+        }
+        return $result;
+    }
+    public function listar_publicaciones($id_torneo){
+        $result = [];
+        try {
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join usuario u on u.usuario_id=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id_torneo = ? order by publicaciones_id desc");
+            $stm->execute([$id_torneo]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+        }
+        return $result;
+    }
+    public function listar_ultima_publicacion($id_torneo){
+        $result = [];
+        try {
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join usuario u on u.usuario_id=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id_torneo = ? order by publicaciones_id desc limit 1");
+            $stm->execute([$id_torneo]);
+            $result = $stm->fetch();
+        } catch (Exception $e){
+        }
+        return $result;
+    }
+    public function listar_publicaciones_limite($id_torneo,$limite_inf){
+        $result = [];
+        try {
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join usuario u on u.usuario_id=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id < ? and publicaciones_id_torneo = ? order by publicaciones_id desc limit 10");
+            $stm->execute([$id_torneo,$limite_inf]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+        }
+        return $result;
+    }
+    public function listar_publicaciones_limite_sup($id_torneo,$limite_sup){
+        $result = [];
+        try {
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join usuario u on u.usuario_id=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id > ? and publicaciones_id_torneo = ? order by publicaciones_id desc");
+            $stm->execute([$id_torneo,$limite_sup]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+        }
+        return $result;
+    }
+    public function listar_grupos_por_id_torneo($id_torneo){
+        $result = [];
+        try {
+            $stm = $this->pdo->prepare("select * from torneo_grupo where id_torneo = ? order by id_torneo_grupo asc");
+            $stm->execute([$id_torneo]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+        }
+        return $result;
+    }
+    public function listar_instancias_por_id_torneo($id_torneo){
+        $result = [];
+        try {
+            $stm = $this->pdo->prepare("select * from torneo_instancia where torneo_id = ? order by id_torneo_instancia desc");
+            $stm->execute([$id_torneo]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+        }
+        return $result;
+    }
+    public function listar_equipos_por_id_grupo($id_grupo){
+        $result = [];
+        try {
+            $stm = $this->pdo->prepare("select * from torneo_equipo te inner join equipo e on te.equipo_id=e.equipo_id where id_torneo_grupo = ?");
+            $stm->execute([$id_grupo]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+        }
+        return $result;
+    }
+    public function listar_partidos_por_id_instancia($id_instancia){
+        $result = [];
+        try {
+            $stm = $this->pdo->prepare("select tp.*,(select e.equipo_nombre from equipo e where e.equipo_id=tp.id_equipo_local) as nombre_local,(select e.equipo_foto from equipo e where e.equipo_id=tp.id_equipo_local) as foto_local,(select e.equipo_nombre from equipo e where e.equipo_id=tp.id_equipo_visita) as nombre_visita,(select e.equipo_foto from equipo e where e.equipo_id=tp.id_equipo_visita) as foto_visita from torneo_partido tp where id_torneo_instancia = ?");
+            $stm->execute([$id_instancia]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+        }
+        return $result;
+    }
+    public function listar_partidos_terminados_equipo_fase1($id_equipo){
+        $result = [];
+        try {
+            $stm = $this->pdo->prepare("SELECT * from torneo_partido tp inner join torneo_instancia ti on tp.id_torneo_instancia=ti.id_torneo_instancia where tp.id_equipo_local=? and ti.torneo_instancia_tipo=1 and tp.torneo_partido_estado = 1 or tp.id_equipo_visita=? and ti.torneo_instancia_tipo=1  and tp.torneo_partido_estado = 1");
+            $stm->execute([$id_equipo,$id_equipo]);
+            $result = $stm->fetchAll();
         } catch (Exception $e){
         }
         return $result;

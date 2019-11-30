@@ -44,6 +44,11 @@ public class Mequipos
     @SerializedName("mi_equipo")
     private String mi_equipo;
 
+    @ColumnInfo(name = "estado_seleccion")
+    @SerializedName("estado_seleccion")
+    private String estado_seleccion;
+
+
     @NonNull
     public String getEquipo_id() {
         return equipo_id;
@@ -91,5 +96,13 @@ public class Mequipos
 
     public void setMi_equipo(String mi_equipo) {
         this.mi_equipo = mi_equipo;
+    }
+
+    public String getEstado_seleccion() {
+        return estado_seleccion;
+    }
+
+    public void setEstado_seleccion(String estado_seleccion) {
+        this.estado_seleccion = estado_seleccion;
     }
 }

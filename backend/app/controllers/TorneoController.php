@@ -1,14 +1,16 @@
 <?php
 require_once 'app/models/Torneo.php';
+require_once 'app/models/Foro.php';
 class TorneoController{
     private $torneo;
     public function __construct(){
         $this->torneo = new Torneo();
+        $this->foro = new Foro();
     }
     public function registrar_equipo() {
         $usuario_id = $_POST['usuario_id'];
         $nombre = $_POST['nombre'];
-        $file_path = "media/team/default.png";
+        //$file_path = "media/team/default.png";
         $file_path = "media/team/".$usuario_id."_".$nombre.".jpg";
         move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
         /*$existe = $this->usuario->existe_nombre($usuario);
@@ -39,7 +41,10 @@ class TorneoController{
         $fecha = $_POST['fecha'];
         $hora = $_POST['hora'];
         $lugar = $_POST['lugar'];
-        $result = $this->torneo->registrar_torneo($usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$tipo);
+        //$file_path = "media/torneo/default.png";
+        $file_path = "media/torneo/".$usuario_id."_".$nombre.".jpg";
+        move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
+        $result = $this->torneo->registrar_torneo($usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$tipo,$file_path);
         $resources = array();
         $resources[0] = array("valor"=>$result);
         $data = array("results" => $resources);
@@ -54,10 +59,12 @@ class TorneoController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+
     public function registrar_instancia() {
         $id_torneo = $_POST['id_torneo'];
         $instancia_nombre = $_POST['instancia_nombre'];
-        $result = $this->torneo->registrar_instancia($id_torneo,$instancia_nombre);
+        $instancia_tipo = $_POST['instancia_tipo'];
+        $result = $this->torneo->registrar_instancia($id_torneo,$instancia_nombre,$instancia_tipo);
         $resources = array();
         $resources[0] = array("valor"=>$result);
         $data = array("results" => $resources);
@@ -100,6 +107,19 @@ class TorneoController{
                 "nombre" => $model[$i]->equipo_nombre,
                 "foto" => $model[$i]->equipo_foto,
                 "capitan" => $model[$i]->usuario_id
+            );
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function listar_grupos_por_id_torneo() {
+        $id_torneo = $_POST['id_torneo'];
+        $model = $this->torneo->listar_grupos_por_id_torneo($id_torneo);
+        $resources = array();
+        for ($i=0;$i<count($model);$i++) {
+            $resources[$i] = array(
+                "id_torneo_grupo" => $model[$i]->id_torneo_grupo,
+                "grupo_nombre" => $model[$i]->grupo_nombre
             );
         }
         $data = array("results" => $resources);
@@ -500,9 +520,184 @@ class TorneoController{
         for ($i = 0; $i < count($model); $i++) {
             $resources[$i] = array(
                 "equipo_id" => $model[$i]->equipo_id,
+                "id_torneo" => $id_torneo,
                 "nombre" => $model[$i]->equipo_nombre,
                 "foto" => $model[$i]->equipo_foto,
                 "capitan" => $model[$i]->usuario_nombre
+            );
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function listar_publicaciones_por_id_torneo(){
+        $id_usuario = $_POST['id_usuario'];
+        $id_torneo = $_POST['id_torneo'];
+        $limite_sup = $_POST['limite_sup'];
+        $limite_inf = $_POST['limite_inf'];
+        if($limite_sup==0){
+            $model = $this->torneo->listar_publicaciones($id_torneo);
+            $ultima_noticia=$this->torneo->listar_ultima_publicacion($id_torneo);
+            $limite_sup=$ultima_noticia->publicaciones_id;
+            $new = "0";
+        }else{
+            $model = $this->torneo->listar_publicaciones_limite($id_torneo,$limite_inf);
+            $nuevos = $this->torneo->listar_publicaciones_limite_sup($id_torneo,$limite_sup);
+            (count($nuevos)>0)?$new = "1":$new="0";
+        }
+        $resources = array();
+        for ($i=0;$i<count($model);$i++) {
+            $date1 = new DateTime($model[$i]->publicaciones_fecha);
+            $date2 = new DateTime("now");
+            $diff = $date1->diff($date2);
+            if($diff->y !==0){
+                $time=($diff->y > 1) ? $diff->y . ' años ' : $diff->y . ' año ';
+            }elseif ($diff->m !==0){
+                $time=($diff->m > 1) ? $diff->m . ' meses ' : $diff->m . ' mes ';
+            }elseif ($diff->d !==0){
+                $time=($diff->d > 1) ? $diff->d . ' días ' : $diff->d . ' día ';
+            }elseif ($diff->h !==0){
+                $time=($diff->h > 1) ? $diff->h . ' horas ' : $diff->h . ' hora ';
+            }elseif ($diff->i!==0){
+                $time = ( ($diff->days * 24 ) * 60 ) + ( $diff->i ) . ' minutos';
+            }else{
+                $time = "0 min";
+            }
+            $likes = $this->foro->conteo_likes($model[$i]->publicaciones_id);
+            $comentarios = $this->foro->conteo_comentarios($model[$i]->publicaciones_id);
+            $dio_like = $this->foro->dio_like($model[$i]->publicaciones_id,$id_usuario);
+            ($dio_like->id_like_pueblo==null)? $dio_like_ = 0:$dio_like_ = 1;
+            if($model[$i]->publicaciones_id_torneo != 0){
+                $torneo_ = $this->torneo->listar_torneo_por_id($model[$i]->publicaciones_id_torneo);
+                $torneo =$torneo_->torneo_nombre;
+            }else{
+                $torneo=" ";
+            }
+            $resources[$i] = array(
+                "id_publicacion" => $model[$i]->publicaciones_id,
+                "usuario_nombre" => $model[$i]->usuario_nombre,
+                "usuario_foto" => $model[$i]->usuario_foto,
+                "titulo" => $model[$i]->publicaciones_titulo,
+                "descripcion" => $model[$i]->publicaciones_descripcion,
+                "concepto" => $model[$i]->publicaciones_concepto,
+                "id_torneo" => $model[$i]->publicaciones_id_torneo,
+                "torneo" => $torneo,
+                "foto" => $model[$i]->publicaciones_foto,
+                "fecha" => $time,
+                "tipo" => $model[$i]->publicaciones_tipo,
+                "cant_likes" => $likes->conteo,
+                "cant_comentarios" => $comentarios->conteo,
+                "dio_like" => $dio_like_
+            );
+            $limite_inf = $model[$i]->publicaciones_id;
+        }
+        $data = array("results" => $resources,"limite_sup" => $limite_sup,"limite_inf" => $limite_inf,"nuevos"=>$new);
+        echo json_encode($data);
+    }
+    public function listar_tabla_por_id_torneo(){
+        $id_torneo = $_POST['id_torneo'];
+        $grupos = $this->torneo->listar_grupos_por_id_torneo($id_torneo);
+        $resources = [];
+        for ($i=0;$i<count($grupos);$i++) {
+            $model = [];
+            $equipos = $this->torneo->listar_equipos_por_id_grupo($grupos[$i]->id_torneo_grupo);
+            for($j=0;$j<count($equipos);$j++){
+                $partidos = $this->torneo->listar_partidos_terminados_equipo_fase1($equipos[$j]->equipo_id);
+                $part_j = count($partidos);
+                $part_g = 0;
+                $part_e = 0;
+                $part_p = 0;
+                $gf =0 ;
+                $gc = 0;
+                for ($k=0;$k<count($partidos);$k++){
+                    if($equipos[$j]->equipo_id==$partidos[$k]->id_equipo_local){
+                        if($partidos[$k]->marcador_local>$partidos[$k]->marcador_visita){
+                            $part_g++;
+                        }elseif ($partidos[$k]->marcador_local<$partidos[$k]->marcador_visita){
+                            $part_p++;
+                        }else{
+                            $part_e++;
+                        }
+                        $gf = $gf+ $partidos[$k]->marcador_local;
+                        $gc = $gc+ $partidos[$k]->marcador_visita;
+                    }elseif ($equipos[$j]->equipo_id==$partidos[$k]->id_equipo_visita){
+                        if($partidos[$k]->marcador_visita>$partidos[$k]->marcador_local){
+                            $part_g++;
+                        }elseif ($partidos[$k]->marcador_visita<$partidos[$k]->marcador_local){
+                            $part_p++;
+                        }else{
+                            $part_e++;
+                        }
+                        $gf = $gf+ $partidos[$k]->marcador_visita;
+                        $gc = $gc+ $partidos[$k]->marcador_local;
+                    }
+                }
+                $total = (3 * $part_g) + $part_e;
+                $model[] = array(
+                    "equipo_id"=>$equipos[$j]->equipo_id,
+                    "equipo_nombre"=>$equipos[$j]->equipo_nombre,
+                    "part_j"=>$part_j,
+                    "part_g"=>$part_g,
+                    "part_e"=>$part_e,
+                    "part_p"=>$part_p,
+                    "gf"=>$gf,
+                    "gc"=>$gc,
+                    "total"=>$total
+                );
+            }
+            $resources[] = array(
+                "nombre_grupo"=>$grupos[$i]->grupo_nombre,
+                "equipos" => $model
+            );
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function listar_equipos_por_grupo(){
+        $id_torneo = $_POST['id_torneo'];
+        $grupos = $this->torneo->listar_grupos_por_id_torneo($id_torneo);
+        $resources = [];
+        for ($i=0;$i<count($grupos);$i++) {
+            $model = [];
+            $equipos = $this->torneo->listar_equipos_por_id_grupo($grupos[$i]->id_torneo_grupo);
+            for($j=0;$j<count($equipos);$j++){
+                $model[] = array(
+                    "equipo_id"=>$equipos[$j]->equipo_id,
+                    "equipo_nombre"=>$equipos[$j]->equipo_nombre,
+                    "equipo_foto"=>$equipos[$j]->equipo_foto
+                );
+            }
+            $resources[] = array(
+                "nombre_grupo"=>$grupos[$i]->grupo_nombre,
+                "equipos" => $model
+            );
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function listar_instancias_partidos_por_id_torneo(){
+        $id_torneo = $_POST['id_torneo'];
+        $instancias = $this->torneo->listar_instancias_por_id_torneo($id_torneo);
+        $resources = [];
+        for ($i=0;$i<count($instancias);$i++) {
+            $model = [];
+            $partidos = $this->torneo->listar_partidos_por_id_instancia($instancias[$i]->id_torneo_instancia);
+            for($j=0;$j<count($partidos);$j++){
+                $model[] = array(
+                    "id_torneo_partido"=>$partidos[$j]->id_torneo_partido,
+                    "id_equipo_local"=>$partidos[$j]->id_equipo_local,
+                    "nombre_equipo_local"=>$partidos[$j]->nombre_local,
+                    "foto_equipo_local"=>$partidos[$j]->foto_local,
+                    "id_equipo_visita"=>$partidos[$j]->id_equipo_visita,
+                    "nombre_equipo_visita"=>$partidos[$j]->nombre_visita,
+                    "foto_equipo_visita"=>$partidos[$j]->foto_visita,
+                    "partido_fecha"=>$partidos[$j]->torneo_partido_fecha,
+                    "partido_hora"=>$partidos[$j]->torneo_partido_hora,
+                    "partido_estado"=>$partidos[$j]->torneo_partido_estado
+                );
+            }
+            $resources[] = array(
+                "nombre_instancia"=>$instancias[$i]->torneo_instancia_nombre,
+                "partidos" => $model
             );
         }
         $data = array("results" => $resources);

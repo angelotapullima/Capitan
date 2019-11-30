@@ -22,7 +22,7 @@ class Foro{
                     ) values(?,?,?,?,?,?,?,1,1)';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([
-                $usuario_id,$titulo,$descripcion,$file_path,$fecha
+                $usuario_id,$titulo,$descripcion,$concepto,$id_torneo,$file_path,$fecha
             ]);
             $result = 1;
         } catch (Exception $e){

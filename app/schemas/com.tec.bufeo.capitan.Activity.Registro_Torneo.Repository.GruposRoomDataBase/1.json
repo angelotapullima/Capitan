@@ -1,0 +1,51 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "4a760722fc6901c0d81aa91d40970404",
+    "entities": [
+      {
+        "tableName": "grupos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_grupo` TEXT NOT NULL, `nombre_grupo` TEXT, `id_torneo` TEXT, `estado` TEXT, PRIMARY KEY(`id_grupo`))",
+        "fields": [
+          {
+            "fieldPath": "id_grupo",
+            "columnName": "id_grupo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre_grupo",
+            "columnName": "nombre_grupo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id_torneo",
+            "columnName": "id_torneo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado",
+            "columnName": "estado",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_grupo"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4a760722fc6901c0d81aa91d40970404\")"
+    ]
+  }
+}

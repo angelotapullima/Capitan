@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.OtrosEquipos;
+package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquipos;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

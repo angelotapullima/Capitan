@@ -23,7 +23,6 @@ import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Repository.ChatsWebSe
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Views.FragmentChats;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Views.FragmentEstadisticas;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquipos.MisEquiposWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.OtrosEquipos.OtrosEquiposWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Views.FragmentRetos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Views.FragmentTorneoRoque;
@@ -76,7 +75,6 @@ public class FragmentTorneoPadre extends Fragment  {
     Application application;
 
     MisEquiposWebServiceRepository misEquiposWebServiceRepository;
-    OtrosEquiposWebServiceRepository otrosEquiposWebServiceRepository;
     RetosWebServiceRepository retosWebServiceRepository;
     ChatsWebServiceRepository chatsWebServiceRepository;
 
@@ -95,10 +93,11 @@ public class FragmentTorneoPadre extends Fragment  {
         chatsWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());*/
 
         misEquiposWebServiceRepository =  new MisEquiposWebServiceRepository(application);
-        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo");
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo");
 
-        otrosEquiposWebServiceRepository =  new OtrosEquiposWebServiceRepository(application);
-        otrosEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());
+        /*otrosEquiposWebServiceRepository =  new OtrosEquiposWebServiceRepository(application);
+        otrosEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());*/
 
         retosWebServiceRepository =  new RetosWebServiceRepository(application);
         retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());

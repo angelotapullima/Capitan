@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneo;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoEquipoGeneral;
 import com.tec.bufeo.capitan.others.Equipo;
 import com.tec.bufeo.capitan.R;
@@ -126,7 +125,7 @@ public class AgregarEquipos extends AppCompatActivity  implements SearchView.OnQ
                                 }
                                 mode.finish();
                               //  DetalleEquipo.ActualizarEquipo();
-                                DetalleTorneo.ActualizarEquipoTorneo();
+                                //old2.ActualizarEquipoTorneo();
 
                                 return true;
                         }

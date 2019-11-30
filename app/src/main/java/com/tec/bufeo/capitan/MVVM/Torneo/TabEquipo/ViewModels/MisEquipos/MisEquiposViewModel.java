@@ -31,15 +31,19 @@ public class MisEquiposViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<List<Mequipos>> getAllMiEquipo(String si ) {
+    public LiveData<List<Mequipos>> getAllEquipo(String mio ) {
         //retroObservable = misEquiposWebServiceRepository.providesWebService(id_usuario);
-        mAllMiEquipos = misEquiposRoomDBRepository.getAllMiEquipo(si);
+        mAllMiEquipos = misEquiposRoomDBRepository.getAllEquipo(mio);
+        return mAllMiEquipos;
+    }
+
+    public LiveData<List<Mequipos>> getAll() {
+        mAllMiEquipos=misEquiposRoomDBRepository.getmAll();
         return mAllMiEquipos;
     }
 
 
-
-   /* public LiveData<List<ListaPlatos>> getProjectRetroListObservable() {
+    /* public LiveData<List<ListaPlatos>> getProjectRetroListObservable() {
         return retroObservable;
     }*/
 

@@ -31,16 +31,61 @@ public class MisEquiposRoomDBRepository {
     }*/
 
 
-    public LiveData<List<Mequipos>> getAllMiEquipo(String si ) {
+    public LiveData<List<Mequipos>> getmAll() {
+         mAllMiEquipos=equiposDao.getAll();
+         return mAllMiEquipos;
+    }
+
+    public LiveData<List<Mequipos>> getAllEquipo(String mio ) {
         boolean online = ForoFragment.isOnLine();
 
         /*if (online){
             deleteAllEquipos();
         }*/
-        mAllMiEquipos = equiposDao.getAllMIEquipo(si);
+        mAllMiEquipos = equiposDao.getAllEquipo(mio);
         return mAllMiEquipos;
     }
 
+
+
+
+    public void actualizarEstado0(String id) {
+        new actualizarEstado0(equiposDao).execute(id);
+    }
+
+    private static class actualizarEstado0 extends AsyncTask<String, Void, Void> {
+        private MisEquiposDao misEquiposDao;
+
+        private actualizarEstado0(MisEquiposDao misEquiposDao)  {
+            this.misEquiposDao = misEquiposDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... modelFeeds) {
+            misEquiposDao.actualizarEstado0(modelFeeds[0]);
+
+            return null;
+        }
+    }
+
+    public void actualizarEstado1(String id) {
+        new actualizarEstado1(equiposDao).execute(id);
+    }
+
+    private static class actualizarEstado1 extends AsyncTask<String, Void, Void> {
+        private MisEquiposDao misEquiposDao;
+
+        private actualizarEstado1(MisEquiposDao misEquiposDao)  {
+            this.misEquiposDao = misEquiposDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... modelFeeds) {
+            misEquiposDao.actualizarEstado1(modelFeeds[0]);
+
+            return null;
+        }
+    }
 
 
 

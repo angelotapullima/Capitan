@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.DetallesTorneo;
+package com.tec.bufeo.capitan.Activity.old;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
 
-public class DetalleTorneo extends AppCompatActivity  implements View.OnClickListener{
+public class old2 extends AppCompatActivity  implements View.OnClickListener{
 
     static AdaptadorListadoEquipoTorneo adaptadorListadoEquipoTorneo;
     public ArrayList<Equipo> arrayequipo;
@@ -49,7 +49,7 @@ public class DetalleTorneo extends AppCompatActivity  implements View.OnClickLis
 
         {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_detalle_torneo);
+            setContentView(R.layout.old2);
 
             img_fotoTorneo = findViewById(R.id.img_fotoTorneo);
             cdv_mensaje = findViewById(R.id.cdv_mensaje);
@@ -88,7 +88,7 @@ public class DetalleTorneo extends AppCompatActivity  implements View.OnClickLis
             cdv_mensaje.setVisibility(View.INVISIBLE);
 
             dc = new DataConnection(this,"listarEquiposEnTorneo",id_torneo,false);
-            new DetalleTorneo.GetEquiposTorneo().execute();
+            new old2.GetEquiposTorneo().execute();
 
 
             if(!id_usuario.equals(usuario_id)){
@@ -187,7 +187,7 @@ public class DetalleTorneo extends AppCompatActivity  implements View.OnClickLis
 
    public static void ActualizarEquipoTorneo(){
        dc1 = new DataConnection(activity,"listarEquiposEnTorneo",id_torneo,false);
-        new DetalleTorneo.ActualizarEquipos().execute();
+        new old2.ActualizarEquipos().execute();
     }
 
     @Override

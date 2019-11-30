@@ -18,8 +18,18 @@ public interface MisEquiposDao {
     /*@Query("SELECT * from equipos WHERE mi_equipo = :mi_equipo")
     LiveData<List<EquiposTorneo>> getAllEquipos(String mi_equipo);*/
 
-    @Query("SELECT * from equipos WHERE mi_equipo =:si ")
-    LiveData<List<Mequipos>> getAllMIEquipo(String si);
+    @Query("SELECT * from equipos WHERE mi_equipo =:mio ")
+    LiveData<List<Mequipos>> getAllEquipo(String mio);
+
+    @Query("SELECT * from equipos ")
+    LiveData<List<Mequipos>> getAll();
+
+
+    @Query("Update equipos set estado_seleccion = '1' where equipo_id =:id")
+    void actualizarEstado1(String id);
+
+    @Query("Update equipos set estado_seleccion = '0' where equipo_id =:id")
+    void actualizarEstado0(String id);
 
 
     @Query("DELETE FROM equipos")

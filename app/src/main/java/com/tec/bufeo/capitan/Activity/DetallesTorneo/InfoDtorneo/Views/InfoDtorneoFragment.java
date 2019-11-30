@@ -96,11 +96,6 @@ public class InfoDtorneoFragment extends Fragment {
         organizador_infotorneo.setText(organizador);
         lugar_infotorneo.setText(lugar);
     }
-    public void feed(){
-        FeedTorneoWebServiceRepository feedTorneoWebServiceRepository = new FeedTorneoWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),id_torneo,"0","0","datos");
-    }
-
     private void setAdapter() {
 
         adaptadorFeedTorneo = new AdaptadorFeedTorneo(getContext(), new AdaptadorFeedTorneo.OnItemClickListener() {
@@ -133,6 +128,11 @@ public class InfoDtorneoFragment extends Fragment {
 
 
 
+    }
+
+    public void feed(){
+        FeedTorneoWebServiceRepository feedTorneoWebServiceRepository = new FeedTorneoWebServiceRepository(application);
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),id_torneo,"0","0","datos");
     }
 
 

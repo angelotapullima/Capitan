@@ -47,11 +47,11 @@ class ForoController{
             $model = $this->foro->listar_publicaciones();
             $ultima_noticia=$this->foro->listar_ultima_publicacion();
             $limite_sup=$ultima_noticia->publicaciones_id;
-            $new = 0;
+            $new = "0";
         }else{
             $model = $this->foro->listar_publicaciones_limite($limite_inf);
             $nuevos = $this->foro->listar_publicaciones_limite_sup($limite_sup);
-            (count($nuevos)>0)?$new = 1:$new=0;
+            (count($nuevos)>0)?$new = "1":$new="0";
         }
         $resources = array();
         for ($i=0;$i<count($model);$i++) {
@@ -88,6 +88,7 @@ class ForoController{
                 "titulo" => $model[$i]->publicaciones_titulo,
                 "descripcion" => $model[$i]->publicaciones_descripcion,
                 "concepto" => $model[$i]->publicaciones_concepto,
+                "id_torneo" => $model[$i]->publicaciones_id_torneo,
                 "torneo" => $torneo,
                 "foto" => $model[$i]->publicaciones_foto,
                 "fecha" => $time,
