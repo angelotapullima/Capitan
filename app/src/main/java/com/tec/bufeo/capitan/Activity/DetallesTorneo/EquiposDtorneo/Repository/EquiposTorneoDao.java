@@ -17,13 +17,13 @@ public interface EquiposTorneoDao {
     void insert(EquiposTorneo resultModel);
 
     /*@Query("SELECT * from equipos WHERE mi_equipo = :mi_equipo")
-    LiveData<List<EquiposTorneo>> getAllEquipos(String mi_equipo);*/
+    LiveData<List<RegistroEquiposTorneo>> getAllEquipos(String mi_equipo);*/
 
-    @Query("SELECT * from equipostorneo WHERE equipo_torneo_id = :equipo_torneo ")
+    @Query("SELECT * from RegistroEquiposTorneo WHERE equipo_torneo_id = :equipo_torneo ")
     LiveData<List<EquiposTorneo>> getAllEquiposTorneo(String equipo_torneo);
 
 
-    @Query("DELETE FROM equipostorneo")
+    @Query("DELETE FROM RegistroEquiposTorneo")
     void deleteAll();
 
 

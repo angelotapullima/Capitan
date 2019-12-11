@@ -1,14 +1,14 @@
-package com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.Models;
-
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
+package com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Models;
 
 import com.google.gson.annotations.SerializedName;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 @Entity(tableName = "RegistroEquiposTorneo")
-public class EquiposTorneo
+public class RegistroEquiposTorneo
 {
 
 
@@ -27,21 +27,23 @@ public class EquiposTorneo
     @SerializedName("equipo_foto")
     private String equipo_foto;
 
-    @ColumnInfo(name = "equipo_torneo_id")
-    @SerializedName("equipo_torneo_id")
-    private String equipo_torneo_id;
-
-
 
     @ColumnInfo(name = "capitan_nombre")
     @SerializedName("capitan_nombre")
     private String capitan_nombre;
 
-    @ColumnInfo(name = "capitan_id")
-    @SerializedName("capitan_id")
-    private String capitan_id;
+    @ColumnInfo(name = "estado_equipo")
+    @SerializedName("estado_equipo")
+    private String estado_equipo;
+
+    @ColumnInfo(name = "local")
+    @SerializedName("local")
+    private String local;
 
 
+    @ColumnInfo(name = "visitante")
+    @SerializedName("visitante")
+    private String visitante;
 
 
     @NonNull
@@ -77,19 +79,28 @@ public class EquiposTorneo
         this.capitan_nombre = capitan_nombre;
     }
 
-    public String getCapitan_id() {
-        return capitan_id;
+
+    public String getEstado_equipo() {
+        return estado_equipo;
     }
 
-    public void setCapitan_id(String capitan_id) {
-        this.capitan_id = capitan_id;
+    public void setEstado_equipo(String estado_equipo) {
+        this.estado_equipo = estado_equipo;
     }
 
-    public String getEquipo_torneo_id() {
-        return equipo_torneo_id;
+    public String getLocal() {
+        return local;
     }
 
-    public void setEquipo_torneo_id(String equipo_torneo_id) {
-        this.equipo_torneo_id = equipo_torneo_id;
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public String getVisitante() {
+        return visitante;
+    }
+
+    public void setVisitante(String visitante) {
+        this.visitante = visitante;
     }
 }

@@ -20,7 +20,7 @@ public class EquiposTorneoRoomDBRepository {
 
      }
 
-    /*public LiveData<List<EquiposTorneo>> getAllEquipos(String mi_equipo) {
+    /*public LiveData<List<RegistroEquiposTorneo>> getAllEquipos(String mi_equipo) {
         boolean online = ForoFragment.isOnLine();
 
         if (online){

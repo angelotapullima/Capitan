@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.RegistrarEquipo.RegistroEquiposInstancias.Views.RegistrarPartidos">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:padding="10dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Aceptar"
+                    android:background="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:textColor="#FFF"
+                    android:id="@+id/btn_aceptar"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Limpiar"
+                    android:textStyle="bold"
+                    android:textColor="#FFF"
+                    android:id="@+id/btn_limpiar"
+                    android:textSize="18sp"
+                    android:background="@color/colorPrimaryDark"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Cancelar"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="#FFF"
+                    android:textStyle="bold"
+                    android:id="@+id/btn_cancelar"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_height="match_parent"/>
+
+
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:weightSum="10"
+            android:id="@+id/agg_partido"
+            android:padding="2dp"
+            android:orientation="horizontal">
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="match_parent"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/local"
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:layout_height="match_parent"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="VS"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:id="@+id/visitante"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="match_parent"/>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:src="@drawable/calendar"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/partido_fecha"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center"
+                    android:text="Fecha"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/ic_clock"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/partido_hora"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center"
+                    android:text="hora"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:id="@+id/rcv_equipos_partidos"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
+
+</ScrollView>
+
+

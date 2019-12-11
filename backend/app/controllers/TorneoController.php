@@ -10,9 +10,12 @@ class TorneoController{
     public function registrar_equipo() {
         $usuario_id = $_POST['usuario_id'];
         $nombre = $_POST['nombre'];
-        //$file_path = "media/team/default.png";
-        $file_path = "media/team/".$usuario_id."_".$nombre.".jpg";
-        move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
+        if($_FILES['imagen']['tmp_name']!=null){
+            $file_path = "media/team/".$usuario_id."_".$nombre.".jpg";
+            move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
+        }else{
+            $file_path = "media/team/default.png";
+        }
         /*$existe = $this->usuario->existe_nombre($usuario);
         if($existe->id_usuario!=null){
             $result = 3;
@@ -41,12 +44,20 @@ class TorneoController{
         $fecha = $_POST['fecha'];
         $hora = $_POST['hora'];
         $lugar = $_POST['lugar'];
-        //$file_path = "media/torneo/default.png";
-        $file_path = "media/torneo/".$usuario_id."_".$nombre.".jpg";
-        move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
+        if($_FILES['imagen']['tmp_name']!=null){
+            $file_path = "media/torneo/".$usuario_id."_".$nombre.".jpg";
+            move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
+        }else{
+            $file_path = "media/torneo/default.png";
+        }
         $result = $this->torneo->registrar_torneo($usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$tipo,$file_path);
+        if($result==1){
+            $last_id = $this->torneo->listar_ultimo_torneo();
+        }else{
+            $last_id = 0;
+        }
         $resources = array();
-        $resources[0] = array("valor"=>$result);
+        $resources[0] = array("valor"=>$result,"id_torneo"=>$last_id->torneo_id);
         $data = array("results" => $resources);
         echo json_encode($data);
     }
@@ -645,6 +656,7 @@ class TorneoController{
                 );
             }
             $resources[] = array(
+                "id_grupo"=>$grupos[$i]->id_torneo_grupo,
                 "nombre_grupo"=>$grupos[$i]->grupo_nombre,
                 "equipos" => $model
             );
@@ -696,6 +708,7 @@ class TorneoController{
                 );
             }
             $resources[] = array(
+                "id_instancia"=>$instancias[$i]->id_torneo_instancia,
                 "nombre_instancia"=>$instancias[$i]->torneo_instancia_nombre,
                 "partidos" => $model
             );

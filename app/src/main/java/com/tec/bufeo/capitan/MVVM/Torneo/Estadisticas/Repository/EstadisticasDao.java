@@ -17,7 +17,7 @@ public interface EstadisticasDao {
     void insert(Estadisticas resultModel);
 
     /*@Query("SELECT * from equipos WHERE mi_equipo = :mi_equipo")
-    LiveData<List<EquiposTorneo>> getAllEquipos(String mi_equipo);*/
+    LiveData<List<RegistroEquiposTorneo>> getAllEquipos(String mi_equipo);*/
 
     @Query("SELECT * from estadisticas  ")
     LiveData<List<Estadisticas>> getAllEstadisticas();

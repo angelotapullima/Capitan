@@ -16,15 +16,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.Registro_Torneo.CrearInstancias.CrearInstancias"></activity>
-        <activity android:name=".Activity.RegistrarEquipo.RegistroEquipoPadre"></activity>
-        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Activity.Registro_Torneo.RegistroTorneoFinalizado"></activity>
+        <activity android:name=".Activity.RegistrarEquipo.RegistroEquiposInstancias.Views.RegistrarPartidos" />
+        <activity android:name=".Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.ListarInstancias">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+        <activity android:name=".Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Views.CrearInstancias" />
+        <activity android:name=".Activity.RegistrarEquipo.RegistroEquipoPadre" />
+        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo" />
         <activity android:name=".Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago" />
         <activity android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo" />
         <activity android:name=".Activity.DetallesTorneo.DetalleTorneoNuevo" />
@@ -41,7 +40,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Splash"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

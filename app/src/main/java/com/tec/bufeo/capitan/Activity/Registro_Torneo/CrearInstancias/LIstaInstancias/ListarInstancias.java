@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearEquipos;
+package com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInstancias;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,9 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Models.TablaTorneoItem;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Models.TablaTorneoSubItem;
-import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Views.CrearInstancias;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneoFinalizado;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
@@ -34,25 +32,28 @@ import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 
-public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.OnClickListener {
+public class ListarInstancias extends AppCompatActivity implements View.OnClickListener {
 
-    RecyclerView rcv_equipos_en_grupos;
+
+    RecyclerView rcv_partidos_instancias;
     String id_torneo;
     Context context;
-    Button btnNext_a_instancias;
-    public List<TablaTorneoItem> listaItem = new ArrayList<>();
+    Button btn_finish;
+    public List<Instancias> listaItem = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registrar_equipo_en_grupo);
+        setContentView(R.layout.activity_listar_instancias);
 
-        rcv_equipos_en_grupos= findViewById(R.id.rcv_equipos_en_grupos);
-        btnNext_a_instancias= findViewById(R.id.btnNext_a_instancias);
-        id_torneo= getIntent().getExtras().getString("id_torneo");
-        //id_torneo ="21";
+        rcv_partidos_instancias= findViewById(R.id.rcv_partidos_instancias);
+        btn_finish= findViewById(R.id.btn_finish);
+        //id_torneo= getIntent().getExtras().getString("id_torneo");
+        id_torneo="1";
 
-        //pedir_tabla(id_torneo);
-        btnNext_a_instancias.setOnClickListener(this);
+        btn_finish.setOnClickListener(this);
+
     }
 
     @Override
@@ -63,17 +64,17 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
 
     JSONObject jsonObject,jsonNode,jsonNode2;
     JSONArray jsonArray,resultJSON;
-    TablaTorneoItem tablaTorneoItem;
-    TablaTorneoSubItem tablaTorneoSubItem ;
-    String id_grupo;
+    Instancias Item;
+    PartidosInstancias subItem ;
+    String id_instancia;
 
     StringRequest stringRequest;
     private void pedir_tabla(final String id_torneo) {
-        String url =IP+"/index.php?c=Torneo&a=listar_tabla_por_id_torneo&key_mobile=123456asdfgh";
+        String url =IP+"/index.php?c=Torneo&a=listar_instancias_partidos_por_id_torneo&key_mobile=123456asdfgh";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("listar grupos : ","y equipos"+response);
+                Log.d("listar partidos : ","en instancias"+response);
 
                 try {
                     jsonObject = new JSONObject(response);
@@ -87,10 +88,10 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
                         jsonNode = resultJSON.getJSONObject(i);
 
 
-                        String nombre_grupo = jsonNode.optString("nombre_grupo");
-                        id_grupo = jsonNode.optString("id_grupo");
+                        String nombre_grupo = jsonNode.optString("nombre_instancia");
+                        String id_instancias = jsonNode.optString("id_instancia");
 
-                        jsonArray = jsonNode.getJSONArray("equipos");
+                        jsonArray = jsonNode.getJSONArray("partidos");
 
 
 
@@ -100,23 +101,23 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
                             //tablaTorneoItem = new TablaTorneoItem(nombre_grupo, );
                             //listaItem.add(tablaTorneoItem);
                         } else {
-                            tablaTorneoItem = new TablaTorneoItem(nombre_grupo,id_grupo, buildSubItemList(jsonArray));
-                            listaItem.add(tablaTorneoItem);
+                            Item = new Instancias(id_instancias,nombre_grupo, buildSubItemList(jsonArray));
+                            listaItem.add(Item);
                         }
 
 
                     }
                 }
-             catch (JSONException e) {
-                e.printStackTrace();
-            }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                    AdapterRegistroEquiposGruposItem itemAdapter = new AdapterRegistroEquiposGruposItem(getApplicationContext(),listaItem);
+                AdapterInstanciasItem itemAdapter = new AdapterInstanciasItem(getApplicationContext(),id_torneo,listaItem);
 
 
-                    rcv_equipos_en_grupos.setAdapter(itemAdapter);
-                    rcv_equipos_en_grupos.setLayoutManager(layoutManager);
+                rcv_partidos_instancias.setAdapter(itemAdapter);
+                rcv_partidos_instancias.setLayoutManager(layoutManager);
 
 
             }
@@ -149,21 +150,33 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
     }
 
 
-    private List<TablaTorneoSubItem> buildSubItemList(JSONArray array) {
-        List<TablaTorneoSubItem> subItemList = new ArrayList<>();
+    private List<PartidosInstancias> buildSubItemList(JSONArray array) {
+        List<PartidosInstancias> subItemList = new ArrayList<>();
 
+        String id_torneo_partido,id_equipo_local,nombre_equipo_local,foto_equipo_local,id_equipo_visita,
+                nombre_equipo_visita,foto_equipo_visita,partido_fecha,partido_hora,partido_estado;
         for (int i=0; i<array.length(); i++) {
             try {
                 jsonNode2 = array.getJSONObject(i);
 
-                String equipo_nombre,posicion_lista;
-
-                equipo_nombre = jsonNode2.optString("equipo_nombre");
-                posicion_lista = (String.valueOf(i));
 
 
-                tablaTorneoSubItem = new TablaTorneoSubItem(equipo_nombre,posicion_lista);
-                subItemList.add(tablaTorneoSubItem);
+                id_torneo_partido = jsonNode2.optString("id_torneo_partido");
+                id_equipo_local = jsonNode2.optString("id_equipo_local");
+                nombre_equipo_local = jsonNode2.optString("nombre_equipo_local");
+                foto_equipo_local = jsonNode2.optString("foto_equipo_local");
+                id_equipo_visita = jsonNode2.optString("id_equipo_visita");
+                nombre_equipo_visita = jsonNode2.optString("nombre_equipo_visita");
+                foto_equipo_visita = jsonNode2.optString("foto_equipo_visita");
+                partido_fecha = jsonNode2.optString("partido_fecha");
+                partido_hora = jsonNode2.optString("partido_hora");
+                partido_estado = jsonNode2.optString("partido_estado");
+                //posicion_lista = (String.valueOf(i));
+
+
+                subItem = new PartidosInstancias(id_torneo_partido,id_equipo_local,nombre_equipo_local,
+                        foto_equipo_local,id_equipo_visita,nombre_equipo_visita,foto_equipo_visita,partido_fecha,partido_hora,partido_estado);
+                subItemList.add(subItem);
 
 
 
@@ -175,13 +188,12 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
         }
         return subItemList;
     }
-
     @Override
     public void onClick(View view) {
-        if (view.equals(btnNext_a_instancias)){
-            Intent intent =  new Intent(this, CrearInstancias.class);
-            intent.putExtra("id_torneo",id_torneo);
-            startActivity(intent);
+
+        if(view.equals(btn_finish)){
+            Intent i =  new Intent(ListarInstancias.this, RegistroTorneoFinalizado.class);
+            startActivity(i);
         }
     }
 }
