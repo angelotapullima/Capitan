@@ -57,6 +57,7 @@ public class DataConnection extends AppCompatActivity {
     public String parametros, respuesta, cargarDatos,hora;
     boolean mensajeprogres, mensaje;
     public static final String IP = "https://www.guabba.com/capitan";
+    public static final String IP2 = "https://www.guabba.com/capitan2";
     static Activity context;
     JSONObject json_data;
     Usuario usuario;
@@ -220,10 +221,12 @@ public class DataConnection extends AppCompatActivity {
 
 
             if(funcion.equals("loginUsuario")){
-                parametros = "usuario=" + URLEncoder.encode(usuario.getUsuario_usuario(),"UTF-8")
-                        + "&clave=" + URLEncoder.encode(usuario.getUsuario_clave(),"UTF-8");
+                parametros = "user=" + URLEncoder.encode(usuario.getUser_nickname(),"UTF-8")
+                        + "&pass=" + URLEncoder.encode(usuario.getUser_password(),"UTF-8")
+                + "&app=" + URLEncoder.encode("true","UTF-8");
 
-                url = new URL(IP+"/index.php?c=Usuario&a=loguearse&key_mobile=123456asdfgh");
+                //url = new URL(IP+"/index.php?c=Usuario&a=loguearse&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/Login/validar_usuario");
 
             }if(funcion.equals("registrarse")){
                 parametros = "nombre=" + URLEncoder.encode(usuario.getUsuario_nombre(),"UTF-8")
@@ -475,7 +478,9 @@ public class DataConnection extends AppCompatActivity {
         return response.toString();
 
     }
-    String valorcodigo,rol;
+    int code;
+    String messaje,valorcodigo;
+    JSONObject data_json;
 
     private  boolean filtrardDatos(){
 
@@ -491,27 +496,20 @@ public class DataConnection extends AppCompatActivity {
 
                     //if(cargarDatos.equalsIgnoreCase("{\"results\":[]}")){
 
-                    JSONArray resultJSON = json_data.getJSONArray("results");
-                    JSONObject jsonNodev = resultJSON.getJSONObject(0);
-                    valorcodigo = jsonNodev.optString("valor");
-                    rol = jsonNodev.optString("rol");
+                    JSONObject resultJSON = json_data.getJSONObject("result");
+                    code = resultJSON.optInt("code");
+                    messaje = resultJSON.optString("message");
 
-                    if(valorcodigo.equalsIgnoreCase("2") || valorcodigo.equalsIgnoreCase("3")){
-                        respuesta = "false";
-                        usuario = null;
-                    }else if(rol.equalsIgnoreCase("3")) {
-                        respuesta = "false";
-                        usuario = null;
-                    }else{
 
+                    if (Integer.toString(code).equalsIgnoreCase("1")){
                         respuesta = "true";
+
+                        data_json = json_data.optJSONObject("data");
                         //resultJSON = json_data.getJSONArray("results");
-                        int count = resultJSON.length();
 
-                        for (int i = 0; i < count;i++){
 
-                            JSONObject jsonNode = resultJSON.getJSONObject(i);
-                            usuario.setUsuario_id(jsonNode.optString("idusuario"));
+
+                            /*usuario.setUsuario_id(jsonNode.optString("idusuario"));
                             usuario.setUsuario_usuario(usuario.getUsuario_usuario());
                             usuario.setUsuario_nombre(jsonNode.optString("usuario_nombre"));
                             usuario.setUsuario_habilidad(jsonNode.optString("habilidad"));
@@ -520,28 +518,68 @@ public class DataConnection extends AppCompatActivity {
                             usuario.setUsuario_email(jsonNode.optString("email"));
                             usuario.setUsuario_foto(jsonNode.optString("usuario_foto"));
                             usuario.setUbigeo_id(jsonNode.optString("ubigeo_id"));
-                            usuario.setToken_firebase(jsonNode.optString("token_firebase"));
+                            usuario.setToken_firebase(jsonNode.optString("token_firebase"));*/
+
+                            usuario.setId_user(data_json.optString("id_user"));
+                            usuario.setId_person(data_json.optString("id_person"));
+                            usuario.setUser_nickname(data_json.optString("user_nickname"));
+                            usuario.setUser_email(data_json.optString("user_email"));
+                            usuario.setUser_image(data_json.optString("user_image"));
+                            usuario.setPerson_name(data_json.optString("person_name"));
+                            usuario.setPerson_surname(data_json.optString("person_surname"));
+                            usuario.setPerson_dni(data_json.optString("person_dni"));
+                            usuario.setPerson_birth(data_json.optString("person_birth"));
+                            usuario.setPerson_number_phone(data_json.optString("person_number_phone"));
+                            usuario.setPerson_genre(data_json.optString("person_genre"));
+                            usuario.setPerson_address(data_json.optString("person_address"));
+                            usuario.setUser_num(data_json.optString("user_num"));
+                            usuario.setUser_posicion(data_json.optString("user_posicion"));
+                            usuario.setUser_habilidad(data_json.optString("user_habilidad"));
+                            usuario.setUbigeo_id(data_json.optString("ubigeo_id"));
+                            usuario.setToken(data_json.optString("token"));
+                            usuario.setToken_firebase(data_json.optString("token_firebase"));
+
+
+
 
                             preferencesUser = context.getSharedPreferences("User", Context.MODE_PRIVATE);
                             //Guardamos los datos al sharetpreference
                             SharedPreferences.Editor editor=preferencesUser.edit();
-                            editor.putString("idusuario",usuario.getUsuario_id());
-                            editor.putString("usuario",usuario.getUsuario_usuario());
-                            editor.putString("usuario_nombre",usuario.getUsuario_nombre());
-                            editor.putString("usuario_habilidad",usuario.getUsuario_habilidad());
-                            editor.putString("posicion",usuario.getUsuario_posicion());
-                            editor.putString("usuario_numFavorito",usuario.getUsuario_numFavorito());
-                            editor.putString("usuario_email",usuario.getUsuario_email());
-                            editor.putString("usuario_foto",usuario.getUsuario_foto());
+                            editor.putString("id_user",usuario.getId_user());
+                            editor.putString("id_person",usuario.getId_person());
+                            editor.putString("user_nickname",usuario.getUser_nickname());
+                            editor.putString("user_email",usuario.getUser_email());
+                            editor.putString("user_image",usuario.getUser_image());
+                            editor.putString("person_name",usuario.getPerson_name());
+                            editor.putString("person_surname",usuario.getPerson_surname());
+                            editor.putString("person_dni",usuario.getPerson_dni());
+                            editor.putString("person_birth",usuario.getPerson_birth());
+                            editor.putString("person_number_phone",usuario.getPerson_number_phone());
+                            editor.putString("person_genre",usuario.getPerson_genre());
+                            editor.putString("person_address",usuario.getPerson_address());
+                            editor.putString("user_num",usuario.getUser_num());
+                            editor.putString("user_posicion",usuario.getUser_posicion());
+                            editor.putString("user_habilidad",usuario.getUser_habilidad());
                             editor.putString("ubigeo_id",usuario.getUbigeo_id());
+                            editor.putString("token",usuario.getToken());
                             editor.putString("token_firebase",usuario.getToken_firebase());
                             editor.apply();
 
 
                             //Nuevo
-                            usuario = new Usuario(usuario.getUsuario_id(),usuario.getUsuario_usuario(),usuario.getUsuario_nombre(), usuario.getUsuario_email(),usuario.getUsuario_habilidad(),usuario.getUsuario_posicion(), usuario.getUsuario_numFavorito(), usuario.getUsuario_foto(),usuario.getUbigeo_id(),usuario.getToken_firebase());
-                        }
+                            //usuario = new Usuario(usuario.getUsuario_id(),usuario.getUsuario_usuario(),usuario.getUsuario_nombre(), usuario.getUsuario_email(),usuario.getUsuario_habilidad(),usuario.getUsuario_posicion(), usuario.getUsuario_numFavorito(), usuario.getUsuario_foto(),usuario.getUbigeo_id(),usuario.getToken_firebase());
+                            usuario = new Usuario(usuario.getId_user(),usuario.getId_person(),usuario.getUser_nickname(),usuario.getUser_email(),usuario.getUser_image(),
+                                    usuario.getPerson_name(),usuario.getPerson_surname(),usuario.getPerson_dni(),usuario.getPerson_birth(),usuario.getPerson_number_phone(),
+                                    usuario.getPerson_genre(),usuario.getPerson_address(),usuario.getUser_num(),usuario.getUser_posicion(),usuario.getUser_habilidad(),
+                                    usuario.getUbigeo_id(),usuario.getToken(),usuario.getToken_firebase());
+
+                    }else{
+                        respuesta = "false";
+                        usuario = null;
                     }
+
+
+
 
                 }if(funcion.equals("registrarse")){
 
@@ -1331,12 +1369,21 @@ public class DataConnection extends AppCompatActivity {
                     public void run() {
 
                         Intent intent = new Intent(context, MenuPrincipal.class);
-                        intent.putExtra("usuario_nombre",usuario.getUsuario_nombre());
+
+                        intent.putExtra("usuario_nombre",usuario.getPerson_name() + " "+ usuario.getPerson_surname());
+                        intent.putExtra("usuario_id",usuario.getId_user());
+                        intent.putExtra("usuario_email",usuario.getUser_email());
+                        intent.putExtra("usuario_foto",usuario.getUser_image());
+                        intent.putExtra("ubigeo_id",usuario.getUbigeo_id());
+                        intent.putExtra("posicion",usuario.getUser_posicion());
+
+
+                        /*intent.putExtra("usuario_nombre",usuario.getUsuario_nombre());
                         intent.putExtra("usuario_id",usuario.getUsuario_id());
                         intent.putExtra("usuario_email",usuario.getUsuario_email());
                         intent.putExtra("usuario_foto",usuario.getUsuario_foto());
                         intent.putExtra("ubigeo_id",usuario.getUbigeo_id());
-                        intent.putExtra("posicion",usuario.getUsuario_posicion());
+                        intent.putExtra("posicion",usuario.getUsuario_posicion());*/
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         context.startActivity(intent);
 
@@ -1346,10 +1393,10 @@ public class DataConnection extends AppCompatActivity {
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(valorcodigo.equalsIgnoreCase("2")){
+                        if(Integer.toString(code).equalsIgnoreCase("2")){
                             Toast.makeText(context, "Datos incorrectos", Toast.LENGTH_SHORT).show();
                         }
-                        else if(valorcodigo.equalsIgnoreCase("3")){
+                        else if(Integer.toString(code).equalsIgnoreCase("3")){
                             Toast.makeText(context, "Cuenta desactivada", Toast.LENGTH_SHORT).show();
                         }
                         else{

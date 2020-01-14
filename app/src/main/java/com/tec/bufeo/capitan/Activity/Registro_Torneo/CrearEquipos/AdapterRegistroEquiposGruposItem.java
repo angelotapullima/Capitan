@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Models.TablaTorneoItem;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoItem;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipoPadre;
 import com.tec.bufeo.capitan.R;
 
@@ -23,6 +23,7 @@ public class AdapterRegistroEquiposGruposItem extends RecyclerView.Adapter<Adapt
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
     private List<TablaTorneoItem> tablaTorneoItems;
     Context context;
+    int cantidad;
 
     public AdapterRegistroEquiposGruposItem(Context context, List<TablaTorneoItem> tablaTorneoItems) {
         this.context=context;
@@ -33,6 +34,7 @@ public class AdapterRegistroEquiposGruposItem extends RecyclerView.Adapter<Adapt
         private TextView nombre_grupo;
         private RecyclerView rcv_subitem_tabla;
         private LinearLayout agg_equipo;
+        private View divider;
 
 
         private ItemViewHolder(View itemView) {
@@ -42,6 +44,7 @@ public class AdapterRegistroEquiposGruposItem extends RecyclerView.Adapter<Adapt
             nombre_grupo =  itemView.findViewById(R.id.nombre_equipo_grupos);
             rcv_subitem_tabla =  itemView.findViewById(R.id.rcv_subitem_equipo);
             agg_equipo =  itemView.findViewById(R.id.agg_equipo);
+            divider =  itemView.findViewById(R.id.divider);
 
 
         }
@@ -64,7 +67,7 @@ public class AdapterRegistroEquiposGruposItem extends RecyclerView.Adapter<Adapt
             @Override
             public void onClick(View view) {
                 Intent i =  new Intent(context, RegistroEquipoPadre.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("id_grupo",tablaTorneoItem.getId_grupo());
 
                 context.startActivity(i);
@@ -79,7 +82,16 @@ public class AdapterRegistroEquiposGruposItem extends RecyclerView.Adapter<Adapt
                 LinearLayoutManager.VERTICAL,
                 false
         );
-        layoutManager.setInitialPrefetchItemCount(tablaTorneoItem.getTablaTorneoSubItems().size());
+        cantidad = tablaTorneoItem.getTablaTorneoSubItems().size();
+
+        if (cantidad>0){
+            holder.divider.setVisibility(View.VISIBLE);
+
+        }else{
+            holder.divider.setVisibility(View.GONE);
+            holder.rcv_subitem_tabla.setVisibility(View.GONE);
+        }
+        layoutManager.setInitialPrefetchItemCount(cantidad);
 
         // Create sub item view adapter
 
@@ -89,11 +101,6 @@ public class AdapterRegistroEquiposGruposItem extends RecyclerView.Adapter<Adapt
         holder.rcv_subitem_tabla.setLayoutManager(layoutManager);
         holder.rcv_subitem_tabla.setAdapter(adapterRegistroEquiposGruposSubItem);
         holder.rcv_subitem_tabla.setRecycledViewPool(viewPool);
-
-
-
-
-
 
     }
 

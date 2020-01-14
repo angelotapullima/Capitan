@@ -1,14 +1,6 @@
-package com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Models;
-
-import com.google.gson.annotations.SerializedName;
+package com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 
 public class TablaTorneoItem {

@@ -132,7 +132,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onResume() {
         super.onResume();
         onRefresh();
-        Toast.makeText(getContext(), "resume", Toast.LENGTH_SHORT).show();
+
     }
 
     private void initViews(View view){
@@ -168,7 +168,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         //tlb_foro.setTitle("Foro..");
 
-        Picasso.with(context).load(IP+"/"+preferences.getFotoUsuario()).into(fotoPerfil);
+        Picasso.with(context).load(preferences.getFotoUsuario()).into(fotoPerfil);
 
         floating_search_view.addTextChangedListener(new TextWatcher() {
             @Override

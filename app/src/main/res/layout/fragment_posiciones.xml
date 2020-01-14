@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.DetallesTorneo.TablaDtorneo.Views.TablaDtorneoFragment">
+    tools:context=".Activity.DetallesTorneo.Posiciones.Views.PosicionesFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

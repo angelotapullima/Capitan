@@ -1,15 +1,15 @@
-package com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearEquipos;
+package com.tec.bufeo.capitan.Activity.DetallesTorneo.GruposYEquipos;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
+import android.os.Bundle;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -19,7 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoItem;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoSubItem;
-import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Views.CrearInstancias;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearEquipos.AdapterRegistroEquiposGruposItem;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
@@ -34,31 +34,50 @@ import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 
-public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.OnClickListener {
 
-    RecyclerView rcv_equipos_en_grupos;
+public class GruposYEquiposFragment extends Fragment {
+
+
+    RecyclerView rcv_equipos_y_grupos;
     String id_torneo;
     Context context;
-    Button btnNext_a_instancias;
     public List<TablaTorneoItem> listaItem = new ArrayList<>();
+
+    public GruposYEquiposFragment() {
+        // Required empty public constructor
+    }
+
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registrar_equipo_en_grupo);
 
-        rcv_equipos_en_grupos= findViewById(R.id.rcv_equipos_en_grupos);
-        btnNext_a_instancias= findViewById(R.id.btnNext_a_instancias);
-        id_torneo= getIntent().getExtras().getString("id_torneo");
-        //id_torneo ="1";
 
-        //pedir_tabla(id_torneo);
-        btnNext_a_instancias.setOnClickListener(this);
+
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_grupos_y_equipos, container, false);
+        final Bundle bdl = getArguments();
+
+
+        id_torneo = bdl.getString("id_torneo");
+
+        initViews(view);
         pedir_tabla(id_torneo);
+        return  view;
+    }
+
+
+
+    private void initViews(View view) {
+        rcv_equipos_y_grupos= view.findViewById(R.id.rcv_equipos_y_grupos);
+
     }
 
     JSONObject jsonObject,jsonNode,jsonNode2;
@@ -107,16 +126,16 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
 
                     }
                 }
-             catch (JSONException e) {
-                e.printStackTrace();
-            }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                    AdapterRegistroEquiposGruposItem itemAdapter = new AdapterRegistroEquiposGruposItem(getApplicationContext(),listaItem);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                AdapterRegistroEquiposGruposItem itemAdapter = new AdapterRegistroEquiposGruposItem(getContext(),listaItem);
 
 
-                    rcv_equipos_en_grupos.setAdapter(itemAdapter);
-                    rcv_equipos_en_grupos.setLayoutManager(layoutManager);
+                rcv_equipos_y_grupos.setAdapter(itemAdapter);
+                rcv_equipos_y_grupos.setLayoutManager(layoutManager);
 
 
             }
@@ -145,7 +164,7 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
         //requestQueue.add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
+        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
     }
 
 
@@ -177,12 +196,5 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
         return subItemList;
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.equals(btnNext_a_instancias)){
-            Intent intent =  new Intent(this, CrearInstancias.class);
-            intent.putExtra("id_torneo",id_torneo);
-            startActivity(intent);
-        }
-    }
+
 }

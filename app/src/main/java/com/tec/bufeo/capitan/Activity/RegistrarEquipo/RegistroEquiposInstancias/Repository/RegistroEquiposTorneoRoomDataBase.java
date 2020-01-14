@@ -2,7 +2,6 @@ package com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias
 
 import android.content.Context;
 
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.EquiposDtorneo.Models.EquiposTorneo;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Models.RegistroEquiposTorneo;
 
 import androidx.annotation.NonNull;

@@ -21,26 +21,9 @@ public class Preferences {
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getString("usuario_nombre","");
     }
-    public String getIdUsuarioPref(){
-        pref=context.getSharedPreferences("User", MODE_PRIVATE);
-        return pref.getString("idusuario","");
-    }
-    public String getUbigeoId(){
-        pref=context.getSharedPreferences("User", MODE_PRIVATE);
-        return pref.getString("ubigeo_id","");
-    }
-    public String getNicknamePref(){
-        pref=context.getSharedPreferences("User", MODE_PRIVATE);
-        return pref.getString("nickname","");
-    }
-    public String getFotoUsuario(){
-        pref=context.getSharedPreferences("User", MODE_PRIVATE);
-        return pref.getString("usuario_foto","");
-    }
-    public String getVehiculoPref(){
-        pref=context.getSharedPreferences("User", MODE_PRIVATE);
-        return pref.getString("vehiculo","");
-    }
+
+
+
 
     public String getLimite_sup(){
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
@@ -60,8 +43,25 @@ public class Preferences {
     }
 
 
+/*aca estan los nuevos datos que vienen con el nuevo Login*/
 
+    public String getIdUsuarioPref(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("id_user","");
+    }
 
+    public String getFotoUsuario(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("user_image","");
+    }
+    public String getUbigeoId(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("ubigeo_id","");
+    }
+    public String getToken(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("token","");
+    }
 
 
 }

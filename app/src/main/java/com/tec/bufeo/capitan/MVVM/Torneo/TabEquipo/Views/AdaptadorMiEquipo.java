@@ -2,11 +2,14 @@ package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -23,20 +26,26 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
 
     UniversalImageLoader universalImageLoader;
     Mequipos current;
+    String tipo;
     Context ctx;
     private  OnItemClickListener listener;
     Preferences preferencesUser;
 
 
     class EquiposViewHolder extends RecyclerView.ViewHolder {
-        private ImageView img_fotoEquipo;
-        private TextView txt_nombreEquipo;
+        private ImageView img_fotoEquipo,img_fotoEquipo_300;
+        private TextView txt_nombreEquipo,txt_nombreEquipo_300;
+        private CardView cdv_foto_equipo,card_300;
 
         private EquiposViewHolder(View itemView) {
             super(itemView);
 
             img_fotoEquipo= (ImageView) itemView.findViewById(R.id.img_fotoEquipo);
+            img_fotoEquipo_300= (ImageView) itemView.findViewById(R.id.img_fotoEquipo_300);
+            txt_nombreEquipo_300 = (TextView) itemView.findViewById(R.id.txt_nombreEquipo_300);
             txt_nombreEquipo = (TextView) itemView.findViewById(R.id.txt_nombreEquipo);
+            cdv_foto_equipo = (CardView) itemView.findViewById(R.id.cdv_foto_equipo);
+            card_300 = (CardView) itemView.findViewById(R.id.card_300);
 
         }
 
@@ -59,12 +68,14 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
     private List<Mequipos> mUsers; // Cached copy of users
 
 
-    public AdaptadorMiEquipo(Context context, OnItemClickListener listener) {
+    public AdaptadorMiEquipo(Context context,String tipo, OnItemClickListener listener) {
         this.ctx=context;
+        this.tipo=tipo;
         mInflater = LayoutInflater.from(context);
         universalImageLoader = new UniversalImageLoader(context);
         preferencesUser = new Preferences(context);
-        this.listener = listener;}
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -81,6 +92,21 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
 
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
+
+            if (tipo.equals("mas")){
+                UniversalImageLoader.setImage(IP+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo,null);
+                holder.txt_nombreEquipo.setText(current.getEquipo_nombre());
+                holder.card_300.setVisibility(View.GONE);
+            }else{
+                UniversalImageLoader.setImage(IP+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo_300,null);
+                holder.txt_nombreEquipo_300.setText(current.getEquipo_nombre());
+                holder.cdv_foto_equipo.setVisibility(View.GONE);
+
+
+            }
+
+
+            holder.bid(current,listener);
             UniversalImageLoader.setImage(IP+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo,null);
 
             holder.txt_nombreEquipo.setText(current.getEquipo_nombre());
@@ -107,8 +133,6 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
             return  0;
         }
     }
-
-
 
 
     public interface  OnItemClickListener{

@@ -62,6 +62,11 @@ public class Torneo {
     @SerializedName("mi_torneo")
     private String mi_torneo;
 
+    @ColumnInfo(name = "foto_torneo")
+    @SerializedName("foto_torneo")
+    private String foto_torneo;
+
+
     public int getId_torneo() {
         return id_torneo;
     }
@@ -150,20 +155,13 @@ public class Torneo {
         this.mi_torneo = mi_torneo;
     }
 
-    @Override
-    public String toString() {
-        return "Torneo{" +
-                "id_torneo=" + id_torneo +
-                ", torneo_id='" + torneo_id + '\'' +
-                ", usuario_id='" + usuario_id + '\'' +
-                ", torneo_nombre='" + torneo_nombre + '\'' +
-                ", torneo_descripcion='" + torneo_descripcion + '\'' +
-                ", torneo_fecha='" + torneo_fecha + '\'' +
-                ", torneo_hora='" + torneo_hora + '\'' +
-                ", torneo_lugar='" + torneo_lugar + '\'' +
-                ", torneo_equipos='" + torneo_equipos + '\'' +
-                ", torneo_organizador='" + torneo_organizador + '\'' +
-                ", mi_torneo='" + mi_torneo + '\'' +
-                '}';
+    public String getFoto_torneo() {
+        return foto_torneo;
     }
+
+    public void setFoto_torneo(String foto_torneo) {
+        this.foto_torneo = foto_torneo;
+    }
+
+
 }

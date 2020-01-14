@@ -141,6 +141,7 @@
 
                                 <Spinner
                                     android:id="@+id/spn_sexo"
+
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:backgroundTint="@color/colorPrimaryDark"
@@ -174,8 +175,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:textColor="#FFF"
                             android:backgroundTint="@color/colorCeniza"
-                            android:drawableRight="@drawable/calendar"
                             android:layout_marginRight="8dp"
                             android:elevation="2dp" />
                     </LinearLayout>

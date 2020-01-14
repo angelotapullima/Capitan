@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Views;
+package com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Views;
 
 
 
@@ -19,8 +19,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Models.TablaTorneoItem;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Models.TablaTorneoSubItem;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoItem;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoSubItem;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
@@ -36,14 +36,14 @@ import java.util.Map;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 
 
-public class TablaDtorneoFragment extends Fragment {
+public class PosicionesFragment extends Fragment {
 
     RecyclerView rcv_item;
     String id_torneo;
     Context context;
     public List<TablaTorneoItem> listaItem = new ArrayList<>();
 
-    public TablaDtorneoFragment() {
+    public PosicionesFragment() {
         // Required empty public constructor
     }
 
@@ -58,7 +58,7 @@ public class TablaDtorneoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_tabla_dtorneo, container, false);
+        View view = inflater.inflate(R.layout.fragment_posiciones, container, false);
 
         context = getContext();
         final Bundle bdl = getArguments();
@@ -153,10 +153,11 @@ public class TablaDtorneoFragment extends Fragment {
             try {
                 jsonNode2 = array.getJSONObject(i);
 
-                String equipo_id,equipo_nombre,part_j,part_g,part_e,part_p,gf,gc,total;
+                String equipo_id,equipo_nombre,part_j,part_g,part_e,part_p,gf,gc,total,equipo_foto;
 
                 equipo_id = jsonNode2.optString("equipo_id");
                 equipo_nombre = jsonNode2.optString("equipo_nombre");
+                equipo_foto = jsonNode2.optString("equipo_foto");
                 part_j = jsonNode2.optString("part_j");
                 part_g = jsonNode2.optString("part_g");
                 part_e = jsonNode2.optString("part_e");
@@ -165,7 +166,7 @@ public class TablaDtorneoFragment extends Fragment {
                 gc = jsonNode2.optString("gc");
                 total = jsonNode2.optString("total");
 
-                tablaTorneoSubItem = new TablaTorneoSubItem(equipo_id,equipo_nombre,part_j,part_g,part_e,part_p,gf,gc,total);
+                tablaTorneoSubItem = new TablaTorneoSubItem(equipo_id,equipo_nombre,part_j,part_g,part_e,part_p,gf,gc,total,equipo_foto);
                 subItemList.add(tablaTorneoSubItem);
 
 

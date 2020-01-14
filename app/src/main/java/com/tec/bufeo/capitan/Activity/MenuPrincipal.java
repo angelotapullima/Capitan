@@ -37,12 +37,14 @@ import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscarPadre;
 import com.tec.bufeo.capitan.Fragments.FragmentInfo;
 import com.tec.bufeo.capitan.Fragments.FragmentNegocio;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class MenuPrincipal extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -52,6 +54,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
     public Fragment fragmentactual;
     FragmentTransaction fragmentTransaction;
     static  String  token = "";
+    Preferences preferences;
     SharedPreferences preferencesUser;
     String tokenNuevo;
     BroadcastReceiver BR;
@@ -68,12 +71,13 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
 
         FirebaseApp.initializeApp(this);
 
+        preferences = new Preferences(this);
 
         preferencesUser = getSharedPreferences("User", Context.MODE_PRIVATE);
         Toast.makeText(getApplicationContext(),"p "+preferencesUser.getString("posicion",""),Toast.LENGTH_SHORT).show();
         if(!preferencesUser.getString("idusuario", "").equals("")){
             usuario_nombre = preferencesUser.getString("usuario_nombre","");
-            usuario_id = preferencesUser.getString("idusuario","");
+            usuario_id = preferences.getIdUsuarioPref();
             usuario_foto = preferencesUser.getString("usuario_foto","");
             ubigeo_id = preferencesUser.getString("ubigeo_id","");
             usuario_posicion = preferencesUser.getString("posicion","");
@@ -82,7 +86,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
         }
         else{
             usuario_nombre = getIntent().getStringExtra("usuario_nombre");
-            usuario_id = getIntent().getStringExtra("usuario_id");
+            usuario_id = preferences.getIdUsuarioPref();
             usuario_foto = getIntent().getStringExtra("usuario_foto");
             ubigeo_id = getIntent().getStringExtra("ubigeo_id");
             usuario_posicion = getIntent().getStringExtra("posicion");
@@ -246,11 +250,11 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
     StringRequest stringRequest;
     //función para actualizar el token
     private void Actualizar(){
-        String url =IP+"/index.php?c=Usuario&a=actualizar_token&key_mobile=123456asdfgh";
+        String url =IP2+"/api/User/actualizar_token";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("actualizartoken: ",""+response);
+                Log.e("actualizartoken: ",""+response);
 
             }
 
@@ -266,8 +270,11 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
 
                 //enviamos los parametros id_usuario y el token nuevo asignado al telefono
                 Map<String,String> parametros=new HashMap<>();
-                parametros.put("idusuario",usuario_id);
-                parametros.put("token",tokenNuevo);
+                parametros.put("usuario_id",usuario_id);
+                parametros.put("token_firebase",tokenNuevo);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
+                Log.e("parametros: ",""+parametros);
 
                 return parametros;
             }

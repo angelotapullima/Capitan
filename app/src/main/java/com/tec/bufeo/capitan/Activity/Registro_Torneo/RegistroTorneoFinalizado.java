@@ -26,6 +26,7 @@ public class RegistroTorneoFinalizado extends AppCompatActivity implements View.
     public void onClick(View view) {
         if (view.equals(btn_finalizar)){
             Intent i =  new Intent(RegistroTorneoFinalizado.this, MenuPrincipal.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
         }
     }

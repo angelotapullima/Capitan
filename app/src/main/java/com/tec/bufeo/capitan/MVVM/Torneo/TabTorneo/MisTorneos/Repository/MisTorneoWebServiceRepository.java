@@ -109,6 +109,7 @@ public class MisTorneoWebServiceRepository {
                 torneo.setTorneo_descripcion(jsonNode.optString("descripcion"));
                 torneo.setTorneo_fecha(jsonNode.optString("fecha"));
                 torneo.setTorneo_hora(jsonNode.optString("hora"));
+                torneo.setFoto_torneo(jsonNode.optString("foto"));
                 torneo.setTorneo_lugar(jsonNode.optString("lugar"));
                 torneo.setTorneo_equipos(jsonNode.optString("equipos"));
                 torneo.setTorneo_organizador(jsonNode.optString("organizador"));

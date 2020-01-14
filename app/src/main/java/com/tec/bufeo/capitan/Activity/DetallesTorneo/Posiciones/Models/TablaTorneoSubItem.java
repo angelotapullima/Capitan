@@ -1,9 +1,4 @@
-package com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Models;
-
-import com.google.gson.annotations.SerializedName;
-
-import androidx.room.ColumnInfo;
-
+package com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models;
 
 
 public class TablaTorneoSubItem {
@@ -19,11 +14,12 @@ public class TablaTorneoSubItem {
     private String puntos;
     private String diferencia_goles;
     private String posicion_lista;
+    private String equipo_foto;
 
     public TablaTorneoSubItem() {
     }
 
-    public TablaTorneoSubItem(String equipo_id, String equipo_nombre, String part_j, String part_g, String part_e, String part_p, String gf, String gc, String puntos) {
+    public TablaTorneoSubItem(String equipo_id, String equipo_nombre, String part_j, String part_g, String part_e, String part_p, String gf, String gc, String puntos,String equipo_foto) {
         this.equipo_id = equipo_id;
         this.equipo_nombre = equipo_nombre;
         this.part_j = part_j;
@@ -33,11 +29,21 @@ public class TablaTorneoSubItem {
         this.gf = gf;
         this.gc = gc;
         this.puntos = puntos;
+        this.equipo_foto = equipo_foto;
     }
 
-    public TablaTorneoSubItem(String equipo_nombre, String posicion_lista) {
+    public TablaTorneoSubItem(String equipo_nombre, String posicion_lista,String equipo_foto) {
         this.equipo_nombre=equipo_nombre;
         this.posicion_lista=posicion_lista;
+        this.equipo_foto=equipo_foto;
+    }
+
+    public String getEquipo_foto() {
+        return equipo_foto;
+    }
+
+    public void setEquipo_foto(String equipo_foto) {
+        this.equipo_foto = equipo_foto;
     }
 
     public String getPosicion_lista() {

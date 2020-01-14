@@ -75,7 +75,6 @@ public class FragmentTorneoRoque extends Fragment  {
 
         rcv_mis_torneos = (RecyclerView) view.findViewById(R.id.rcv_mis_torneos);
         rcv_torneos = (RecyclerView) view.findViewById(R.id.rcv_torneos);
-        imb_ver_equipofav = (ImageButton) view.findViewById(R.id.imb_ver_equipofav);
         imb_agregar_torneo = (ImageButton) view.findViewById(R.id.imb_agregar_torneo);
         reg_torneo = (FloatingActionButton) view.findViewById(R.id.reg_torneo);
 
@@ -129,6 +128,7 @@ public class FragmentTorneoRoque extends Fragment  {
                 intent.putExtra("lugar", torneo.getTorneo_lugar());
                 intent.putExtra("fecha", torneo.getTorneo_fecha());
                 intent.putExtra("hora", torneo.getTorneo_hora());
+                intent.putExtra("foto", torneo.getFoto_torneo());
                 intent.putExtra("organizador", torneo.getTorneo_organizador());
                 startActivity(intent);
 
@@ -155,6 +155,7 @@ public class FragmentTorneoRoque extends Fragment  {
                 intent.putExtra("lugar", torneo.getTorneo_lugar());
                 intent.putExtra("fecha", torneo.getTorneo_fecha());
                 intent.putExtra("hora", torneo.getTorneo_hora());
+                intent.putExtra("foto", torneo.getFoto_torneo());
                 intent.putExtra("organizador", torneo.getTorneo_organizador());
                 startActivity(intent);
 

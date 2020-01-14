@@ -57,8 +57,8 @@ public class Login extends AppCompatActivity {
                 if( !(edt_usuario.getText().toString().isEmpty()) && !(edt_password.getText().toString().isEmpty())){
 
                     usuario = new Usuario();
-                    usuario.setUsuario_usuario(edt_usuario.getText().toString());
-                    usuario.setUsuario_clave(edt_password.getText().toString());
+                    usuario.setUser_nickname(edt_usuario.getText().toString());
+                    usuario.setUser_password(edt_password.getText().toString());
 
                     dc = new DataConnection(Login.this,"loginUsuario",usuario,true);
 

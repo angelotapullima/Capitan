@@ -18,7 +18,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipoNuevo;
-import com.tec.bufeo.capitan.Activity.RegistroReto;
+import com.tec.bufeo.capitan.Activity.MasEquipos;
+import com.tec.bufeo.capitan.Activity.MasMisEquipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquipos.MisEquiposWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquipos.MisEquiposViewModel;
 import com.tec.bufeo.capitan.R;
@@ -38,7 +39,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
     Preferences preferences;
     Activity activity;
     Context context;
-    ImageButton imb_agregar_equipo,imb_ver_equipo;
+    ImageButton imb_ver_equipos,imb_ver_misequipos;
     AdaptadorMiEquipo adaptadorMiEquipo;
     AdaptadorEquipos adaptadorEquipos;
     SwipeRefreshLayout swipeEquipos;
@@ -77,8 +78,8 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
 
         rcv_equipo =(RecyclerView)view.findViewById(R.id.rcv_equipo);
         rcv_equipoFav = (RecyclerView) view.findViewById(R.id.rcv_equipoFav);
-        imb_agregar_equipo =(ImageButton) view.findViewById(R.id.imb_agregar_equipo) ;
-        imb_ver_equipo =(ImageButton) view.findViewById(R.id.imb_ver_equipo) ;
+        imb_ver_equipos =(ImageButton) view.findViewById(R.id.imb_ver_equipos) ;
+        imb_ver_misequipos =(ImageButton) view.findViewById(R.id.imb_ver_misequipos) ;
 
         swipeEquipos =  view.findViewById(R.id.swipeEquipos);
 
@@ -86,8 +87,8 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
         swipeEquipos.setOnRefreshListener(this);
 
 
-        imb_ver_equipo.setOnClickListener(this);
-        imb_agregar_equipo.setOnClickListener(this);
+        imb_ver_misequipos.setOnClickListener(this);
+        imb_ver_equipos.setOnClickListener(this);
         activity = getActivity();
         context = getContext();
     }
@@ -116,7 +117,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
     private void setAdapter(){
 
 
-        adaptadorMiEquipo =  new AdaptadorMiEquipo(getActivity(), new AdaptadorMiEquipo.OnItemClickListener() {
+        adaptadorMiEquipo =  new AdaptadorMiEquipo(getActivity(), "",new AdaptadorMiEquipo.OnItemClickListener() {
             @Override
             public void onItemClick(Mequipos mequipos, int position) {
 
@@ -153,19 +154,15 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
 
-            case R.id.imb_agregar_equipo:
-                //Toast.makeText(getActivity(),"foto:"+usuario_foto,Toast.LENGTH_SHORT).show();
-                /*Intent intent2 = new Intent(getContext(), old.class);
-                startActivity(intent2);
-                break;*/
+        if (v.equals(imb_ver_misequipos)){
+            Intent i = new Intent(getContext(), MasMisEquipos.class);
+            startActivity(i);
 
-            case R.id.imb_ver_equipo:
-                //Toast.makeText(getActivity(),"foto:"+usuario_foto,Toast.LENGTH_SHORT).show();
-                Intent intent1 = new Intent(getContext(), RegistroReto.class);
-                startActivity(intent1);
-                break;
+        }if (v.equals(imb_ver_equipos)){
+
+            Intent i = new Intent(getContext(), MasEquipos.class);
+            startActivity(i);
         }
     }
 

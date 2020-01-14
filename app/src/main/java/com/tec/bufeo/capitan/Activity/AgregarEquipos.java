@@ -55,6 +55,7 @@ public class AgregarEquipos extends AppCompatActivity  implements SearchView.OnQ
         new AgregarEquipos.GetEmpresas().execute();
     }
 
+
     public class GetEmpresas extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -67,6 +68,7 @@ public class AgregarEquipos extends AppCompatActivity  implements SearchView.OnQ
             arrayequipo = dc.getlistaEquiposEnTorneoNot();
             return null;
         }
+
 
         @Override
         protected void onPostExecute(Void aVoid) {

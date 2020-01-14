@@ -3,6 +3,8 @@ package com.tec.bufeo.capitan.Activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -25,7 +27,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,10 +65,10 @@ import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
 import static net.gotev.uploadservice.Placeholders.UPLOADED_FILES;
 import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 
-public class RegistroForo extends AppCompatActivity   implements View.OnClickListener{
+public class RegistroForo extends AppCompatActivity implements View.OnClickListener{
     EditText edt_tituloForo, edt_descripcionForo;
-    Button btn_registrarForo,btn_Camara;
-    ImageView img_foroFoto;
+    Button btn_registrarForo;
+    ImageView img_foroFoto,btn_Camara;
     DataConnection dc;
     Preferences preferences;
     public Context context;

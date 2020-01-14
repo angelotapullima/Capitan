@@ -7,23 +7,27 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".Util.InitializerGotev"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.Registro_Torneo.RegistroTorneoFinalizado"></activity>
+        <activity android:name=".Activity.MasMisEquipos"></activity>
+        <activity android:name=".Activity.MasEquipos" />
+        <activity android:name=".Activity.Registro_Torneo.RegistroTorneoFinalizado" />
         <activity android:name=".Activity.RegistrarEquipo.RegistroEquiposInstancias.Views.RegistrarPartidos" />
-        <activity android:name=".Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.ListarInstancias">
+        <activity android:name=".Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.ListarInstancias" >
 
         </activity>
         <activity android:name=".Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Views.CrearInstancias" />
         <activity android:name=".Activity.RegistrarEquipo.RegistroEquipoPadre" />
-        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo" />
+        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo" >
+
+        </activity>
         <activity android:name=".Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago" />
         <activity android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo" />
         <activity android:name=".Activity.DetallesTorneo.DetalleTorneoNuevo" />
@@ -40,13 +44,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Splash"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".Activity.Login"

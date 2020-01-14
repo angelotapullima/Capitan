@@ -1,19 +1,20 @@
-package com.tec.bufeo.capitan.Activity.DetallesTorneo;
+package com.tec.bufeo.capitan.Activity.DetallesTorneo.EstadisticasTorneo;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tec.bufeo.capitan.R;
+public class EstadisticasTorneoFragment extends Fragment {
 
 
-public class ResultadosDtorneoFragment extends Fragment {
-
-
-    String id_torneo;
-    public ResultadosDtorneoFragment() {
+    public EstadisticasTorneoFragment() {
         // Required empty public constructor
     }
 
@@ -29,12 +30,7 @@ public class ResultadosDtorneoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_resultados_dtorneo, container, false);
-        final Bundle bdl = getArguments();
-
-
-        id_torneo = bdl.getString("id_torneo");
-        return  view;
+        return inflater.inflate(R.layout.fragment_estadisticas_torneo, container, false);
     }
 
 

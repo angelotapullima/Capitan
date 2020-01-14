@@ -23,7 +23,6 @@ public class Splash extends AppCompatActivity {
 
     public TimerTask task;
     private static final long TIEMPO = 1;
-    SharedPreferences preferencesUser;
     Preferences preferences;
     FeedListViewModel feedListViewModel;
 
@@ -35,7 +34,7 @@ public class Splash extends AppCompatActivity {
 
         preferences =  new Preferences(this);
        //Obtenemos los datos del sharetpreferense, si el usuario se logueo antes, nops manda directo al menu principal, caso contrario denbe loguearse
-        preferencesUser = getSharedPreferences("User", Context.MODE_PRIVATE);
+
         feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
         cargarFeed();
         Tarea tarea = new Tarea();
@@ -46,7 +45,7 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
 
-               if(!preferencesUser.getString("idusuario", "").equals("")){
+               if(!preferences.getIdUsuarioPref().equals("")){
                     Intent i= new Intent(getApplicationContext(),MenuPrincipal.class);
                     startActivity(i);
                     //finish();

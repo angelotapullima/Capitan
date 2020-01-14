@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.FeedTorneo;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Repository.FeedTorneoWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.FeedTorneoListViewModel;
@@ -22,8 +23,11 @@ import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewMode
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.AdaptadorForo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
+
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 
 
 public class InfoDtorneoFragment extends Fragment {
@@ -60,6 +64,7 @@ public class InfoDtorneoFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_info_dtorneo, container, false);
 
         preferences= new Preferences(getContext());
+
         final Bundle bdl = getArguments();
 
 
@@ -69,6 +74,7 @@ public class InfoDtorneoFragment extends Fragment {
         fecha = bdl.getString("fecha");
         hora = bdl.getString("hora");
         titulo = bdl.getString("titulo");
+
 
         initViews(view);
         setAdapter();

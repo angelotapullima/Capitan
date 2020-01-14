@@ -1,11 +1,11 @@
-package com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Views;
+package com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Views;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.TablaDtorneo.Models.TablaTorneoItem;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoItem;
 import com.tec.bufeo.capitan.R;
 import java.util.List;
 import androidx.annotation.NonNull;

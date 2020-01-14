@@ -104,7 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
         recyler_publish.setLayoutManager(new LinearLayoutManager(this));
 
 
-        adaptadorMiEquipo =  new AdaptadorMiEquipo(this, new AdaptadorMiEquipo.OnItemClickListener() {
+        adaptadorMiEquipo =  new AdaptadorMiEquipo(this,"", new AdaptadorMiEquipo.OnItemClickListener() {
             @Override
             public void onItemClick(Mequipos mequipos, int position) {
 

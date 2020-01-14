@@ -1,14 +1,15 @@
-package com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInstancias;
+package com.tec.bufeo.capitan.Activity.DetallesTorneo;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
+import android.os.Bundle;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.android.volley.AuthFailureError;
@@ -17,7 +18,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneoFinalizado;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.AdapterInstanciasItem;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.Instancias;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.PartidosInstancias;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
@@ -32,34 +35,40 @@ import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 
-public class ListarInstancias extends AppCompatActivity implements View.OnClickListener {
+
+public class InstanciasYPartidosFragment extends Fragment {
 
 
-    RecyclerView rcv_partidos_instancias;
+    RecyclerView rcv_partidos_y_instancias;
     String id_torneo;
-    Context context;
-    Button btn_finish;
     public List<Instancias> listaItem = new ArrayList<>();
 
 
+    public InstanciasYPartidosFragment() {
+        // Required empty public constructor
+    }
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listar_instancias);
-
-        rcv_partidos_instancias= findViewById(R.id.rcv_partidos_instancias);
-        btn_finish= findViewById(R.id.btn_finish);
-        id_torneo= getIntent().getExtras().getString("id_torneo");
-        //id_torneo="1";
-
-        btn_finish.setOnClickListener(this);
 
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view= inflater.inflate(R.layout.fragment_instancias_y_partidos, container, false);
+        final Bundle bdl = getArguments();
+
+
+        id_torneo = bdl.getString("id_torneo");
+
+        rcv_partidos_y_instancias= view.findViewById(R.id.rcv_partidos_y_instancias);
         pedir_tabla(id_torneo);
+        return  view;
     }
 
     JSONObject jsonObject,jsonNode,jsonNode2;
@@ -111,12 +120,12 @@ public class ListarInstancias extends AppCompatActivity implements View.OnClickL
                     e.printStackTrace();
                 }
 
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                AdapterInstanciasItem itemAdapter = new AdapterInstanciasItem(getApplicationContext(),id_torneo,listaItem);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                AdapterInstanciasItem itemAdapter = new AdapterInstanciasItem(getContext(),id_torneo,listaItem);
 
 
-                rcv_partidos_instancias.setAdapter(itemAdapter);
-                rcv_partidos_instancias.setLayoutManager(layoutManager);
+                rcv_partidos_y_instancias.setAdapter(itemAdapter);
+                rcv_partidos_y_instancias.setLayoutManager(layoutManager);
 
 
             }
@@ -145,7 +154,7 @@ public class ListarInstancias extends AppCompatActivity implements View.OnClickL
         //requestQueue.add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
+        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
     }
 
 
@@ -186,13 +195,5 @@ public class ListarInstancias extends AppCompatActivity implements View.OnClickL
 
         }
         return subItemList;
-    }
-    @Override
-    public void onClick(View view) {
-
-        if(view.equals(btn_finish)){
-            Intent i =  new Intent(ListarInstancias.this, RegistroTorneoFinalizado.class);
-            startActivity(i);
-        }
     }
 }
