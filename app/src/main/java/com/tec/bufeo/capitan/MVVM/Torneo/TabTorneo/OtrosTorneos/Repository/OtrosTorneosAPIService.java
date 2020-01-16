@@ -8,8 +8,10 @@ import retrofit2.http.POST;
 public interface OtrosTorneosAPIService {
 
     @FormUrlEncoded
-    @POST("index.php?c=Torneo&a=listar_torneos&key_mobile=123456asdfgh")
-    Call<String> getRetos(@Field("id_usuario") String id);
+    @POST("api/Torneo/listar_torneos")
+    Call<String> getRetos(@Field("id_usuario") String id,
+                          @Field("app") String app,
+                          @Field("token") String token);
 }
 
 

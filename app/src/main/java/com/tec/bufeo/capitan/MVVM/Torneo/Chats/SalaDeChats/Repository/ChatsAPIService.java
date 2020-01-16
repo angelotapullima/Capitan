@@ -9,6 +9,8 @@ public interface ChatsAPIService {
 
 
     @FormUrlEncoded
-    @POST("index.php?c=Usuario&a=listar_chats_por_id_usuario&key_mobile=123456asdfgh")
-    Call<String> makeRequest(@Field("id_usuario") String id);
+    @POST("api/User/listar_chats_por_id_usuario")
+    Call<String> makeRequest(@Field("id_user") String id,
+                             @Field("app") String app,
+                             @Field("token") String token);
 }

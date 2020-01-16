@@ -7,6 +7,8 @@ import retrofit2.http.POST;
 
 public interface MensajesAPIService {
     @FormUrlEncoded
-    @POST("index.php?c=Usuario&a=listar_mensajes_por_chat&key_mobile=123456asdfgh")
-    Call<String> makeRequest(@Field("id_chat") String id);
+    @POST("api/Usuario/listar_mensajes_por_chat")
+    Call<String> makeRequest(@Field("id_chat") String id,
+                             @Field("app") String app,
+                             @Field("token") String token);
 }

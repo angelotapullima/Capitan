@@ -23,9 +23,9 @@ public class OtrosTorneosRoomDBRepository {
     public LiveData<List<Torneo>> getAllOtrosTorneo(String no) {
         boolean online = ForoFragment.isOnLine();
 
-        if (online){
+        /*if (online){
             deleteAllRetos();
-        }
+        }*/
         mAllRetos = otrosTorneosDao.getAllOtrosTorneos(no);
         return mAllRetos;
     }
@@ -44,7 +44,7 @@ public class OtrosTorneosRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             retosDao.deleteAll();
-            Log.i("eliminado", "doInBackground: eliminado");
+            Log.i("eliminado otros retos", "doInBackground: eliminado");
             return null;
         }
     }

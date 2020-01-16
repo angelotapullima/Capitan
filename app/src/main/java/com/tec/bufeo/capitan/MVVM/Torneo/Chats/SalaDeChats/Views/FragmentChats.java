@@ -78,7 +78,7 @@ public class FragmentChats extends Fragment implements SwipeRefreshLayout.OnRefr
 
     public void cargarvista(){
 
-        chatsListViewModel.getmAllChats("24").observe(this, new Observer<List<Chats>>() {
+        chatsListViewModel.getmAllChats().observe(this, new Observer<List<Chats>>() {
             @Override
             public void onChanged(@Nullable List<Chats> chats) {
                 chatsListAdapter.setWords(chats);
@@ -122,7 +122,7 @@ public class FragmentChats extends Fragment implements SwipeRefreshLayout.OnRefr
         //retosViewModel.ElimarRetos();
 
         ChatsWebServiceRepository chatsWebServiceRepository= new ChatsWebServiceRepository(application);
-        chatsWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());
+        chatsWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
         RefreshLayoutChats.setRefreshing(false);
 
     }

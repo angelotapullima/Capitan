@@ -3,68 +3,432 @@ require_once 'app/models/Torneo.php';
 require_once 'app/models/Foro.php';
 class TorneoController{
     private $torneo;
+    private $nav;
+    private $foro;
+    private $crypt;
+    private $clean;
+    private $log;
+    private $validate;
     public function __construct(){
         $this->torneo = new Torneo();
         $this->foro = new Foro();
+        $this->crypt = new Crypt();
+        $this->clean = new Clean();
+        $this->log = new Log();
+        $this->validate = new Validate();
+    }
+    public function index(){
+        try{
+            $this->nav = new Navbar();
+            $navs = $this->nav->listMenu($this->crypt->decrypt($_SESSION['role'],_FULL_KEY_));
+            $usuario_id = $this->crypt->decrypt($_SESSION['id_user'],_FULL_KEY_);
+            $torneos = $this->torneo->listar_torneos();
+            $mis_equipos = $this->torneo->listar_equipos_por_id_usuario($usuario_id);
+            $mis_retos = $this->torneo->listar_mis_retos($usuario_id);
+            foreach ($mis_retos as $m){
+                if($m->equipo_id_1 == null){
+                    $equipo___ = $this->torneo->listar_equipo_por_id($m->retador_id);
+                    $m->nombre_1 = $equipo___->equipo_nombre;
+                    $m->equipo_id_1 = $equipo___->equipo_id;
+                    $m->foto_1 = $equipo___->equipo_foto;
+                }elseif($m->equipo_id_2 == null){
+                    $equipo___ = $this->torneo->listar_equipo_por_id($m->retado_id);
+                    $m->nombre_2 = $equipo___->equipo_nombre;
+                    $m->equipo_id_2 = $equipo___->equipo_id;
+                    $m->foto_2 = $equipo___->equipo_foto;
+                }
+            }
+            $equipos2 = $this->torneo->listar_equipos_por_id_usuario_not($usuario_id);
+            $equipos = $this->torneo->listar_equipos_por_id_usuario_not($usuario_id);
+            $mis_torneos = array();
+            $cont = 0;
+            if(count($torneos)>0){
+                for ($i=0;$i<count($torneos);$i++) {
+                    $equipos_por_torneo = $this->torneo->listar_equipos_por_torneo($torneos[$i]->torneo_id);
+                    $torneos[$i]->equipos = count($equipos_por_torneo);
+                    if($torneos[$i]->usuario_id==$usuario_id){
+                        $mis_torneos[$cont] = array(
+                            "id_torneo" => $torneos[$i]->torneo_id,
+                            "nombre" => $torneos[$i]->torneo_nombre,
+                            "descripcion" => $torneos[$i]->torneo_descripcion,
+                            "fecha" => $torneos[$i]->torneo_fecha,
+                            "imagen" => $torneos[$i]->torneo_imagen,
+                            "costo" => $torneos[$i]->torneo_costo,
+                            "hora" => $torneos[$i]->torneo_hora,
+                            "lugar" => $torneos[$i]->torneo_lugar,
+                            "id_organizador" => $torneos[$i]->usuario_id,
+                            "organizador" => $torneos[$i]->torneo_organizador,
+                            "equipos" => count($equipos_por_torneo)
+                        );
+                        $cont++;
+                    }else{
+                        $equipos=[];
+                        for ($j=0;$j<count($equipos_por_torneo);$j++){
+                            $equipo_usuario = $this->torneo->listar_usuario_en_equipo($usuario_id,$equipos_por_torneo[$j]->equipo_id);
+                            if($equipo_usuario->equipo_id!==null){
+                                $equipos[] = $equipo_usuario;
+                            }
+                        }
+                        if(count($equipos)>0){
+                            $mis_torneos[$cont] = array(
+                                "id_torneo" => $torneos[$i]->torneo_id,
+                                "nombre" => $torneos[$i]->torneo_nombre,
+                                "descripcion" => $torneos[$i]->torneo_descripcion,
+                                "fecha" => $torneos[$i]->torneo_fecha,
+                                "hora" => $torneos[$i]->torneo_hora,
+                                "lugar" => $torneos[$i]->torneo_lugar,
+                                "id_organizador" => $torneos[$i]->usuario_id,
+                                "organizador" => $torneos[$i]->usuario_nombre,
+                                "equipos" => count($equipos)
+                            );
+                            $cont++;
+                        }
+                    }
+                }
+            }
+            require _VIEW_PATH_ . 'header.php';
+            require _VIEW_PATH_ . 'navbar.php';
+            require _VIEW_PATH_ . 'torneo/index.php';
+        } catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            echo "<script language=\"javascript\">alert(\"Error Al Mostrar Contenido. Redireccionando Al Inicio\");</script>";
+            echo "<script language=\"javascript\">window.location.href=\"". _SERVER_ ."\";</script>";
+        }
+    }
+    public function retar(){
+        try{
+            $this->nav = new Navbar();
+            $navs = $this->nav->listMenu($this->crypt->decrypt($_SESSION['role'],_FULL_KEY_));
+            $usuario_id = $this->crypt->decrypt($_SESSION['id_user'],_FULL_KEY_);
+            $id = $_GET['id'] ?? 0;
+            if($id == 0){
+                throw new Exception('ID Sin Declarar');
+            }
+            $equipo =$this->torneo->listar_equipo_por_id($id);
+            $mis_equipos =$this->torneo->listar_equipos_por_id_usuario($usuario_id);
+            require _VIEW_PATH_ . 'header.php';
+            require _VIEW_PATH_ . 'navbar.php';
+            require _VIEW_PATH_ . 'torneo/retar.php';
+        } catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            echo "<script language=\"javascript\">alert(\"Error Al Mostrar Contenido. Redireccionando Al Inicio\");</script>";
+            echo "<script language=\"javascript\">window.location.href=\"". _SERVER_ ."\";</script>";
+        }
+    }
+    public function crear_torneo(){
+        try{
+            $this->nav = new Navbar();
+            $navs = $this->nav->listMenu($this->crypt->decrypt($_SESSION['role'],_FULL_KEY_));
+            require _VIEW_PATH_ . 'header.php';
+            require _VIEW_PATH_ . 'navbar.php';
+            require _VIEW_PATH_ . 'torneo/crear_torneo.php';
+        } catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            echo "<script language=\"javascript\">alert(\"Error Al Mostrar Contenido. Redireccionando Al Inicio\");</script>";
+            echo "<script language=\"javascript\">window.location.href=\"". _SERVER_ ."\";</script>";
+        }
+    }
+    public function crear_equipo(){
+        try{
+            $this->nav = new Navbar();
+            $navs = $this->nav->listMenu($this->crypt->decrypt($_SESSION['role'],_FULL_KEY_));
+            require _VIEW_PATH_ . 'header.php';
+            require _VIEW_PATH_ . 'navbar.php';
+            require _VIEW_PATH_ . 'torneo/crear_equipo.php';
+        } catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            echo "<script language=\"javascript\">alert(\"Error Al Mostrar Contenido. Redireccionando Al Inicio\");</script>";
+            echo "<script language=\"javascript\">window.location.href=\"". _SERVER_ ."\";</script>";
+        }
+    }
+    public function ver_torneo(){
+        try{
+            $this->nav = new Navbar();
+            $navs = $this->nav->listMenu($this->crypt->decrypt($_SESSION['role'],_FULL_KEY_));
+            $id = $_GET['id'] ?? 0;
+            if($id == 0){
+                throw new Exception('ID Sin Declarar');
+            }
+
+            $torneo = $this->torneo->listar_torneo_por_id($id);
+            $equipos = $this->torneo->listar_equipos_por_torneo($id);
+            $equipos2 = $this->torneo->listar_equipos_por_torneo($id);
+            $publicaciones = $this->torneo->listar_publicaciones($id);
+            $grupos = $this->torneo->listar_grupos_por_id_torneo($id);
+            $goleadores = $this->torneo->listar_goleadores_por_id_torneo($id);
+            $equipos_en_torneo_not = $this->torneo->listar_equipos_por_torneo_not($id);
+            $resources = [];
+            for ($i=0;$i<count($grupos);$i++) {
+                $model = [];
+                $equipos = $this->torneo->listar_equipos_por_id_grupo($grupos[$i]->id_torneo_grupo);
+                for($j=0;$j<count($equipos);$j++){
+                    $model[] = array(
+                        "equipo_id"=>$equipos[$j]->equipo_id,
+                        "equipo_nombre"=>$equipos[$j]->equipo_nombre,
+                        "equipo_foto"=>$equipos[$j]->equipo_foto
+                    );
+                }
+                $resources[] = array(
+                    "id_torneo_grupo"=>$grupos[$i]->id_torneo_grupo,
+                    "nombre_grupo"=>$grupos[$i]->grupo_nombre,
+                    "equipos" => $model
+                );
+            }
+            $instancias = $this->torneo->listar_instancias_por_id_torneo($id);
+            $i_p = [];
+            for ($i=0;$i<count($instancias);$i++) {
+                $model = [];
+                $partidos = $this->torneo->listar_partidos_por_id_instancia($instancias[$i]->id_torneo_instancia);
+                for($j=0;$j<count($partidos);$j++){
+                    if($partidos[$j]->marcador_local >0 || $partidos[$j]->marcador_visita >0){
+                        $goleadores__ = $this->torneo->listar_goleadores_por_partido($partidos[$j]->id_torneo_partido);
+                        $goleadores_local="";
+                        $goleadores_visita="";
+                        foreach ($goleadores__ as $g){
+                            if($g->id_equipo == $partidos[$j]->id_equipo_local){
+                                $goleadores_local .= $g->user_nickname."<br>";
+                            }elseif($g->id_equipo == $partidos[$j]->id_equipo_visita){
+                                $goleadores_visita .=$g->user_nickname."<br>";
+                            }
+                        }
+                    }
+
+                    $model[] = array(
+                        "id_torneo_partido"=>$partidos[$j]->id_torneo_partido,
+                        "id_equipo_local"=>$partidos[$j]->id_equipo_local,
+                        "nombre_equipo_local"=>$partidos[$j]->nombre_local,
+                        "foto_equipo_local"=>$partidos[$j]->foto_local,
+                        "id_equipo_visita"=>$partidos[$j]->id_equipo_visita,
+                        "nombre_equipo_visita"=>$partidos[$j]->nombre_visita,
+                        "foto_equipo_visita"=>$partidos[$j]->foto_visita,
+                        "marcador_local"=>$partidos[$j]->marcador_local,
+                        "marcador_visita"=>$partidos[$j]->marcador_visita,
+                        "partido_fecha"=>$partidos[$j]->torneo_partido_fecha,
+                        "partido_hora"=>$partidos[$j]->torneo_partido_hora,
+                        "partido_estado"=>$partidos[$j]->torneo_partido_estado,
+                        "goleadores_local"=>$goleadores_local,
+                        "goleadores_visita"=>$goleadores_visita
+                    );
+                }
+                $i_p[] = array(
+                    "id_instancia"=>$instancias[$i]->id_torneo_instancia,
+                    "nombre_instancia"=>$instancias[$i]->torneo_instancia_nombre,
+                    "partidos" => $model
+                );
+            }
+            $posiciones = [];
+            for ($i=0;$i<count($grupos);$i++) {
+                $model = [];
+                $equipos = $this->torneo->listar_equipos_por_id_grupo($grupos[$i]->id_torneo_grupo);
+                for($j=0;$j<count($equipos);$j++){
+                    $partidos = $this->torneo->listar_partidos_terminados_equipo_fase1($equipos[$j]->equipo_id);
+                    $part_j = count($partidos);
+                    $part_g = 0;
+                    $part_e = 0;
+                    $part_p = 0;
+                    $gf =0 ;
+                    $gc = 0;
+                    for ($k=0;$k<count($partidos);$k++){
+                        if($equipos[$j]->equipo_id==$partidos[$k]->id_equipo_local){
+                            if($partidos[$k]->marcador_local>$partidos[$k]->marcador_visita){
+                                $part_g++;
+                            }elseif ($partidos[$k]->marcador_local<$partidos[$k]->marcador_visita){
+                                $part_p++;
+                            }else{
+                                $part_e++;
+                            }
+                            $gf = $gf+ $partidos[$k]->marcador_local;
+                            $gc = $gc+ $partidos[$k]->marcador_visita;
+                        }elseif ($equipos[$j]->equipo_id==$partidos[$k]->id_equipo_visita){
+                            if($partidos[$k]->marcador_visita>$partidos[$k]->marcador_local){
+                                $part_g++;
+                            }elseif ($partidos[$k]->marcador_visita<$partidos[$k]->marcador_local){
+                                $part_p++;
+                            }else{
+                                $part_e++;
+                            }
+                            $gf = $gf+ $partidos[$k]->marcador_visita;
+                            $gc = $gc+ $partidos[$k]->marcador_local;
+                        }
+                    }
+                    $total = (3 * $part_g) + $part_e;
+                    $model[] = array(
+                        "equipo_id"=>$equipos[$j]->equipo_id,
+                        "equipo_nombre"=>$equipos[$j]->equipo_nombre,
+                        "equipo_foto"=>$equipos[$j]->equipo_foto,
+                        "part_j"=>$part_j,
+                        "part_g"=>$part_g,
+                        "part_e"=>$part_e,
+                        "part_p"=>$part_p,
+                        "gf"=>$gf,
+                        "gc"=>$gc,
+                        "total"=>$total
+                    );
+                }
+                $posiciones[] = array(
+                    "id_grupo"=>$grupos[$i]->id_torneo_grupo,
+                    "nombre_grupo"=>$grupos[$i]->grupo_nombre,
+                    "equipos" => $model
+                );
+            }
+            require _VIEW_PATH_ . 'header.php';
+            require _VIEW_PATH_ . 'navbar.php';
+            require _VIEW_PATH_ . 'torneo/ver_torneo.php';
+        } catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            echo "<script language=\"javascript\">alert(\"Error Al Mostrar Contenido. Redireccionando Al Inicio\");</script>";
+            echo "<script language=\"javascript\">window.location.href=\"". _SERVER_ ."\";</script>";
+        }
+    }
+    public function ver_equipo(){
+        try{
+            $this->nav = new Navbar();
+            $navs = $this->nav->listMenu($this->crypt->decrypt($_SESSION['role'],_FULL_KEY_));
+            $id = $_GET['id'] ?? 0;
+            if($id == 0){
+                throw new Exception('ID Sin Declarar');
+            }
+            $equipo = $this->torneo->listar_equipo_por_id($id);
+            $jugadores = $this->torneo->listar_detalle_equipo($id);
+            $torneos = $this->torneo->listar_torneos_por_id_equipo($id);
+
+            require _VIEW_PATH_ . 'header.php';
+            require _VIEW_PATH_ . 'navbar.php';
+            require _VIEW_PATH_ . 'torneo/ver_equipo.php';
+        } catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            echo "<script language=\"javascript\">alert(\"Error Al Mostrar Contenido. Redireccionando Al Inicio\");</script>";
+            echo "<script language=\"javascript\">window.location.href=\"". _SERVER_ ."\";</script>";
+        }
     }
     public function registrar_equipo() {
-        $usuario_id = $_POST['usuario_id'];
-        $nombre = $_POST['nombre'];
-        if($_FILES['imagen']['tmp_name']!=null){
-            $file_path = "media/team/".$usuario_id."_".$nombre.".jpg";
-            move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
-        }else{
-            $file_path = "media/team/default.png";
+        try{
+            $ok_data = true;
+            if(isset($_POST['usuario_id']) && isset($_POST['nombre']) &&isset($_FILES['imagen']['tmp_name']) ){
+                $_POST['usuario_id'] = $this->clean->clean_post_int($_POST['usuario_id']);
+                $_POST['nombre'] = $this->clean->clean_post_str($_POST['nombre']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['usuario_id'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_str($_POST['nombre'], true, $ok_data, 200);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $microtime = microtime(true);
+                $usuario_id = $_POST['usuario_id'];
+                $nombre = $_POST['nombre'];
+                if($_FILES['imagen']['tmp_name']!=null){
+                    $file_path = "media/team/".$usuario_id."_".$nombre.".jpg";
+                    move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
+                }else{
+                    $file_path = "media/team/default.png";
+                }
+                date_default_timezone_set('America/Lima');
+                $join=date('Y-m-d H:i:s');
+                $result = $this->torneo->registrar_equipo($usuario_id,$nombre,$file_path,$join,$microtime);
+                if($result==1){
+                    $temporada = 1;
+                    $semana = 1;
+                    $obtener = $this->torneo->obtener_equipo_mt($microtime);
+                    $registrar = $this->torneo->registrar_equipo_usuario($obtener->equipo_id,$usuario_id);
+                    $crear_estadistica = $this->torneo->crear_estadistica($obtener->equipo_id,$temporada,$semana);
+                }
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
         }
-        /*$existe = $this->usuario->existe_nombre($usuario);
-        if($existe->id_usuario!=null){
-            $result = 3;
-        }else{
-            $result = $this->usuario->registrar($nombre,$apellido,$email,$usuario,$contrasenha,$rol,$usu_supe);
-        }*/
-        date_default_timezone_set('America/Lima');
-        $join=date('Y-m-d H:i:s');
-        $result = $this->torneo->registrar_equipo($usuario_id,$nombre,$file_path,$join);
-        if($result==1){
-            $temporada = 1;
-            $semana = 1;
-            $obtener = $this->torneo->obtener_ultimo_equipo_id();
-            $registrar = $this->torneo->registrar_equipo_usuario($obtener->equipo_id,$usuario_id);
-            $crear_estadistica = $this->torneo->crear_estadistica($obtener->equipo_id,$temporada,$semana);
-        }
-        echo json_encode($result);
+        $resources = array();
+        $resources[0] = array("valor"=>$result,"id_equipo"=>$obtener->equipo_id);
+        $data = array("results" => $resources);
+        echo json_encode($data);
     }
     public function registrar_torneo() {
-        $usuario_id = $_POST['usuario_id'];
-        $nombre = $_POST['nombre'];
-        $descripcion = $_POST['descripcion'];
-        $organizador = $_POST['organizador'];
-        $tipo = $_POST['tipo'];
-        $costo = $_POST['costo'];
-        $fecha = $_POST['fecha'];
-        $hora = $_POST['hora'];
-        $lugar = $_POST['lugar'];
-        if($_FILES['imagen']['tmp_name']!=null){
-            $file_path = "media/torneo/".$usuario_id."_".$nombre.".jpg";
-            move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
-        }else{
-            $file_path = "media/torneo/default.png";
+        try{
+            $ok_data = true;
+            if(isset($_POST['usuario_id']) && isset($_POST['nombre']) &&isset($_POST['descripcion']) &&isset($_POST['organizador']) &&isset($_POST['tipo']) &&isset($_POST['costo']) &&isset($_POST['fecha']) &&isset($_POST['hora'])&&isset($_POST['lugar'])&&isset($_FILES['imagen']['tmp_name']) ){
+                $_POST['usuario_id'] = $this->clean->clean_post_int($_POST['usuario_id']);
+                $_POST['nombre'] = $this->clean->clean_post_str($_POST['nombre']);
+                $_POST['descripcion'] = $this->clean->clean_post_str($_POST['descripcion']);
+                $_POST['organizador'] = $this->clean->clean_post_str($_POST['organizador']);
+                $_POST['tipo'] = $this->clean->clean_post_str($_POST['tipo']);
+                //$_POST['costo'] = $this->clean->clean_post_int($_POST['costo']);
+                $_POST['fecha'] = $this->clean->clean_post_date($_POST['fecha']);
+                $_POST['hora'] = $this->clean->clean_post_str($_POST['hora']);
+                $_POST['lugar'] = $this->clean->clean_post_str($_POST['lugar']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['usuario_id'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_str($_POST['nombre'], true, $ok_data, 100);
+                $ok_data = $this->clean->validate_post_str($_POST['descripcion'], true, $ok_data, 300);
+                $ok_data = $this->clean->validate_post_str($_POST['organizador'], true, $ok_data, 200);
+                $ok_data = $this->clean->validate_post_str($_POST['tipo'], true, $ok_data, 50);
+                //$ok_data = $this->clean->validate_post_str($_POST['costo'], true, $ok_data, 50);
+                $ok_data = $this->clean->validate_post_date($_POST['fecha'], true, $ok_data, 250,1);
+                $ok_data = $this->clean->validate_post_str($_POST['hora'], true, $ok_data, 50);
+                $ok_data = $this->clean->validate_post_str($_POST['lugar'], true, $ok_data, 100);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $usuario_id = $_POST['usuario_id'];
+                $nombre = $_POST['nombre'];
+                $descripcion = $_POST['descripcion'];
+                $organizador = $_POST['organizador'];
+                $tipo = $_POST['tipo'];
+                $costo = $_POST['costo'];
+                $fecha = $_POST['fecha'];
+                $hora = $_POST['hora'];
+                $lugar = $_POST['lugar'];
+                if($_FILES['imagen']['tmp_name']!=null){
+                    $file_path = "media/torneo/".$usuario_id."_".$nombre.".jpg";
+                    move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
+                }else{
+                    $file_path = "media/torneo/default.png";
+                }
+                $result = $this->torneo->registrar_torneo($usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$tipo,$file_path);
+                if($result==1){
+                    $last_id = $this->torneo->listar_ultimo_torneo();
+                }else{
+                    $last_id = 0;
+                }
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
         }
-        $result = $this->torneo->registrar_torneo($usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$tipo,$file_path);
-        if($result==1){
-            $last_id = $this->torneo->listar_ultimo_torneo();
-        }else{
-            $last_id = 0;
-        }
+
         $resources = array();
         $resources[0] = array("valor"=>$result,"id_torneo"=>$last_id->torneo_id);
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function registrar_grupo() {
-        $id_torneo = $_POST['id_torneo'];
-        $grupo_nombre = $_POST['grupo_nombre'];
-        $result = $this->torneo->registrar_grupo($id_torneo,$grupo_nombre);
+        try{
+            $ok_data = true;
+            if(isset($_POST['id_torneo']) && isset($_POST['grupo_nombre']) ){
+                $_POST['id_torneo'] = $this->clean->clean_post_int($_POST['id_torneo']);
+                $_POST['grupo_nombre'] = $this->clean->clean_post_str($_POST['grupo_nombre']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['id_torneo'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_str($_POST['grupo_nombre'], true, $ok_data, 50);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $id_torneo = $_POST['id_torneo'];
+                $grupo_nombre = $_POST['grupo_nombre'];
+                $result = $this->torneo->registrar_grupo($id_torneo,$grupo_nombre);
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
         $resources = array();
         $resources[0] = array("valor"=>$result);
         $data = array("results" => $resources);
@@ -72,36 +436,102 @@ class TorneoController{
     }
 
     public function registrar_instancia() {
-        $id_torneo = $_POST['id_torneo'];
-        $instancia_nombre = $_POST['instancia_nombre'];
-        $instancia_tipo = $_POST['instancia_tipo'];
-        $result = $this->torneo->registrar_instancia($id_torneo,$instancia_nombre,$instancia_tipo);
+        try{
+            $ok_data = true;
+            if(isset($_POST['id_torneo']) && isset($_POST['instancia_nombre'])&& isset($_POST['instancia_tipo']) ){
+                $_POST['id_torneo'] = $this->clean->clean_post_int($_POST['id_torneo']);
+                $_POST['instancia_nombre'] = $this->clean->clean_post_str($_POST['instancia_nombre']);
+                $_POST['instancia_tipo'] = $this->clean->clean_post_int($_POST['instancia_tipo']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['id_torneo'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_str($_POST['instancia_nombre'], true, $ok_data, 200);
+                $ok_data = $this->clean->validate_post_int($_POST['instancia_tipo'], true, $ok_data, 11);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $id_torneo = $_POST['id_torneo'];
+                $instancia_nombre = $_POST['instancia_nombre'];
+                $instancia_tipo = $_POST['instancia_tipo'];
+                $result = $this->torneo->registrar_instancia($id_torneo,$instancia_nombre,$instancia_tipo);
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
         $resources = array();
         $resources[0] = array("valor"=>$result);
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function registrar_partido() {
-        $id_torneo_instancia = $_POST['id_torneo_instancia'];
-        $id_equipo_local = $_POST['id_equipo_local'];
-        $id_equipo_visita = $_POST['id_equipo_visita'];
-        $fecha = $_POST['fecha'];
-        $hora = $_POST['hora'];
-        $result = $this->torneo->registrar_partido($id_torneo_instancia,$id_equipo_local,$id_equipo_visita,$fecha,$hora);
+        try{
+            $ok_data = true;
+            if(isset($_POST['id_torneo_instancia']) && isset($_POST['id_equipo_local'])&& isset($_POST['id_equipo_visita'])&& isset($_POST['fecha'])&& isset($_POST['hora']) ){
+                $_POST['id_torneo_instancia'] = $this->clean->clean_post_int($_POST['id_torneo_instancia']);
+                $_POST['id_equipo_local'] = $this->clean->clean_post_int($_POST['id_equipo_local']);
+                $_POST['id_equipo_visita'] = $this->clean->clean_post_int($_POST['id_equipo_visita']);
+                $_POST['fecha'] = $this->clean->clean_post_date($_POST['fecha']);
+                $_POST['hora'] = $this->clean->clean_post_str($_POST['hora']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['id_torneo_instancia'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_int($_POST['id_equipo_local'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_int($_POST['id_equipo_visita'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_date($_POST['fecha'], true, $ok_data, 200,1);
+                $ok_data = $this->clean->validate_post_str($_POST['hora'], true, $ok_data, 10);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $id_torneo_instancia = $_POST['id_torneo_instancia'];
+                $id_equipo_local = $_POST['id_equipo_local'];
+                $id_equipo_visita = $_POST['id_equipo_visita'];
+                $fecha = $_POST['fecha'];
+                $hora = $_POST['hora'];
+                $result = $this->torneo->registrar_partido($id_torneo_instancia,$id_equipo_local,$id_equipo_visita,$fecha,$hora);
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+
         $resources = array();
         $resources[0] = array("valor"=>$result);
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function registrar_equipo_en_torneo() {
-        $equipo_id = $_POST['id_equipo'];
-        $id_torneo_grupo = $_POST['id_torneo_grupo'];
-        $result = $this->torneo->registrar_equipo_en_torneo($id_torneo_grupo,$equipo_id);
-        if($result==1){
-            $estadisticas_1 = $this->torneo->listar_estadisticas_por_id_equipo($equipo_id);
-            $valor_1 = $estadisticas_1->torneos;
-            $valor_1++;
-            $this->torneo->sumar_estadistica($equipo_id,"torneos",$valor_1);
+        try{
+            $ok_data = true;
+            if(isset($_POST['id_equipo']) && isset($_POST['id_torneo_grupo'])){
+                $_POST['id_equipo'] = $this->clean->clean_post_int($_POST['id_equipo']);
+                $_POST['id_torneo_grupo'] = $this->clean->clean_post_int($_POST['id_torneo_grupo']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['id_equipo'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_int($_POST['id_torneo_grupo'], true, $ok_data, 11);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $equipo_id = $_POST['id_equipo'];
+                $id_torneo_grupo = $_POST['id_torneo_grupo'];
+                $result = $this->torneo->registrar_equipo_en_torneo($id_torneo_grupo,$equipo_id);
+                if($result==1){
+                    $estadisticas_1 = $this->torneo->listar_estadisticas_por_id_equipo($equipo_id);
+                    $valor_1 = $estadisticas_1->torneos;
+                    $valor_1++;
+                    $this->torneo->sumar_estadistica($equipo_id,"torneos",$valor_1);
+                }
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
         }
         $resources = array();
         $resources[0] = array("valor"=>$result);
@@ -122,6 +552,26 @@ class TorneoController{
         }
         $data = array("results" => $resources);
         echo json_encode($data);
+    }
+    public function buscar_jugadores_por_id_partido(){
+        $id_torneo_partido = $_POST['id'];
+        $ind = $_POST['ind'];
+        $i = $_POST['i'];
+        $model = $this->torneo->listar_partido_por_id($id_torneo_partido);
+        if($ind==0){
+            $jugadores = $this->torneo->listar_detalle_equipo($model->id_equipo_local);
+        }else{
+            $jugadores = $this->torneo->listar_detalle_equipo($model->id_equipo_visita);
+        }
+        $lista="<table id='example4'><thead><th>Foto</th><th>Nombre</th><th>Elegir</th></thead><tbody>";
+        foreach ($jugadores as $j){
+            $lista.="<tr>
+<td><img src='"._SERVER_. $j->user_image."' class='img-circle img-responsive img-thumbnail' style='max-width: 50px;'></td>
+<td>".$j->user_nickname."</td>
+<td><button class='btn btn-success' data-dismiss='modal' onclick=\"save_goleador(".$j->id_user.",'".$j->user_nickname."',".$i.",".$ind.")\" style='border-radius: 50%'>+</button></td></tr>";
+        }
+        $lista.="</tbody></table>";
+        echo json_encode($lista);
     }
     public function listar_grupos_por_id_torneo() {
         $id_torneo = $_POST['id_torneo'];
@@ -246,29 +696,56 @@ class TorneoController{
         echo json_encode($data);
     }
     public function retar_equipo() {
-        $retador_id = $_POST['retador'];
-        $retado_id = $_POST['retado'];
-        $fecha = $_POST['fecha'];
-        $hora = $_POST['hora'];
-        $lugar = $_POST['lugar'];
-        $reto_exists = $this->torneo->existe_reto_pendiente($retador_id,$retado_id);
-        if($reto_exists->reto_id == null){
-            $result = $this->torneo->retar_equipo($retador_id,$retado_id,$fecha,$hora,$lugar);
-            if($result==1){
-                $datos = $this->torneo->listar_equipo_por_id($retado_id);
-                $datos2 = $this->torneo->listar_equipo_por_id($retador_id);
-                $estadisticas_1 = $this->torneo->listar_estadisticas_por_id_equipo($retador_id);
-                $valor_1 = $estadisticas_1->retos_enviados;
-                $valor_1++;
-                $estadisticas_2 = $this->torneo->listar_estadisticas_por_id_equipo($retado_id);
-                $valor_2 = $estadisticas_2->retos_recibidos;
-                $valor_2++;
-                $this->torneo->sumar_estadistica($retador_id,"retos_enviados",$valor_1);
-                $this->torneo->sumar_estadistica($retado_id,"retos_recibidos",$valor_2);
-                $this->notificar($datos->usuario_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
+        try{
+            $ok_data = true;
+            if(isset($_POST['retador']) && isset($_POST['retado'])&& isset($_POST['fecha'])&& isset($_POST['hora'])&& isset($_POST['lugar']) ){
+                $_POST['retador'] = $this->clean->clean_post_int($_POST['retador']);
+                $_POST['retado'] = $this->clean->clean_post_int($_POST['retado']);
+                $_POST['fecha'] = $this->clean->clean_post_date($_POST['fecha']);
+                $_POST['hora'] = $this->clean->clean_post_str($_POST['hora']);
+                $_POST['lugar'] = $this->clean->clean_post_str($_POST['lugar']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['retador'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_int($_POST['retado'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_date($_POST['fecha'], true, $ok_data, 50,1);
+                $ok_data = $this->clean->validate_post_str($_POST['hora'], true, $ok_data, 20);
+                $ok_data = $this->clean->validate_post_str($_POST['lugar'], true, $ok_data, 100);
+            }else{
+                $ok_data=false;
             }
-        }else{
-            $result = 3;
+            if($ok_data){
+                $retador_id = $_POST['retador'];
+                $retado_id = $_POST['retado'];
+                $fecha = $_POST['fecha'];
+                $hora = $_POST['hora'];
+                $lugar = $_POST['lugar'];
+                $reto_exists = $this->torneo->existe_reto_pendiente($retador_id,$retado_id);
+                if(!isset($reto_exists->reto_id)){
+                    $result = $this->torneo->retar_equipo($retador_id,$retado_id,$fecha,$hora,$lugar);
+                    if($result==1){
+                        $datos = $this->torneo->listar_equipo_por_id($retado_id);
+                        $datos2 = $this->torneo->listar_equipo_por_id($retador_id);
+                        $estadisticas_1 = $this->torneo->listar_estadisticas_por_id_equipo($retador_id);
+                        $valor_1 = $estadisticas_1->retos_enviados;
+                        $valor_1++;
+                        $estadisticas_2 = $this->torneo->listar_estadisticas_por_id_equipo($retado_id);
+                        $valor_2 = $estadisticas_2->retos_recibidos;
+                        $valor_2++;
+                        $this->torneo->sumar_estadistica($retador_id,"retos_enviados",$valor_1);
+                        $this->torneo->sumar_estadistica($retado_id,"retos_recibidos",$valor_2);
+                        if($datos->user_token!=""){
+                            //$this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
+                        }
+                    }
+                }else{
+                    $result = 3;
+                }
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
         }
         $resources = array();
         $resources[0] = array("valor"=>$result);
@@ -353,6 +830,68 @@ class TorneoController{
             }else{
                 $this->notificar($datos->usuario_token,"Confirmar resultado ","¿Como quedó tu duelo? Confirma el resultado.","Resultado","¿Como quedó tu duelo? Confirma el resultado.");
             }
+        }
+        $resources = array();
+        $resources[0] = array("valor"=>$result);
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function dar_resultado_partido_torneo() {
+        try{
+            $ok_data = true;
+            if(isset($_POST['id_torneo_partido']) && isset($_POST['marcador_local'])&& isset($_POST['marcador_visita'])){
+                $_POST['id_torneo_partido'] = $this->clean->clean_post_int($_POST['id_torneo_partido']);
+                $_POST['marcador_local'] = $this->clean->clean_post_int($_POST['marcador_local']);
+                $_POST['marcador_visita'] = $this->clean->clean_post_int($_POST['marcador_visita']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['id_torneo_partido'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_int($_POST['marcador_local'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_int($_POST['marcador_visita'], true, $ok_data, 11);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $id = $_POST['id_torneo_partido'];
+                $marcador_local = $_POST['marcador_local'];
+                $marcador_visita = $_POST['marcador_visita'];
+                $result = $this->torneo->dar_resultado_partido_torneo($marcador_local,$marcador_visita,$id);
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        $resources = array();
+        $resources[0] = array("valor"=>$result);
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function registrar_goleador_partido_torneo() {
+        try{
+            $ok_data = true;
+            if(isset($_POST['id_torneo_partido']) && isset($_POST['id_usuario'])&& isset($_POST['id_equipo'])){
+                $_POST['id_torneo_partido'] = $this->clean->clean_post_int($_POST['id_torneo_partido']);
+                $_POST['id_usuario'] = $this->clean->clean_post_int($_POST['id_usuario']);
+                $_POST['id_equipo'] = $this->clean->clean_post_int($_POST['id_equipo']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['id_torneo_partido'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_int($_POST['id_usuario'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_int($_POST['id_equipo'], true, $ok_data, 11);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $id = $_POST['id_torneo_partido'];
+                $id_usuario = $_POST['id_usuario'];
+                $id_equipo = $_POST['id_equipo'];
+                $result = $this->torneo->registrar_goleador_partido_torneo($id,$id_usuario,$id_equipo);
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
         }
         $resources = array();
         $resources[0] = array("valor"=>$result);
@@ -466,6 +1005,7 @@ class TorneoController{
                 $resources[$cont] = array(
                     "id_torneo" => $model[$i]->torneo_id,
                     "nombre" => $model[$i]->torneo_nombre,
+                    "foto" => $model[$i]->torneo_imagen,
                     "descripcion" => $model[$i]->torneo_descripcion,
                     "fecha" => $model[$i]->torneo_fecha,
                     "hora" => $model[$i]->torneo_hora,

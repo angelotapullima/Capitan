@@ -107,7 +107,7 @@ public class FragmentAceptados extends Fragment implements SwipeRefreshLayout.On
         //retosViewModel.ElimarRetos();
 
         RetosWebServiceRepository retosWebServiceRepository = new RetosWebServiceRepository(application);
-        retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());
+        retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
         RefreshLayoutAceptados.setRefreshing(false);
 
     }

@@ -22,14 +22,12 @@ import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.AdaptadorForo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquipos.MisEquiposViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views.AdaptadorMiEquipo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
 import java.util.List;
-
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -151,7 +149,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-        Picasso.with(this).load(IP+"/"+preferences.getFotoUsuario()).into(fotodeperfil);
-        nombre_perfil.setText(preferences.getNombrePref());
+        Picasso.with(this).load(preferences.getFotoUsuario()).into(fotodeperfil);
+        nombre_perfil.setText(preferences.getPersonName()+" "+preferences.getPersonSurname());
     }
 }

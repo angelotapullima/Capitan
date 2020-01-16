@@ -41,7 +41,7 @@ public class OtrosTorneosWebServiceRepository {
 
     List<Torneo> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Torneo>> providesWebService(String id_usuario) {
+ public LiveData<List<Torneo>> providesWebService(String id_usuario,String token) {
 
      final MutableLiveData<List<Torneo>> data = new MutableLiveData<>();
 
@@ -57,7 +57,7 @@ public class OtrosTorneosWebServiceRepository {
          //Defining retrofit api service
          OtrosTorneosAPIService service = retrofit.create(OtrosTorneosAPIService.class);
         //  response = service.makeRequest().execute().body();
-         service.getRetos(id_usuario).enqueue(new Callback<String>() {
+         service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.d("Repository","Response::::"+response.body());

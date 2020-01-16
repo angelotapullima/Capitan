@@ -23,9 +23,9 @@ public class MisTorneoRoomDBRepository {
     public LiveData<List<Torneo>> getAllMisTorneo(String si) {
         boolean online = ForoFragment.isOnLine();
 
-        if (online){
+        /*if (online){
             deleteAllRetos();
-        }
+        }*/
         mAllRetos = misTorneoDao.getAllMisTorneos(si);
         return mAllRetos;
     }
@@ -44,7 +44,7 @@ public class MisTorneoRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             retosDao.deleteAll();
-            Log.i("eliminado", "doInBackground: eliminado");
+            Log.i("eliminado mis torneos", "doInBackground: eliminado");
             return null;
         }
     }

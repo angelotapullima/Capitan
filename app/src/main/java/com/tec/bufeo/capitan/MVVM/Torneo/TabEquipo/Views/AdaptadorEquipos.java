@@ -22,6 +22,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorEquipos extends RecyclerView.Adapter<AdaptadorEquipos.EquiposViewHolder>  {
 
@@ -93,13 +94,8 @@ public class AdaptadorEquipos extends RecyclerView.Adapter<AdaptadorEquipos.Equi
 
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-            UniversalImageLoader.setImage(IP+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipoRetar,null);
-            /*Picasso.with(ctx).load("http://"+IP+"/"+ current.getForo_foto()).into(holder.img_fotoForo);
-            holder.comentarios_descripcion.setText(current.getComments_comentario());
-            holder.comentarios_nombre.setText(current.getComments_nombre());
-            holder.fecha_comentario.setText(current.getComments_fecha());*/
+            UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipoRetar,null);
 
-            //Picasso.with(context).load("http://"+IP+"/"+ obj.getEquipo_foto()).into(holder.img_fotoEquipo);
             holder.txt_nombreEquipoRetar.setText(current.getEquipo_nombre());
             holder.txt_capitanReto.setText(current.getCapitan_nombre());
             holder.bid(current,listener);

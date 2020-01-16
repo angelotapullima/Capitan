@@ -1,0 +1,20 @@
+2020-01-11 10:37:46[UTC -5] [ip] 201.240.177.114 [location] Admin|index [text] SIN PERMISOS SUFICIENTES
+2020-01-11 10:37:58[UTC -5] [ip] 201.240.177.114 [location] Admin|index [text] SIN PERMISOS SUFICIENTES
+2020-01-11 14:24:22[UTC -5] [ip] 201.240.177.114 [location] Admin|index [text] SIN PERMISOS SUFICIENTES
+2020-01-11 14:24:52[UTC -5] [ip] 201.240.177.114 [location] Admin|index [text] SIN PERMISOS SUFICIENTES
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Foro|conteo_likes [text] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'guabba_capitan2.likePublicacion' doesn't exist
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Foro|dio_like [text] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'guabba_capitan2.likePublicacion' doesn't exist
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/ver_torneo.php: 127[MESSAGGE]Trying to get property of non-object
+
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Foro|conteo_likes [text] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'guabba_capitan2.likePublicacion' doesn't exist
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Foro|dio_like [text] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'guabba_capitan2.likePublicacion' doesn't exist
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/ver_torneo.php: 127[MESSAGGE]Trying to get property of non-object
+
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Foro|conteo_likes [text] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'guabba_capitan2.likePublicacion' doesn't exist
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Foro|dio_like [text] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'guabba_capitan2.likePublicacion' doesn't exist
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/ver_torneo.php: 127[MESSAGGE]Trying to get property of non-object
+
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Foro|conteo_likes [text] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'guabba_capitan2.likePublicacion' doesn't exist
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Foro|dio_like [text] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'guabba_capitan2.likePublicacion' doesn't exist
+2020-01-11 14:25:29[UTC -5] [ip] 201.240.177.114 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/ver_torneo.php: 127[MESSAGGE]Trying to get property of non-object
+

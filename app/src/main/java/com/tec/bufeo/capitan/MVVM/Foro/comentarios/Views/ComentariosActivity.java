@@ -102,7 +102,7 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
                 // des,id_publicacion);
                 Comments comments =  new Comments();
                 comments.setComments_foto(preferences.getFotoUsuario());
-                comments.setComments_nombre(preferences.getNombrePref());
+                comments.setComments_nombre(preferences.getPersonName() + " " + preferences.getPersonSurname());
                 comments.setComments_comentario(des);
                 comments.setComments_id(id_publicacion);
 

@@ -42,7 +42,7 @@ public class RetosWebServiceRepository {
 
     List<Retos> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Retos>> providesWebService(String id_usuario) {
+ public LiveData<List<Retos>> providesWebService(String id_usuario,String token) {
 
      final MutableLiveData<List<Retos>> data = new MutableLiveData<>();
 
@@ -58,10 +58,10 @@ public class RetosWebServiceRepository {
          //Defining retrofit api service
          RetosAPIService service = retrofit.create(RetosAPIService.class);
         //  response = service.makeRequest().execute().body();
-         service.getRetos(id_usuario).enqueue(new Callback<String>() {
+         service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.d("Repository","Response::::"+response.body());
+                 Log.d("Repository retos","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  RetosRoomDBRepository retosRoomDBRepository = new RetosRoomDBRepository(application);
                  retosRoomDBRepository.insertRetos(webserviceResponseList);

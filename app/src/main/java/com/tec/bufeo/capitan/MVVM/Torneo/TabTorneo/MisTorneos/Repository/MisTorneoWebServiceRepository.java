@@ -41,7 +41,7 @@ public class MisTorneoWebServiceRepository {
 
     List<Torneo> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Torneo>> providesWebService(String id_usuario) {
+ public LiveData<List<Torneo>> providesWebService(String id_usuario,String token) {
 
      final MutableLiveData<List<Torneo>> data = new MutableLiveData<>();
 
@@ -57,10 +57,10 @@ public class MisTorneoWebServiceRepository {
          //Defining retrofit api service
          MisTorneoAPIService service = retrofit.create(MisTorneoAPIService.class);
         //  response = service.makeRequest().execute().body();
-         service.getRetos(id_usuario).enqueue(new Callback<String>() {
+         service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.d("Repository","Response::::"+response.body());
+                 //Log.e("Repository mis torneos","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  MisTorneoRoomDBRepository misTorneoRoomDBRepository = new MisTorneoRoomDBRepository(application);
                  misTorneoRoomDBRepository.insertRetos(webserviceResponseList);
@@ -125,7 +125,7 @@ public class MisTorneoWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        //Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

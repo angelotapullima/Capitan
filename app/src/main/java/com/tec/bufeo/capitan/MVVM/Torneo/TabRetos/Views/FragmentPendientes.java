@@ -214,7 +214,7 @@ public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.O
         //retosViewModel.ElimarRetos();
 
         RetosWebServiceRepository retosWebServiceRepository = new RetosWebServiceRepository(application);
-        retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref());
+        retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
         RefreshLayoutPendientes.setRefreshing(false);
     }
 }

@@ -32,7 +32,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.ViewModels.MensajesViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
-import com.tec.bufeo.capitan.Fragments.TabsTorneo.FragmentTorneoPadre;
+import com.tec.bufeo.capitan.Fragments.FragmentTorneoPadre;
 import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscarPadre;
 import com.tec.bufeo.capitan.Fragments.FragmentInfo;
 import com.tec.bufeo.capitan.Fragments.FragmentNegocio;
@@ -43,7 +43,6 @@ import com.tec.bufeo.capitan.WebService.VolleySingleton;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class MenuPrincipal extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -254,7 +253,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("actualizartoken: ",""+response);
+                //Log.e("actualizartoken: ",""+response);
 
             }
 
@@ -270,11 +269,11 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
 
                 //enviamos los parametros id_usuario y el token nuevo asignado al telefono
                 Map<String,String> parametros=new HashMap<>();
-                parametros.put("usuario_id",usuario_id);
+                parametros.put("id_user",usuario_id);
                 parametros.put("token_firebase",tokenNuevo);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
-                Log.e("parametros: ",""+parametros);
+                //Log.e("parametros: ",""+parametros);
 
                 return parametros;
             }

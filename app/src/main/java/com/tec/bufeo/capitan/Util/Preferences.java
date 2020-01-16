@@ -17,10 +17,7 @@ public class Preferences {
         this.context = context;
     }
 
-    public String getNombrePref(){
-        pref=context.getSharedPreferences("User", MODE_PRIVATE);
-        return pref.getString("usuario_nombre","");
-    }
+
 
 
 
@@ -63,5 +60,13 @@ public class Preferences {
         return pref.getString("token","");
     }
 
+    public String getPersonName(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("person_name","");
+    }
+    public String getPersonSurname(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("person_surname","");
+    }
 
 }

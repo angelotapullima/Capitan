@@ -42,7 +42,7 @@ public class FeedWebServiceRepository {
 
     List<ModelFeed> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<ModelFeed>> providesWebService(String id_usuario, String limite_sup, String limite_inf, final String carga) {
+ public LiveData<List<ModelFeed>> providesWebService(String id_usuario, String limite_sup, String limite_inf, final String carga,final String token) {
 
      final MutableLiveData<List<ModelFeed>> data = new MutableLiveData<>();
 
@@ -58,10 +58,10 @@ public class FeedWebServiceRepository {
 
          APIServiceFeed service = retrofit.create(APIServiceFeed.class);
          //  response = service.makeRequest().execute().body();
-         service.savePost(id_usuario,limite_sup,limite_inf).enqueue(new Callback<String>() {
+         service.savePost(id_usuario,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.e("Repository","feed::::"+response.body());
+                 //Log.e("Repository","feed::::"+response.body());
                  webserviceResponseList = parseJson(response.body(),carga);
                  FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
                  feedRoomDBRepository.insertPosts(webserviceResponseList);

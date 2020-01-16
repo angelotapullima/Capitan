@@ -23,9 +23,9 @@ public class ChatsRoomDBRepository {
 
         boolean online = ForoFragment.isOnLine();
 
-        if (online){
+        /*if (online){
             deleteAllEquipos();
-        }
+        }*/
 
         mAllComments = chatsDao.getAllChats();
         return mAllComments;
@@ -47,7 +47,7 @@ public class ChatsRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             chatsDao.deleteAll();
-            Log.i("eliminado", "doInBackground: eliminado");
+            Log.i("eliminado chats", "doInBackground: eliminado");
             return null;
         }
     }

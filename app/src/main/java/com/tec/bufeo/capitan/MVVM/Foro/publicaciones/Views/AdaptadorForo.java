@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHolder>  {
 
@@ -150,8 +151,8 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             }else {
                 holder.imgbt_like.setImageResource(R.drawable.thumb_up);
             }
-            UniversalImageLoader.setImage(IP+"/"+ current.getForo_foto(),holder.img_fotoForo,null);
-            UniversalImageLoader.setImage(IP+"/"+ current.getUsuario_foto(),holder.foto_perfil_publicacion,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getForo_foto(),holder.img_fotoForo,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getUsuario_foto(),holder.foto_perfil_publicacion,null);
             //Picasso.with(ctx).load("http://"+IP+"/"+ current.getForo_foto()).into(holder.img_fotoForo);
 
 

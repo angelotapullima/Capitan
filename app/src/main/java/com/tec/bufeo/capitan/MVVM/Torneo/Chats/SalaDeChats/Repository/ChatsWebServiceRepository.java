@@ -45,7 +45,7 @@ public class ChatsWebServiceRepository {
     private List<Chats> webserviceResponseList = new ArrayList<>();
 
 
- public LiveData<List<Chats>> providesWebService(String id) {
+ public LiveData<List<Chats>> providesWebService(String id,String token) {
 
      final MutableLiveData<List<Chats>> data = new MutableLiveData<>();
 
@@ -61,10 +61,10 @@ public class ChatsWebServiceRepository {
          //Defining retrofit api service
          ChatsAPIService service = retrofit.create(ChatsAPIService.class);
         //  response = service.makeRequest().execute().body();
-         service.makeRequest(id).enqueue(new Callback<String>() {
+         service.makeRequest(id,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
-                 Log.d("Repository","Response::::"+response.body());
+                 Log.d("Repository chats","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
 
                  ChatsRoomDBRepository chatsRoomDBRepository = new ChatsRoomDBRepository(application);

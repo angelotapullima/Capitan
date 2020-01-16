@@ -7,8 +7,10 @@ import retrofit2.http.POST;
 
 public interface APIServiceFeed {
     @FormUrlEncoded
-    @POST("index.php?c=Foro&a=listar_publicaciones&key_mobile=123456asdfgh")
+    @POST("api/Foro/listar_publicaciones")
     Call<String> savePost(@Field("id_usuario") String id_usuario,
                           @Field("limite_sup") String limite_sup,
+                          @Field("app") String app,
+                          @Field("token") String token,
                           @Field("limite_inf") String limite_inf);
 }

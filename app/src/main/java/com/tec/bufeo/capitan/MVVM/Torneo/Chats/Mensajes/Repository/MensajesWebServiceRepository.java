@@ -42,7 +42,7 @@ public class MensajesWebServiceRepository {
     List<Mensajes> webserviceResponseList = new ArrayList<>();
 
 
- public LiveData<List<Mensajes>> providesWebService(String id) {
+ public LiveData<List<Mensajes>> providesWebService(String id,String token) {
 
      final MutableLiveData<List<Mensajes>> data = new MutableLiveData<>();
 
@@ -59,10 +59,10 @@ public class MensajesWebServiceRepository {
          //Defining retrofit api service
          MensajesAPIService service = retrofit.create(MensajesAPIService.class);
         //  response = service.makeRequest().execute().body();
-         service.makeRequest(id).enqueue(new Callback<String>() {
+         service.makeRequest(id,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.d("Repository","Response::::"+response.body());
+                 Log.d("Repository mensajes","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  MensajesRoomDBRepository mensajesRoomDBRepository = new MensajesRoomDBRepository(application);
                  mensajesRoomDBRepository.insertReviews(webserviceResponseList);

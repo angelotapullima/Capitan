@@ -128,7 +128,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     List<Mensajes> numero;
     public void cargarvista(){
 
-        mensajesViewModel.getmAllMensajes(id_chat).observe(this, new Observer<List<Mensajes>>() {
+        mensajesViewModel.getmAllMensajes(id_chat,preferences.getToken()).observe(this, new Observer<List<Mensajes>>() {
             @Override
             public void onChanged(@Nullable List<Mensajes> chats) {
                 adapterMensajes.setWords(chats);

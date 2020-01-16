@@ -96,7 +96,7 @@ public class Splash extends AppCompatActivity {
     Application application;
     public void cargarFeed(){
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0","0");
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0","0",preferences.getToken());
     }
 
 }

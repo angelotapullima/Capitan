@@ -272,7 +272,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         //feedListViewModel.deleteAllFeed();
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0","refresh");
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0","refresh",preferences.getToken());
         setAdapter();
         cargarvista();
         Log.e("prueba", "onRefresh: funciona" );
@@ -291,7 +291,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
 
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),superior_envio,inferior_envio,"datos");
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),superior_envio,inferior_envio,"datos",preferences.getToken());
     }
 
 

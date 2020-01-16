@@ -31,8 +31,8 @@ public class MisTorneoViewModel extends AndroidViewModel {
         //mAllRetos = retosRoomDBRepository.getAllRetos();
     }
 
-    public LiveData<List<Torneo>> getAllRetos(String id_usuario, String si) {
-        retroObservable = misTorneoWebServiceRepository.providesWebService(id_usuario);
+    public LiveData<List<Torneo>> getAllRetos( String si) {
+        //retroObservable = misTorneoWebServiceRepository.providesWebService(id_usuario,token);
         //listPlatosRoomDBRepository.insertPosts(retroObservable.getValue());
         mAllTorneo = misTorneoRoomDBRepository.getAllMisTorneo(si);
         return mAllTorneo;

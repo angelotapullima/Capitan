@@ -30,8 +30,8 @@ public class OtrosTorneosViewModel extends AndroidViewModel {
         //mAllRetos = retosRoomDBRepository.getAllRetos();
     }
 
-    public LiveData<List<Torneo>> getAllOtrosTorneos(String id_usuario, String no) {
-        retroObservable = otrosTorneosWebServiceRepository.providesWebService(id_usuario);
+    public LiveData<List<Torneo>> getAllOtrosTorneos( String no) {
+        //retroObservable = otrosTorneosWebServiceRepository.providesWebService(id_usuario,token);
         //listPlatosRoomDBRepository.insertPosts(retroObservable.getValue());
         mAllTorneo = otrosTorneosRoomDBRepository.getAllOtrosTorneo(no);
         return mAllTorneo;

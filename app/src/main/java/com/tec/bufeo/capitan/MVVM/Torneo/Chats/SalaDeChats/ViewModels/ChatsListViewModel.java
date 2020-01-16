@@ -25,8 +25,8 @@ public class ChatsListViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<List<Chats>> getmAllChats(String id) {
-        retroObservable = chatsWebServiceRepository.providesWebService(id);
+    public LiveData<List<Chats>> getmAllChats() {
+        //retroObservable = chatsWebServiceRepository.providesWebService(id,token);
         mAllComments = chatsRoomDBRepository.getAllComments();
         return mAllComments;
     }

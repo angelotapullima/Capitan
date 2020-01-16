@@ -29,8 +29,8 @@ public class MensajesViewModel extends AndroidViewModel {
         //mAllComments= mensajesRoomDBRepository.getAllComments(id);
     }
 
-    public LiveData<List<Mensajes>> getmAllMensajes(String chat_id) {
-        retroObservable = mensajesWebServiceRepository.providesWebService(chat_id);
+    public LiveData<List<Mensajes>> getmAllMensajes(String chat_id,String token) {
+        retroObservable = mensajesWebServiceRepository.providesWebService(chat_id,token);
         mAllComments = mensajesRoomDBRepository.getAllMensajes(chat_id);
         return mAllComments;
     }

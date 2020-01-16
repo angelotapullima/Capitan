@@ -3,6 +3,8 @@ package com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Views;
 import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +23,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Repository.MisTorneoWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.ViewModels.MisTorneoViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.Repository.OtrosTorneosWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.ViewModels.OtrosTorneosViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -27,7 +33,7 @@ import com.tec.bufeo.capitan.Util.Preferences;
 import java.util.List;
 
 
-public class FragmentTorneoRoque extends Fragment  {
+public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
     Preferences preferences;
@@ -39,6 +45,7 @@ public class FragmentTorneoRoque extends Fragment  {
     OtrosTorneosViewModel otrosTorneosViewModel;
     AdaptadorMisTorneos adaptadorMisTorneos;
     FloatingActionButton reg_torneo;
+    SwipeRefreshLayout swipeTorneos;
 
 
     AdaptadorOtrosTorneos adaptadorOtrosTorneos;
@@ -77,6 +84,9 @@ public class FragmentTorneoRoque extends Fragment  {
         rcv_torneos = (RecyclerView) view.findViewById(R.id.rcv_torneos);
         imb_agregar_torneo = (ImageButton) view.findViewById(R.id.imb_agregar_torneo);
         reg_torneo = (FloatingActionButton) view.findViewById(R.id.reg_torneo);
+        swipeTorneos = (SwipeRefreshLayout) view.findViewById(R.id.swipeTorneos);
+        swipeTorneos.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
+        swipeTorneos.setOnRefreshListener(this);
 
         reg_torneo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +102,7 @@ public class FragmentTorneoRoque extends Fragment  {
 
     public void cargarvista(){
 
-        misTorneoViewModel.getAllRetos(preferences.getIdUsuarioPref(),"si").observe(this, new Observer<List<Torneo>>() {
+        misTorneoViewModel.getAllRetos("si").observe(this, new Observer<List<Torneo>>() {
             @Override
             public void onChanged(@Nullable List<Torneo> torneos) {
                 adaptadorMisTorneos.setWords(torneos);
@@ -102,7 +112,7 @@ public class FragmentTorneoRoque extends Fragment  {
 
 
 
-        otrosTorneosViewModel.getAllOtrosTorneos(preferences.getIdUsuarioPref(),"no").observe(this, new Observer<List<Torneo>>() {
+        otrosTorneosViewModel.getAllOtrosTorneos("no").observe(this, new Observer<List<Torneo>>() {
             @Override
             public void onChanged(@Nullable List<Torneo> torneos) {
                 adaptadorOtrosTorneos.setWords(torneos);
@@ -169,4 +179,18 @@ public class FragmentTorneoRoque extends Fragment  {
     }
 
 
+    Application application;
+    @Override
+    public void onRefresh() {
+
+
+        MisTorneoWebServiceRepository misTorneoWebServiceRepository= new MisTorneoWebServiceRepository(application);
+        misTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
+
+        OtrosTorneosWebServiceRepository otrosTorneosWebServiceRepository =  new OtrosTorneosWebServiceRepository(application);
+        otrosTorneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
+
+        swipeTorneos.setRefreshing(false);
+
+    }
 }

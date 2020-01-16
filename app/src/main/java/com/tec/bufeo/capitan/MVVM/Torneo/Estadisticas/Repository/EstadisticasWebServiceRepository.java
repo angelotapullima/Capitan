@@ -60,7 +60,7 @@ public class EstadisticasWebServiceRepository {
          service.getEquipo(id_usuario).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.d("Repository","Response::::"+response.body());
+                 Log.d("Repository estadisticas","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  EstadisticasRoomDBRepository menuRoomDBRepository = new EstadisticasRoomDBRepository(application);
                  menuRoomDBRepository.insertEstadisticas(webserviceResponseList);
