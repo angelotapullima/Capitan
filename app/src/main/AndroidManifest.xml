@@ -18,11 +18,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Activity.CrearEquipos" />
         <activity android:name=".Activity.MasMisEquipos" />
@@ -51,7 +47,10 @@
             android:name=".Activity.Splash"
             android:theme="@style/AppTheme.NoActionBar">
 
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Activity.Login"

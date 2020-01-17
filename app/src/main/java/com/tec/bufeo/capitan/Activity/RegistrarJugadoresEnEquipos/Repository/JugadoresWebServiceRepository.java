@@ -112,6 +112,7 @@ public class JugadoresWebServiceRepository {
                 jugadores.setJugador_posicion(jsonNode.optString("posicion"));
                 jugadores.setJugador_habilidad(jsonNode.optString("habilidad"));
                 jugadores.setJugador_numero(jsonNode.optString("numero"));
+                jugadores.setJugador_estado("vacio");
 
                 apiResults.add(jugadores);
             }

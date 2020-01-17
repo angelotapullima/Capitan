@@ -673,15 +673,46 @@ class TorneoController{
         echo json_encode($data);
     }
     public function buscar_jugadores_nuevos(){
-        $id_equipo = $_POST['id_equipo'];
-        $model = $this->torneo->buscar_jugadores_nuevos($id_equipo);
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $resources[$i] = array(
-                "usuario_id" => $model[$i]->usuario_id,
-                "nombre" => $model[$i]->usuario_nombre,
-                "foto" => $model[$i]->usuario_foto
-            );
+        try{
+            $id_equipo = $_POST['id_equipo'];
+            $model = $this->torneo->buscar_jugadores_nuevos($id_equipo);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "usuario_id" => $model[$i]->id_user,
+                    "nombre" => $model[$i]->user_nickname,
+                    "foto" => $model[$i]->user_image,
+                    "posicion" => $model[$i]->user_posicion,
+                    "habilidad" => $model[$i]->user_habilidad,
+                    "numero" => $model[$i]->user_num
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function buscar_jugadores_nickname(){
+        try{
+            $dato = $_POST['dato'];
+            $id_equipo = $_POST['id_equipo'];
+            $model = $this->torneo->buscar_jugadores_nickname($dato,$id_equipo);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "usuario_id" => $model[$i]->id_user,
+                    "nombre" => $model[$i]->user_nickname,
+                    "foto" => $model[$i]->user_image,
+                    "posicion" => $model[$i]->user_posicion,
+                    "habilidad" => $model[$i]->user_habilidad,
+                    "numero" => $model[$i]->user_num
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
@@ -1050,6 +1081,7 @@ class TorneoController{
             $resources[$i] = array(
                 "id_torneo" => $model[$i]->torneo_id,
                 "nombre" => $model[$i]->torneo_nombre,
+                "foto" => $model[$i]->torneo_imagen,
                 "descripcion" => $model[$i]->torneo_descripcion,
                 "fecha" => $model[$i]->torneo_fecha,
                 "hora" => $model[$i]->torneo_hora,
@@ -1186,6 +1218,7 @@ class TorneoController{
                 $model[] = array(
                     "equipo_id"=>$equipos[$j]->equipo_id,
                     "equipo_nombre"=>$equipos[$j]->equipo_nombre,
+                    "equipo_foto"=>$equipos[$j]->equipo_foto,
                     "part_j"=>$part_j,
                     "part_g"=>$part_g,
                     "part_e"=>$part_e,

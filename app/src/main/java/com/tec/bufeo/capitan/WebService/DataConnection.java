@@ -231,22 +231,24 @@ public class DataConnection extends AppCompatActivity {
                 url = new URL(IP2+"/api/Login/validar_usuario");
 
             }if(funcion.equals("registrarse")){
-                parametros = "nombre=" + URLEncoder.encode(usuario.getUsuario_nombre(),"UTF-8")
-                        + "&nacimiento=" + URLEncoder.encode(usuario.getUsuario_nacimiento(),"UTF-8")
-                        + "&foto=" + URLEncoder.encode(usuario.getUsuario_foto(),"UTF-8")
-                        + "&sexo=" + URLEncoder.encode(usuario.getUsuario_sexo(),"UTF-8")
-                        + "&usuario=" + URLEncoder.encode(usuario.getUsuario_usuario(),"UTF-8")
-                        + "&clave=" + URLEncoder.encode(usuario.getUsuario_clave(),"UTF-8")
-                        + "&email=" + URLEncoder.encode(usuario.getUsuario_email(),"UTF-8")
-                        + "&habilidad=" + URLEncoder.encode(usuario.getUsuario_habilidad(),"UTF-8")
-                        + "&posicion=" + URLEncoder.encode(usuario.getUsuario_posicion(),"UTF-8")
-                        + "&num=" + URLEncoder.encode(usuario.getUsuario_numFavorito(),"UTF-8")
-                        + "&dni=" + URLEncoder.encode(usuario.getUsuario_dni(),"UTF-8")
-                        + "&telefono=" + URLEncoder.encode(usuario.getUsuario_telefono(),"UTF-8")
-                        + "&rol_id=" + URLEncoder.encode(usuario.getRol_id(),"UTF-8")
+                parametros = "person_name=" + URLEncoder.encode(usuario.getUsuario_nombre(),"UTF-8")
+                        + "&person_surname=" + URLEncoder.encode(usuario.getUsuario_nacimiento(),"UTF-8")
+                        + "&person_birth=" + URLEncoder.encode(usuario.getUsuario_nacimiento(),"UTF-8")
+                        + "&user_image=" + URLEncoder.encode(usuario.getUsuario_foto(),"UTF-8")
+                        + "&person_genre=" + URLEncoder.encode(usuario.getUsuario_sexo(),"UTF-8")
+                        + "&user_nickname=" + URLEncoder.encode(usuario.getUsuario_usuario(),"UTF-8")
+                        + "&user_password=" + URLEncoder.encode(usuario.getUsuario_clave(),"UTF-8")
+                        + "&user_email=" + URLEncoder.encode(usuario.getUsuario_email(),"UTF-8")
+                        + "&user_habilidad=" + URLEncoder.encode(usuario.getUsuario_habilidad(),"UTF-8")
+                        + "&user_posicion=" + URLEncoder.encode(usuario.getUsuario_posicion(),"UTF-8")
+                        + "&user_num=" + URLEncoder.encode(usuario.getUsuario_numFavorito(),"UTF-8")
+                        + "&person_dni=" + URLEncoder.encode(usuario.getUsuario_dni(),"UTF-8")
+                        + "&person_number_phone=" + URLEncoder.encode(usuario.getUsuario_telefono(),"UTF-8")
+                        + "&id_role=" + URLEncoder.encode(usuario.getRol_id(),"UTF-8")
+                        + "&person_address=" + URLEncoder.encode(usuario.getRol_id(),"UTF-8")
                         + "&ubigeo_id=" + URLEncoder.encode(usuario.getUbigeo_id(),"UTF-8");
 
-                url = new URL(IP+"/index.php?c=Usuario&a=registrar&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/User/new");
 
 
             }if(funcion.equals("registrarEmpresas")){
@@ -422,11 +424,11 @@ public class DataConnection extends AppCompatActivity {
             }if(funcion.equals("listarCiudades")){
                 parametros = " " + URLEncoder.encode(" ","UTF-8");
 
-                url = new URL(IP+"/index.php?c=Usuario&a=listar_ciudades&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/User/listar_ciudades");
             }if(funcion.equals("listarDistritoxCiudades")){
                 parametros = "ciudad=" + URLEncoder.encode(idciudad,"UTF-8");
 
-                url = new URL(IP+"/index.php?c=Usuario&a=listar_distritos_por_ciudad&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/User/listar_distritos_por_ciudad");
             }
 
             if (funcion.equals("listarEmpresasID")){

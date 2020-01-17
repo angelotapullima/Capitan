@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.Jugadores;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.JugadoresRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.ViewModel.JugadoresViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -24,15 +26,18 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity {
     RecyclerView rcv_elegidos,rcv_jugadores;
     EditText txt_busqueda;
     AdapterJugadores adapterJugadores;
+    AdapterElegidos adapterElegidos;
     String id_equipo,nombre_equipo;
     TextView name_equipo;
+    JugadoresRoomDBRepository jugadoresRoomDBRepository;
+    Application application;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_jugadores_en_equipos);
 
         jugadoresViewModel = ViewModelProviders.of(this).get(JugadoresViewModel.class);
-
+        jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
         preferences = new Preferences(this);
         /*id_equipo= getIntent().getExtras().getString("id_equipo");
         nombre_equipo= getIntent().getExtras().getString("nombre");*/
@@ -54,20 +59,30 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity {
         name_equipo.setText(nombre_equipo);
     }
     public void cargarvista() {
-        jugadoresViewModel.getAllJugadores(id_equipo,preferences.getToken()).observe(this, new Observer<List<Jugadores>>() {
+        jugadoresViewModel.getAllJugadores(id_equipo,preferences.getToken(),"vacio").observe(this, new Observer<List<Jugadores>>() {
             @Override
             public void onChanged(List<Jugadores> jugadores) {
                 adapterJugadores.setWords(jugadores);
             }
         });
 
+        jugadoresViewModel.getAllJugadores(id_equipo,preferences.getToken(),"seleccionado").observe(this, new Observer<List<Jugadores>>() {
+            @Override
+            public void onChanged(List<Jugadores> jugadores) {
+                adapterElegidos.setWords(jugadores);
+            }
+        });
+
     }
     private void setAdapter(){
 
-        adapterJugadores = new AdapterJugadores(this, new AdapterJugadores.OnItemClickListener() {
+        adapterJugadores= new AdapterJugadores(this, new AdapterJugadores.OnItemClickListener() {
             @Override
-            public void onItemClick(Jugadores mequipos, int position) {
+            public void onItemClick(Jugadores mequipos, String tipo, int position) {
 
+                if (tipo.equals("contenedor_jugadores")){
+                    jugadoresRoomDBRepository.EstadoSeleccionado(mequipos.getJugador_id());
+                }
             }
         });
 
@@ -75,5 +90,22 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity {
         linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
         rcv_jugadores.setLayoutManager(linearLayoutManager);
         rcv_jugadores.setAdapter(adapterJugadores);
+
+
+        adapterElegidos = new AdapterElegidos(this, new AdapterElegidos.OnItemClickListener() {
+            @Override
+            public void onItemClick(Jugadores jugadores, String tipo, int position) {
+                if (tipo.equals("contenedor_elegidos")){
+                    jugadoresRoomDBRepository.EstadoVacio(jugadores.getJugador_id());
+                }
+            }
+        });
+
+        GridLayoutManager linearLayoutManager2 = new GridLayoutManager(this, 1);
+        linearLayoutManager2.setOrientation(linearLayoutManager.HORIZONTAL);
+        rcv_elegidos.setLayoutManager(linearLayoutManager2);
+        rcv_elegidos.setAdapter(adapterElegidos);
     }
+
+
 }

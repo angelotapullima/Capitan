@@ -73,17 +73,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cacheros FC"
                 android:id="@+id/name_equipo"
-                android:textColor="#000"
+                android:textColor="#ffff"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="añadir jugadores"
-                android:textColor="#000"
-                android:textSize="17sp"/>
+                android:textColor="#fff"
+                android:textSize="15sp"/>
         </LinearLayout>
 
 

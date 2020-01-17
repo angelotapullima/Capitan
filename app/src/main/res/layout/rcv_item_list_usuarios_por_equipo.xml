@@ -7,7 +7,8 @@
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="20dp"
+    android:id="@+id/contenedor_jugadores"
+    app:cardCornerRadius="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp">
@@ -50,7 +51,6 @@
                     android:textColor="#1b1a1a"
                     android:textSize="18dp"
                     android:textAlignment="center"
-                    android:text="Juan Perez hjjjjjjjjjjjj"
                     android:textStyle="bold|italic" />
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -67,7 +67,6 @@
                             android:gravity="center"
                             android:textSize="18dp"
                             android:background="@drawable/tshirt_crew"
-                            android:text="10"
                             android:textStyle="italic" />
 
                 </LinearLayout>
@@ -87,7 +86,6 @@
                     android:layout_gravity="center"
                     android:textColor="#1b1a1a"
                     android:textSize="18dp"
-                    android:text="Delantero"
                     android:textStyle="italic" />
 
                 <TextView
@@ -99,7 +97,6 @@
                     android:layout_gravity="center"
                     android:textColor="#1b1a1a"
                     android:textSize="18dp"
-                    android:text="Goleador"
                     android:textStyle="italic" />
 
             </LinearLayout>

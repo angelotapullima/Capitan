@@ -17,17 +17,18 @@ public interface JugadoresDao {
     void insert(Jugadores resultModel);
 
 
-    /*@Query("SELECT * from jugadores WHERE mi_equipo =:mio ")
-    LiveData<List<Jugadores>> getAllEquipo(String mio);
+    @Query("SELECT * from jugadores WHERE jugador_estado =:estado ")
+    LiveData<List<Jugadores>> getAllJugadores(String estado);
 
 
 
 
-    @Query("Update equipos set estado_seleccion = '1' where equipo_id =:id")
-    void actualizarEstado1(String id);
 
-    @Query("Update equipos set estado_seleccion = '0' where equipo_id =:id")
-    void actualizarEstado0(String id);*/
+    @Query("Update jugadores set jugador_estado = 'seleccionado' where jugador_id =:id")
+    void EstadoSeleccionado(String id);
+
+    @Query("Update jugadores set jugador_estado = 'vacio' where jugador_id =:id")
+    void EstadoVacio(String id);
 
     @Query("SELECT * from jugadores ")
     LiveData<List<Jugadores>> getAll();

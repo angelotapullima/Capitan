@@ -7,6 +7,7 @@
  */
 //Llamada a modelos necesarios
 require 'app/models/User.php';
+require 'app/models/Userg.php';
 require 'app/models/Person.php';
 require 'app/models/Role.php';
 
@@ -14,6 +15,7 @@ class UserController{
     private $crypt;
     private $nav;
     private $user;
+    private $userg;
     private $person;
     private $role;
     private $log;
@@ -24,6 +26,7 @@ class UserController{
     {
         $this->crypt = new Crypt();
         $this->user = new User();
+        $this->userg = new Userg();
         $this->person = new Person();
         $this->role = new Role();
         $this->log = new Log();
@@ -237,29 +240,118 @@ class UserController{
         echo json_encode($data);
     }
     public function listar_chats_por_id_usuario(){
-        $id_usuario = $_POST['id_user'];
-        $model = $this->user->listar_chats_por_id_usuario($id_usuario);
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $mensaje = $this->user->listar_ultimo_mensaje_de_chat($model[$i]->chat_id);
-            $datos_u = $this->user->list($model[$i]->usuario_1);
-            $datos_ = $this->user->list($model[$i]->usuario_2);
-            $fecha = explode(' ',$mensaje->detalle_chat_fecha);
-            $resources[$i] = array(
-                "chat_id" => $model[$i]->chat_id,
-                "usuario_1" => $model[$i]->usuario_1,
-                "usuario_1_foto" => $datos_u->usuario_foto,
-                "usuario_2" => $model[$i]->usuario_2,
-                "usuario_2_foto" => $datos_->usuario_foto,
-                "chat_fecha" => $model[$i]->chat_fecha,
-                "ultimo_msj" => $mensaje->detalle_chat_mensaje,
-                "ultimo_msj_id" => $mensaje->detalle_chat_id,
-                "ultimo_msj_fecha" => $fecha[0],
-                "ultimo_msj_hora" => $fecha[1],
-                "ultimo_msj_usuario" => $mensaje->id_usuario
-            );
+        try{
+            $id_usuario = $_POST['id_user'];
+            $model = $this->user->listar_chats_por_id_usuario($id_usuario);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $mensaje = $this->user->listar_ultimo_mensaje_de_chat($model[$i]->chat_id);
+                $datos_u = $this->user->list($model[$i]->usuario_1);
+                $datos_ = $this->user->list($model[$i]->usuario_2);
+                $fecha = explode(' ',$mensaje->detalle_chat_fecha);
+                $resources[$i] = array(
+                    "chat_id" => $model[$i]->chat_id,
+                    "usuario_1" => $model[$i]->usuario_1,
+                    "usuario_1_foto" => $datos_u->usuario_foto,
+                    "usuario_2" => $model[$i]->usuario_2,
+                    "usuario_2_foto" => $datos_->usuario_foto,
+                    "chat_fecha" => $model[$i]->chat_fecha,
+                    "ultimo_msj" => $mensaje->detalle_chat_mensaje,
+                    "ultimo_msj_id" => $mensaje->detalle_chat_id,
+                    "ultimo_msj_fecha" => $fecha[0],
+                    "ultimo_msj_hora" => $fecha[1],
+                    "ultimo_msj_usuario" => $mensaje->id_usuario
+                );
+            }
+        }catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General Error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
+    }
+    public function listar_ciudades(){
+        try{
+            $model = $this->user->listar_ciudades();
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "ubigeo_ciudad" => $model[$i]->ubigeo_ciudad
+                );
+            }
+        }catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General Error";
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function listar_distritos_por_ciudad(){
+        try{
+            $ciudad = $_POST['ciudad'];
+            $model = $this->user->listar_distritos_por_ciudad($ciudad);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "ubigeo_id" => $model[$i]->ubigeo_id,
+                    "distrito" => $model[$i]->ubigeo_distrito
+                );
+            }
+        }catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General Error";
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function new(){
+        try{
+            $model = new User();
+            $modelp = new Person();
+            if(isset($_SESSION['id_usered'])){
+                $result = 6;
+            } else {
+                if($this->userg->validateUser($_POST['user_nickname'])){
+                    $result = 3;
+                } else {
+                    $microtime = microtime(true);
+                    $modelp->microtime=$microtime;
+                    $modelp->person_name= $_POST['person_name'];
+                    $modelp->person_surname = $_POST['person_surname'];
+                    $modelp->person_dni = $_POST['person_dni'];
+                    $modelp->person_birth = $_POST['person_birth'];
+                    $modelp->person_number_phone = $_POST['person_number_phone'];
+                    $modelp->person_genre = $_POST['person_genre'];
+                    $modelp->person_address = $_POST['person_address'];
+                    $resultp = $this->person->save($modelp);
+                    if($resultp == 1){
+                        $model->user_nickname= $_POST['user_nickname'];
+                        //$model->id_auth= $_POST['id_auth'];
+                        $model->user_password =  password_hash($_POST['user_password'], PASSWORD_BCRYPT);
+                        $model->user_email = $_POST['user_email'];
+                        $model->user_posicion = $_POST['user_posicion'];
+                        $model->user_habilidad = $_POST['user_habilidad'];
+                        $model->user_num = $_POST['user_num'];
+                        $model->user_image = 'media/user/user.jpg';
+                        $model->ubigeo_id = $_POST['ubigeo_id'];
+                        $model->id_role = $_POST['id_role'];
+                        $model->id_person = $this->person->listByMicrotime($microtime);
+                        $result = $this->user->save($model);
+                        if($result != 1){
+                            $this->person->deletemicrotime($microtime);
+                            $result = 2;
+                        }
+                    } else {
+                        $this->person->deletemicrotime($microtime);
+                        $result = 2;
+                    }
+                }
+
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        echo $result;
     }
 }

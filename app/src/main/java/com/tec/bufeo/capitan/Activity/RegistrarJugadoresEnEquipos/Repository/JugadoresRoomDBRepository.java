@@ -19,8 +19,8 @@ public class JugadoresRoomDBRepository {
         jugadoresDao=db.postInfoDao();
     }
 
-    public LiveData<List<Jugadores>> getAllJugadores() {
-        mAllJugadores=jugadoresDao.getAll();
+    public LiveData<List<Jugadores>> getAllJugadores(String estado) {
+        mAllJugadores=jugadoresDao.getAllJugadores(estado);
         return mAllJugadores;
     }
 
@@ -61,6 +61,45 @@ public class JugadoresRoomDBRepository {
         @Override
         protected Void doInBackground(final List<Jugadores>... params) {
             mAsyncTaskDao.insertJugadores(params[0]);
+            return null;
+        }
+    }
+
+
+    public void EstadoSeleccionado(String id) {
+        new EstadoSeleccionado(jugadoresDao).execute(id);
+    }
+
+    private static class EstadoSeleccionado extends AsyncTask<String, Void, Void> {
+        private JugadoresDao misEquiposDao;
+
+        private EstadoSeleccionado(JugadoresDao misEquiposDao)  {
+            this.misEquiposDao = misEquiposDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... modelFeeds) {
+            misEquiposDao.EstadoSeleccionado(modelFeeds[0]);
+
+            return null;
+        }
+    }
+
+    public void EstadoVacio(String id) {
+        new EstadoVacio(jugadoresDao).execute(id);
+    }
+
+    private static class EstadoVacio extends AsyncTask<String, Void, Void> {
+        private JugadoresDao misEquiposDao;
+
+        private EstadoVacio(JugadoresDao misEquiposDao)  {
+            this.misEquiposDao = misEquiposDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... modelFeeds) {
+            misEquiposDao.EstadoVacio(modelFeeds[0]);
+
             return null;
         }
     }

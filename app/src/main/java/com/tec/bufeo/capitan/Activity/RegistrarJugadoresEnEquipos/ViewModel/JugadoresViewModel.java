@@ -29,9 +29,9 @@ public class JugadoresViewModel extends AndroidViewModel {
         jugadoresWebServiceRepository =  new JugadoresWebServiceRepository(application);
     }
 
-    public LiveData<List<Jugadores>> getAllJugadores(String id_equipo,String token) {
+    public LiveData<List<Jugadores>> getAllJugadores(String id_equipo,String token,String estado) {
         retroObservable = jugadoresWebServiceRepository.providesWebService(id_equipo,token);
-        mAllJugadores=jugadoresRoomDBRepository.getAllJugadores();
+        mAllJugadores=jugadoresRoomDBRepository.getAllJugadores(estado);
         return mAllJugadores;
     }
 }

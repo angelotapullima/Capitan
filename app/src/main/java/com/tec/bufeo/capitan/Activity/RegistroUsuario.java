@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tec.bufeo.capitan.Modelo.MDistrito;
@@ -29,9 +31,11 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
 
 
     Spinner spn_sexo, spn_ciudad, spn_distrito, spn_habilidad,spn_posicion;
-    EditText edt_nombreUsuario,edt_dniUsuario,edt_emailUsuario,edt_UsuarioUsuario,edt_clave,edt_telefonoUsuario, edt_confirmarClave, numFav;
-    Button btn_registrar,btn_fechaNacimientoUsuario;
-
+    EditText edt_nombreUsuario,edt_dniUsuario,edt_emailUsuario,edt_UsuarioUsuario,edt_clave,edt_telefonoUsuario,
+            edt_address,edt_confirmarClave, numFav,edt_surnameUsuario;
+    Button btn_registrar;
+    TextView btn_fechaNacimientoUsuario;
+    ImageView back;
     public Usuario usuario;
     DataConnection dc,dc1,dc2;
 
@@ -45,8 +49,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_usuario);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);
+
 
         edt_nombreUsuario =  findViewById(R.id.edt_nombreUsuario);
         edt_telefonoUsuario =  findViewById(R.id.edt_telefonoUsuario);
@@ -60,11 +63,14 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
         spn_ciudad = findViewById(R.id.spn_ciudad);
         spn_distrito =  findViewById(R.id.spn_distrito);
         edt_clave = findViewById(R.id.edt_clave);
+        edt_address = findViewById(R.id.edt_address);
         edt_confirmarClave =  findViewById(R.id.edt_confirmarClave);
         numFav = findViewById(R.id.edt_numFav);
+        edt_surnameUsuario = findViewById(R.id.edt_surnameUsuario);
         btn_registrar =  findViewById(R.id.btn_registrar);
-
+        back =  findViewById(R.id.back);
         btn_registrar.setOnClickListener(this);
+        back.setOnClickListener(this);
         btn_fechaNacimientoUsuario.setOnClickListener(this);
 
         dc1 = new DataConnection(RegistroUsuario.this,"listarCiudades",false);
@@ -199,19 +205,21 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
                         if (edt_clave.getText().toString().equals(edt_confirmarClave.getText().toString())) {
                             usuario = new Usuario();
 
-                            usuario.setUsuario_nombre(edt_nombreUsuario.getText().toString());
-                            usuario.setUsuario_email(edt_emailUsuario.getText().toString());
-                            usuario.setUsuario_nacimiento(btn_fechaNacimientoUsuario.getText().toString());
-                            usuario.setUsuario_foto("perfil.png");
-                            usuario.setUsuario_sexo(spn_sexo.getSelectedItem().toString());
-                            usuario.setUsuario_usuario(edt_UsuarioUsuario.getText().toString());
-                            usuario.setUsuario_clave(edt_clave.getText().toString());
-                            usuario.setUsuario_dni(edt_dniUsuario.getText().toString());
-                            usuario.setUsuario_habilidad(spn_habilidad.getSelectedItem().toString());
-                            usuario.setUsuario_posicion(spn_posicion.getSelectedItem().toString());
+                            usuario.setPerson_name(edt_nombreUsuario.getText().toString());
+                            usuario.setPerson_surname(edt_surnameUsuario.getText().toString());
+                            usuario.setPerson_dni(edt_dniUsuario.getText().toString());
+                            usuario.setPerson_birth(btn_fechaNacimientoUsuario.getText().toString());
+                            usuario.setPerson_number_phone(edt_telefonoUsuario.getText().toString());
+                            usuario.setPerson_genre(spn_sexo.getSelectedItem().toString());
+                            usuario.setPerson_address(edt_address.getText().toString());
+                            usuario.setUser_nickname(edt_UsuarioUsuario.getText().toString());
+                            usuario.setUser_password(edt_clave.getText().toString());
+                            usuario.setUser_email(edt_emailUsuario.getText().toString());
+                            usuario.setUser_posicion(spn_posicion.getSelectedItem().toString());
+                            usuario.setUser_habilidad(spn_habilidad.getSelectedItem().toString());
                             usuario.setUsuario_numFavorito(numFav.getText().toString());
-                            usuario.setUsuario_telefono(edt_telefonoUsuario.getText().toString());
                             usuario.setRol_id("1");
+                            usuario.setUsuario_foto("perfil.png");
                             usuario.setUbigeo_id(arrayDistritoxCiudad.get(spn_distrito.getSelectedItemPosition()-1).getUbigeo_id());
 
                             dc = new DataConnection(RegistroUsuario.this, "registrarse", usuario, true);
@@ -226,6 +234,9 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
 
             case R.id.btn_fechaNacimientoUsuario:
                 new DateDialog().show(getSupportFragmentManager(), "DatePicker");
+                break;
+            case R.id.back:
+                finish();
                 break;
                 }
         }
