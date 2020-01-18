@@ -1,8 +1,6 @@
-package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository;
+package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.Jugadores;
 
 import android.os.AsyncTask;
-
-import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.Jugadores;
 
 public class JugadoresDbAsync extends AsyncTask<Void,Void,Void> {
 

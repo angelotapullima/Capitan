@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository;
+package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.Jugadores;
 
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.Jugadores;
 
@@ -17,17 +17,17 @@ public interface JugadoresDao {
     void insert(Jugadores resultModel);
 
 
-    @Query("SELECT * from jugadores WHERE jugador_estado =:estado ")
+
+
+    @Query("SELECT * from jugadores WHERE jugador_estado =:estado  ")
     LiveData<List<Jugadores>> getAllJugadores(String estado);
-
-
 
 
 
     @Query("Update jugadores set jugador_estado = 'seleccionado' where jugador_id =:id")
     void EstadoSeleccionado(String id);
 
-    @Query("Update jugadores set jugador_estado = 'vacio' where jugador_id =:id")
+    @Query("Update jugadores set jugador_estado = null where jugador_id =:id")
     void EstadoVacio(String id);
 
     @Query("SELECT * from jugadores ")

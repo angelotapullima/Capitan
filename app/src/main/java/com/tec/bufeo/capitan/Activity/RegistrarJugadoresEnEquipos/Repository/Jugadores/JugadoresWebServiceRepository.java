@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository;
+package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.Jugadores;
 
 import android.app.Application;
 import android.util.Log;
@@ -41,7 +41,7 @@ public class JugadoresWebServiceRepository {
 
     List<Jugadores> webserviceResponseList = new ArrayList<>();
 
-    public LiveData<List<Jugadores>> providesWebService(String id_equipo,  final String token) {
+    public LiveData<List<Jugadores>> providesWebService(String id_equipo, final String token, final String dato) {
 
         final MutableLiveData<List<Jugadores>> data = new MutableLiveData<>();
 
@@ -53,24 +53,46 @@ public class JugadoresWebServiceRepository {
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(providesOkHttpClientBuilder())
                     .build();
-            APIServiceJugadores service = retrofit.create(APIServiceJugadores.class);
-            //  response = service.makeRequest().execute().body();
-            service.getJugadores(id_equipo,"true",token).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    Log.e("Repository jugadores","Response::::"+response.body());
-                    webserviceResponseList = parseJson(response.body());
-                    JugadoresRoomDBRepository jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
-                    jugadoresRoomDBRepository.insertJugadores(webserviceResponseList);
-                    data.setValue(webserviceResponseList);
 
-                }
+            if (dato.equals("")){
+                APIServiceJugadores service = retrofit.create(APIServiceJugadores.class);
+                //  response = service.makeRequest().execute().body();
+                service.getJugadores(id_equipo,"true",token).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Log.e("Repository jugadores","Response::::"+response.body());
+                        webserviceResponseList = parseJson(response.body());
+                        JugadoresRoomDBRepository jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
+                        jugadoresRoomDBRepository.insertJugadores(webserviceResponseList);
+                        data.setValue(webserviceResponseList);
+                    }
 
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Log.d("Repository","Failed:::");
-                }
-            });
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.d("Repository","Failed:::");
+                    }
+                });
+            }else {
+                APIServiceBusquedaJugador service = retrofit.create(APIServiceBusquedaJugador.class);
+                //  response = service.makeRequest().execute().body();
+                service.getBuscarJugadores(id_equipo,"true",token,dato).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Log.e("Repository jugadores","Response::::"+response.body());
+                        webserviceResponseList = parseJson(response.body());
+                        JugadoresRoomDBRepository jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
+                        jugadoresRoomDBRepository.insertJugadores(webserviceResponseList);
+                        data.setValue(webserviceResponseList);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.d("Repository","Failed:::");
+                    }
+                });
+            }
+
 
 
 
@@ -103,9 +125,14 @@ public class JugadoresWebServiceRepository {
             int count = resultJSON.length();
 
 
+            JugadoresRoomDBRepository jugadoresRoomDBRepository =  new JugadoresRoomDBRepository(application);
+            jugadoresRoomDBRepository.deleteAllJugadores();
+
+
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
                 Jugadores jugadores = new Jugadores();
+
                 jugadores.setJugador_id(jsonNode.optString("usuario_id"));
                 jugadores.setJugador_nombre(jsonNode.optString("nombre"));
                 jugadores.setJugador_foto(jsonNode.optString("foto"));
@@ -113,6 +140,7 @@ public class JugadoresWebServiceRepository {
                 jugadores.setJugador_habilidad(jsonNode.optString("habilidad"));
                 jugadores.setJugador_numero(jsonNode.optString("numero"));
                 jugadores.setJugador_estado("vacio");
+
 
                 apiResults.add(jugadores);
             }

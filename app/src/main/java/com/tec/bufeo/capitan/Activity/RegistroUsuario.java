@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,16 +19,31 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.tec.bufeo.capitan.Modelo.MDistrito;
 import com.tec.bufeo.capitan.Modelo.Usuario;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.DateDialog;
 import com.tec.bufeo.capitan.WebService.DataConnection;
+import com.tec.bufeo.capitan.WebService.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class RegistroUsuario extends AppCompatActivity  implements View.OnClickListener , DatePickerDialog.OnDateSetListener{
 
@@ -88,7 +106,8 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
                 }else {
                     spn_distrito.setEnabled(true);
                     dc2 = new DataConnection(RegistroUsuario.this,"listarDistritoxCiudades",arrayCiudad.get(spn_ciudad.getSelectedItemPosition()),false);
-                    new GetDistritoxCiudad().execute();                }
+                    new GetDistritoxCiudad().execute();
+                    }
             }
 
             @Override
@@ -201,7 +220,9 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
 
             case R.id.btn_registrar:
 
-                if (!(edt_nombreUsuario.getText().toString().isEmpty()) && !(edt_UsuarioUsuario.getText().toString().isEmpty()) && !(edt_emailUsuario.getText().toString().isEmpty())&& !(edt_clave.getText().toString().isEmpty()) && !(edt_confirmarClave.getText().toString().isEmpty()) &&  !(spn_distrito.getSelectedItem().toString().equals("Seleccione")) ) {
+                CrarUsuario();
+
+                /*if (!(edt_nombreUsuario.getText().toString().isEmpty()) && !(edt_UsuarioUsuario.getText().toString().isEmpty()) && !(edt_emailUsuario.getText().toString().isEmpty())&& !(edt_clave.getText().toString().isEmpty()) && !(edt_confirmarClave.getText().toString().isEmpty()) &&  !(spn_distrito.getSelectedItem().toString().equals("Seleccione")) ) {
                         if (edt_clave.getText().toString().equals(edt_confirmarClave.getText().toString())) {
                             usuario = new Usuario();
 
@@ -222,6 +243,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
                             usuario.setUsuario_foto("perfil.png");
                             usuario.setUbigeo_id(arrayDistritoxCiudad.get(spn_distrito.getSelectedItemPosition()-1).getUbigeo_id());
 
+
                             dc = new DataConnection(RegistroUsuario.this, "registrarse", usuario, true);
 
 
@@ -229,7 +251,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
                             Toast.makeText(getApplicationContext(), "Las claves no coinciden", Toast.LENGTH_LONG).show();}
 
                     }else {
-                        Toast.makeText(getApplicationContext(), "Llene los campos", Toast.LENGTH_LONG).show();}
+                        Toast.makeText(getApplicationContext(), "Llene los campos", Toast.LENGTH_LONG).show();}*/
                     break;
 
             case R.id.btn_fechaNacimientoUsuario:
@@ -240,4 +262,111 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
                 break;
                 }
         }
+
+
+    StringRequest stringRequest;
+    String valorcodigo,respuesta,sexo;
+    private void CrarUsuario() {
+        dialogoCargando();
+        String url =IP2+"/api/Login/new";
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("registro new: ",""+response);
+
+
+
+
+                    valorcodigo=response;
+
+
+                    if(valorcodigo.equalsIgnoreCase("1")){
+                        respuesta = "1";
+                        Toast.makeText(RegistroUsuario.this, "Usuario registrado", Toast.LENGTH_SHORT).show();
+                        usuario = new Usuario();
+                        usuario.setUser_nickname(edt_UsuarioUsuario.getText().toString());
+                        usuario.setUser_password(edt_clave.getText().toString());
+
+                        dc = new DataConnection(RegistroUsuario.this,"loginUsuario",usuario,true);
+
+                    }else if(valorcodigo.equalsIgnoreCase("2")) {
+                        respuesta = "2";
+                        Toast.makeText(RegistroUsuario.this, "DNI ya existe", Toast.LENGTH_SHORT).show();
+                        dialog_carga.dismiss();
+                    }else {
+                        respuesta = "3";
+                        Toast.makeText(RegistroUsuario.this, "Vuelva a intentarlo", Toast.LENGTH_SHORT).show();
+                        dialog_carga.dismiss();
+                    }
+
+
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
+                Log.i("RESPUESTA: ",""+error.toString());
+
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //String imagen=convertirImgString(bitmap);
+
+
+
+                if (spn_sexo.getSelectedItem().toString().equals("Masculino")){
+                    sexo="M";
+                }else{
+                    sexo="F";
+                }
+
+                Map<String,String> parametros=new HashMap<>();
+                parametros.put("person_name",edt_nombreUsuario.getText().toString());
+                parametros.put("person_surname",edt_surnameUsuario.getText().toString());
+                parametros.put("person_birth",btn_fechaNacimientoUsuario.getText().toString());
+                parametros.put("user_image","perfil.png");
+                parametros.put("person_genre",sexo);
+                parametros.put("user_nickname",edt_UsuarioUsuario.getText().toString());
+                parametros.put("user_password",edt_clave.getText().toString());
+                parametros.put("user_email",edt_emailUsuario.getText().toString());
+                parametros.put("user_habilidad",spn_habilidad.getSelectedItem().toString());
+                parametros.put("user_posicion",spn_posicion.getSelectedItem().toString());
+                parametros.put("user_num",numFav.getText().toString());
+                parametros.put("person_dni",edt_dniUsuario.getText().toString());
+                parametros.put("person_number_phone",edt_telefonoUsuario.getText().toString());
+                parametros.put("id_role","4");
+                parametros.put("person_address",edt_address.getText().toString());
+                parametros.put("app","true");
+                parametros.put("ubigeo_id",arrayDistritoxCiudad.get(spn_distrito.getSelectedItemPosition()-1).getUbigeo_id());
+
+                Log.e("params", "getParams: "+parametros );
+                return parametros;
+
+            }
+        };
+        //requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
     }
+    android.app.AlertDialog dialog_carga;
+
+    public void dialogoCargando(){
+
+        android.app.AlertDialog.Builder builder =  new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View vista = inflater.inflate(R.layout.dialog_cargando,null);
+        builder.setView(vista);
+
+
+        dialog_carga = builder.create();
+        dialog_carga.show();
+
+
+
+
+    }
+}

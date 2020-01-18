@@ -1,14 +1,13 @@
-package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.ViewModel;
+package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.ViewModel.Jugadores;
 
 import android.app.Application;
 
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.Jugadores;
-import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.JugadoresRoomDBRepository;
-import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.JugadoresWebServiceRepository;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.Jugadores.JugadoresRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.Jugadores.JugadoresWebServiceRepository;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -30,8 +29,14 @@ public class JugadoresViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Jugadores>> getAllJugadores(String id_equipo,String token,String estado) {
-        retroObservable = jugadoresWebServiceRepository.providesWebService(id_equipo,token);
+        retroObservable = jugadoresWebServiceRepository.providesWebService(id_equipo,token,"");
         mAllJugadores=jugadoresRoomDBRepository.getAllJugadores(estado);
+        return mAllJugadores;
+    }
+
+    public LiveData<List<Jugadores>> getAll(String id_equipo,String token) {
+        retroObservable = jugadoresWebServiceRepository.providesWebService(id_equipo,token,"");
+        mAllJugadores=jugadoresRoomDBRepository.getAll();
         return mAllJugadores;
     }
 }

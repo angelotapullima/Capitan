@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.Jugadores;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.JugadoresSeleccionados;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
@@ -23,7 +23,7 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.ElegidosViewHolder>  {
 
     UniversalImageLoader universalImageLoader;
-    Jugadores current;
+    JugadoresSeleccionados current;
     Context ctx;
     private  OnItemClickListener listener;
     Preferences preferencesUser;
@@ -42,7 +42,7 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
 
         }
 
-        public void bid(final Jugadores jugadores,final OnItemClickListener listener) {
+        public void bid(final JugadoresSeleccionados jugadores,final OnItemClickListener listener) {
 
             contenedor_elegidos.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -57,7 +57,7 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
     private final LayoutInflater mInflater;
 
 
-    private List<Jugadores> mUsers; // Cached copy of users
+    private List<JugadoresSeleccionados> mUsers; // Cached copy of users
 
 
     public AdapterElegidos(Context context, OnItemClickListener listener) {
@@ -82,7 +82,7 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
 
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-            UniversalImageLoader.setImage(IP2+"/"+ current.getJugador_foto(),holder.foto_jugador_elegido,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getJugadors_foto(),holder.foto_jugador_elegido,null);
 
             /*holder.txt_nombreUsuario.setText(current.getJugador_nombre());
             holder.txt_habilidadUsuario.setText(current.getJugador_habilidad());
@@ -102,7 +102,7 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
             // holder.userNameView.setText("No Word");
         }
     }
-    public void setWords(List<Jugadores> users){
+    public void setWords(List<JugadoresSeleccionados> users){
         mUsers = users;
         notifyDataSetChanged();
     }
@@ -120,7 +120,7 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
 
 
     public interface  OnItemClickListener{
-        void onItemClick(Jugadores jugadores,String tipo, int position);
+        void onItemClick(JugadoresSeleccionados jugadores,String tipo, int position);
     }
 
 }

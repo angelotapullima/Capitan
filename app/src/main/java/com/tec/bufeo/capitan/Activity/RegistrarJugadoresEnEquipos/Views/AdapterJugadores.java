@@ -93,7 +93,7 @@ public class AdapterJugadores extends RecyclerView.Adapter<AdapterJugadores.Juga
             UniversalImageLoader.setImage(IP2+"/"+ current.getJugador_foto(),holder.civ_fotoUsuario,null);
 
             holder.txt_nombreUsuario.setText(current.getJugador_nombre());
-            holder.txt_habilidadUsuario.setText(current.getJugador_habilidad());
+            holder.txt_habilidadUsuario.setText(current.getJugador_estado());
             holder.txt_numUsuario.setText(current.getJugador_numero());
             holder.txt_posicionUsuario.setText(current.getJugador_posicion());
             holder.bid(current,listener);

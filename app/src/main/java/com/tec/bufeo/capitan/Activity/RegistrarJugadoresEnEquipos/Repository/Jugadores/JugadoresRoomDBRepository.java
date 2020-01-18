@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository;
+package com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.Jugadores;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -24,6 +24,12 @@ public class JugadoresRoomDBRepository {
         return mAllJugadores;
     }
 
+
+
+    public LiveData<List<Jugadores>> getAll() {
+        mAllJugadores=jugadoresDao.getAll();
+        return mAllJugadores;
+    }
 
     public void deleteAllJugadores() {
         new DeleteAlljugadoresyncTask(jugadoresDao).execute();

@@ -246,9 +246,10 @@ public class DataConnection extends AppCompatActivity {
                         + "&person_number_phone=" + URLEncoder.encode(usuario.getUsuario_telefono(),"UTF-8")
                         + "&id_role=" + URLEncoder.encode(usuario.getRol_id(),"UTF-8")
                         + "&person_address=" + URLEncoder.encode(usuario.getRol_id(),"UTF-8")
+                        + "&app=" + URLEncoder.encode("true","UTF-8")
                         + "&ubigeo_id=" + URLEncoder.encode(usuario.getUbigeo_id(),"UTF-8");
 
-                url = new URL(IP2+"/api/User/new");
+                url = new URL(IP2+"/api/Login/new");
 
 
             }if(funcion.equals("registrarEmpresas")){
@@ -424,11 +425,11 @@ public class DataConnection extends AppCompatActivity {
             }if(funcion.equals("listarCiudades")){
                 parametros = " " + URLEncoder.encode(" ","UTF-8");
 
-                url = new URL(IP2+"/api/User/listar_ciudades");
+                url = new URL(IP2+"/api/Login/listar_ciudades");
             }if(funcion.equals("listarDistritoxCiudades")){
                 parametros = "ciudad=" + URLEncoder.encode(idciudad,"UTF-8");
 
-                url = new URL(IP2+"/api/User/listar_distritos_por_ciudad");
+                url = new URL(IP2+"/api/Login/listar_distritos_por_ciudad");
             }
 
             if (funcion.equals("listarEmpresasID")){
@@ -489,6 +490,7 @@ public class DataConnection extends AppCompatActivity {
     private  boolean filtrardDatos(){
 
         cargarDatos = obtenerDatos();
+        Log.e("obtenerDatos", "cargarDatos: "+cargarDatos );
         try {
 
             if(!(cargarDatos.equalsIgnoreCase("")  )){
@@ -586,12 +588,11 @@ public class DataConnection extends AppCompatActivity {
 
 
 
-                }if(funcion.equals("registrarse")){
+                }
 
-                    JSONArray resultJSON = json_data.getJSONArray("results");
-                    JSONObject jsonNodev = resultJSON.getJSONObject(0);
-                    valorcodigo = jsonNodev.optString("valor");
+                if(funcion.equals("registrarse")){
 
+                  valorcodigo=cargarDatos;
 
                     if(valorcodigo.equalsIgnoreCase("1")){
                         respuesta = "1";
