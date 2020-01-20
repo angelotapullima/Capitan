@@ -41,7 +41,7 @@ public class EstadisticasWebServiceRepository {
 
     List<Estadisticas> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Estadisticas>> providesWebService(String id_usuario) {
+ public LiveData<List<Estadisticas>> providesWebService(String id_usuario,String token) {
 
      final MutableLiveData<List<Estadisticas>> data = new MutableLiveData<>();
 
@@ -57,7 +57,7 @@ public class EstadisticasWebServiceRepository {
          //Defining retrofit api service
          EstadisticasAPIService service = retrofit.create(EstadisticasAPIService.class);
         //  response = service.makeRequest().execute().body();
-         service.getEquipo(id_usuario).enqueue(new Callback<String>() {
+         service.getEquipo(id_usuario,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.d("Repository estadisticas","Response::::"+response.body());

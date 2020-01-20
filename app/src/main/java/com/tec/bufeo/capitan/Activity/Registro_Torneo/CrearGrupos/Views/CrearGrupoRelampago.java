@@ -24,6 +24,7 @@ import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearEquipos.RegistrarEqui
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Models.Grupos;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.ViewModels.GruposListViewModel;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import org.json.JSONArray;
@@ -34,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class CrearGrupoRelampago extends AppCompatActivity implements View.OnClickListener {
 
@@ -45,7 +46,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
     EditText nombre_grupo_grupos;
     AdapterGrupos adapterGrupos;
     String id_torneo,nombre_torneo;
-
+    Preferences preferences;
     int cantidad;
 
     @Override
@@ -56,6 +57,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
         gruposListViewModel = ViewModelProviders.of(this).get(GruposListViewModel.class);
 
 
+        preferences= new Preferences(this);
 
 
         initViews();
@@ -102,7 +104,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
 
     private void cargarvista() {
 
-        gruposListViewModel.getIdTorneo(id_torneo).observe(this, new Observer<List<Grupos>>() {
+        gruposListViewModel.getIdTorneo(id_torneo,preferences.getToken()).observe(this, new Observer<List<Grupos>>() {
             @Override
             public void onChanged(List<Grupos> grupos) {
                 if (grupos.size()>0){
@@ -119,7 +121,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
     }
 
 
-    String url = IP+"/index.php?c=Torneo&a=registrar_grupo&key_mobile=123456asdfgh";
+    String url = IP2+"/api/Torneo/registrar_grupo";
     StringRequest stringRequest;
     int valor;
     private void crear_grupo() {
@@ -139,7 +141,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
                     JSONObject jsonNode = resultJSON.getJSONObject(0);
                     valor = jsonNode.optInt("valor");
                     if (valor==1){
-                        gruposListViewModel.getIdTorneo(id_torneo);
+                        gruposListViewModel.getIdTorneo(id_torneo,preferences.getToken());
                         nombre_grupo_grupos.setText("");
                     }
 
@@ -170,6 +172,8 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
 
                 parametros.put("id_torneo", id_torneo);
                 parametros.put("grupo_nombre", nombre_grupo_grupos.getText().toString());
+                parametros.put("app", "true");
+                parametros.put("grupo_nombre", preferences.getToken());
 
 
                 Log.e("torneo", "getParams: "+parametros.toString() );

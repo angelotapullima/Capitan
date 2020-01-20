@@ -24,6 +24,9 @@ public interface JugadoresDao {
 
 
 
+    @Query("SELECT * from jugadores WHERE jugador_mi_equipo =:mio  ")
+    LiveData<List<Jugadores>> getAllMisJugadores(String mio);
+
     @Query("Update jugadores set jugador_estado = 'seleccionado' where jugador_id =:id")
     void EstadoSeleccionado(String id);
 

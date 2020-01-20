@@ -79,7 +79,7 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
     public void cargarvista(){
 
 
-        commentsListViewModel.getmAllReviews(id_publicacion).observe(this, new Observer<List<Comments>>() {
+        commentsListViewModel.getmAllReviews(id_publicacion,preferences.getToken()).observe(this, new Observer<List<Comments>>() {
             @Override
             public void onChanged(@Nullable List<Comments> comments) {
                 adapter.setWords(comments);

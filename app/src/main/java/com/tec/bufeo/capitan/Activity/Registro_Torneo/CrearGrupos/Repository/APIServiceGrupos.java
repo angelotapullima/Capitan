@@ -7,6 +7,8 @@ import retrofit2.http.POST;
 
 public interface APIServiceGrupos {
     @FormUrlEncoded
-    @POST("index.php?c=Torneo&a=listar_grupos_por_id_torneo&key_mobile=123456asdfgh")
-    Call<String> savePost(@Field("id_torneo") String id_torneo);
+    @POST("api/Torneo/listar_grupos_por_id_torneo")
+    Call<String> savePost(@Field("id_torneo") String id_torneo,
+                          @Field("app") String app,
+                          @Field("token") String token);
 }

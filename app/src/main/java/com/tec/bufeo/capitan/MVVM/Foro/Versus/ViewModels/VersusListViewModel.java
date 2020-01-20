@@ -30,8 +30,8 @@ public class VersusListViewModel extends AndroidViewModel {
         //mAllComments= commentsRoomDBRepository.getAllComments(id);
     }
 
-    public LiveData<List<Versus>> getmAllReviews(String id) {
-        retroObservable = versusWebServiceRepository.providesWebService(id);
+    public LiveData<List<Versus>> getmAllReviews(String id,String token) {
+        retroObservable = versusWebServiceRepository.providesWebService(id,token);
         mAllComments = versusRoomDBRepository.getAllVersus();
         return mAllComments;
     }

@@ -17,7 +17,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
 public class AdapterSubItemTablaTorneo extends RecyclerView.Adapter<AdapterSubItemTablaTorneo.SubItemTablaTorneoViewHolder>  {
@@ -83,7 +83,7 @@ public class AdapterSubItemTablaTorneo extends RecyclerView.Adapter<AdapterSubIt
             holder.GF.setText(torneoSubItem.getGf());
             holder.GC.setText(torneoSubItem.getGc());
             holder.puntos.setText(torneoSubItem.getPuntos());
-            UniversalImageLoader.setImage(IP+"/"+torneoSubItem.getEquipo_foto(),holder.logoEquipo,null);
+            UniversalImageLoader.setImage(IP2+"/"+torneoSubItem.getEquipo_foto(),holder.logoEquipo,null);
 
 
     }

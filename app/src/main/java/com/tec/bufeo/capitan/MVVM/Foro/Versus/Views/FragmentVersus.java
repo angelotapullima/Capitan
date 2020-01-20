@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import com.tec.bufeo.capitan.MVVM.Foro.Versus.Models.Versus;
 import com.tec.bufeo.capitan.MVVM.Foro.Versus.ViewModels.VersusListViewModel;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class FragmentVersus extends DialogFragment {
     Context context;
     RecyclerView rcv_partidos;
     VersusListAdapter versusListAdapter;
+    Preferences preferences;
     public FragmentVersus() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
@@ -59,7 +61,7 @@ public class FragmentVersus extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.dialog_partidos_pendientes, container,false);
-
+        preferences= new Preferences(getActivity());
         context = getContext();
         activity = getActivity();
         initViews(view);
@@ -103,7 +105,7 @@ public class FragmentVersus extends DialogFragment {
 
 
     public void cargarvista(){
-        versusListViewModel.getmAllReviews("14").observe(this, new Observer<List<Versus>>() {
+        versusListViewModel.getmAllReviews("14",preferences.getToken()).observe(this, new Observer<List<Versus>>() {
             @Override
             public void onChanged(@Nullable List<Versus> modelFeeds) {
                 versusListAdapter.setWords(modelFeeds);

@@ -20,7 +20,6 @@ import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.EquiposViewHolder>  {
@@ -97,25 +96,22 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
             if (tipo.equals("mas")){
                 UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo,null);
                 holder.txt_nombreEquipo.setText(current.getEquipo_nombre());
-                holder.card_300.setVisibility(View.GONE);
+                holder.cdv_foto_equipo.setVisibility(View.GONE);
             }else{
                 UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo_300,null);
                 holder.txt_nombreEquipo_300.setText(current.getEquipo_nombre());
-                holder.cdv_foto_equipo.setVisibility(View.GONE);
+                holder.card_300.setVisibility(View.GONE);
 
 
             }
 
 
-            holder.bid(current,listener);
+
             UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo,null);
 
             holder.txt_nombreEquipo.setText(current.getEquipo_nombre());
             holder.bid(current,listener);
 
-
-
-            holder.bid(current,listener);
         } else {
             // Covers the case of data not being ready yet.
             // holder.userNameView.setText("No Word");

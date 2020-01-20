@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
 public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -170,7 +170,7 @@ public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.O
 
     StringRequest stringRequest;
     private void EnviarEstadoReto(final String id, final String respuesta) {
-        String url =IP+"/index.php?c=Torneo&a=responder_reto&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Torneo/responder_reto";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -197,6 +197,8 @@ public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.O
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("id_reto",id);
                 parametros.put("respuesta",respuesta);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
 
                 return parametros;
 

@@ -21,7 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdapterRegistroPartidos extends RecyclerView.Adapter<AdapterRegistroPartidos.EquiposSeleccionarViewHolder>  {
 
@@ -100,7 +100,7 @@ public class AdapterRegistroPartidos extends RecyclerView.Adapter<AdapterRegistr
 
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-            UniversalImageLoader.setImage(IP+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipo,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipo,null);
 
             holder.nombreEquipo.setText(current.getEquipo_nombre());
             holder.capitanEquipo.setText(current.getCapitan_nombre());

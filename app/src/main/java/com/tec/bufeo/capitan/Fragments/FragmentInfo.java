@@ -32,7 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_nombre;
 import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_posicion;
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
 public class FragmentInfo extends Fragment {
@@ -85,7 +85,7 @@ public class FragmentInfo extends Fragment {
             }
         });
 
-        Picasso.with(getContext()).load(IP+"/"+pref.getFotoUsuario()).error(R.drawable.error).fit().into(civ_iconoPerfil,new Callback() {
+        Picasso.with(getContext()).load(IP2+"/"+pref.getFotoUsuario()).error(R.drawable.error).fit().into(civ_iconoPerfil,new Callback() {
 
             @Override
             public void onSuccess() {

@@ -8,5 +8,7 @@ import retrofit2.http.POST;
 public interface VersusAPIService {
     @FormUrlEncoded
     @POST("hambre/angelo/versus.php")
-    Call<String> makeRequest(@Field("publicacion_id") String id);
+    Call<String> makeRequest(@Field("publicacion_id") String id,
+                             @Field("app") String app,
+                             @Field("token") String token);
 }

@@ -27,7 +27,7 @@ import com.tec.bufeo.capitan.WebService.DataConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
 public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -248,7 +248,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
 
            // holder.title.setText(item.title);
            // holder.hint.setText(item.hint);
-            Picasso.with(context).load(IP+"/"+ item.img_cancha).into(holder.imagen_cancha);
+            Picasso.with(context).load(IP2+"/"+ item.img_cancha).into(holder.imagen_cancha);
             holder.txt_buscar_nombreEmpresa.setText(item.txt_buscar_nombreEmpresa);
             holder.txt_buscar_precioCancha.setText(item.txt_buscar_precioCancha);
             holder.txt_buscar_direccionEmpresa.setText(item.txt_buscar_direccionEmpresa);

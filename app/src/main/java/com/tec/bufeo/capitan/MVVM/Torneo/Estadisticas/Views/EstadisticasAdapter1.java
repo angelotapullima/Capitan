@@ -17,7 +17,7 @@ import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class EstadisticasAdapter1 extends RecyclerView.Adapter<EstadisticasAdapter1.EstadisticasViewHolder>  {
 
@@ -97,7 +97,7 @@ public class EstadisticasAdapter1 extends RecyclerView.Adapter<EstadisticasAdapt
             holder.REM.setText(current.getRetos_empatados());
             holder.RP.setText(current.getRetos_perdidos());
             holder.PA.setText(current.getPuntaje_acumulado());
-            UniversalImageLoader.setImage(IP+"/"+current.getFoto(),holder.logoEquipo,null);
+            UniversalImageLoader.setImage(IP2+"/"+current.getFoto(),holder.logoEquipo,null);
 
 
 

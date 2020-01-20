@@ -61,7 +61,7 @@ public class JugadoresWebServiceRepository {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         Log.e("Repository jugadores","Response::::"+response.body());
-                        webserviceResponseList = parseJson(response.body());
+                        webserviceResponseList = parseJson(response.body(),dato);
                         JugadoresRoomDBRepository jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
                         jugadoresRoomDBRepository.insertJugadores(webserviceResponseList);
                         data.setValue(webserviceResponseList);
@@ -72,14 +72,33 @@ public class JugadoresWebServiceRepository {
                         Log.d("Repository","Failed:::");
                     }
                 });
-            }else {
+            }else if (dato.equals("si")) {
+                APIServiceMisjugadores service = retrofit.create(APIServiceMisjugadores.class);
+                //  response = service.makeRequest().execute().body();
+                service.getMisJugadores(id_equipo,"true",token).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Log.e("Repo mis jugadores","Response::::"+response.body());
+                        webserviceResponseList = parseJson(response.body(),dato);
+                        JugadoresRoomDBRepository jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
+                        jugadoresRoomDBRepository.insertJugadores(webserviceResponseList);
+                        data.setValue(webserviceResponseList);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.d("Repository","Failed:::");
+                    }
+                });
+            }else{
                 APIServiceBusquedaJugador service = retrofit.create(APIServiceBusquedaJugador.class);
                 //  response = service.makeRequest().execute().body();
                 service.getBuscarJugadores(id_equipo,"true",token,dato).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         Log.e("Repository jugadores","Response::::"+response.body());
-                        webserviceResponseList = parseJson(response.body());
+                        webserviceResponseList = parseJson(response.body(),dato);
                         JugadoresRoomDBRepository jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
                         jugadoresRoomDBRepository.insertJugadores(webserviceResponseList);
                         data.setValue(webserviceResponseList);
@@ -110,7 +129,7 @@ public class JugadoresWebServiceRepository {
     }
 
 
-    private List<Jugadores> parseJson(String response ) {
+    private List<Jugadores> parseJson(String response,String dato ) {
 
         List<Jugadores> apiResults = new ArrayList<>();
 
@@ -133,6 +152,11 @@ public class JugadoresWebServiceRepository {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
                 Jugadores jugadores = new Jugadores();
 
+                if (dato.equals("si")){
+                    jugadores.setJugador_mi_equipo("si");
+                }else{
+                    jugadores.setJugador_mi_equipo("no");
+                }
                 jugadores.setJugador_id(jsonNode.optString("usuario_id"));
                 jugadores.setJugador_nombre(jsonNode.optString("nombre"));
                 jugadores.setJugador_foto(jsonNode.optString("foto"));

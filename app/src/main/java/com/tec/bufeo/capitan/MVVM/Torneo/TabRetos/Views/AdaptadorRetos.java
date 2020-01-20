@@ -22,7 +22,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorRetos extends RecyclerView.Adapter<AdaptadorRetos.RetosViewHolder>  {
 
@@ -103,8 +103,8 @@ public class AdaptadorRetos extends RecyclerView.Adapter<AdaptadorRetos.RetosVie
             holder.layoutListRetos.setId(position);
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-            UniversalImageLoader.setImage(IP+"/"+ current.getRetos_foto_retador(),holder.civ_fotoRetosRetador,null);
-            UniversalImageLoader.setImage(IP+"/"+ current.getRetos_foto_retado(),holder.civ_fotoRetosRetado,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getRetos_foto_retador(),holder.civ_fotoRetosRetador,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getRetos_foto_retado(),holder.civ_fotoRetosRetado,null);
 
 
             holder.txt_nombreRetosRetador.setText(current.getRetos_nombre_retador());

@@ -25,6 +25,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import org.json.JSONArray;
@@ -45,6 +46,7 @@ public class RegistroEquipoFragment extends Fragment {
     MisEquiposViewModel misEquiposViewModel;
     AdapterEquipos adaptadorEquipos;
     String id_grupo;
+    Preferences preferences;
 
     public RegistroEquipoFragment() {
         // Required empty public constructor
@@ -59,7 +61,7 @@ public class RegistroEquipoFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_registro_equipo, container, false);
         misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
 
-
+        preferences= new Preferences(getActivity());
         final Bundle bdl = getArguments();
         //id_grupo = bdl.getString("id_grupo");
         id_grupo = bdl.getString("id_grupo");
@@ -113,7 +115,7 @@ public class RegistroEquipoFragment extends Fragment {
     private void agregar_equipo(final String id) {
 
 
-        String url =IP+"/index.php?c=Torneo&a=registrar_equipo_en_torneo&key_mobile=123456asdfgh";
+        String url =IP+"/api/Torneo/registrar_equipo_en_torneo";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -160,6 +162,9 @@ public class RegistroEquipoFragment extends Fragment {
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("id_equipo",id);
                 parametros.put("id_torneo_grupo",id_grupo);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
+
                 Log.d("reg_equipo", "en grupo : "+parametros);
 
                 return parametros;

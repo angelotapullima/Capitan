@@ -42,7 +42,7 @@ public class CommentsWebServiceRepository {
     List<Comments> webserviceResponseList = new ArrayList<>();
 
 
- public LiveData<List<Comments>> providesWebService(String id) {
+ public LiveData<List<Comments>> providesWebService(String id,String token) {
 
      final MutableLiveData<List<Comments>> data = new MutableLiveData<>();
 
@@ -59,7 +59,7 @@ public class CommentsWebServiceRepository {
          //Defining retrofit api service
          CommentsAPIService service = retrofit.create(CommentsAPIService.class);
         //  response = service.makeRequest().execute().body();
-         service.makeRequest(id).enqueue(new Callback<String>() {
+         service.makeRequest(id,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.d("Repository","Response::::"+response.body());

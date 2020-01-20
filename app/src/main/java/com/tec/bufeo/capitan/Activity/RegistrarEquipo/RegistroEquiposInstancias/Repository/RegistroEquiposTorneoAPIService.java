@@ -7,6 +7,8 @@ import retrofit2.http.POST;
 
 public interface RegistroEquiposTorneoAPIService {
     @FormUrlEncoded
-    @POST("index.php?c=Torneo&a=listar_equipos_en_torneo&key_mobile=123456asdfgh")
-    Call<String> getEquipo(@Field("id_torneo") String id);
+    @POST("api/Torneo/listar_equipos_en_torneo")
+    Call<String> getEquipo(@Field("id_torneo") String id,
+                           @Field("app") String app,
+                           @Field("token") String token);
 }

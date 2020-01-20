@@ -17,7 +17,7 @@ import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapter.ComentariosViewHolder>  {
 
@@ -83,7 +83,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-            UniversalImageLoader.setImage(IP+"/"+ current.getComments_foto(),holder.comentarios_foto,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getComments_foto(),holder.comentarios_foto,null);
             //Picasso.with(ctx).load("http://"+IP+"/"+ current.getForo_foto()).into(holder.img_fotoForo);
             holder.comentarios_descripcion.setText(current.getComments_comentario());
             holder.comentarios_nombre.setText(current.getComments_nombre());

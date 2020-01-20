@@ -28,7 +28,8 @@ public class FeedTorneoRoomDBRepository {
     public LiveData<List<FeedTorneo>> getAllIdPosts() {
 
 
-        mAllPosts = feedTorneoDao.getAllIdPosts();
+        //mAllPosts = feedTorneoDao.getAllIdPosts();
+        mAllPosts = feedTorneoDao.getAllPosts();
         return mAllPosts;
     }
     public LiveData<List<FeedTorneo>> getAllPosts() {

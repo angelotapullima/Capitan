@@ -27,7 +27,8 @@ public class FeedRoomDBRepository {
     public LiveData<List<ModelFeed>> getAllIdPosts() {
 
 
-        mAllPosts = feedDao.getAllIdPosts();
+        //mAllPosts = feedDao.getAllIdPosts();
+        mAllPosts = feedDao.getAllPosts();
         return mAllPosts;
     }
     public LiveData<List<ModelFeed>> getAllPosts() {

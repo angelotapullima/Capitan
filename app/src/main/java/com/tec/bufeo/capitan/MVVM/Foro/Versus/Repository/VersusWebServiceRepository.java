@@ -42,7 +42,7 @@ public class VersusWebServiceRepository {
     List<Versus> webserviceResponseList = new ArrayList<>();
 
 
- public LiveData<List<Versus>> providesWebService(String id) {
+ public LiveData<List<Versus>> providesWebService(String id,String token) {
 
      final MutableLiveData<List<Versus>> data = new MutableLiveData<>();
 
@@ -60,7 +60,7 @@ public class VersusWebServiceRepository {
          //Defining retrofit api service
          VersusAPIService service = retrofit.create(VersusAPIService.class);
         //  response = service.makeRequest().execute().body();
-         service.makeRequest(id).enqueue(new Callback<String>() {
+         service.makeRequest(id,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.d("Repository","Response::::"+response.body());

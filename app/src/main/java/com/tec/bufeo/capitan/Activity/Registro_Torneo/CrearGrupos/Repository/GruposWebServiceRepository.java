@@ -43,7 +43,7 @@ public class GruposWebServiceRepository {
 
     List<Grupos> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Grupos>> providesWebService(final String id_torneo) {
+ public LiveData<List<Grupos>> providesWebService(final String id_torneo,String token) {
 
      final MutableLiveData<List<Grupos>> data = new MutableLiveData<>();
 
@@ -59,7 +59,7 @@ public class GruposWebServiceRepository {
 
          APIServiceGrupos service = retrofit.create(APIServiceGrupos.class);
          //  response = service.makeRequest().execute().body();
-         service.savePost(id_torneo).enqueue(new Callback<String>() {
+         service.savePost(id_torneo,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.e("Repository","feed::::"+response.body());

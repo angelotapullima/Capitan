@@ -38,7 +38,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorFeedTorneo extends RecyclerView.Adapter<AdaptadorFeedTorneo.foroTorneoViewHolder> {
 
@@ -151,8 +151,8 @@ public class AdaptadorFeedTorneo extends RecyclerView.Adapter<AdaptadorFeedTorne
             }else {
                 holder.imgbt_like.setImageResource(R.drawable.thumb_up);
             }
-            UniversalImageLoader.setImage(IP+"/"+ current.getForo_foto(),holder.img_fotoForo,null);
-            UniversalImageLoader.setImage(IP+"/"+ current.getUsuario_foto(),holder.foto_perfil_publicacion,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getForo_foto(),holder.img_fotoForo,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getUsuario_foto(),holder.foto_perfil_publicacion,null);
             //Picasso.with(ctx).load("http://"+IP+"/"+ current.getForo_foto()).into(holder.img_fotoForo);
 
 
@@ -217,7 +217,7 @@ public class AdaptadorFeedTorneo extends RecyclerView.Adapter<AdaptadorFeedTorne
     }
 
     private void darlike(final String idlike) {
-        String url =IP+"/index.php?c=Foro&a=dar_like&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Foro/dar_like";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -270,6 +270,8 @@ public class AdaptadorFeedTorneo extends RecyclerView.Adapter<AdaptadorFeedTorne
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("usuario_id",preferencesUser.getIdUsuarioPref());
                 parametros.put("publicacion_id",idlike);
+                parametros.put("app","true");
+                parametros.put("token",preferencesUser.getToken());
 
                 return parametros;
 
@@ -283,7 +285,7 @@ public class AdaptadorFeedTorneo extends RecyclerView.Adapter<AdaptadorFeedTorne
 
     RequestQueue requestQueue;
     private void dislike(final String iddislike) {
-        String url =IP+"/index.php?c=Foro&a=quitar_like&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Foro/quitar_like";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -328,6 +330,8 @@ public class AdaptadorFeedTorneo extends RecyclerView.Adapter<AdaptadorFeedTorne
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("usuario_id",preferencesUser.getIdUsuarioPref());
                 parametros.put("publicacion_id",iddislike);
+                parametros.put("app","true");
+                parametros.put("token",preferencesUser.getToken());
 
                 return parametros;
 

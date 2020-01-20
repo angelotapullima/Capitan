@@ -34,8 +34,8 @@ public interface FeedDao {
     LiveData<List<ModelFeed>> searchFeeds(String query);
 
 
-    @Query("SELECT publicacion_id,limite_inf,limite_sup from feed")
-    LiveData<List<ModelFeed>> getAllIdPosts();
+   /* @Query("SELECT publicacion_id,limite_inf,limite_sup from feed")
+    LiveData<List<ModelFeed>> getAllIdPosts();*/
 
     @Query("Update feed set limite_sup = :sup")
     void actualizarSup(String sup);

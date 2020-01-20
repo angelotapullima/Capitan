@@ -138,7 +138,7 @@ public class InfoDtorneoFragment extends Fragment {
 
     public void feed(){
         FeedTorneoWebServiceRepository feedTorneoWebServiceRepository = new FeedTorneoWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),id_torneo,"0","0","datos");
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),id_torneo,"0","0","datos",preferences.getToken());
     }
 
 

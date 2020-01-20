@@ -60,7 +60,7 @@ public class OtrosTorneosWebServiceRepository {
          service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.d("Repository","Response::::"+response.body());
+                 Log.e("Repository otros t","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  OtrosTorneosRoomDBRepository otrosTorneosRoomDBRepository = new OtrosTorneosRoomDBRepository(application);
                  otrosTorneosRoomDBRepository.insertRetos(webserviceResponseList);
@@ -104,7 +104,7 @@ public class OtrosTorneosWebServiceRepository {
 
 
 
-                torneo.setTorneo_id(jsonNode.optString("id_torneo"));
+                torneo.setId_torneo(jsonNode.optInt("id_torneo"));
                 torneo.setTorneo_nombre(jsonNode.optString("nombre"));
                 torneo.setTorneo_descripcion(jsonNode.optString("descripcion"));
                 torneo.setTorneo_fecha(jsonNode.optString("fecha"));

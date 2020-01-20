@@ -43,6 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
+
 public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements View.OnClickListener {
 
     JugadoresViewModel jugadoresViewModel;
@@ -217,6 +219,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
 
                         Log.e("registro jugadores", "onClick: "+conteo +" :" + listaDatos.get(i).getJugadors_nombre() );
                         //registarJugadores(listaDatos.get(i));
+                        registarJugadores(listaDatos.get(i));
 
 
                 }
@@ -234,7 +237,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
 
 
 
-        String url ="http://www.guabba.com/huevito/ws/api/registro/registrar_asistencia";
+        String url =IP2+"/api/Torneo/registrar_equipo_usuario";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -247,14 +250,10 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
 
                     json_data = new JSONObject(response);
                     JSONObject result_json = json_data.optJSONObject("result");
-                    code = result_json.optInt("code");
+                    code = result_json.optInt("valor");
                     //menssage = result_json.optString("message");
 
-                    if (Integer.toString(code).equalsIgnoreCase("1")){
 
-                        //finalizarSession();
-
-                    }
 
 
                 } catch (JSONException e) {
@@ -275,15 +274,10 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String,String> parametros=new HashMap<>();
-                /*parametros.put("foto",registros.getImagen());
-                parametros.put("id_persona",registros.getId_persona());
-                parametros.put("fecha",registros.getFecha());
-                parametros.put("hora",registros.getHora());
-                parametros.put("turno",registros.getTurno());
-                parametros.put("tipo",registros.getTipo());
-                parametros.put("ubicacion_x", registros.getUbicacion_x());
-                parametros.put("ubicacion_y", registros.getUbicacion_y());
-                parametros.put("ubicacion_nombre",registros.getUbicacion_nombre());*/
+                parametros.put("id_equipo",id_equipo);
+                parametros.put("id_usuario",jugadoresSeleccionados.getJugadors_id());
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
                 Log.e("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }

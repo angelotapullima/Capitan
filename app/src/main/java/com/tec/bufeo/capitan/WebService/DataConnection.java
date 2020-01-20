@@ -24,6 +24,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
 import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.Modelo.Empresas;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.others.Equipo;
 import com.tec.bufeo.capitan.Modelo.HoraFecha;
 import com.tec.bufeo.capitan.Modelo.MDistrito;
@@ -70,6 +71,7 @@ public class DataConnection extends AppCompatActivity {
     Retos retos;
     Torneo torneo;
     SharedPreferences preferencesUser;
+    Preferences preferences;
 
 
     public ArrayList<Empresas> listaEmpresa = new ArrayList();
@@ -101,6 +103,7 @@ public class DataConnection extends AppCompatActivity {
         this.context = context;
         this.funcion = funcion;
         this.hora = hora;
+        preferences =  new Preferences(context);
         this.mensajeprogres = mensajeprogres;
 
         new GetAndSet().execute();
@@ -110,7 +113,7 @@ public class DataConnection extends AppCompatActivity {
         this.context = context;
         this.funcion = funcion;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
 
@@ -122,7 +125,7 @@ public class DataConnection extends AppCompatActivity {
         this.funcion = funcion;
         this.usuario = usuario;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
     //Registro de Empresas
@@ -131,7 +134,7 @@ public class DataConnection extends AppCompatActivity {
         this.funcion = funcion;
         this.empresas = empresas;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
 
@@ -141,7 +144,7 @@ public class DataConnection extends AppCompatActivity {
         this.funcion = funcion;
         this.idciudad = idciudad;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
     //Registro de Canchas- Listar
@@ -150,7 +153,7 @@ public class DataConnection extends AppCompatActivity {
         this.funcion = funcion;
         this.cancha = cancha;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
 
@@ -161,7 +164,7 @@ public class DataConnection extends AppCompatActivity {
         this.reserva = reserva;
         this.fecha = fecha;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
     //Insertar Equipos a un torneo
@@ -171,7 +174,7 @@ public class DataConnection extends AppCompatActivity {
         this.equipo= equipo;
         this.torneo_id = torneo_id;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
     public DataConnection(Activity context, String funcion, Reserva reserva, boolean mensajeprogres){
@@ -179,6 +182,7 @@ public class DataConnection extends AppCompatActivity {
         this.funcion = funcion;
         this.reserva = reserva;
         this.mensajeprogres = mensajeprogres;
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
 
@@ -188,7 +192,7 @@ public class DataConnection extends AppCompatActivity {
         this.funcion = funcion;
         this.equipo = equipo;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
 
@@ -198,7 +202,7 @@ public class DataConnection extends AppCompatActivity {
         this.funcion = funcion;
         this.retos = retos;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
     //De Torneo-Registar-Listar
@@ -207,7 +211,7 @@ public class DataConnection extends AppCompatActivity {
         this.funcion = funcion;
         this.torneo = torneo;
         this.mensajeprogres = mensajeprogres;
-
+        preferences =  new Preferences(context);
         new GetAndSet().execute();
     }
 
@@ -314,9 +318,10 @@ public class DataConnection extends AppCompatActivity {
             }
 
             if(funcion.equals("obtenerHoraFecha")){
-                parametros = " " + URLEncoder.encode(" ","UTF-8");
+                parametros = "app=" + URLEncoder.encode("true","UTF-8")
+                        + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
 
-                url = new URL(IP+"/index.php?c=Usuario&a=fecha_hora_actual&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/Usuario/fecha_hora_actual");
             }
 
             if(funcion.equals("listarUsuarioPorEquipo")){
@@ -433,20 +438,26 @@ public class DataConnection extends AppCompatActivity {
             }
 
             if (funcion.equals("listarEmpresasID")){
-                parametros = "id_ciudad=" + URLEncoder.encode(idciudad,"UTF-8");
-                url = new URL(IP+"/index.php?c=Empresa&a=listar_empresas_por_id_ciudad&key_mobile=123456asdfgh");
+                parametros = "id_ciudad=" + URLEncoder.encode(idciudad,"UTF-8")
+                        +"&app=" + URLEncoder.encode("true","UTF-8")
+                        +"&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");;
+                url = new URL(IP2+"/api/Empresa/listar_empresas_por_id_ciudad");
 
             }if(funcion.equals("listarCanchasDisponiblesBusqueda")){
                 parametros = "hora=" + URLEncoder.encode(reserva.getReserva_hora(),"UTF-8")
                         + "&fecha=" + URLEncoder.encode(reserva.getReserva_fecha(),"UTF-8")
-                        +"&negocio=" + URLEncoder.encode(reserva.getCancha_nombre(),"UTF-8");
-                url = new URL(IP+"/index.php?c=Empresa&a=busqueda_avanzada&key_mobile=123456asdfgh");
+                        +"&negocio=" + URLEncoder.encode(reserva.getCancha_nombre(),"UTF-8")
+                        +"&app=" + URLEncoder.encode("true","UTF-8")
+                        +"&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
+                url = new URL(IP2+"/api/Empresa/busqueda_avanzada");
 
             }if(funcion.equals("listarCanchasDisponiblesBusqueda2")){
                 parametros = "hora=" + URLEncoder.encode(reserva.getReserva_hora(),"UTF-8")
                         + "&fecha=" + URLEncoder.encode(reserva.getReserva_fecha(),"UTF-8")
-                        +"&negocio=" + URLEncoder.encode(reserva.getCancha_nombre(),"UTF-8");
-                url = new URL(IP+"/index.php?c=Empresa&a=busqueda_avanzada&key_mobile=123456asdfgh");
+                        +"&negocio=" + URLEncoder.encode(reserva.getCancha_nombre(),"UTF-8")
+                        +"&app=" + URLEncoder.encode("true","UTF-8")
+                        +"&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
+                url = new URL(IP2+"/api/Empresa/busqueda_avanzada");
             }
 
 

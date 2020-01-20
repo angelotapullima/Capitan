@@ -6,6 +6,8 @@ import retrofit2.http.POST;
 
 public interface EstadisticasAPIService {
     @FormUrlEncoded
-    @POST("index.php?c=Torneo&a=listar_estadisticas&key_mobile=123456asdfgh")
-    Call<String> getEquipo(@Field("id_usuario") String id);
+    @POST("api/Torneo/listar_estadisticas")
+    Call<String> getEquipo(@Field("id_usuario") String id,
+                           @Field("app") String app,
+                           @Field("token") String token);
 }

@@ -38,8 +38,8 @@ public class GruposListViewModel extends AndroidViewModel {
 
 
 
-    public LiveData<List<Grupos>> getIdTorneo(String id_torneo) {
-        retroObservable = gruposWebServiceRepository.providesWebService(id_torneo);
+    public LiveData<List<Grupos>> getIdTorneo(String id_torneo,String token) {
+        retroObservable = gruposWebServiceRepository.providesWebService(id_torneo,token);
         mAllPosts = gruposRoomDBRepository.getIdTorneo(id_torneo);
         return mAllPosts;
     }

@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Models.Estadisticas;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.ViewModels.EstadisticasViewModel;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class FragmentEstadisticas extends DialogFragment {
     Context context;
     RecyclerView rcv_estadisticas1;
     EstadisticasAdapter1 estadisticasAdapter1;
+    Preferences preferences;
     //EstadisticasAdapter2 estadisticasAdapter2;
 
 
@@ -62,8 +64,8 @@ public class FragmentEstadisticas extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_estadisticas, container, false);
-
         context = getContext();
+        preferences= new Preferences(context);
         activity = getActivity();
         initViews(view);
         setAdapter();
@@ -82,7 +84,7 @@ public class FragmentEstadisticas extends DialogFragment {
 
     public void cargarvista(){
 
-        estadisticasViewModel.getAllEstadisticas("12").observe(this, new Observer<List<Estadisticas>>() {
+        estadisticasViewModel.getAllEstadisticas("12",preferences.getToken()).observe(this, new Observer<List<Estadisticas>>() {
             @Override
             public void onChanged(@Nullable List<Estadisticas> estadisticas) {
                 estadisticasAdapter1.setWords(estadisticas);

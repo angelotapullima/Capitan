@@ -63,7 +63,7 @@ public class AdaptadorOtrosTorneos extends RecyclerView.Adapter<AdaptadorOtrosTo
     private List<Torneo> mUsers; // Cached copy of users
 
 
-    AdaptadorOtrosTorneos(Context context, OnItemClickListener listener) {
+    public AdaptadorOtrosTorneos(Context context, OnItemClickListener listener) {
         this.ctx = context;
         mInflater = LayoutInflater.from(context);
         universalImageLoader = new UniversalImageLoader(context);
@@ -99,7 +99,7 @@ public class AdaptadorOtrosTorneos extends RecyclerView.Adapter<AdaptadorOtrosTo
         }
     }
 
-    void setWords(List<Torneo> users) {
+    public void setWords(List<Torneo> users) {
         mUsers = users;
         notifyDataSetChanged();
     }

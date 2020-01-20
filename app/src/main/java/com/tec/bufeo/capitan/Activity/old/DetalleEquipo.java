@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.DetalleEquipo;
+package com.tec.bufeo.capitan.Activity.old;
 
 import android.app.Activity;
 import android.content.Context;

@@ -31,6 +31,7 @@ import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.ViewModels.RegistroEquiposTorneoViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.DateDialog;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import org.json.JSONArray;
@@ -42,7 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class RegistrarPartidos extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,7 +52,7 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
     AdapterRegistroPartidos adapterRegistroPartidos;
     String id_torneo,id_local,id_visita,id_instancia;
     TextView partido_hora,partido_fecha,local,visitante,btn_aceptar,btn_limpiar,btn_cancelar;
-
+    Preferences preferences;
 
     RegistroEquiposTorneoRoomDBRepository registroEquiposTorneoRoomDBRepository;
 
@@ -63,7 +64,7 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
 
         registroEquiposTorneoViewModel = ViewModelProviders.of(this).get(RegistroEquiposTorneoViewModel.class);
 
-
+        preferences = new Preferences(this);
         id_torneo=getIntent().getExtras().getString("id_torneo");
         id_instancia=getIntent().getExtras().getString("id_instancia");
 
@@ -191,7 +192,7 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
     Application application;
     public void cargarDatos(String id){
         RegistroEquiposTorneoWebServiceRepository registroEquiposTorneoWebServiceRepository = new RegistroEquiposTorneoWebServiceRepository(application);
-        registroEquiposTorneoWebServiceRepository.providesWebService(id);
+        registroEquiposTorneoWebServiceRepository.providesWebService(id,preferences.getToken());
     }
 
 
@@ -239,7 +240,7 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
 
 
     int valor;
-    String url = IP+"/index.php?c=Torneo&a=registrar_partido&key_mobile=123456asdfgh";
+    String url = IP2+"/api/Torneo/registrar_partido";
     StringRequest stringRequest;
     private void registrar_partidos() {
         dialogoCargando();
@@ -294,6 +295,8 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
                 parametros.put("id_equipo_visita", id_visita);
                 parametros.put("fecha", partido_fecha.getText().toString());
                 parametros.put("hora", partido_hora.getText().toString());
+                parametros.put("app", "true");
+                parametros.put("token", preferences.getToken());
 
                 Log.e("torneo", "getParams: "+parametros.toString() );
                 return parametros;

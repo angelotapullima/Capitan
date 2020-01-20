@@ -43,7 +43,7 @@ public class FeedTorneoWebServiceRepository {
 
     List<FeedTorneo> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<FeedTorneo>> providesWebService(String id_usuario, String id_torneo,String limite_sup, String limite_inf, final String carga) {
+ public LiveData<List<FeedTorneo>> providesWebService(String id_usuario, String id_torneo,String limite_sup, String limite_inf, final String carga,String token) {
 
      final MutableLiveData<List<FeedTorneo>> data = new MutableLiveData<>();
 
@@ -59,7 +59,7 @@ public class FeedTorneoWebServiceRepository {
 
          APIServiceTorneo service = retrofit.create(APIServiceTorneo.class);
          //  response = service.makeRequest().execute().body();
-         service.savePost(id_usuario,id_torneo,limite_sup,limite_inf).enqueue(new Callback<String>() {
+         service.savePost(id_usuario,id_torneo,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.e("Repository","feed::::"+response.body());

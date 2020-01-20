@@ -47,8 +47,7 @@ import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
 import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
@@ -80,14 +79,12 @@ public class PerfilEdit extends AppCompatActivity implements View.OnClickListene
         civ_iconoPerfil = findViewById(R.id.civ_iconoPerfil);
         prog_imagenloading = findViewById(R.id.prog_imagenloading);
         imb_camara = findViewById(R.id.imb_camara);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);
-        getSupportActionBar().setTitle("Editar Perfil");
+
 
 
         // Picasso.with(getApplicationContext()).load("http://"+IP+"/"+usuario_foto).into(civ_iconoPerfil);
 
-        Picasso.with(context).load(IP + "/" + preferences.getFotoUsuario()).error(R.drawable.error).fit().into(civ_iconoPerfil, new Callback() {
+        Picasso.with(context).load(IP2 + "/" + preferences.getFotoUsuario()).error(R.drawable.error).fit().into(civ_iconoPerfil, new Callback() {
 
             @Override
             public void onSuccess() {
@@ -152,10 +149,10 @@ public class PerfilEdit extends AppCompatActivity implements View.OnClickListene
 
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                    File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/",carpetacChild);
+                    File carpetas = new File(Environment.getExternalStorageDirectory() + "/.Capitan/",carpetacChild);
                     carpetas.mkdirs();
 
-                    String aleatorio = usuario_id+"_"+new Double(Math.random() * 100).intValue();
+                    String aleatorio = preferences.getIdUsuarioPref()+"_"+new Double(Math.random() * 100).intValue();
 
                     String nombre = aleatorio +".jpg";
 
@@ -213,7 +210,7 @@ public class PerfilEdit extends AppCompatActivity implements View.OnClickListene
                 String fname = f1.getName();
 
 
-                f2= new File(Environment.getExternalStorageDirectory() + "/Capitan/",opcionCarpeta);
+                f2= new File(Environment.getExternalStorageDirectory() + "/.Capitan/",opcionCarpeta);
                 f2.mkdirs();
 
 
@@ -355,7 +352,7 @@ public class PerfilEdit extends AppCompatActivity implements View.OnClickListene
     }
 
 
-    String url = IP+"/index.php?c=Usuario&a=actualizar_perfil&key_mobile=123456asdfgh";
+    String url = IP2+"/api/Usuario/actualizar_perfil";
     String path;
 
     public void uploadMultipart() {
@@ -370,7 +367,9 @@ public class PerfilEdit extends AppCompatActivity implements View.OnClickListene
             //Creating a multi part request
             new MultipartUploadRequest(context, uploadId, url)
                     .addFileToUpload(path, "imagen") //Adding file
-                    .addParameter("usuario_id", usuario_id) //Adding text parameter to the request
+                    .addParameter("usuario_id", preferences.getIdUsuarioPref()) //Adding text parameter to the request
+                    .addParameter("app", "true") //Adding text parameter to the request
+                    .addParameter("token", preferences.getToken()) //Adding text parameter to the request
 
                     .setNotificationConfig(getNotificationConfig(uploadId,R.string.cargando))
                     .setMaxRetries(2)
@@ -389,7 +388,7 @@ public class PerfilEdit extends AppCompatActivity implements View.OnClickListene
                         @Override
                         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
-                            String ruta = IP+"/";
+                            String ruta = IP2+"/";
 
                             final String str = serverResponse.getBodyAsString();
                             ruta = ruta+str.substring(1,str.length()-1);

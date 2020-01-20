@@ -96,7 +96,7 @@
             android:label="Reservar Cancha"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activity.DetalleEquipo.DetalleEquipo"
+            android:name=".Activity.old.DetalleEquipo"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
@@ -110,7 +110,7 @@
             android:name=".Activity.Registro_Torneo.RegistroTorneo"
             android:label="Registro Torneo" />
         <activity android:name=".Activity.AgregarEquipos" />
-        <activity android:name=".Activity.DetalleEquipo.AgregarJugador" />
+        <activity android:name=".Activity.old.AgregarJugador" />
         <activity
             android:name=".Activity.old.old2"
             android:configChanges="orientation|screenSize"

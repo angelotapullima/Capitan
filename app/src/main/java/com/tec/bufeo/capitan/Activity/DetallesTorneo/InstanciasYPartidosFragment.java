@@ -22,6 +22,7 @@ import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInsta
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.Instancias;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.PartidosInstancias;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import org.json.JSONArray;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
 public class InstanciasYPartidosFragment extends Fragment {
@@ -42,6 +43,7 @@ public class InstanciasYPartidosFragment extends Fragment {
     RecyclerView rcv_partidos_y_instancias;
     String id_torneo;
     public List<Instancias> listaItem = new ArrayList<>();
+    Preferences preferences;
 
 
     public InstanciasYPartidosFragment() {
@@ -64,6 +66,7 @@ public class InstanciasYPartidosFragment extends Fragment {
         final Bundle bdl = getArguments();
 
 
+        preferences= new Preferences(getActivity());
         id_torneo = bdl.getString("id_torneo");
 
         rcv_partidos_y_instancias= view.findViewById(R.id.rcv_partidos_y_instancias);
@@ -78,7 +81,7 @@ public class InstanciasYPartidosFragment extends Fragment {
 
     StringRequest stringRequest;
     private void pedir_tabla(final String id_torneo) {
-        String url =IP+"/index.php?c=Torneo&a=listar_instancias_partidos_por_id_torneo&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Torneo/listar_instancias_partidos_por_id_torneo";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -145,6 +148,8 @@ public class InstanciasYPartidosFragment extends Fragment {
 
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("id_torneo",id_torneo);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
 
 
                 return parametros;

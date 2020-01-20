@@ -21,6 +21,7 @@ import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorn
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoSubItem;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearEquipos.AdapterRegistroEquiposGruposItem;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import org.json.JSONArray;
@@ -32,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
 public class GruposYEquiposFragment extends Fragment {
@@ -42,6 +43,7 @@ public class GruposYEquiposFragment extends Fragment {
     String id_torneo;
     Context context;
     public List<TablaTorneoItem> listaItem = new ArrayList<>();
+    Preferences preferences;
 
     public GruposYEquiposFragment() {
         // Required empty public constructor
@@ -63,6 +65,7 @@ public class GruposYEquiposFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_grupos_y_equipos, container, false);
+        preferences= new Preferences(getActivity());
         final Bundle bdl = getArguments();
 
 
@@ -88,7 +91,7 @@ public class GruposYEquiposFragment extends Fragment {
 
     StringRequest stringRequest;
     private void pedir_tabla(final String id_torneo) {
-        String url =IP+"/index.php?c=Torneo&a=listar_tabla_por_id_torneo&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Torneo/listar_tabla_por_id_torneo";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -155,6 +158,8 @@ public class GruposYEquiposFragment extends Fragment {
 
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("id_torneo",id_torneo);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
 
 
                 return parametros;

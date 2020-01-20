@@ -42,7 +42,7 @@ public class RegistroEquiposTorneoWebServiceRepository {
 
     List<RegistroEquiposTorneo> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<RegistroEquiposTorneo>> providesWebService(String id_torneo) {
+ public LiveData<List<RegistroEquiposTorneo>> providesWebService(String id_torneo,String token) {
 
      final MutableLiveData<List<RegistroEquiposTorneo>> data = new MutableLiveData<>();
 
@@ -58,7 +58,7 @@ public class RegistroEquiposTorneoWebServiceRepository {
          //Defining retrofit api service
          RegistroEquiposTorneoAPIService service = retrofit.create(RegistroEquiposTorneoAPIService.class);
         //  response = service.makeRequest().execute().body();
-         service.getEquipo(id_torneo).enqueue(new Callback<String>() {
+         service.getEquipo(id_torneo,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.e("Repository","equipos por torneo::::"+response.body());

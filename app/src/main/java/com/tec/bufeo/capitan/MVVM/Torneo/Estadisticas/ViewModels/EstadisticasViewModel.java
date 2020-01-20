@@ -30,8 +30,8 @@ public class EstadisticasViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<List<Estadisticas>> getAllEstadisticas(String id_usuario ) {
-        retroObservable = misEquiposWebServiceRepository.providesWebService(id_usuario);
+    public LiveData<List<Estadisticas>> getAllEstadisticas(String id_usuario,String token ) {
+        retroObservable = misEquiposWebServiceRepository.providesWebService(id_usuario,token);
         mAllMiEquipos = misEquiposRoomDBRepository.getAllEstadisticas();
         return mAllMiEquipos;
     }

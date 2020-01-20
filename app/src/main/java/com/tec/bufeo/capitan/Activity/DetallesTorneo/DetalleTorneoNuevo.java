@@ -22,7 +22,7 @@ import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Views.Posiciones
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class DetalleTorneoNuevo extends AppCompatActivity {
 
@@ -117,7 +117,7 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
         });
 
 
-        UniversalImageLoader.setImage(IP+"/"+ foto,imagen_Dtorneo,null);
+        UniversalImageLoader.setImage(IP2+"/"+ foto,imagen_Dtorneo,null);
 
     }
 

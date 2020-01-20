@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class ChatsActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -178,7 +178,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
     StringRequest stringRequest;
     private void EnviarComentarios(final String mensaje) {
-        String url =IP+"/index.php?c=Usuario&a=enviar_mensaje&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Usuario/enviar_mensaje";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -206,6 +206,8 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                 parametros.put("id_usuario",preferences.getIdUsuarioPref());
                 parametros.put("id_chat",id_chat);
                 parametros.put("mensaje",mensaje);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
 
                 return parametros;
 

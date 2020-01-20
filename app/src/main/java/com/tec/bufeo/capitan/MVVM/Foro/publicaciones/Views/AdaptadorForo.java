@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHolder>  {
@@ -217,7 +216,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
     }
 
     private void darlike(final String idlike) {
-        String url =IP+"/index.php?c=Foro&a=dar_like&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Foro/dar_like";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -270,6 +269,8 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("usuario_id",preferencesUser.getIdUsuarioPref());
                 parametros.put("publicacion_id",idlike);
+                parametros.put("app","true");
+                parametros.put("token",preferencesUser.getToken());
 
                 return parametros;
 
@@ -283,7 +284,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
 
     RequestQueue requestQueue;
     private void dislike(final String iddislike) {
-        String url =IP+"/index.php?c=Foro&a=quitar_like&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Foro/quitar_like";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -328,6 +329,8 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("usuario_id",preferencesUser.getIdUsuarioPref());
                 parametros.put("publicacion_id",iddislike);
+                parametros.put("app","true");
+                parametros.put("token",preferencesUser.getToken());
 
                 return parametros;
 

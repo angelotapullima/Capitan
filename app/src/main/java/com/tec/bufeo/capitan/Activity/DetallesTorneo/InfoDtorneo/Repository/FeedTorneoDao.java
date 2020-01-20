@@ -35,8 +35,8 @@ public interface FeedTorneoDao {
     LiveData<List<FeedTorneo>> searchFeeds(String query);
 
 
-    @Query("SELECT publicacion_id,limite_inf,limite_sup from feedTorneo")
-    LiveData<List<FeedTorneo>> getAllIdPosts();
+    /*@Query("SELECT publicacion_id,limite_inf,limite_sup from feedTorneo")
+    LiveData<List<FeedTorneo>> getAllIdPosts();*/
 
     @Query("Update feedTorneo set limite_sup = :sup")
     void actualizarSup(String sup);

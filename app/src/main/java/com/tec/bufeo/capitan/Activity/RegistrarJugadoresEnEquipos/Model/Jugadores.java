@@ -46,6 +46,10 @@ public class Jugadores {
     @SerializedName("jugador_estado")
     private String jugador_estado;
 
+    @ColumnInfo(name = "jugador_mi_equipo")
+    @SerializedName("jugador_mi_equipo")
+    private String jugador_mi_equipo;
+
 
 
 
@@ -104,5 +108,13 @@ public class Jugadores {
 
     public void setJugador_estado(String jugador_estado) {
         this.jugador_estado = jugador_estado;
+    }
+
+    public String getJugador_mi_equipo() {
+        return jugador_mi_equipo;
+    }
+
+    public void setJugador_mi_equipo(String jugador_mi_equipo) {
+        this.jugador_mi_equipo = jugador_mi_equipo;
     }
 }

@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,6 +106,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
             @Override
             public void onChanged(@Nullable List<Mequipos> mequipos) {
                 adaptadorMiEquipo.setWords(mequipos);
+                Log.e("mis Equipos", "onChanged: "+mequipos.size() );
             }
         });
 
@@ -129,6 +132,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
                 intent.putExtra("id_equipo", mequipos.getEquipo_id());
                 intent.putExtra("nombre_equipo", mequipos.getEquipo_nombre());
                 intent.putExtra("foto_equipo", mequipos.getEquipo_foto());
+                intent.putExtra("capitan_equipo", mequipos.getCapitan_nombre());
                 startActivity(intent);
             }
         });
@@ -141,13 +145,31 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
         rcv_equipo.setAdapter(adaptadorMiEquipo);
 
 
-
         adaptadorEquipos = new AdaptadorEquipos(context, new AdaptadorEquipos.OnItemClickListener() {
             @Override
-            public void onItemClick(Mequipos mequipos, int position) {
+            public void onItemClick(Mequipos mequipos, String tipo, int position) {
+                if (tipo.equals("txt_nombreEquipoRetar")){
+
+                    Intent intent = new Intent(getContext(), DetalleEquipoNuevo.class);
+                    intent.putExtra("id_equipo", mequipos.getEquipo_id());
+                    intent.putExtra("nombre_equipo", mequipos.getEquipo_nombre());
+                    intent.putExtra("foto_equipo", mequipos.getEquipo_foto());
+                    intent.putExtra("capitan_equipo", mequipos.getCapitan_nombre());
+                    startActivity(intent);
+                }else if (tipo.equals("civ_fotoEquipoRetar")){
+
+                    Intent intent = new Intent(getContext(), DetalleEquipoNuevo.class);
+                    intent.putExtra("id_equipo", mequipos.getEquipo_id());
+                    intent.putExtra("nombre_equipo", mequipos.getEquipo_nombre());
+                    intent.putExtra("foto_equipo", mequipos.getEquipo_foto());
+                    intent.putExtra("capitan_equipo", mequipos.getCapitan_nombre());
+                    startActivity(intent);
+                }
 
             }
         });
+
+
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
         layoutManager.setOrientation(layoutManager.HORIZONTAL);

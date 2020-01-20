@@ -50,6 +50,7 @@ import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Models.Grupos;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.DateDialog;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -74,8 +75,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
 import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
@@ -93,6 +93,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
    ImageView camara,img_banner_torneo;
     int valor;
     String id_torneo,valor_tipo,valor_spinner;
+    Preferences preferences;
 
 
 
@@ -107,6 +108,8 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_registro_torneo);
         /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);*/
+
+        preferences = new Preferences(this);
         edt_nombreTorneo = findViewById(R.id.edt_nombreTorneo);
         edt_descripcionTorneo = findViewById(R.id.edt_descripcionTorneo);
         edt_lugarTorneo = findViewById(R.id.edt_lugarTorneo);
@@ -247,7 +250,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                 String fname = f1.getName();
 
 
-                f2= new File(Environment.getExternalStorageDirectory() + "/Capitan/","Foro");
+                f2= new File(Environment.getExternalStorageDirectory() + "/.Capitan/","Foro");
                 f2.mkdirs();
                 try {
                     FileUtils.copyFileToDirectory(f1,f2);
@@ -301,7 +304,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
 
 
 
-    String url = IP+"/index.php?c=Torneo&a=registrar_torneo&key_mobile=123456asdfgh";
+    String url = IP2+"/api/Torneo/registrar_torneo";
     String path;
     public void uploadMultipart() {
         dialogoCargando();
@@ -318,7 +321,9 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
             //Creating a multi part request
             new MultipartUploadRequest(this, uploadId, url)
                     .addFileToUpload(path, "imagen") //Adding file
-                    .addParameter("usuario_id", usuario_id) //Adding text parameter to the request
+                    .addParameter("usuario_id", preferences.getIdUsuarioPref()) //Adding text parameter to the request
+                    .addParameter("app", "true") //Adding text parameter to the request
+                    .addParameter("token",preferences.getToken() ) //Adding text parameter to the request
                     .addParameter("descripcion", edt_descripcionTorneo.getText().toString()) //Adding text parameter to the request
                     .addParameter("organizador", edt_organizador.getText().toString())//Adding text parameter to the request
                     .addParameter("costo", edt_costo.getText().toString()) //Adding text parameter to the request
@@ -341,13 +346,13 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                         @Override
                         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
 
-                            Log.e("Torneo", "multipart error: " + serverResponse.toString() + " " +usuario_id );
+                            Log.e("Torneo", "multipart error: " + serverResponse.toString() + " " +preferences.getIdUsuarioPref() );
                             dialog_carga.dismiss();
                         }
 
                         @Override
                         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
-                            Log.e("Torneo", "multipart Completed: " + serverResponse.getBodyAsString() + " " +usuario_id );
+                            Log.e("Torneo", "multipart Completed: " + serverResponse.getBodyAsString() + " " +preferences.getIdUsuarioPref() );
                             //Toast.makeText(RegistroForo.this, "completo", Toast.LENGTH_SHORT).show();
 
                             try {
@@ -526,7 +531,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
 
                 Map<String,String> parametros=new HashMap<>();
 
-                parametros.put("usuario_id", usuario_id);
+                parametros.put("usuario_id", preferences.getIdUsuarioPref());
                 parametros.put("descripcion", edt_descripcionTorneo.getText().toString());
                 parametros.put("organizador", edt_organizador.getText().toString());
                 parametros.put("costo", edt_costo.getText().toString());
@@ -535,6 +540,8 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                 parametros.put("lugar", edt_lugarTorneo.getText().toString());
                 parametros.put("nombre", edt_nombreTorneo.getText().toString());
                 parametros.put("tipo", valor_tipo);
+                parametros.put("app", "true");
+                parametros.put("token", preferences.getToken());
 
                 Log.e("torneo", "getParams: "+parametros.toString() );
                 return parametros;

@@ -97,7 +97,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         preferences = new Preferences(context);
 
-        feedListViewModel.getAllIdPosts().observe(this, new Observer<List<ModelFeed>>() {
+        feedListViewModel.getAllPosts().observe(this, new Observer<List<ModelFeed>>() {
             @Override
             public void onChanged(List<ModelFeed> modelFeeds) {
                 if (modelFeeds.size()>0){

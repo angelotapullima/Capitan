@@ -29,8 +29,8 @@ public class CommentsListViewModel extends AndroidViewModel {
         //mAllComments= commentsRoomDBRepository.getAllComments(id);
     }
 
-    public LiveData<List<Comments>> getmAllReviews(String id) {
-        retroObservable = commentsWebServiceRepository.providesWebService(id);
+    public LiveData<List<Comments>> getmAllReviews(String id,String token) {
+        retroObservable = commentsWebServiceRepository.providesWebService(id,token);
         mAllComments = commentsRoomDBRepository.getAllComments(id);
         return mAllComments;
     }

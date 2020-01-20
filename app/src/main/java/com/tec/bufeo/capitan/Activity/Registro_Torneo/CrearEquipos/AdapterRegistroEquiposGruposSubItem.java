@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdapterRegistroEquiposGruposSubItem extends RecyclerView.Adapter<AdapterRegistroEquiposGruposSubItem.SubItemViewHolder>  {
 
@@ -68,7 +69,7 @@ public class AdapterRegistroEquiposGruposSubItem extends RecyclerView.Adapter<Ad
 
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-        UniversalImageLoader.setImage(IP+"/"+ torneoSubItem.getEquipo_foto(),holder.imagenEquipo,null);
+        UniversalImageLoader.setImage(IP2+"/"+ torneoSubItem.getEquipo_foto(),holder.imagenEquipo,null);
         //holder.imagenEquipo.setText(torneoSubItem.getPosicion_lista());
         holder.nombre_equipo_lista.setText(torneoSubItem.getEquipo_nombre());
 

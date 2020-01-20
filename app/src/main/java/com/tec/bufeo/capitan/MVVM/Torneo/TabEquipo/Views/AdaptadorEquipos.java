@@ -21,7 +21,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorEquipos extends RecyclerView.Adapter<AdaptadorEquipos.EquiposViewHolder>  {
@@ -52,13 +51,27 @@ public class AdaptadorEquipos extends RecyclerView.Adapter<AdaptadorEquipos.Equi
             btn_retar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ctx, RegistroReto.class);
+
+                    listener.onItemClick(mequipos,"btn_retar",getAdapterPosition());
+                }
+            });
+            txt_nombreEquipoRetar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    listener.onItemClick(mequipos,"txt_nombreEquipoRetar",getAdapterPosition());
+                }
+            });
+            civ_fotoEquipoRetar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /*Intent intent = new Intent(ctx, RegistroReto.class);
                     intent.putExtra("nombre_retado",mequipos.getEquipo_nombre());
                     intent.putExtra("foto_retado",mequipos.getEquipo_foto());
                     intent.putExtra("id_retado",mequipos.getEquipo_id());
                     intent.putExtra("capitan_id",mequipos.getCapitan_id());
-                    ctx.startActivity(intent);
-                    // listener.onItemClick(reserva,getAdapterPosition());
+                    ctx.startActivity(intent);*/
+                    listener.onItemClick(mequipos,"civ_fotoEquipoRetar",getAdapterPosition());
                 }
             });
 
@@ -130,7 +143,7 @@ public class AdaptadorEquipos extends RecyclerView.Adapter<AdaptadorEquipos.Equi
 
 
     public interface  OnItemClickListener{
-        void onItemClick(Mequipos mequipos, int position);
+        void onItemClick(Mequipos mequipos,String tipo, int position);
     }
 
 }
