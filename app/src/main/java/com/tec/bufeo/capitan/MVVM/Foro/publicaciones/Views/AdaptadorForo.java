@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.android.volley.toolbox.StringRequest;
@@ -45,7 +46,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
 
     UniversalImageLoader universalImageLoader;
     StringRequest stringRequest;
-    ImageButton imgbt_like_g,imgbt_comment_g;
+    LinearLayout imgbt_like_g,imgbt_comment_g;
     TextView nlike_g;
     int totalLikes;
     JSONObject json_data;
@@ -64,6 +65,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
         private TextView txt_tituloForo, txt_usuarioForo, txt_descripcionForo, txt_fechaHora,txt_totallike,txt_totalcoment;
         private ProgressBar prog_like;
         private ImageButton imgbt_like,imgbt_comment;
+        private LinearLayout layout_comentar,layout_like;
         FrameLayout frame_mas_contenido,progress_mas_contenido;
         MaterialButton btn_mas_contenido;
         CardView materialCardView;
@@ -77,6 +79,8 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             txt_fechaHora = itemView.findViewById(R.id.txt_fechaHora);
             prog_like = itemView.findViewById(R.id.prog_like);
             imgbt_like = itemView.findViewById(R.id.imgbt_like);
+            layout_comentar = itemView.findViewById(R.id.layout_comentar);
+            layout_like = itemView.findViewById(R.id.layout_like);
             txt_totallike = itemView.findViewById(R.id.txt_totallike);
             imgbt_comment=itemView.findViewById(R.id.imgbt_comment);
             txt_totalcoment=itemView.findViewById(R.id.txt_totalcoment);
@@ -133,8 +137,8 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             if(position == mUsers.size()-1){
                 holder.materialCardView.setVisibility(View.GONE);
             }
-            holder.imgbt_like.setId(position);
-            holder.imgbt_comment.setId(position);
+            holder.layout_like.setId(position);
+            holder.layout_comentar.setId(position);
 
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
             holder.txt_tituloForo.setText(current.getForo_titulo());
@@ -157,13 +161,13 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
 
 
             //holder.imgbt_comment.setOnClickListener(this);
-            holder.imgbt_comment.setOnClickListener(new View.OnClickListener() {
+            holder.layout_comentar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //ForoFragment.dialogoComentarios();
 
                     posicionlocalc = v.getId();
-                    imgbt_comment_g = (ImageButton) v;
+                    imgbt_comment_g = (LinearLayout) v;
 
                     id_publi = mUsers.get(posicionlocalc).getPublicacion_id();
                     Intent i =new Intent(ctx, ComentariosActivity.class);
@@ -174,11 +178,11 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
                 }
             });
 
-            holder.imgbt_like.setOnClickListener(new View.OnClickListener() {
+            holder.layout_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     posicionlocalc = v.getId();
-                    imgbt_like_g = (ImageButton) v;
+                    imgbt_like_g = (LinearLayout) v;
                     nlike_g = holder.txt_totallike;
 
 

@@ -19,9 +19,9 @@ public class Torneo {
     private int id_torneo;
 
 
-    /*@ColumnInfo(name = "torneo_id")
+    @ColumnInfo(name = "torneo_id")
     @SerializedName("torneo_id")
-    private String torneo_id;*/
+    private String torneo_id;
 
     @ColumnInfo(name = "usuario_id")
     @SerializedName("usuario_id")
@@ -77,13 +77,13 @@ public class Torneo {
         this.id_torneo = id_torneo;
     }
 
-    /*public String getTorneo_id() {
+    public String getTorneo_id() {
         return torneo_id;
     }
 
     public void setTorneo_id(String torneo_id) {
         this.torneo_id = torneo_id;
-    }*/
+    }
 
     public String getUsuario_id() {
         return usuario_id;

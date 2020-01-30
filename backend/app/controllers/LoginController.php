@@ -80,6 +80,8 @@ class LoginController{
                     //Generacion de json si la solicitud es desde app
                     $permisos = [];
                     if(isset($_POST['app']) && $_POST['app'] == true){
+                        $tiene_negocio_ = $this->userg->listEmpresaUser($singin[0]->id_user);
+                        (isset($tiene_negocio_->id_empresa_usuario))?$tiene_negocio="si":$tiene_negocio="no";
                         $user = array(
                             //token firebase, num, hab ,posicion ubigeo,
                             "id_user" => $singin[0]->id_user,
@@ -98,6 +100,7 @@ class LoginController{
                             "user_posicion" => $singin[0]->user_posicion,
                             "user_habilidad" => $singin[0]->user_habilidad,
                             "ubigeo_id" => $singin[0]->ubigeo_id,
+                            "tiene_negocio" => $tiene_negocio,
                             "token" => $this->crypt->tripleencrypt($singin[0]->user_password, $singin[0]->id_user, $singin[0]->user_created_at),
                             "token_firebase" => $singin[0]->user_token
                         );

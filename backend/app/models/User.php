@@ -163,20 +163,24 @@ class User{
             $fecha = date("Y-m-d H:i:s");
             if(empty($model->id_user)){
                 $sql = 'insert into user(
-                    id_person, id_role, user_nickname, user_password, user_email, user_status, user_created_at, user_modified_at, user_image
-                    ) values(?,?,?,?,?,?,?,?,?)';
+                    id_person, id_role,ubigeo_id, user_nickname, user_password, user_email, user_image,user_posicion,user_habilidad,user_num, user_status, user_created_at, user_modified_at 
+                    ) values(?,?,?,?,?,?,?,?,?,?,?,?,?)';
                 $stm = $this->pdo->prepare($sql);
                 $stm->execute([
                     //$model->id_auth,
                     $model->id_person,
                     $model->id_role,
+                    $model->ubigeo_id,
                     $model->user_nickname,
                     $model->user_password,
                     $model->user_email,
+                    $model->user_image,
+                    $model->user_posicion,
+                    $model->user_habilidad,
+                    $model->user_num,
                     1,
                     $fecha,
                     $fecha,
-                    'media/user/user.jpg'
                 ]);
 
             } else {
@@ -352,6 +356,59 @@ class User{
         try {
             $stm = $this->pdo->prepare('select * from detalle_chat where chat_id = ? order by detalle_chat_id desc limit 1');
             $stm->execute([$id_chat]);
+            $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_ciudades(){
+        try {
+            $stm = $this->pdo->prepare("SELECT DISTINCT u.ubigeo_ciudad FROM ubigeo u");
+            $stm->execute();
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_distritos_por_ciudad($ciudad){
+        try {
+            $stm = $this->pdo->prepare("SELECT DISTINCT u.ubigeo_distrito,u.ubigeo_id from ubigeo u where u.ubigeo_ciudad=?");
+            $stm->execute([$ciudad]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function enviar_mensaje($chat_id,$id_usuario,$mensaje,$fecha){
+        try {
+            $sql = 'insert into detalle_chat(
+                    chat_id,
+                    id_usuario,
+                    detalle_chat_mensaje,
+                    detalle_chat_fecha,
+                    detalle_chat_estado
+                    ) values(?,?,?,?,1)';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([
+                $chat_id,$id_usuario,$mensaje,$fecha
+            ]);
+            $result = 1;
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
+    public function listar_chat_por_id($id){
+        try {
+            $stm = $this->pdo->prepare('select * from chat where chat_id = ?');
+            $stm->execute([$id]);
             $result = $stm->fetch();
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);

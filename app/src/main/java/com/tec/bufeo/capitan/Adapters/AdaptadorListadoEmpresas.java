@@ -14,7 +14,7 @@ import com.tec.bufeo.capitan.R;
 
 import java.util.ArrayList;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class AdaptadorListadoEmpresas extends RecyclerView.Adapter<AdaptadorListadoEmpresas.EmpresasViewHolder> {
 
     private ArrayList<Empresas> array;
@@ -74,7 +74,7 @@ public class AdaptadorListadoEmpresas extends RecyclerView.Adapter<AdaptadorList
 
         obj = array.get(position);
 
-        Picasso.with(context).load(IP+"/"+ obj.getEmpresas_foto()).into(holder.img_fotoEmpresa);
+        Picasso.with(context).load(IP2+"/"+ obj.getEmpresas_foto()).into(holder.img_fotoEmpresa);
         holder.txt_nombreEmpresa.setText(obj.getEmpresas_nombre());
         holder.txt_direccionEmpresa.setText(obj.getEmpresas_direccion());
         holder.bid(obj,listener);

@@ -4,6 +4,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Models.Comments;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Repository.CommentsRoomDBRepository;
@@ -42,6 +43,7 @@ public class CommentsListViewModel extends AndroidViewModel {
     }*/
 
     public void insertOne(Comments comments) {
+        Log.d("ingreso coment : ", comments.toString());
         commentsRoomDBRepository.insertOneReviews(comments);
     }
 

@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposWebServiceRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
@@ -25,7 +27,7 @@ public class Splash extends AppCompatActivity {
     private static final long TIEMPO = 1;
     Preferences preferences;
     FeedListViewModel feedListViewModel;
-
+    MisEquiposViewModel misEquiposViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,9 @@ public class Splash extends AppCompatActivity {
        //Obtenemos los datos del sharetpreferense, si el usuario se logueo antes, nops manda directo al menu principal, caso contrario denbe loguearse
 
         feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
+        misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
         cargarFeed();
+        cargarEquipos();
         Tarea tarea = new Tarea();
         tarea.execute();
 
@@ -47,6 +51,7 @@ public class Splash extends AppCompatActivity {
 
                if(!preferences.getIdUsuarioPref().equals("")){
                     Intent i= new Intent(getApplicationContext(),MenuPrincipal.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
                     //finish();
                 }
@@ -97,6 +102,11 @@ public class Splash extends AppCompatActivity {
     public void cargarFeed(){
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
         feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0","0",preferences.getToken());
+    }
+    public void cargarEquipos(){
+        MisEquiposWebServiceRepository misEquiposWebServiceRepository =  new MisEquiposWebServiceRepository(application);
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken());
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken());
     }
 
 }

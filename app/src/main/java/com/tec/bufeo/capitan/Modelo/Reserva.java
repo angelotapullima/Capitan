@@ -63,6 +63,12 @@ public class Reserva {
     private String fecha_reporte;
     private String fecha_i_reporte;
     private String fecha_f_reporte;
+    private String pago_id;
+    private String tipopago;
+    private String pago1;
+    private String pago1_date;
+    private String pago2;
+    private String pago2_date;
 
     public String getReserva_id() {
         return reserva_id;
@@ -182,5 +188,53 @@ public class Reserva {
 
     public void setFecha_f_reporte(String fecha_f_reporte) {
         this.fecha_f_reporte = fecha_f_reporte;
+    }
+
+    public String getPago_id() {
+        return pago_id;
+    }
+
+    public void setPago_id(String pago_id) {
+        this.pago_id = pago_id;
+    }
+
+    public String getTipopago() {
+        return tipopago;
+    }
+
+    public void setTipopago(String tipopago) {
+        this.tipopago = tipopago;
+    }
+
+    public String getPago1() {
+        return pago1;
+    }
+
+    public void setPago1(String pago1) {
+        this.pago1 = pago1;
+    }
+
+    public String getPago1_date() {
+        return pago1_date;
+    }
+
+    public void setPago1_date(String pago1_date) {
+        this.pago1_date = pago1_date;
+    }
+
+    public String getPago2() {
+        return pago2;
+    }
+
+    public void setPago2(String pago2) {
+        this.pago2 = pago2;
+    }
+
+    public String getPago2_date() {
+        return pago2_date;
+    }
+
+    public void setPago2_date(String pago2_date) {
+        this.pago2_date = pago2_date;
     }
 }

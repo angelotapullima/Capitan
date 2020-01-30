@@ -33,7 +33,7 @@ import com.tec.bufeo.capitan.WebService.DataConnection;
 import java.util.ArrayList;
 
 import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class DetalleNegocio extends AppCompatActivity  implements View.OnClickListener{
 
@@ -55,15 +55,17 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
 
     static ArrayList<Cancha> arraycanchaactual;
     public static Button btn_enviarV, btn_cancelarV,btn_editVal;
-    static  String id_empresa;
+    static  String id_empresa,tipo_usuario;
 
     static DataConnection dc,dc1,dc2, dc3;
+    static DataConnection dc4;
     static  ProgressBar progressbar,progressbarcanchas;
     public static String fecha_actual, hora_actual, cancha_id, horario;
-
+    static String saldo_cargado;
     public static  ArrayList<Empresas> arrayempresa;
     public static  ArrayList<Empresas> arrayempresaVal;
     public static ArrayList<Cancha> arraycancha;
+    static ArrayList<String> saldo;
 
     public void getReportes(){
         Intent intent= new Intent(this,ReporteDiario2.class);
@@ -120,17 +122,23 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
 
 
         id_empresa = getIntent().getStringExtra("id_empresa");
+        tipo_usuario = getIntent().getStringExtra("tipo_usuario");
 
 
         lny_telefono.setOnClickListener(this);
         btn_cancelarV.setOnClickListener(this);
         btn_enviarV.setOnClickListener(this);
         btn_editVal.setOnClickListener(this);
+
+        dc4 = new DataConnection(DetalleNegocio.this,"ObtenerSaldo",false);
+        new DetalleNegocio.GetSaldo().execute();
+
         dc1 = new DataConnection(DetalleNegocio.this,"mostrarDetalleEmpresa",new Empresas(id_empresa,usuario_id),false);
         new GetDetalleNegocio().execute();
 
         dc2 = new DataConnection(DetalleNegocio.this,"listarcanchasEmpresas",new Cancha(id_empresa),false);
         new GetListadoCanchas().execute();
+
 
 
         rtb_valorar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -147,6 +155,41 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
        // rtb_valoracion.setRating();
 
     }
+
+
+    public static class GetSaldo extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            saldo =  new ArrayList<>();
+            saldo =  dc4.getSaldo();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+
+            if (saldo.size()>0){
+                saldo_cargado=saldo.get(0);
+            }else{
+                saldo_cargado="vacio";
+            }
+
+
+
+
+        }
+    }
+
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -180,11 +223,7 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
                 break;
         }
     }
-    public static void actualizarDetalle(){
-        dc1 = new DataConnection(activity,"mostrarDetalleEmpresa",new Empresas(id_empresa,usuario_id),false);
-        new GetDetalleNegocioVal().execute();
 
-    }
     public static class GetDetalleNegocio extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -209,31 +248,32 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
             //Toast.makeText(getApplicationContext(),"H:"+arrayempresa.get(0).getEmpresa_cancha_hora(),Toast.LENGTH_SHORT).show();
 
 
+            if (arrayempresa.size()>0){
+                Picasso.with(context).load(IP2+"/"+arrayempresa.get(0).getEmpresas_foto()).into(img_fotoEmpresa);
 
-            Picasso.with(context).load(IP+"/"+arrayempresa.get(0).getEmpresas_foto()).into(img_fotoEmpresa);
+                txt_nombreEmpresa.setText(arrayempresa.get(0).getEmpresas_nombre());
+                txt_nombreUsuarioEmpresa.setText(arrayempresa.get(0).getUsuario_id());
+                txt_descripcionEmpresa.setText(arrayempresa.get(0).getEmpresas_descripcion());
+                txt_horario.setText(arrayempresa.get(0).getEmpresas_horario());
+                txt_direccionEmpresa.setText(arrayempresa.get(0).getEmpresas_direccion());
+                rtb_valorar.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_valoracion()));
+                rtb_valoracion.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_promedio()));
+                txt_conteo.setText(arrayempresa.get(0).getEmpresas_conteo());
+                txt_promedio.setText(arrayempresa.get(0).getEmpresas_promedio());
+                txt_telefonoEmpresa.setText(arrayempresa.get(0).getEmpresas_telefono());
 
-            txt_nombreEmpresa.setText(arrayempresa.get(0).getEmpresas_nombre());
-            txt_nombreUsuarioEmpresa.setText(arrayempresa.get(0).getUsuario_id());
-            txt_descripcionEmpresa.setText(arrayempresa.get(0).getEmpresas_descripcion());
-            txt_horario.setText(arrayempresa.get(0).getEmpresas_horario());
-            txt_direccionEmpresa.setText(arrayempresa.get(0).getEmpresas_direccion());
-            rtb_valorar.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_valoracion()));
-            rtb_valoracion.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_promedio()));
-            txt_conteo.setText(arrayempresa.get(0).getEmpresas_conteo());
-            txt_promedio.setText(arrayempresa.get(0).getEmpresas_promedio());
-            txt_telefonoEmpresa.setText(arrayempresa.get(0).getEmpresas_telefono());
-            horario=arrayempresa.get(0).getEmpresas_horario();
-            fecha_actual = arrayempresa.get(0).getEmpresa_cancha_fecha();
-            hora_actual = arrayempresa.get(0).getEmpresa_cancha_hora();
-            progressbar.setVisibility(ProgressBar.INVISIBLE);
 
-            //Toast.makeText(getApplicationContext(),"fecha  "+fecha+"  "+"Hora  "+ hora,Toast.LENGTH_SHORT).show();
-            Toast.makeText(context,"V "+ arrayempresa.get(0).getEmpresas_valoracion(), Toast.LENGTH_SHORT).show();
+                horario=arrayempresa.get(0).getEmpresas_horario();
+                fecha_actual = arrayempresa.get(0).getEmpresa_cancha_fecha();
+                hora_actual = arrayempresa.get(0).getEmpresa_cancha_hora();
+                progressbar.setVisibility(ProgressBar.INVISIBLE);
 
-            //int nun =09;
+                //Toast.makeText(getApplicationContext(),"fecha  "+fecha+"  "+"Hora  "+ hora,Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"V "+ arrayempresa.get(0).getEmpresas_valoracion(), Toast.LENGTH_SHORT).show();
+                //int nun =09;
 
-            abl_detalleEmpresa.setVisibility(View.VISIBLE);
-            cdv_detalleEmpresa.setVisibility(View.VISIBLE);
+                abl_detalleEmpresa.setVisibility(View.VISIBLE);
+                cdv_detalleEmpresa.setVisibility(View.VISIBLE);
 
          /*   btn_cancelarV.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -245,19 +285,24 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
                 }
             });*/
 
-            if(arrayempresa.get(0).getEmpresas_valoracion().equals("0")){
-                rtb_valorar.setEnabled(true);
-                btn_editVal.setVisibility(View.INVISIBLE);
-                btn_enviarV.setVisibility(View.GONE);
-                btn_cancelarV.setVisibility(View.GONE);
+                if(arrayempresa.get(0).getEmpresas_valoracion().equals("0")){
+                    rtb_valorar.setEnabled(true);
+                    btn_editVal.setVisibility(View.INVISIBLE);
+                    btn_enviarV.setVisibility(View.GONE);
+                    btn_cancelarV.setVisibility(View.GONE);
 
+                }
+                else{
+                    rtb_valorar.setEnabled(false);
+                    btn_cancelarV.setVisibility(View.GONE);
+                    btn_enviarV.setVisibility(View.GONE);
+                    btn_editVal.setVisibility(View.VISIBLE);
+                }
             }
-            else{
-                rtb_valorar.setEnabled(false);
-                btn_cancelarV.setVisibility(View.GONE);
-                btn_enviarV.setVisibility(View.GONE);
-                btn_editVal.setVisibility(View.VISIBLE);
-            }
+
+
+
+
 
         }
     }
@@ -282,47 +327,24 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            //Toast.makeText(getApplicationContext(),"H:"+arrayempresa.get(0).getEmpresa_cancha_hora(),Toast.LENGTH_SHORT).show();
 
-
-
-          //  Picasso.with(context).load("http://"+IP+"/"+arrayempresa.get(0).getEmpresas_foto()).into(img_fotoEmpresa);
-
-            //txt_nombreEmpresa.setText(arrayempresa.get(0).getEmpresas_nombre());
-           // txt_nombreUsuarioEmpresa.setText(arrayempresa.get(0).getUsuario_id());
-           // txt_descripcionEmpresa.setText(arrayempresa.get(0).getEmpresas_descripcion());
-            //txt_horario.setText(arrayempresa.get(0).getEmpresas_horario());
-            //txt_direccionEmpresa.setText(arrayempresa.get(0).getEmpresas_direccion());
 
 
             rtb_valorar.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_valoracion()));
             rtb_valoracion.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_promedio()));
             txt_conteo.setText(arrayempresa.get(0).getEmpresas_conteo());
             txt_promedio.setText(arrayempresa.get(0).getEmpresas_promedio());
-            //txt_telefonoEmpresa.setText(arrayempresa.get(0).getEmpresas_telefono());
-            //horario=arrayempresa.get(0).getEmpresas_horario();
-            //fecha_actual = arrayempresa.get(0).getEmpresa_cancha_fecha();
-            //hora_actual = arrayempresa.get(0).getEmpresa_cancha_hora();
+
+
             progressbar.setVisibility(ProgressBar.INVISIBLE);
 
             Toast.makeText(context,"AV "+ arrayempresa.get(0).getEmpresas_valoracion(), Toast.LENGTH_SHORT).show();
 
-            //int nun =09;
 
-           // abl_detalleEmpresa.setVisibility(View.VISIBLE);
-           // cdv_detalleEmpresa.setVisibility(View.VISIBLE);
             btn_enviarV.setVisibility(View.GONE);
             btn_cancelarV.setVisibility(View.GONE);
 
-          /*  btn_cancelarV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    btn_enviarV.setVisibility(View.GONE);
-                    btn_cancelarV.setVisibility(View.GONE);
-                    rtb_valorar.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_promedio()));
-                    rtb_valorar.setEnabled(false);
-                }
-            });*/
+
 
             if(arrayempresa.get(0).getEmpresas_valoracion().equals("0")){
                 rtb_valorar.setEnabled(true);
@@ -346,9 +368,6 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-          //  abl_detalleEmpresa.setVisibility(View.INVISIBLE);
-           // cdv_detalleEmpresa.setVisibility(View.INVISIBLE);
-
 
         }
 
@@ -362,34 +381,32 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-           // Toast.makeText(getApplicationContext(),""+arrayempresa.size(),Toast.LENGTH_SHORT).show();
-          //  Toast.makeText(activity,""+arraycancha.size(),Toast.LENGTH_SHORT).show();
+
             progressbarcanchas.setVisibility(ProgressBar.INVISIBLE);
 
             GridLayoutManager linearLayoutManager = new GridLayoutManager(context, 1);
             linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
-            //LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             rcv_canchas.setLayoutManager(linearLayoutManager);
 
             adaptadorListadoCanchaEmpresa = new AdaptadorListadoCanchaEmpresa(context, arraycancha, R.layout.rcv_item_card_canchas, new AdaptadorListadoCanchaEmpresa.OnItemClickListener() {
                 @Override
                 public void onItemClick(Cancha cancha, final int position) {
-                 // Toast.makeText(context,"ID:"+cancha.getCancha_id(),Toast.LENGTH_SHORT).show();
+
                     cancha_id = cancha.getCancha_id().toString();
                     Toast.makeText(context,"ID cancha :"+cancha_id,Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(context,DetalleCanchas.class);
-                    intent.putExtra("id_cancha",cancha.getCancha_id());
-                    intent.putExtra("nombre_cancha",cancha.getCancha_nombre());
-                    intent.putExtra("precio_dia",cancha.getCancha_precioD());
-                    intent.putExtra("precio_noche",cancha.getCancha_precioN());
-
-                   // intent.putExtra("fecha",mascota.getMascota_foto());
-                    //intent.putExtra("mascota_nombre",mascota.getMascota_nombre());
-                    context.startActivity(intent);
-
-                    //idempresas = arrayempresas.get(position).getId();
-                    //posicionarray = position;
+                    if (!saldo_cargado.equals("") && !saldo_cargado.equals(null) ){
+                        Intent intent = new Intent(context,DetalleCanchas.class);
+                        intent.putExtra("id_cancha",cancha.getCancha_id());
+                        intent.putExtra("nombre_empresa",txt_nombreEmpresa.getText().toString());
+                        intent.putExtra("nombre_cancha",cancha.getCancha_nombre());
+                        intent.putExtra("precio_dia",cancha.getCancha_precioD());
+                        intent.putExtra("precio_noche",cancha.getCancha_precioN());
+                        intent.putExtra("horario",horario);
+                        intent.putExtra("tipo_usuario",tipo_usuario);
+                        intent.putExtra("saldo",saldo_cargado);
+                        context.startActivity(intent);
+                    }
 
 
                 }
@@ -427,23 +444,25 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
 
             GridLayoutManager linearLayoutManager = new GridLayoutManager(context, 1);
             linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
-            //LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             rcv_canchas.setLayoutManager(linearLayoutManager);
 
             adaptadorListadoCanchaEmpresa = new AdaptadorListadoCanchaEmpresa(context, arraycanchaactual, R.layout.rcv_item_card_canchas, new AdaptadorListadoCanchaEmpresa.OnItemClickListener(){
                 @Override
                 public void onItemClick(Cancha cancha, final int position) {
 
-                    cancha_id = cancha.getCancha_id().toString();
-                    Intent intent = new Intent(context,DetalleCanchas.class);
-                    intent.putExtra("id_cancha",cancha.getCancha_id());
-                    intent.putExtra("nombre_cancha",cancha.getCancha_nombre());
-                    intent.putExtra("precio_dia",cancha.getCancha_precioD());
-                    intent.putExtra("precio_noche",cancha.getCancha_precioN());
+                    if (!saldo_cargado.equals("") && !saldo_cargado.equals(null) ){
+                        Intent intent = new Intent(context,DetalleCanchas.class);
+                        intent.putExtra("id_cancha",cancha.getCancha_id());
+                        intent.putExtra("nombre_empresa",txt_nombreEmpresa.getText().toString());
+                        intent.putExtra("nombre_cancha",cancha.getCancha_nombre());
+                        intent.putExtra("precio_dia",cancha.getCancha_precioD());
+                        intent.putExtra("precio_noche",cancha.getCancha_precioN());
+                        intent.putExtra("horario",horario);
+                        intent.putExtra("tipo_usuario",tipo_usuario);
+                        intent.putExtra("saldo",saldo_cargado);
+                        context.startActivity(intent);
+                    }
 
-                    // intent.putExtra("fecha",mascota.getMascota_foto());
-                    //intent.putExtra("mascota_nombre",mascota.getMascota_nombre());
-                    context.startActivity(intent);
 
 
                 }

@@ -131,7 +131,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
             public void onItemClick(Torneo torneo, int position) {
 
                 Intent intent = new Intent(getContext(), DetalleTorneoNuevo.class);
-                intent.putExtra("id_torneo", torneo.getId_torneo());
+                intent.putExtra("id_torneo", torneo.getTorneo_id());
                 intent.putExtra("id_usuario", torneo.getUsuario_id());
                 intent.putExtra("nombre", torneo.getTorneo_nombre());
                 intent.putExtra("descripcion", torneo.getTorneo_descripcion());
@@ -158,7 +158,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
             public void onItemClick(Torneo torneo, int position) {
 
                 Intent intent = new Intent(getContext(), DetalleTorneoNuevo.class);
-                intent.putExtra("id_torneo", torneo.getId_torneo());
+                intent.putExtra("id_torneo", torneo.getTorneo_id());
                 intent.putExtra("id_usuario", torneo.getUsuario_id());
                 intent.putExtra("nombre", torneo.getTorneo_nombre());
                 intent.putExtra("descripcion", torneo.getTorneo_descripcion());

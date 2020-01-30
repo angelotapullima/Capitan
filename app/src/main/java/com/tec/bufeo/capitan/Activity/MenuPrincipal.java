@@ -74,24 +74,14 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
 
         preferencesUser = getSharedPreferences("User", Context.MODE_PRIVATE);
         Toast.makeText(getApplicationContext(),"p "+preferencesUser.getString("posicion",""),Toast.LENGTH_SHORT).show();
-        if(!preferencesUser.getString("idusuario", "").equals("")){
-            usuario_nombre = preferencesUser.getString("usuario_nombre","");
-            usuario_id = preferences.getIdUsuarioPref();
-            usuario_foto = preferencesUser.getString("usuario_foto","");
-            ubigeo_id = preferencesUser.getString("ubigeo_id","");
-            usuario_posicion = preferencesUser.getString("posicion","");
-            token = preferencesUser.getString("token_firebase","");
-            //Toast.makeText(getApplicationContext(),"p0 "+usuario_posicion,Toast.LENGTH_SHORT).show();
-        }
-        else{
+        if(preferencesUser.getString("idusuario", "").equals("")){
             usuario_nombre = getIntent().getStringExtra("usuario_nombre");
             usuario_id = preferences.getIdUsuarioPref();
             usuario_foto = getIntent().getStringExtra("usuario_foto");
-            ubigeo_id = getIntent().getStringExtra("ubigeo_id");
+            ubigeo_id =preferences.getUbigeoId();
             usuario_posicion = getIntent().getStringExtra("posicion");
             token = preferencesUser.getString("token_firebase","");
             //Toast.makeText(getApplicationContext(),"p0 "+usuario_posicion,Toast.LENGTH_SHORT).show();
-
         }
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener

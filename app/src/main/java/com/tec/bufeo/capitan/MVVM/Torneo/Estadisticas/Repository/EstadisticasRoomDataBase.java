@@ -23,6 +23,7 @@ public abstract class EstadisticasRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             EstadisticasRoomDataBase.class, "estadisticas_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration ()
                             .build();
 
                 }

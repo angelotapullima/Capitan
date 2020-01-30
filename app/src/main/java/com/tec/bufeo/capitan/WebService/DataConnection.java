@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -46,9 +49,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.regex.Pattern;
 
 import static com.tec.bufeo.capitan.Activity.DetalleCanchas.tabLayout;
-import static com.tec.bufeo.capitan.Activity.DetalleNegocio.actualizarDetalle;
 import static com.tec.bufeo.capitan.Activity.DetalleNegocio.btn_cancelarV;
 import static com.tec.bufeo.capitan.Activity.DetalleNegocio.btn_editVal;
 import static com.tec.bufeo.capitan.Activity.DetalleNegocio.btn_enviarV;
@@ -61,7 +67,7 @@ public class DataConnection extends AppCompatActivity {
     boolean mensajeprogres, mensaje;
     public static final String IP = "https://www.guabba.com/capitan";
     public static final String IP2 = "https://www.guabba.com/capitan2";
-    static Activity context;
+    Activity context;
     JSONObject json_data;
     Usuario usuario;
     Empresas empresas;
@@ -90,8 +96,10 @@ public class DataConnection extends AppCompatActivity {
     public ArrayList<Equipo> listaEquiposEnTorneo = new ArrayList();
     public ArrayList<Equipo> listaEquiposEnTorneoNot = new ArrayList();
     public ArrayList<String> listaCiudades = new ArrayList();
+    public ArrayList<String> saldo = new ArrayList();
     public ArrayList<MDistrito> listaDistritoCiudades = new ArrayList();
     public ArrayList<Empresas> listaEmpresasDistrito= new ArrayList();
+
 
 
     public DataConnection() {
@@ -99,16 +107,6 @@ public class DataConnection extends AppCompatActivity {
     }
 
     //Listar Canchas Disponibles
-    public DataConnection(Activity context, String funcion, boolean mensajeprogres,String hora) {
-        this.context = context;
-        this.funcion = funcion;
-        this.hora = hora;
-        preferences =  new Preferences(context);
-        this.mensajeprogres = mensajeprogres;
-
-        new GetAndSet().execute();
-    }
-
     public DataConnection(Activity context, String funcion, boolean mensajeprogres) {
         this.context = context;
         this.funcion = funcion;
@@ -272,9 +270,11 @@ public class DataConnection extends AppCompatActivity {
             if(funcion.equals("valorarEmpresa")){
                 parametros = "id_usuario=" + URLEncoder.encode(empresas.getUsuario_id(),"UTF-8")
                         + "&id_empresa=" + URLEncoder.encode(empresas.getEmpresas_id(),"UTF-8")
+                        + "&app=" + URLEncoder.encode("true","UTF-8")
+                        + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8")
                         + "&valor=" + URLEncoder.encode(empresas.getEmpresas_valoracion(),"UTF-8");
 
-                url = new URL(IP+"/index.php?c=Empresa&a=valorar_empresa&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/Empresa/valorar_empresa");
 
             }
             if(funcion.equals("listarUsuarioGeneral")){
@@ -290,13 +290,17 @@ public class DataConnection extends AppCompatActivity {
             if(funcion.equals("listarEstadisticasGeneral")){
                 parametros = "fecha_i=" + URLEncoder.encode(reserva.getFecha_i_reporte(),"UTF-8")
                         + "&fecha_f=" + URLEncoder.encode(reserva.getFecha_f_reporte(),"UTF-8")
+                        + "&app=" + URLEncoder.encode("true","UTF-8")
+                        + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8")
                         + "&id_empresa=" + URLEncoder.encode(reserva.getEmpresa_id(),"UTF-8");
-                url = new URL(IP+"/index.php?c=Empresa&a=estadisticas_por_empresa&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/Empresa/estadisticas_por_empresa");
             }
 
             if(funcion.equals("listarCanchasDisponibles")){
-                parametros = " " + URLEncoder.encode(" ","UTF-8");
-                url = new URL(IP+"/index.php?c=Empresa&a=listar_canchas_libres_por_hora&key_mobile=123456asdfgh");
+                parametros = " " + URLEncoder.encode(" ","UTF-8")
+                + "&app=" + URLEncoder.encode("true","UTF-8")
+                + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
+                url = new URL(IP2+"/api/Empresa/listar_canchas_libres_por_hora");
             }
 
             if(funcion.equals("listarForo")){
@@ -322,6 +326,14 @@ public class DataConnection extends AppCompatActivity {
                         + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
 
                 url = new URL(IP2+"/api/Usuario/fecha_hora_actual");
+            }
+
+            if(funcion.equals("ObtenerSaldo")){
+                parametros = "app=" + URLEncoder.encode("true","UTF-8")
+                        + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8")
+                        + "&id=" + URLEncoder.encode(preferences.getIdUsuarioPref(),"UTF-8");
+
+                url = new URL(IP2+"/api/Empresa/obtener_saldo_actual");
             }
 
             if(funcion.equals("listarUsuarioPorEquipo")){
@@ -380,9 +392,11 @@ public class DataConnection extends AppCompatActivity {
 
             }
             if(funcion.equals("listarcanchasEmpresas")){
-            parametros = "id_empresa=" + URLEncoder.encode(cancha.getEmpresas_id(),"UTF-8");
+            parametros = "id_empresa=" + URLEncoder.encode(cancha.getEmpresas_id(),"UTF-8")
+                    + "&app=" + URLEncoder.encode("true","UTF-8")
+                    + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
 
-            url = new URL(IP+"/index.php?c=Empresa&a=listar_canchas_por_id_empresa&key_mobile=123456asdfgh");
+            url = new URL(IP2+"/api/Empresa/listar_canchas_por_id_empresa");
            }
 
             if(funcion.equals("registrarReserva")){
@@ -390,16 +404,20 @@ public class DataConnection extends AppCompatActivity {
                         + "&nombre=" + URLEncoder.encode(reserva.getReserva_nombre(),"UTF-8")
                         + "&fecha=" + URLEncoder.encode(reserva.getReserva_fecha(),"UTF-8")
                         + "&hora=" + URLEncoder.encode(reserva.getReserva_hora(),"UTF-8")
-                        + "&costo=" + URLEncoder.encode(reserva.getReserva_costo(),"UTF-8");
+                        + "&costo=" + URLEncoder.encode(reserva.getReserva_costo(),"UTF-8")
+                        + "&app=" + URLEncoder.encode("true","UTF-8")
+                        + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
 
-                url = new URL(IP+"/index.php?c=Empresa&a=registrar_reserva&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/Empresa/registrar_reserva");
 
             }
 
             if(funcion.equals("listarcanchasReservas")){
                 parametros = "id_cancha=" + URLEncoder.encode(reserva.getCancha_id(),"UTF-8")
-                + "&fecha=" + URLEncoder.encode(fecha,"UTF-8");
-                url = new URL(IP+"/index.php?c=Empresa&a=listar_reservados_por_cancha_por_fecha&key_mobile=123456asdfgh");
+                + "&fecha=" + URLEncoder.encode(fecha,"UTF-8")
+                + "&app=" + URLEncoder.encode("true","UTF-8")
+                + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
+                url = new URL(IP2+"/api/Empresa/listar_reservados_por_cancha_por_fecha");
             }
 
             if(funcion.equals("registrarEquipo")){
@@ -416,16 +434,29 @@ public class DataConnection extends AppCompatActivity {
 
 
             if(funcion.equals("listarEmpresas")){
-                parametros = "id_ciudad=" + URLEncoder.encode(idciudad,"UTF-8");
+                parametros = "id_ciudad=" + URLEncoder.encode(idciudad,"UTF-8")
+                        + "&app=" + URLEncoder.encode("true","UTF-8")
+                        + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
 
-                url = new URL(IP+"/index.php?c=Empresa&a=listar_empresas_por_id_ciudad&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/Empresa/listar_empresas_por_id_ciudad");
+
+
+            }
+            if(funcion.equals("listarMisEmpresas")){
+                parametros = "id_usuario=" + URLEncoder.encode(preferences.getIdUsuarioPref(),"UTF-8")
+                        + "&app=" + URLEncoder.encode("true","UTF-8")
+                        + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
+
+                url = new URL(IP2+"/api/Empresa/listar_mis_negocios_reserva");
 
 
             }if(funcion.equals("mostrarDetalleEmpresa")){
                 parametros = "id_empresa=" + URLEncoder.encode(empresas.getEmpresas_id(),"UTF-8")
-                             + "&id_usuario=" + URLEncoder.encode(empresas.getUsuario_id(),"UTF-8");
+                             + "&id_usuario=" + URLEncoder.encode(empresas.getUsuario_id(),"UTF-8")
+                             + "&app=" + URLEncoder.encode("true","UTF-8")
+                             + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8");
 
-                url = new URL(IP+"/index.php?c=Empresa&a=listar_detalle_empresa&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/Empresa/listar_detalle_empresa");
 
             }if(funcion.equals("listarCiudades")){
                 parametros = " " + URLEncoder.encode(" ","UTF-8");
@@ -501,7 +532,7 @@ public class DataConnection extends AppCompatActivity {
     private  boolean filtrardDatos(){
 
         cargarDatos = obtenerDatos();
-        Log.e("obtenerDatos", "cargarDatos: "+cargarDatos );
+        Log.e("obtenerDatos", "cargarDatos: "+cargarDatos + funcion);
         try {
 
             if(!(cargarDatos.equalsIgnoreCase("")  )){
@@ -527,16 +558,6 @@ public class DataConnection extends AppCompatActivity {
 
 
 
-                            /*usuario.setUsuario_id(jsonNode.optString("idusuario"));
-                            usuario.setUsuario_usuario(usuario.getUsuario_usuario());
-                            usuario.setUsuario_nombre(jsonNode.optString("usuario_nombre"));
-                            usuario.setUsuario_habilidad(jsonNode.optString("habilidad"));
-                            usuario.setUsuario_posicion(jsonNode.optString("posicion"));
-                            usuario.setUsuario_numFavorito(jsonNode.optString("usuario_numFavorito"));
-                            usuario.setUsuario_email(jsonNode.optString("email"));
-                            usuario.setUsuario_foto(jsonNode.optString("usuario_foto"));
-                            usuario.setUbigeo_id(jsonNode.optString("ubigeo_id"));
-                            usuario.setToken_firebase(jsonNode.optString("token_firebase"));*/
 
                             usuario.setId_user(data_json.optString("id_user"));
                             usuario.setId_person(data_json.optString("id_person"));
@@ -556,6 +577,7 @@ public class DataConnection extends AppCompatActivity {
                             usuario.setUbigeo_id(data_json.optString("ubigeo_id"));
                             usuario.setToken(data_json.optString("token"));
                             usuario.setToken_firebase(data_json.optString("token_firebase"));
+                            usuario.setTiene_negocio(data_json.optString("tiene_negocio"));
 
 
 
@@ -581,6 +603,7 @@ public class DataConnection extends AppCompatActivity {
                             editor.putString("ubigeo_id",usuario.getUbigeo_id());
                             editor.putString("token",usuario.getToken());
                             editor.putString("token_firebase",usuario.getToken_firebase());
+                            editor.putString("tiene_negocio",usuario.getTiene_negocio());
                             editor.apply();
 
 
@@ -589,7 +612,7 @@ public class DataConnection extends AppCompatActivity {
                             usuario = new Usuario(usuario.getId_user(),usuario.getId_person(),usuario.getUser_nickname(),usuario.getUser_email(),usuario.getUser_image(),
                                     usuario.getPerson_name(),usuario.getPerson_surname(),usuario.getPerson_dni(),usuario.getPerson_birth(),usuario.getPerson_number_phone(),
                                     usuario.getPerson_genre(),usuario.getPerson_address(),usuario.getUser_num(),usuario.getUser_posicion(),usuario.getUser_habilidad(),
-                                    usuario.getUbigeo_id(),usuario.getToken(),usuario.getToken_firebase());
+                                    usuario.getUbigeo_id(),usuario.getToken(),usuario.getToken_firebase(),usuario.getTiene_negocio());
 
                     }else{
                         respuesta = "false";
@@ -625,7 +648,17 @@ public class DataConnection extends AppCompatActivity {
                         respuesta = "2";
                     }
 
+                }if(funcion.equals("ObtenerSaldo")){
+
+                    //JSONArray resultJSON = json_data.getJSONArray("");
+                    //JSONObject jsonNodev = json_data.getJSONObject("");
+                    valorcodigo = json_data.optString("cuenta_saldo");
+
+                    saldo.add(valorcodigo);
+
                 }
+
+
                 //listarEquipo
 
                 if(funcion.equals("listarEquipo")){
@@ -875,8 +908,12 @@ public class DataConnection extends AppCompatActivity {
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
                     int count = resultJSON.length();
+                    Date date =new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH");
+                    hora = sdf.format(date);
                     final int horaactual = Integer.parseInt(hora);
                     int horasuma = 0;
+                    String neo;
                     int horafinal = 0;
 
                     // Populate our list with groups and it's children
@@ -885,46 +922,78 @@ public class DataConnection extends AppCompatActivity {
                         JSONObject jsonNode = resultJSON.getJSONObject(i);
 
                         horasuma = horaactual + i;
-                        JSONArray resultJSONhora = jsonNode.optJSONArray(String.valueOf(horasuma));
+                        if (horasuma<10){
+                            if (i==0){
+                                neo ="0"+ String.valueOf(horasuma);
+                            }else{
+                                neo = String.valueOf(horasuma);
+                            }
+                        }else{
+                            neo = String.valueOf(horasuma);
+                        }
+
+                        JSONArray resultJSONhora = jsonNode.optJSONArray(neo);
                         int counthora = resultJSONhora.length();
 
 
                         FragmentBuscar.GroupItem item = new FragmentBuscar.GroupItem();
 
                         int hf =0;
-                       // int ii=i;
-                       /* if(hf==0){
-                            hf=12;
-                        }*/
-                        if(horasuma>12){
-                            hf= horasuma-12;
-                            //horaFinal =  ii+":00 - "+hf+":00 pm";
-                            horafinal = hf + 1 ;
-                            item.title = hf+":00 - " + horafinal+":00 pm";
+                       String h_res;
 
-                        }
-                        else{
-                            horafinal = horasuma + 1 ;
-                            item.title = horasuma+":00 - " + horafinal+":00 am";
-                        }
+                        horafinal = horasuma + 1 ;
+                        item.title = horasuma+":00 - " + horafinal+":00";
+                        h_res = horasuma+":00-" + horafinal+":00";
 
-                        //horafinal = horasuma + 1 ;
-                        //item.title = horasuma+":00 - " + horafinal+":00";
+
 
                         for(int i1 = 0; i1 < counthora;i1++) {
                             JSONObject jsonNodehora = resultJSONhora.getJSONObject(i1);
 
 
+                            String l_s,separador,part1,part2,separador_part1,hora_apertura,hora_cierre;
+                            String[] resultado,resultado_part1,resultado_part2;
+
+
                             FragmentBuscar.ChildItem child = new FragmentBuscar.ChildItem();
-                            child.txt_buscar_nombreEmpresa = jsonNodehora.optString("empresa_nombre") ;
-                            child.txt_buscar_direccionEmpresa = jsonNodehora.optString("empresa_direccion");
-                            child.txt_buscar_precioCancha = jsonNodehora.optString("cancha_precioD");
-                            child.img_cancha = jsonNodehora.optString("empresa_foto");
 
-                           // child.imb_llamar = jsonNodehora.optString("cancha_telefono");;
-                            child.txt_llamar = jsonNodehora.optString("empresa_telefono");;
+                            Calendar c = Calendar.getInstance();
+                            int dia=c.get(Calendar.DAY_OF_WEEK);
 
-                            item.items.add(child);
+                            if (dia ==0){
+                                l_s = jsonNodehora.optString("empresa_horario_d") ;
+                            }else{
+                                l_s = jsonNodehora.optString("empresa_horario_ls") ;
+                            }
+
+                            separador = Pattern.quote("-");
+                            resultado = l_s.split(separador);
+                            part1 = resultado[0];
+                            part2 = resultado[1];
+
+                            separador_part1 = Pattern.quote(":");
+                            resultado_part1 = part1.split(separador_part1);
+                            resultado_part2 = part2.split(separador_part1);
+                            hora_apertura = resultado_part1[0];
+                            hora_cierre= resultado_part2[0];
+
+                            hora_cierre =hora_cierre.trim();
+                            if (Integer.parseInt(neo) >=Integer.parseInt(hora_apertura) && Integer.parseInt(neo) < Integer.parseInt(hora_cierre.trim()) ){
+                                child.txt_buscar_nombreEmpresa = jsonNodehora.optString("empresa_nombre") ;
+                                child.txt_buscar_direccionEmpresa = jsonNodehora.optString("empresa_direccion");
+                                child.txt_buscar_precioCancha = jsonNodehora.optString("cancha_precioD");
+                                child.img_cancha = jsonNodehora.optString("empresa_foto");
+                                child.empresa_id = jsonNodehora.optString("empresa_id");
+                                child.h_reserva = h_res;
+                                //child.h_reserva = jsonNodehora.optString("empresa_horario_ls");
+
+                                // child.imb_llamar = jsonNodehora.optString("cancha_telefono");;
+                                child.txt_llamar = jsonNodehora.optString("empresa_telefono_1");;
+
+                                item.items.add(child);
+                            }
+
+
                         }
 
                         listaCanchasDisponiblesOriginal.add(item);
@@ -1200,6 +1269,28 @@ public class DataConnection extends AppCompatActivity {
                         listaEmpresa.add(empresas);
                     }
                  }
+                if(funcion.equals("listarMisEmpresas")){
+
+                    JSONArray resultJSON = json_data.getJSONArray("results");
+                    int count = resultJSON.length();
+                    Empresas empresas;
+
+                    for (int i = 0; i < count;i++){
+
+                        JSONObject jsonNode = resultJSON.getJSONObject(i);
+
+                        empresas = new Empresas();
+                        empresas.setEmpresas_nombre(jsonNode.optString("nombre"));
+                        empresas.setEmpresas_direccion(jsonNode.optString("direccion"));
+                        empresas.setEmpresas_foto(jsonNode.optString("foto"));
+                        empresas.setEmpresas_id(jsonNode.optString("id_empresa"));
+                        empresas.setHorario_ls(jsonNode.optString("horario_ls"));
+                        empresas.setHorario_d(jsonNode.optString("horario_d"));
+
+                        //Llenamos los datos al Array
+                        listaEmpresa.add(empresas);
+                    }
+                }
                 if(funcion.equals("listarcanchasReservas")){
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
@@ -1213,12 +1304,16 @@ public class DataConnection extends AppCompatActivity {
                         reserva = new Reserva();
 
                         reserva.setReserva_id(jsonNode.optString("reserva_id"));
+                        reserva.setPago_id(jsonNode.optString("pago_id"));
+                        reserva.setTipopago(jsonNode.optString("tipopago"));
                         reserva.setCancha_id(jsonNode.optString("cancha_id"));
                         reserva.setReserva_nombre(jsonNode.optString("nombre"));
                         reserva.setReserva_fecha(jsonNode.optString("fecha"));
                         reserva.setReserva_hora(jsonNode.optString("hora"));
-                        reserva.setReserva_costo(jsonNode.optString("costo"));
-                       /// reserva.setReserva_abono(jsonNode.optString("costo"));
+                        reserva.setPago1(jsonNode.optString("pago1"));
+                        reserva.setPago1_date(jsonNode.optString("pago1_date"));
+                        reserva.setPago2(jsonNode.optString("pago2"));
+                        reserva.setPago2_date(jsonNode.optString("pago2_date"));
                         reserva.setReserva_estado(jsonNode.optString("estado"));
 
                         //Llenamos los datos al Array
@@ -1241,7 +1336,7 @@ public class DataConnection extends AppCompatActivity {
                         obj.setEmpresas_nombre(jsonNode.optString("nombre"));
                         obj.setEmpresas_direccion(jsonNode.optString("direccion"));
                         obj.setEmpresas_descripcion(jsonNode.optString("descripcion"));
-                        obj.setEmpresas_horario(jsonNode.optString("horario"));
+                        obj.setEmpresas_horario(jsonNode.optString("horario_ls"));
                         obj.setEmpresas_valoracion(jsonNode.optString("valoracion"));
                         obj.setEmpresas_promedio(jsonNode.optString("promedio"));
                         obj.setEmpresas_conteo(jsonNode.optString("conteo"));
@@ -1504,7 +1599,7 @@ public class DataConnection extends AppCompatActivity {
                         btn_cancelarV.setVisibility(View.GONE);
                         btn_editVal.setVisibility(View.VISIBLE);
                         rtb_valorar.setEnabled(false);
-                        actualizarDetalle();
+                        //actualizarDetalle();
 
 
                        /* Intent intent = new Intent(context, FragmentNegocio.class);
@@ -1625,12 +1720,14 @@ public class DataConnection extends AppCompatActivity {
                         intent.putExtra("empresas_id",empresas.getEmpresas_id());*/
 
                         if (tabLayout.getSelectedTabPosition()==0){
-                            FragmentHoy.actualizarReserva();
+                            //FragmentHoy.actualizarReserva();
                         }
                         else if (tabLayout.getSelectedTabPosition()==1){
-                            FragmentMañana.actualizarReserva();
+                            //FragmentMañana.actualizarReserva();
                         }
-                       else{FragmentPasMañana.actualizarReserva(); }
+                       else{
+                           //FragmentPasMañana.actualizarReserva();
+                       }
 
                     }
                 });
@@ -1762,6 +1859,9 @@ public class DataConnection extends AppCompatActivity {
 
     public ArrayList<String> getListaCiudades(){
         return listaCiudades;
+    }
+    public ArrayList<String> getSaldo(){
+        return saldo;
     }
 
     public ArrayList<Empresas> getListaEmpresasDistrito(){

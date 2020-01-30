@@ -34,7 +34,7 @@ public class InfoDtorneoFragment extends Fragment {
 
 
     TextView titulo_infotorneo,fecha_infotorneo,hora_infotorneo,organizador_infotorneo,lugar_infotorneo,costo_infotorneo;
-    Button unirme_infotorneo;
+
     RecyclerView rcv_infotorneo;
     String id_torneo,organizador,lugar,fecha,hora,titulo;
     Application application;

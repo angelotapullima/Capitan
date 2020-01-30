@@ -2,17 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7193579c0212c18c336bc143dc3a9340",
+    "identityHash": "986629ed552b66914263e6cf759e15a8",
     "entities": [
       {
         "tableName": "torneo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_torneo` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `usuario_id` TEXT, `torneo_nombre` TEXT, `torneo_descripcion` TEXT, `torneo_fecha` TEXT, `torneo_hora` TEXT, `torneo_lugar` TEXT, `torneo_equipos` TEXT, `torneo_organizador` TEXT, `mi_torneo` TEXT, `foto_torneo` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_torneo` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `torneo_id` TEXT, `usuario_id` TEXT, `torneo_nombre` TEXT, `torneo_descripcion` TEXT, `torneo_fecha` TEXT, `torneo_hora` TEXT, `torneo_lugar` TEXT, `torneo_equipos` TEXT, `torneo_organizador` TEXT, `mi_torneo` TEXT, `foto_torneo` TEXT)",
         "fields": [
           {
             "fieldPath": "id_torneo",
             "columnName": "id_torneo",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "torneo_id",
+            "columnName": "torneo_id",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "usuario_id",
@@ -87,7 +93,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7193579c0212c18c336bc143dc3a9340\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"986629ed552b66914263e6cf759e15a8\")"
     ]
   }
 }

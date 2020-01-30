@@ -40,6 +40,8 @@ import com.tec.bufeo.capitan.Util.Preferences;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
+
 
 public class FragmentTorneoPadre extends Fragment  {
 
@@ -116,9 +118,9 @@ public class FragmentTorneoPadre extends Fragment  {
         preferences = new Preferences(context);
 
 
-        misEquiposWebServiceRepository =  new MisEquiposWebServiceRepository(application);
-        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken());
-        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken());
+        //misEquiposWebServiceRepository =  new MisEquiposWebServiceRepository(application);
+        //misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken());
+        //misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken());
 
 
 
@@ -176,7 +178,7 @@ public class FragmentTorneoPadre extends Fragment  {
         tabLayoutT.getSelectedTabPosition();
 
 
-        Picasso.with(getContext()).load(preferences.getFotoUsuario()).error(R.drawable.error).fit().into(civ_fotoperfil,new Callback() {
+        Picasso.with(getContext()).load(IP2+"/"+preferences.getFotoUsuario()).error(R.drawable.error).fit().into(civ_fotoperfil,new Callback() {
 
             @Override
             public void onSuccess() {

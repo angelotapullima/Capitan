@@ -15,24 +15,25 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.tec.bufeo.capitan.Activity.DetalleNegocio;
+import com.tec.bufeo.capitan.Activity.MisNegocios;
 import com.tec.bufeo.capitan.Activity.RegistroNegocio;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoEmpresas;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.util.ArrayList;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.ubigeo_id;
 
 
 public class FragmentNegocio extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     public static String empresa_id;
-    FloatingActionButton fab_registrarEmpresas;
     static AdaptadorListadoEmpresas adaptadorEmpresas;
     public ArrayList<Empresas> arrayempresas;
     public static ArrayList<Empresas> arrayempresaactual;
@@ -45,6 +46,8 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
     SwipeRefreshLayout swipeRefreshLayout;
     static Activity activity;
     static Context context;
+    static Preferences preferences;
+    ImageView mis_negocios;
 
     public FragmentNegocio() {
     }
@@ -56,11 +59,12 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
         View view = inflater.inflate(R.layout.fragment_negocio, container, false);
         //empresa_id = view.getStringExtra("usuario_nombre");
 
-        fab_registrarEmpresas = (FloatingActionButton) view.findViewById(R.id.fab_registrarEmpresas);
+        preferences= new Preferences(getActivity());
         rcv_empresas = (RecyclerView) view.findViewById(R.id.rcv_empresas);
         progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
-        tlb_negocios = (Toolbar) view.findViewById(R.id.tlb_negocios);
+
         cdv_mensaje = (CardView) view.findViewById(R.id.cdv_mensaje);
+        mis_negocios = (ImageView) view.findViewById(R.id.mis_negocios);
 
         empresa_id = getActivity().getIntent().getStringExtra("empresa_id");
         swipeRefreshLayout =  view.findViewById(R.id.SwipeRefreshLayout);
@@ -70,7 +74,7 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
 
         rcv_empresas.setHasFixedSize(true);
 
-        tlb_negocios.setTitle("Negocios");
+
 
 
         cdv_mensaje.setVisibility(View.INVISIBLE);
@@ -78,10 +82,16 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
         activity = getActivity();
         context = getContext();
 
+        if (preferences.getTieneNegocio().equals("si")){
+            mis_negocios.setOnClickListener(this);
+        }else {
+            mis_negocios.setVisibility(View.GONE);
+        }
 
-        fab_registrarEmpresas.setOnClickListener(this);
 
-        dc = new DataConnection(getActivity(),"listarEmpresas",ubigeo_id,false);
+
+
+        dc = new DataConnection(getActivity(),"listarEmpresas",preferences.getUbigeoId(),false);
         new GetEmpresas().execute();
 
         return view;
@@ -91,7 +101,7 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
     @Override
     public void onRefresh() {
 
-        dc = new DataConnection(getActivity(),"listarEmpresas",ubigeo_id,false);
+        dc = new DataConnection(getActivity(),"listarEmpresas",preferences.getUbigeoId(),false);
         new GetEmpresas().execute();
     }
 
@@ -131,6 +141,7 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
 
                    Intent intent = new Intent(getContext(), DetalleNegocio.class);
                     intent.putExtra("id_empresa",empresas.getEmpresas_id());
+                    intent.putExtra("tipo_usuario","usuario");
                     startActivity(intent);
 
                 }
@@ -177,6 +188,7 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
 
                     Intent intent = new Intent(context,DetalleNegocio.class);
                     intent.putExtra("id_empresa",empresas.getEmpresas_id());
+                    intent.putExtra("tipo_usuario","usuario");
                     context.startActivity(intent);
                 }
             });
@@ -196,19 +208,17 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
     }
 
     public static void ActualizarEmpresas(){
-        dc1 = new DataConnection(activity,"listarEmpresas",ubigeo_id,false);
+        dc1 = new DataConnection(activity,"listarEmpresas",preferences.getUbigeoId(),false);
         new ActualizarEmpresas().execute();
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
 
-            case R.id.fab_registrarEmpresas:
-                //Toast.makeText(getActivity(),"foto:"+usuario_foto,Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getContext(),RegistroNegocio.class);
-                startActivity(intent);
-                break;
+        if (v.equals(mis_negocios)){
+            Intent i = new Intent(context, MisNegocios.class);
+            i.putExtra("empresa_id",empresa_id);
+            context.startActivity(i);
         }
     }
 

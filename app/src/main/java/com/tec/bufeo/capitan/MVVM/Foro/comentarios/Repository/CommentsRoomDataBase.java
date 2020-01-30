@@ -22,6 +22,7 @@ public abstract class CommentsRoomDataBase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             CommentsRoomDataBase.class, "lista_comments_database")
+                            .fallbackToDestructiveMigration ()
                             .addCallback(sRoomDatabaseCallback)
                             .build();
 

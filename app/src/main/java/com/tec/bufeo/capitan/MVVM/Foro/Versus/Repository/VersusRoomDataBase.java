@@ -23,6 +23,7 @@ public abstract class VersusRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             VersusRoomDataBase.class, "lista_versus_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration ()
                             .build();
 
                 }

@@ -14,10 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.tec.bufeo.capitan.Activity.RegistroReserva.RegistroReserva;
+import com.tec.bufeo.capitan.Activity.RegistroReserva.ReservaEnBusqueda;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 import com.tec.bufeo.capitan.Modelo.HoraFecha;
 import com.tec.bufeo.capitan.R;
@@ -68,8 +71,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
 
         boolean online = ForoFragment.isOnLine();
         if (online){
-            dc1 = new DataConnection(getActivity(),"obtenerHoraFecha",false);
-            new GetHoraFecha().execute();
+            dc = new DataConnection(getActivity(),"listarCanchasDisponibles",false);
+            new GetCanchasDisponibles().execute();
         }
 
 
@@ -97,35 +100,13 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
 
     @Override
     public void onRefresh() {
-        dc1 = new DataConnection(getActivity(),"obtenerHoraFecha",false);
-        new GetHoraFecha().execute();
+        dc = new DataConnection(getActivity(),"listarCanchasDisponibles",false);
+        new GetCanchasDisponibles().execute();
     }
 
 
 
-    public class GetHoraFecha extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            arrayHoraFecha = dc1.getHoraFecha();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            //Toast.makeText(getContext(),"'h"+arrayHoraFecha.get(0).getH_f_hora().substring(0,2).toString(),Toast.LENGTH_LONG).show();
-
-            dc = new DataConnection(getActivity(),"listarCanchasDisponibles",false,arrayHoraFecha.get(0).getH_f_hora().substring(0,2));
-            new GetCanchasDisponibles().execute();
-        }
-    }
 
     public class GetCanchasDisponibles extends AsyncTask<Void, Void, Void> {
 
@@ -172,8 +153,9 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         public String txt_buscar_nombreEmpresa;
         public String txt_buscar_precioCancha;
         public String txt_buscar_direccionEmpresa;
-        public String imb_llamar;
+        public String h_reserva;
         public String img_cancha;
+        public String empresa_id;
         public String txt_llamar;
         //String hint;
 
@@ -188,6 +170,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         public TextView txt_buscar_telefonoEmpresa;
         public ImageButton imb_llamar;
         public ImageView imagen_cancha;
+        public LinearLayout layout_reserva_busqueda;
         public TextView txt_llamar;
 
     }
@@ -223,9 +206,9 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         }
 
         @Override
-        public View getRealChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        public View getRealChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
             final ChildHolder holder;
-            ChildItem item = getChild(groupPosition, childPosition);
+            final ChildItem item = getChild(groupPosition, childPosition);
             if (convertView == null) {
                 holder = new ChildHolder();
                 convertView = inflater.inflate(R.layout.rcv_item_card_buscar_horario_general, parent, false);
@@ -238,6 +221,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
                  holder.txt_buscar_telefonoEmpresa = (TextView) convertView.findViewById(R.id.txt_buscar_telefonoEmpresa);
                  holder.imagen_cancha = (ImageView) convertView.findViewById(R.id.imagen_cancha);
                  holder.imb_llamar = (ImageButton) convertView.findViewById(R.id.imb_llamar);
+                 holder.layout_reserva_busqueda = (LinearLayout) convertView.findViewById(R.id.layout_reserva_busqueda);
 
 
                 //holder.hint = (TextView) convertView.findViewById(R.id.textHint);
@@ -253,6 +237,17 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
             holder.txt_buscar_precioCancha.setText(item.txt_buscar_precioCancha);
             holder.txt_buscar_direccionEmpresa.setText(item.txt_buscar_direccionEmpresa);
             holder.txt_buscar_telefonoEmpresa.setText(item.txt_llamar);
+            holder.layout_reserva_busqueda.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, ReservaEnBusqueda.class);
+                    i.putExtra("nombre_empresa",item.txt_buscar_nombreEmpresa);
+                    //i.putExtra("h_reserva",item.h_reserva);
+                    i.putExtra("h_reserva",item.h_reserva);
+                    i.putExtra("empresa_id",item.empresa_id);
+                    context.startActivity(i);
+                }
+            });
             holder.imb_llamar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

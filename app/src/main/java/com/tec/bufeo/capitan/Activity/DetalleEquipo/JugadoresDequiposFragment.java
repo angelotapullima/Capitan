@@ -1,6 +1,8 @@
 package com.tec.bufeo.capitan.Activity.DetalleEquipo;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -13,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.Jugadores;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.Jugadores.JugadoresWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.ViewModel.Jugadores.JugadoresViewModel;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.AdapterJugadores;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
@@ -30,8 +34,9 @@ public class JugadoresDequiposFragment extends Fragment implements SwipeRefreshL
     RecyclerView rcv_juegadores;
     SwipeRefreshLayout swipeJuegadores;
     AdapterJugadores adapterJugadores;
-    String id_equipo;
+    String id_equipo,nombre;
     Preferences preferences;
+    Context context;
     public JugadoresDequiposFragment() {
         // Required empty public constructor
     }
@@ -48,12 +53,14 @@ public class JugadoresDequiposFragment extends Fragment implements SwipeRefreshL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_jugadores_dequipos, container, false);
+        context= getContext();
         preferences = new Preferences(getActivity());
 
         final Bundle bdl = getArguments();
 
 
         id_equipo = bdl.getString("id_equipo");
+        nombre = bdl.getString("nombre");
         initViews(view);
         setAdapter();
         cargarvista();
@@ -64,8 +71,11 @@ public class JugadoresDequiposFragment extends Fragment implements SwipeRefreshL
         rcv_juegadores = view.findViewById(R.id.rcv_juegadores);
         swipeJuegadores = view.findViewById(R.id.swipeJuegadores);
 
+
         swipeJuegadores.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
         swipeJuegadores.setOnRefreshListener(this);
+
+
     }
     private void setAdapter() {
 

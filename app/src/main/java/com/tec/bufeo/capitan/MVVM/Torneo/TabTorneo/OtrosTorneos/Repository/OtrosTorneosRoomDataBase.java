@@ -23,6 +23,7 @@ public abstract class OtrosTorneosRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             OtrosTorneosRoomDataBase.class, "torneos_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
 
                 }

@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.tec.bufeo.capitan"
         minSdkVersion 18
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1"
+        targetSdkVersion 29
+        versionCode 4
+        versionName "4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -34,13 +34,13 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.zoonref:simple-view-behavior:1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7+'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'commons-io:commons-io:2.4'
@@ -52,13 +52,13 @@ dependencies {
 
 
     // Room components
-    implementation 'androidx.room:room-runtime:2.0.0'
-    annotationProcessor 'androidx.room:room-compiler:2.0.0'
-    androidTestImplementation 'androidx.room:room-testing:2.0.0'
+    implementation 'androidx.room:room-runtime:2.2.3'
+    annotationProcessor 'androidx.room:room-compiler:2.2.3'
+    androidTestImplementation 'androidx.room:room-testing:2.2.3'
 
 // Lifecycle components
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.1.0'
 
 
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -68,7 +68,7 @@ dependencies {
 
 
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    implementation "net.gotev:uploadservice:3.4.2"
+    implementation "net.gotev:uploadservice:3.5.2"
 
     implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'

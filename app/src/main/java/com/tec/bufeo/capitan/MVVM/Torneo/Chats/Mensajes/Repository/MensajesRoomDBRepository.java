@@ -3,6 +3,7 @@ package com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Repository;
 import android.app.Application;
 import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
 
@@ -89,6 +90,25 @@ public class MensajesRoomDBRepository {
         @Override
         protected Void doInBackground(final List<Mensajes>... params) {
             mAsyncTaskDao.insertComments(params[0]);
+            return null;
+        }
+    }
+
+    public void deleteAllMensajes() {
+        new DeleteAllMensajesAsyncTask(mensajesDao).execute();
+    }
+
+    private static class DeleteAllMensajesAsyncTask extends AsyncTask<Void, Void, Void> {
+        private MensajesDao feedDao;
+
+        private DeleteAllMensajesAsyncTask(MensajesDao feedDao) {
+            this.feedDao = feedDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            feedDao.deleteAll();
+            Log.i("eliminado mensajes", "doInBackground: eliminado");
             return null;
         }
     }

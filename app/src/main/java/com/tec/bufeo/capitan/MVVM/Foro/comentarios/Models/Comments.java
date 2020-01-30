@@ -90,4 +90,16 @@ public class Comments {
     public void setComments_comentario(String comments_comentario) {
         this.comments_comentario = comments_comentario;
     }
+
+    @Override
+    public String toString() {
+        return "Comments{" +
+                "comments_id='" + comments_id + '\'' +
+                ", publicacion_id='" + publicacion_id + '\'' +
+                ", comments_foto='" + comments_foto + '\'' +
+                ", comments_fecha='" + comments_fecha + '\'' +
+                ", comments_nombre='" + comments_nombre + '\'' +
+                ", comments_comentario='" + comments_comentario + '\'' +
+                '}';
+    }
 }

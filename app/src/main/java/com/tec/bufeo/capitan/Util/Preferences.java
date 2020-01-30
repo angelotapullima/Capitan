@@ -68,5 +68,9 @@ public class Preferences {
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getString("person_surname","");
     }
+    public String getTieneNegocio(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("tiene_negocio","");
+    }
 
 }

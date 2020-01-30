@@ -148,7 +148,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
                 String fname = f1.getName();
 
 
-                f2= new File(Environment.getExternalStorageDirectory() + "/Capitan/","Equipo");
+                f2= new File(Environment.getExternalStorageDirectory() + "/.Capitan/","Equipo");
                 f2.mkdirs();
                 try {
                     FileUtils.copyFileToDirectory(f1,f2);
@@ -340,19 +340,10 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
                                         x.putExtra("id_equipo",id_equipo);
                                         x.putExtra("nombre",edt_nombreEquipo.getText().toString());
                                         startActivity(x);
-                                        /*if (valor_tipo.equals("2")){
-                                            Log.e("tipo valor", "paso por campeonato: " + valor_tipo);
-                                            Intent x = new Intent(CrearEquipos.this, CrearGrupoRelampago.class);
-                                            x.putExtra("id_torneo",id_torneo);
-                                            x.putExtra("nombre_torneo",edt_nombreEquipo.getText().toString());
-                                            startActivity(x);
-                                        }else{
-                                            Log.e("tipo valor", "paso por Relampago: " + valor_tipo);
-                                            Intent x = new Intent(CrearEquipos.this, CrearGrupoRelampago.class);
-                                            x.putExtra("id_torneo",id_torneo);
-                                            startActivity(x);
-                                        }*/
 
+
+                                    }else{
+                                        dialog_carga.dismiss();
                                     }
 
                                     dialog_carga.dismiss();

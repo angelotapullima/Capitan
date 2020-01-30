@@ -74,15 +74,14 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
         seleccionadosDBRepository = new SeleccionadosDBRepository(application);
         preferences = new Preferences(this);
         jugadoresSeleccionados =  new JugadoresSeleccionados();
-        /*id_equipo= getIntent().getExtras().getString("id_equipo");
+        id_equipo= getIntent().getExtras().getString("id_equipo");
         nombre_equipo= getIntent().getExtras().getString("nombre");
 
 
-        */
+
         seleccionadosDBRepository.deleteAllSeleccionados();
         jugadoresRoomDBRepository.deleteAllJugadores();
-        id_equipo="11";
-        nombre_equipo="Vamonos de Putas";
+
         initViews();
         setAdapter();
         cargarvista();

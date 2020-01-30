@@ -22,6 +22,7 @@ public abstract class MisEquiposRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             MisEquiposRoomDataBase.class, "equipos_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration ()
                             .build();
 
                 }

@@ -24,6 +24,7 @@ public abstract class InstanciasRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             InstanciasRoomDataBase.class, "instancias_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
 
                 }

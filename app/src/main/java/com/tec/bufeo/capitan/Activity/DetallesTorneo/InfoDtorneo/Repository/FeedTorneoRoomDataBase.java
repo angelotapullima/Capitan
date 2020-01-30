@@ -28,6 +28,7 @@ public abstract class FeedTorneoRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             FeedTorneoRoomDataBase.class, "feedTorneo_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
 
                 }

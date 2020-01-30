@@ -14,7 +14,7 @@ import com.tec.bufeo.capitan.R;
 
 import java.util.ArrayList;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorListadoCanchaEmpresa extends RecyclerView.Adapter<AdaptadorListadoCanchaEmpresa.canchaEmpresasViewHolder> {
 
@@ -77,7 +77,7 @@ public class AdaptadorListadoCanchaEmpresa extends RecyclerView.Adapter<Adaptado
 
         obj = array.get(position);
 
-        Picasso.with(context).load(IP+"/"+ obj.getCancha_foto()).into(holder.img_fotoCancha);
+        Picasso.with(context).load(IP2+"/"+ obj.getCancha_foto()).into(holder.img_fotoCancha);
         holder.txt_nombreCancha.setText(obj.getCancha_nombre());
         holder.txt_dimensones.setText(obj.getCancha_dimenciones());
         holder.txt_precio_d.setText(obj.getCancha_precioD());

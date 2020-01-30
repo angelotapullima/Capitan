@@ -129,6 +129,7 @@ public class FeedWebServiceRepository {
                 foro.setOrden("0");
                 foro.setLimite_sup(limite_sup2);
                 foro.setLimite_inf(limite_inf2);
+                foro.setVamos_puts("hbhbjbj");
 
                 apiResults.add(foro);
             }

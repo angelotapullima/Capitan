@@ -1,5 +1,6 @@
 package com.tec.bufeo.capitan.Fragments;
 
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,9 +21,46 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Repository.EequiposRoomDbRepository;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.ViewModels.EequiposViewModel;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Repository.TequiposRoomDbRepository;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.ViewModels.TequiposViewModel;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Repository.FeedTorneoRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.FeedTorneoListViewModel;
 import com.tec.bufeo.capitan.Activity.Login;
 import com.tec.bufeo.capitan.Activity.PerfilEdit;
+import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Repository.RegistroEquiposTorneoRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.ViewModels.RegistroEquiposTorneoViewModel;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.Jugadores.JugadoresRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.seleccionados.SeleccionadosDBRepository;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.ViewModel.Jugadores.JugadoresViewModel;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.ViewModel.Seleccionados.SeleccionadosViewModel;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Repository.GruposRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.ViewModels.GruposListViewModel;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.Instancias;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Repository.InstanciasRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.ViewModels.InstanciasViewModel;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoConfiguracion;
+import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Repository.CommentsRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Foro.comentarios.ViewModels.CommentsListViewModel;
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
+import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Repository.MensajesRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.ViewModels.MensajesViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Repository.ChatsRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.ViewModels.ChatsListViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Models.Estadisticas;
+import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Repository.EstadisticasRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.ViewModels.EstadisticasViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Repository.MisTorneoRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.ViewModels.MisTorneoViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.Repository.OtrosTorneosRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.ViewModels.OtrosTorneosViewModel;
 import com.tec.bufeo.capitan.Modelo.MConfiguracion;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -47,6 +86,26 @@ public class FragmentInfo extends Fragment {
   SharedPreferences preferencesUser;
 
 
+  EequiposViewModel eequiposViewModel;
+  TequiposViewModel tequiposViewModel;
+  FeedTorneoListViewModel feedTorneoListViewModel;
+  RegistroEquiposTorneoViewModel registroEquiposTorneoViewModel;
+  JugadoresViewModel jugadoresViewModel;
+  SeleccionadosViewModel seleccionadosViewModel;
+  GruposListViewModel gruposListViewModel;
+  InstanciasViewModel instanciasViewModel;
+  CommentsListViewModel commentsListViewModel;
+  FeedListViewModel feedListViewModel;
+  MensajesViewModel mensajesViewModel;
+  ChatsListViewModel chatsListViewModel;
+  EstadisticasViewModel estadisticasViewModel;
+  MisEquiposViewModel misEquiposViewModel;
+  RetosViewModel retosViewModel;
+  MisTorneoViewModel misTorneoViewModel;
+  OtrosTorneosViewModel otrosTorneosViewModel;
+
+
+
   Preferences pref;
   public  void getPerfilEdit(){
       Intent intent = new Intent(getContext(),PerfilEdit.class);
@@ -62,6 +121,26 @@ public class FragmentInfo extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_info, container, false);
+
+        otrosTorneosViewModel = ViewModelProviders.of(getActivity()).get(OtrosTorneosViewModel.class);
+        misTorneoViewModel = ViewModelProviders.of(getActivity()).get(MisTorneoViewModel.class);
+        misEquiposViewModel = ViewModelProviders.of(getActivity()).get(MisEquiposViewModel.class);
+        chatsListViewModel = ViewModelProviders.of(getActivity()).get(ChatsListViewModel.class);
+        mensajesViewModel = ViewModelProviders.of(getActivity()).get(MensajesViewModel.class);
+        feedListViewModel = ViewModelProviders.of(getActivity()).get(FeedListViewModel.class);
+        commentsListViewModel = ViewModelProviders.of(getActivity()).get(CommentsListViewModel.class);
+        eequiposViewModel = ViewModelProviders.of(getActivity()).get(EequiposViewModel.class);
+        tequiposViewModel = ViewModelProviders.of(getActivity()).get(TequiposViewModel.class);
+        feedTorneoListViewModel = ViewModelProviders.of(getActivity()).get(FeedTorneoListViewModel.class);
+        registroEquiposTorneoViewModel = ViewModelProviders.of(getActivity()).get(RegistroEquiposTorneoViewModel.class);
+        jugadoresViewModel = ViewModelProviders.of(getActivity()).get(JugadoresViewModel.class);
+        seleccionadosViewModel = ViewModelProviders.of(getActivity()).get(SeleccionadosViewModel.class);
+        gruposListViewModel = ViewModelProviders.of(getActivity()).get(GruposListViewModel.class);
+        instanciasViewModel = ViewModelProviders.of(getActivity()).get(InstanciasViewModel.class);
+        estadisticasViewModel = ViewModelProviders.of(getActivity()).get(EstadisticasViewModel.class);
+        retosViewModel = ViewModelProviders.of(getActivity()).get(RetosViewModel.class);
+
+
 
         pref =  new Preferences(getContext());
 
@@ -143,6 +222,7 @@ public class FragmentInfo extends Fragment {
                                 //Eliminamos los datos de la SharedPreferences
                                 preferencesUser.edit().clear().apply();
                                 dialogr.dismiss();
+                                EliminarDBs();
 
                                 Intent intent = new Intent(getActivity(),Login.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -161,6 +241,61 @@ public class FragmentInfo extends Fragment {
         preferencesUser = getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
 
         return view;
+    }
+
+    Application application;
+    private void EliminarDBs() {
+
+        EequiposRoomDbRepository eequiposRoomDbRepository =  new EequiposRoomDbRepository(application);
+        eequiposRoomDbRepository.deleteAllTorneosEquipos();
+
+        TequiposRoomDbRepository tequiposRoomDbRepository = new TequiposRoomDbRepository(application);
+        tequiposRoomDbRepository.deleteAllTorneosEquipos();
+
+        FeedTorneoRoomDBRepository feedTorneoRoomDBRepository = new FeedTorneoRoomDBRepository(application);
+        feedTorneoRoomDBRepository.deleteAllFeed();
+
+        RegistroEquiposTorneoRoomDBRepository registroEquiposTorneoRoomDBRepository = new RegistroEquiposTorneoRoomDBRepository(application);
+        registroEquiposTorneoRoomDBRepository.deleteAllEquipos();
+
+        JugadoresRoomDBRepository jugadoresRoomDBRepository =  new JugadoresRoomDBRepository(application);
+        jugadoresRoomDBRepository.deleteAllJugadores();
+
+        SeleccionadosDBRepository seleccionadosDBRepository = new SeleccionadosDBRepository(application);
+        seleccionadosDBRepository.deleteAllSeleccionados();
+
+        GruposRoomDBRepository gruposRoomDBRepository = new GruposRoomDBRepository(application);
+        gruposRoomDBRepository.deleteAllGrupos();
+
+        InstanciasRoomDBRepository instanciasRoomDBRepository = new InstanciasRoomDBRepository(application);
+        instanciasRoomDBRepository.deleteAllInstancias();
+
+        CommentsRoomDBRepository commentsRoomDBRepository = new CommentsRoomDBRepository(application);
+        commentsRoomDBRepository.deleteAllComments();
+
+        FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
+        feedRoomDBRepository.deleteAllFeed();
+
+        MensajesRoomDBRepository mensajesRoomDBRepository = new MensajesRoomDBRepository(application);
+        mensajesRoomDBRepository.deleteAllMensajes();
+
+        ChatsRoomDBRepository chatsRoomDBRepository = new ChatsRoomDBRepository(application);
+        chatsRoomDBRepository.deleteAllEquipos();
+
+        EstadisticasRoomDBRepository estadisticasRoomDBRepository = new EstadisticasRoomDBRepository(application);
+        estadisticasRoomDBRepository.deleteAllEstadisticas();
+
+        MisEquiposRoomDBRepository misEquiposRoomDBRepository = new MisEquiposRoomDBRepository(application);
+        misEquiposRoomDBRepository.deleteAllEquipos();
+
+        RetosRoomDBRepository retosRoomDBRepository = new RetosRoomDBRepository(application);
+        retosRoomDBRepository.deleteAllRetos();
+
+        MisTorneoRoomDBRepository misTorneoRoomDBRepository =  new MisTorneoRoomDBRepository(application);
+        misTorneoRoomDBRepository.deleteAllRetos();
+
+        OtrosTorneosRoomDBRepository otrosTorneosRoomDBRepository = new OtrosTorneosRoomDBRepository(application);
+        otrosTorneosRoomDBRepository.deleteAllRetos();
     }
 
 

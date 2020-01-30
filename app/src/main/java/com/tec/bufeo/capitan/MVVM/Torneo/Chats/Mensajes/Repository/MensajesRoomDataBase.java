@@ -23,6 +23,7 @@ public abstract class MensajesRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             MensajesRoomDataBase.class, "lista_mensajes_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration ()
                             .build();
 
                 }

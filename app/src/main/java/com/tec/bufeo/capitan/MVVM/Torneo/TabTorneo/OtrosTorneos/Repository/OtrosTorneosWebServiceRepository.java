@@ -104,7 +104,7 @@ public class OtrosTorneosWebServiceRepository {
 
 
 
-                torneo.setId_torneo(jsonNode.optInt("id_torneo"));
+                torneo.setTorneo_id(jsonNode.optString("id_torneo"));
                 torneo.setTorneo_nombre(jsonNode.optString("nombre"));
                 torneo.setTorneo_descripcion(jsonNode.optString("descripcion"));
                 torneo.setTorneo_fecha(jsonNode.optString("fecha"));

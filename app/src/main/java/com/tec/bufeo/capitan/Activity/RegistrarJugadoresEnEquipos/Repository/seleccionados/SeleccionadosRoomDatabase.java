@@ -25,6 +25,7 @@ public abstract class SeleccionadosRoomDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             SeleccionadosRoomDatabase.class, "seleccionados_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
 
                 }

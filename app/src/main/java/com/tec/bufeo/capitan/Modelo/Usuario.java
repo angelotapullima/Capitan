@@ -21,6 +21,7 @@ public class Usuario {
     private String ubigeo_id;
     private String token;
     private String token_firebase;
+    private String tiene_negocio;
 
 
 
@@ -54,7 +55,7 @@ public class Usuario {
         this.equipo_id = equipo_id;
     }
 
-    public Usuario(String usuario_id, String usuario_usuario, String usuario_nombre, String usuario_email, String usuario_habilidad, String usuario_posicion, String usuario_numFavorito, String usuario_foto, String ubigeo_id , String token_firebase) {
+    /*public Usuario(String usuario_id, String usuario_usuario, String usuario_nombre, String usuario_email, String usuario_habilidad, String usuario_posicion, String usuario_numFavorito, String usuario_foto, String ubigeo_id , String token_firebase) {
         this.usuario_id = usuario_id;
         this.usuario_nombre = usuario_nombre;
         this.usuario_email = usuario_email;
@@ -65,11 +66,11 @@ public class Usuario {
         this.usuario_usuario = usuario_usuario;
         this.ubigeo_id = ubigeo_id;
         this.token_firebase = token_firebase;
-    }
+    }*/
 
     public Usuario(String id_user, String id_person, String user_nickname, String user_email, String user_image, String person_name, String person_surname,
                    String person_dni, String person_birth, String person_number_phone, String person_genre, String person_address, String user_num,
-                   String user_posicion, String user_habilidad, String ubigeo_id, String token, String token_firebase) {
+                   String user_posicion, String user_habilidad, String ubigeo_id, String token, String token_firebase,String tiene_negocio) {
 
         this.id_user=id_user;
         this.id_person=id_person;
@@ -89,6 +90,7 @@ public class Usuario {
         this.ubigeo_id=ubigeo_id;
         this.token=token;
         this.token_firebase=token_firebase;
+        this.tiene_negocio=tiene_negocio;
     }
 
     /*public Usuario(String usuario_id, String usuario_nombre, String usuario_foto, String usuario_nacimiento, String usuario_sexo, String usuario_usuario, String usuario_posicion, String usuario_habilidad, String usuario_numFavorito, String usuario_clave, String usuario_email, String usuario_telefono, String rol_id, String usuario_estado, String usuario_dni, String ubigeo_id, String token_firebase ) {
@@ -392,5 +394,13 @@ public class Usuario {
 
     public void setToken_firebase(String token_firebase) {
         this.token_firebase = token_firebase;
+    }
+
+    public String getTiene_negocio() {
+        return tiene_negocio;
+    }
+
+    public void setTiene_negocio(String tiene_negocio) {
+        this.tiene_negocio = tiene_negocio;
     }
 }

@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Views.EstadisticasDeEquiposFragment;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Views.TorneoDequiposFragment;
+import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos;
 import com.tec.bufeo.capitan.Activity.old.AgregarJugador;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
@@ -26,13 +28,16 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
     public ViewPager container_Dequipo;
     private SectionsDetalleEquipoAdapter sectionsDetalleEquipoAdapter;
     String equipo_id,equipo_nombre,equipo_foto,capitan_nombre;
-    FloatingActionButton fab_agregarParticipantesEquipo;
     UniversalImageLoader universalImageLoader;
+
+
+    FloatingActionButton fab_agregarParticipantesEquipo;
 
     private   String[] tituloIds = {
             "Jugadores",
             "Torneos",
-            "Proximos Partidos"
+            "Proximos Partidos",
+            "Estadísticas"
     };
 
     @Override
@@ -52,15 +57,16 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         imagen_Dequipo =  findViewById(R.id.imagen_Dequipo);
         btn_retarDequipo =  findViewById(R.id.btn_retarDequipo);
         unirse_Dequipo =  findViewById(R.id.unirse_Dequipo);
-        fab_agregarParticipantesEquipo =  findViewById(R.id.fab_agregarParticipantesEquipo);
+        fab_agregarParticipantesEquipo = findViewById(R.id.fab_agregarParticipantesEquipo);
 
         equipo_id=getIntent().getExtras().getString("id_equipo");
         equipo_nombre=getIntent().getExtras().getString("nombre_equipo");
         equipo_foto=getIntent().getExtras().getString("foto_equipo");
         capitan_nombre=getIntent().getExtras().getString("capitan_equipo");
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<4;i++) {
             tabs_Dequipo.addTab(tabs_Dequipo.newTab().setText(tituloIds[i]) );
         }
+
 
 
         container_Dequipo.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs_Dequipo));
@@ -83,17 +89,42 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
             }
         });
 
+        container_Dequipo.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                if (position == 0) {
+                    fab_agregarParticipantesEquipo.show();
+                }else{
+                    fab_agregarParticipantesEquipo.hide();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         tabs_Dequipo.getSelectedTabPosition();
+
+
+
+        UniversalImageLoader.setImage(IP2+"/"+ equipo_foto,imagen_Dequipo,null);
 
         fab_agregarParticipantesEquipo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent i =  new Intent(DetalleEquipoNuevo.this, AgregarJugador.class);
+            public void onClick(View v) {
+                Intent i = new Intent(DetalleEquipoNuevo.this, RegistrarJugadoresEnEquipos.class);
+                i.putExtra("id_equipo",equipo_id);
+                i.putExtra("nombre",equipo_nombre);
                 startActivity(i);
             }
         });
-
-        UniversalImageLoader.setImage(IP2+"/"+ equipo_foto,imagen_Dequipo,null);
     }
 
     public class SectionsDetalleEquipoAdapter extends FragmentPagerAdapter {
@@ -112,19 +143,29 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
                     fragment = new JugadoresDequiposFragment();
                     Bundle bundle =  new Bundle();
                     bundle.putString("id_equipo", equipo_id);
+                    bundle.putString("nombre", equipo_nombre);
                     fragment.setArguments(bundle);
                     break;
                 case 1:
                     fragment = new TorneoDequiposFragment();
                     Bundle bundle1 =  new Bundle();
                     bundle1.putString("id_equipo", equipo_id);
+                    bundle1.putString("nombre", equipo_nombre);
                     fragment.setArguments(bundle1);
                     break;
                 case 2:
                     fragment = new ProximoPartidosDequiposFragment();
                     Bundle bundle2 =  new Bundle();
                     bundle2.putString("id_equipo", equipo_id);
+                    bundle2.putString("nombre", equipo_nombre);
                     fragment.setArguments(bundle2);
+                    break;
+                case 3:
+                    fragment = new EstadisticasDeEquiposFragment();
+                    Bundle bundle3 =  new Bundle();
+                    bundle3.putString("id_equipo", equipo_id);
+                    bundle3.putString("nombre", equipo_nombre);
+                    fragment.setArguments(bundle3);
                     break;
 
 
@@ -135,7 +176,7 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
     }

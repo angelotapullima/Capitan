@@ -23,6 +23,7 @@ public abstract class MisTorneoRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             MisTorneoRoomDataBase.class, "torneos_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
 
                 }

@@ -9,15 +9,44 @@
 
 
 
-    <androidx.appcompat.widget.Toolbar
+    <LinearLayout
         android:id="@+id/tlb_negocios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:minHeight="?attr/actionBarSize"
         app:titleTextColor="#ffffff"
         android:background="@color/colorPrimary">
 
-    </androidx.appcompat.widget.Toolbar>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Negocios"
+            android:textColor="#FFF"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent">
+
+
+
+
+            <ImageView
+                android:id="@+id/mis_negocios"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/logo"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/SwipeRefreshLayout"
@@ -73,14 +102,5 @@
         android:theme="@style/CircularProgress"
         android:layout_gravity="center"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_registrarEmpresas"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:elevation="8dp"
-        android:layout_gravity="bottom|right|end"
-        android:src="@drawable/home_plus"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:clickable="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

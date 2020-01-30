@@ -23,6 +23,7 @@ public abstract class ChatsRoomDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ChatsRoomDataBase.class, "lista_chats_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration ()
                             .build();
 
                 }

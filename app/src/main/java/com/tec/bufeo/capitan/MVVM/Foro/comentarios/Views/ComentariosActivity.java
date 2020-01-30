@@ -1,6 +1,7 @@
 package com.tec.bufeo.capitan.MVVM.Foro.comentarios.Views;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class ComentariosActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,6 +40,7 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
     String id_publicacion;
     EditText mensaje;
     ImageView enviar;
+
     Preferences preferences;
 
     @Override
@@ -47,6 +49,7 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_comentarios);
         preferences = new Preferences(this);
         commentsListViewModel = ViewModelProviders.of(this).get(CommentsListViewModel.class);
+
         id_publicacion= getIntent().getExtras().getString("id_publicacion");
 
         Toast.makeText(this, ""+ id_publicacion, Toast.LENGTH_SHORT).show();
@@ -76,12 +79,15 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
         recyclerView_comentarios.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    String tamaño_lista;
     public void cargarvista(){
 
 
         commentsListViewModel.getmAllReviews(id_publicacion,preferences.getToken()).observe(this, new Observer<List<Comments>>() {
             @Override
             public void onChanged(@Nullable List<Comments> comments) {
+                Log.e("tamaño", "onChanged: " +comments.size() );
+                tamaño_lista = String.valueOf(comments.size());
                 adapter.setWords(comments);
 
             }
@@ -96,7 +102,7 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
         if (v.equals(enviar)){
 
             String des = mensaje.getText().toString();
-            if (!des.equals("")){
+            if (!des.isEmpty()){
 
                 //Comments comments = new Comments( preferences.getFotoUsuario(),preferences.getNombrePref(),
                 // des,id_publicacion);
@@ -104,7 +110,9 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
                 comments.setComments_foto(preferences.getFotoUsuario());
                 comments.setComments_nombre(preferences.getPersonName() + " " + preferences.getPersonSurname());
                 comments.setComments_comentario(des);
-                comments.setComments_id(id_publicacion);
+                comments.setPublicacion_id(id_publicacion);
+                comments.setComments_fecha("0 min");
+                comments.setComments_id(tamaño_lista);
 
                 commentsListViewModel.insertOne(comments);
                 EnviarComentarios(des);
@@ -120,7 +128,7 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
     StringRequest stringRequest;
 
     private void EnviarComentarios(final String comentario) {
-        String url =IP+"/index.php?c=Foro&a=registrar_comentario&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Foro/registrar_comentario";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -148,6 +156,8 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
                 parametros.put("usuario_id",preferences.getIdUsuarioPref());
                 parametros.put("publicacion_id",id_publicacion);
                 parametros.put("comentario",comentario);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
 
                 return parametros;
 

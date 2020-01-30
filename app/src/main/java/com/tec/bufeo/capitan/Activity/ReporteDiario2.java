@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,7 +56,7 @@ public class ReporteDiario2 extends AppCompatActivity  implements  DatePickerDia
     TableLayout tably_listadoabonos;
     CardView cdv_mensaje;
    // ProgressBar progressbar;
-    DataConnection dc,dc1;
+    DataConnection dc;
     ArrayList<Reserva> arrayreserva;
     //AdaptadorListadoReportesDiarios adaptadorListadoReportesDiarios;
     int precioTotal;
@@ -166,7 +168,7 @@ public class ReporteDiario2 extends AppCompatActivity  implements  DatePickerDia
             txt_totalRecaudado.setVisibility(View.VISIBLE);
           // mostarCabecera();
             for(Reserva obj: arrayreserva){
-
+                obj.setReserva_costo("40.00");
                 View v1= LayoutInflater.from(getApplicationContext()).inflate(R.layout.table_reportes_diarios,null,false);
 
 
@@ -191,8 +193,11 @@ public class ReporteDiario2 extends AppCompatActivity  implements  DatePickerDia
 
 
 
+
             for(Reserva reserva : arrayreserva) {
-                precioTotal += Integer.parseInt(reserva.getReserva_costo());
+                reserva.setReserva_costo("40.00");
+                precioTotal += Double.parseDouble(reserva.getReserva_costo());
+
             }
 
             //  Toast.makeText(context,"total"+precioTotal,Toast.LENGTH_SHORT).show();
@@ -243,7 +248,7 @@ public class ReporteDiario2 extends AppCompatActivity  implements  DatePickerDia
                 Log.d("size"," "+llscrol.getWidth() +"  "+llscrol.getWidth());
                 bitmap = loadBitmapFromView(llscrol, llscrol.getWidth(), llscrol.getMeasuredHeight());
                 createPdf();
-                Toast.makeText(getApplicationContext(),"Reporte",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Reporte",Toast.LENGTH_LONG).show();
 
                 return true;
         }
@@ -354,17 +359,31 @@ public class ReporteDiario2 extends AppCompatActivity  implements  DatePickerDia
         //File file = new File("/sdcard/pdffromScroll.pdf");
         if (file.exists())
         {
-            Intent intent=new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.fromFile(file);
-            intent.setDataAndType(uri, "application/pdf");
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
             try
             {
-                startActivity(intent);
+            Intent target=new Intent(Intent.ACTION_VIEW);
+
+            Uri uri;
+
+            if (Build.VERSION.SDK_INT >=  Build.VERSION_CODES.N) {
+                String authorities=getApplicationContext().getPackageName()+".provider";
+                uri = FileProvider.getUriForFile(getApplicationContext(),authorities,file);
+            } else{
+                uri = Uri.fromFile(new File(String.valueOf(file)));
+            }
+
+            target.setDataAndType(uri, "application/pdf");
+            target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Intent intent = Intent.createChooser(target, "Abrir PDF");
+
+
+
+            startActivity(intent);
+
             }
             catch(ActivityNotFoundException e)
             {
+                Log.e("pdf", "openGeneratedPDF: "+e );
                 Toast.makeText(ReporteDiario2.this, "No Application available to view pdf", Toast.LENGTH_LONG).show();
             }
         }

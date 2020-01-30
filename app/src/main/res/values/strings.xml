@@ -13,6 +13,11 @@
         <item>Yurimaguas</item>
         <item>Nauta</item>
     </string-array>
+    <string-array name="tipo_pago">
+        <item>Seleccionar</item>
+        <item>Yo pago todo</item>
+        <item>Usar Chancha</item>
+    </string-array>
     <string-array name="posicion">
         <item>Portero</item>
         <item>Delatero</item>

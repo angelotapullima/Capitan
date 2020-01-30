@@ -7,7 +7,7 @@ import retrofit2.http.POST;
 
 public interface CommentsAPIService {
     @FormUrlEncoded
-    @POST("index.php?c=Foro&a=listar_comentarios&key_mobile=123456asdfgh")
+    @POST("api/Foro/listar_comentarios")
     Call<String> makeRequest(@Field("publicacion_id") String id,
                              @Field("app") String app,
                              @Field("token") String token);

@@ -108,6 +108,10 @@ public class ModelFeed {
     @SerializedName("nuevos_datos")
     private String nuevos_datos;
 
+    @ColumnInfo(name = "vamos_puts")
+    @SerializedName("vamos_puts")
+    private String vamos_puts;
+
 
     @NonNull
     public String getPublicacion_id() {
@@ -268,5 +272,13 @@ public class ModelFeed {
 
     public void setNuevos_datos(String nuevos_datos) {
         this.nuevos_datos = nuevos_datos;
+    }
+
+    public String getVamos_puts() {
+        return vamos_puts;
+    }
+
+    public void setVamos_puts(String vamos_puts) {
+        this.vamos_puts = vamos_puts;
     }
 }

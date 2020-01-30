@@ -17,13 +17,14 @@ public abstract class TequiposRoomDataBase extends RoomDatabase {
     private static TequiposRoomDataBase INSTANCE;
 
 
-    static TequiposRoomDataBase getDatabase(final Context context) {
+    public static TequiposRoomDataBase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (TequiposRoomDataBase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TequiposRoomDataBase.class, "torneos_equipos_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
 
                 }

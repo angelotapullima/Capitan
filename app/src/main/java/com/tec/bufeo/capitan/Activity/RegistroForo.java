@@ -56,9 +56,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
-//import static com.tec.bufeo.capitan.others.FragmentForo.Actualizarforo;
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
 import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
@@ -326,7 +324,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
         builder.show();
     }
 
-    String url = IP+"/index.php?c=Foro&a=registrar&key_mobile=123456asdfgh";
+    String url = IP2+"/api/Foro/registrar";
     String path;
     public void uploadMultipart() {
         path = resultUriRecortada.getPath();
@@ -338,16 +336,21 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
             PendingIntent clickIntent = PendingIntent.getActivity(
                     context, 1, new Intent(context, RegistroForo.class), PendingIntent.FLAG_UPDATE_CURRENT);
             //Creating a multi part request
+            String titulex = edt_tituloForo.getText().toString();
+            String descripcionex = edt_descripcionForo.getText().toString();
             new MultipartUploadRequest(context, uploadId, url)
                     .addFileToUpload(path, "imagen") //Adding file
-                    .addParameter("usuario_id", usuario_id) //Adding text parameter to the request
-                    .addParameter("titulo", edt_tituloForo.getText().toString()) //Adding text parameter to the request
-                    .addParameter("descripcion", edt_descripcionForo.getText().toString()) //Adding text parameter to the request
+                    .addParameter("usuario_id", preferences.getIdUsuarioPref()) //Adding text parameter to the request
+                    .addParameter("titulo", titulex) //Adding text parameter to the request
+                    .addParameter("descripcion", descripcionex) //Adding text parameter to the request
                     .addParameter("concepto", "publicacion") //Adding text parameter to the request
                     .addParameter("id_torneo", "0") //Adding text parameter to the request
+                    .addParameter("app", "true") //Adding text parameter to the request
+                    .addParameter("token", preferences.getToken()) //Adding text parameter to the request
 
                     .setNotificationConfig(getNotificationConfig(uploadId,R.string.cargando))
                     .setMaxRetries(2)
+                    .setUtf8Charset()
                     .setDelegate(new UploadStatusDelegate() {
                         @Override
                         public void onProgress(Context context, UploadInfo uploadInfo) {

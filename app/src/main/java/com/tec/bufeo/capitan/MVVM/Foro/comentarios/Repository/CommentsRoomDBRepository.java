@@ -3,6 +3,7 @@ package com.tec.bufeo.capitan.MVVM.Foro.comentarios.Repository;
 import android.app.Application;
 import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Models.Comments;
 
@@ -89,6 +90,25 @@ public class CommentsRoomDBRepository {
         @Override
         protected Void doInBackground(final List<Comments>... params) {
             mAsyncTaskDao.insertComments(params[0]);
+            return null;
+        }
+    }
+
+    public void deleteAllComments() {
+        new DeleteAllCommentsAsyncTask(commentsDao).execute();
+    }
+
+    private static class DeleteAllCommentsAsyncTask extends AsyncTask<Void, Void, Void> {
+        private CommentsDao instanciasDao;
+
+        private DeleteAllCommentsAsyncTask(CommentsDao instanciasDao) {
+            this.instanciasDao = instanciasDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            instanciasDao.deleteAll();
+            Log.i("eliminado Comments", "doInBackground: eliminado");
             return null;
         }
     }

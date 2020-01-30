@@ -2,11 +2,11 @@
 <androidx.cardview.widget.CardView
     android:id="@+id/cdv_cancha_empresa"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:layout_margin="10dp"
-    app:cardCornerRadius="25dp"
+    app:cardCornerRadius="15dp"
     android:elevation="15dp"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -24,7 +24,7 @@
                 android:id="@+id/img_fotoCancha"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/brain"
+                app:srcCompat="@drawable/brain"
                 android:scaleType="fitCenter" />
 
 
@@ -33,11 +33,13 @@
                 android:orientation="horizontal"
                 android:layout_gravity="bottom"
                 android:background="#86232222"
+                android:weightSum="10"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="5"
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/txt_nombreCancha"
@@ -58,27 +60,28 @@
                         android:textSize="20sp" />
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
+                    android:layout_weight="5"
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:layout_marginRight="10dp"
                         android:orientation="horizontal">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/weather_sunny" />
+                            app:srcCompat="@drawable/weather_sunny" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
-                            android:textColor="#fff"
-                            android:text="S/ "
-                            android:textSize="20sp" />
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/bufeo_coin"/>
                         <TextView
                             android:id="@+id/txt_precio_d"
                             android:layout_width="wrap_content"
@@ -90,19 +93,21 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:layout_marginRight="10dp"
                         android:orientation="horizontal">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/weather_night" />
+                            app:srcCompat="@drawable/weather_night" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
-                            android:textColor="#fff"
-                            android:text="S/ "
-                            android:textSize="20sp" />
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/bufeo_coin"/>
                         <TextView
                             android:id="@+id/txt_precio_n"
                             android:layout_width="wrap_content"

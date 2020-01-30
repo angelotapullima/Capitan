@@ -43,6 +43,7 @@ import com.tec.bufeo.capitan.Util.Preferences;
 import java.util.List;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
 public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -97,7 +98,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         preferences = new Preferences(context);
 
-        feedListViewModel.getAllPosts().observe(this, new Observer<List<ModelFeed>>() {
+        feedListViewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<ModelFeed>>() {
             @Override
             public void onChanged(List<ModelFeed> modelFeeds) {
                 if (modelFeeds.size()>0){
@@ -168,7 +169,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         //tlb_foro.setTitle("Foro..");
 
-        Picasso.with(context).load(preferences.getFotoUsuario()).into(fotoPerfil);
+        Picasso.with(context).load(IP2+"/"+preferences.getFotoUsuario()).into(fotoPerfil);
 
         floating_search_view.addTextChangedListener(new TextWatcher() {
             @Override
@@ -226,7 +227,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     String valorNuevo;
     public void cargarvista(){
-        feedListViewModel.getAllPosts().observe(this, new Observer<List<ModelFeed>>() {
+        feedListViewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<ModelFeed>>() {
             @Override
             public void onChanged(List<ModelFeed> modelFeeds) {
                 adapter.setWords(modelFeeds);

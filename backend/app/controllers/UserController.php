@@ -354,4 +354,137 @@ class UserController{
         }
         echo $result;
     }
+    public function fecha_hora_actual(){
+        try{
+            $resources = array();
+            date_default_timezone_set('America/Lima');
+            $fecha = date('Y-m-d');
+            $hora = date('H:i:s');
+            $resources[0] = array("fecha"=>$fecha,"hora"=>$hora);
+            $data = array("results" => $resources);
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $data = 2;
+        }
+        echo json_encode($data);
+    }
+    public function enviar_mensaje() {
+        try{
+            $chat_id = $_POST['id_chat'];
+            $id_usuario = $_POST['id_usuario'];
+            $mensaje = $_POST['mensaje'];
+            $fecha_ = date('Y-m-d H:i:s');
+            $fecha = date('Y-m-d');
+            $hora = date('h:i a');
+            $result = $this->user->enviar_mensaje($chat_id,$id_usuario,$mensaje,$fecha_);
+            if($result==1){
+                $datos = $this->user->listar_chat_por_id($chat_id);
+                if($datos->id_usuario_1 == $id_usuario){
+                    $user=$this->user->list($datos->id_usuario_2);
+                    $user2=$this->user->list($datos->id_usuario_1);
+                }else{
+                    $user=$this->user->list($datos->id_usuario_1);
+                    $user2=$this->user->list($datos->id_usuario_2);
+                }
+                $this->notificar_chat($user->usuario_token,$mensaje,$user2->usuario_nombre,"Mensaje",$mensaje,$chat_id,$id_usuario,$hora,$fecha);
+            }
+            $resources = array();
+            $resources[0] = array("valor"=>$result);
+            $data = array("results" => $resources);
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $data = 2;
+        }
+        echo json_encode($data);
+    }
+    public function listar_usuario_por_id(){
+        $id = $_POST['id'];
+        $model = $this->user->list($id);
+        $resources = array();
+        $resources[0] = array(
+            "usuario_id"=>$model->id_user,
+            "nombre"=>$model->person_name. " ".$model->person_surname,
+            "dni"=>$model->person_dni,
+            "nacimiento"=>$model->person_birth,
+            "sexo"=>$model->person_genre,
+            "email"=>$model->user_email,
+            "telefono"=>$model->person_number_phone,
+            "usuario"=>$model->user_nickname,
+            "posicion"=>$model->user_posicion,
+            "habilidad"=>$model->user_habilidad,
+            "num"=>$model->user_num,
+            "foto"=>$model->user_image
+        );
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function notificar($token,$body,$title,$tipo,$contenido){
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $fields = array('to' => $token ,
+            'notification' => array('body' => $body, 'title' => $title),
+            'data' =>array('tipo'=> $tipo ,
+                'Contenido' => $contenido
+            ));
+        define('GOOGLE_API_KEY', 'AIzaSyAbpEpTfha5E7CQJMLvNC3SMhF2wQnPGVc');
+        $headers = array(
+            'Authorization:key='.GOOGLE_API_KEY,
+            'Content-Type: application/json');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        if($result === false){
+            die('Curl failed' . curl_error());}
+        curl_close($ch);
+        return $result;
+    }
+    public function notificar_chat($token,$body,$title,$tipo,$mensaje,$id_chat,$id_usuario,$hora,$fecha){
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $fields = array('to' => $token ,
+            'notification' => array('body' => $body, 'title' => $title),
+            'data' =>array('tipo'=> $tipo ,
+                'mensaje' => $mensaje,
+                'id_chat' => $id_chat,
+                'id_usuario' => $id_usuario,
+                'hora' => $hora,
+                'fecha' => $fecha
+            ));
+        define('GOOGLE_API_KEY', 'AIzaSyAbpEpTfha5E7CQJMLvNC3SMhF2wQnPGVc');
+        $headers = array(
+            'Authorization:key='.GOOGLE_API_KEY,
+            'Content-Type: application/json');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        if($result === false){
+            die('Curl failed' . curl_error());}
+        curl_close($ch);
+        return $result;
+    }
+    public function listar_mensajes_por_chat(){
+        $id_chat = $_POST['id_chat'];
+        $model = $this->user->listar_mensajes_por_chat($id_chat);
+        $resources = array();
+        for ($i=0;$i<count($model);$i++) {
+            $fecha = explode(' ',$model[$i]->detalle_chat_fecha);
+            $resources[$i] = array(
+                "chat_id" => $id_chat,
+                "detalle_chat_id" => $model[$i]->detalle_chat_id,
+                "id_usuario" => $model[$i]->id_user,
+                "mensaje" => $model[$i]->detalle_chat_mensaje,
+                "fecha" => $fecha[0],
+                "hora" => $fecha[1],
+                "estado" => $model[$i]->detalle_chat_estado
+            );
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
 }

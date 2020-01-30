@@ -1,10 +1,12 @@
 <?php
 require_once 'app/models/Torneo.php';
+require_once 'app/models/Empresa.php';
 require_once 'app/models/Foro.php';
 class TorneoController{
     private $torneo;
     private $nav;
     private $foro;
+    private $empresa;
     private $crypt;
     private $clean;
     private $log;
@@ -12,6 +14,7 @@ class TorneoController{
     public function __construct(){
         $this->torneo = new Torneo();
         $this->foro = new Foro();
+        $this->empresa= new Empresa();
         $this->crypt = new Crypt();
         $this->clean = new Clean();
         $this->log = new Log();
@@ -288,8 +291,10 @@ class TorneoController{
             if($id == 0){
                 throw new Exception('ID Sin Declarar');
             }
+            $saldo_Actual = $this->empresa->obtener_saldo_actual($this->crypt->decrypt($_SESSION['id_user'],_FULL_KEY_));
             $equipo = $this->torneo->listar_equipo_por_id($id);
             $jugadores = $this->torneo->listar_detalle_equipo($id);
+            $chanchas = $this->empresa->obtener_chanchas_disponibles_por_equipo($id);
             $torneos = $this->torneo->listar_torneos_por_id_equipo($id);
 
             require _VIEW_PATH_ . 'header.php';
@@ -587,87 +592,137 @@ class TorneoController{
         echo json_encode($data);
     }
     public function listar_estadisticas(){
-        //$id_usuario = $_POST['id_usuario'];
-        $model = $this->torneo->listar_estadisticas();
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $resources[$i] = array(
-                "equipo_id" => $model[$i]->equipo_id,
-                "nombre" => $model[$i]->equipo_nombre,
-                "foto" => $model[$i]->equipo_foto,
-                "temporada" => $model[$i]->temporada,
-                "semana" => $model[$i]->semana,
-                "puntaje_acumulado" => $model[$i]->puntaje_acumulado,
-                "puntaje_semanal" => $model[$i]->puntaje_semanal,
-                "retos_enviados" => $model[$i]->retos_enviados,
-                "retos_recibidos" => $model[$i]->retos_recibidos,
-                "retos_ganados" => $model[$i]->retos_ganados,
-                "retos_empatados" => $model[$i]->retos_empatados,
-                "retos_perdidos" => $model[$i]->retos_perdidos,
-                "torneos" => $model[$i]->torneos
+        try{
+            $model = $this->torneo->listar_estadisticas();
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "equipo_id" => $model[$i]->equipo_id,
+                    "nombre" => $model[$i]->equipo_nombre,
+                    "foto" => $model[$i]->equipo_foto,
+                    "temporada" => $model[$i]->temporada,
+                    "semana" => $model[$i]->semana,
+                    "puntaje_acumulado" => $model[$i]->puntaje_acumulado,
+                    "puntaje_semanal" => $model[$i]->puntaje_semanal,
+                    "retos_enviados" => $model[$i]->retos_enviados,
+                    "retos_recibidos" => $model[$i]->retos_recibidos,
+                    "retos_ganados" => $model[$i]->retos_ganados,
+                    "retos_empatados" => $model[$i]->retos_empatados,
+                    "retos_perdidos" => $model[$i]->retos_perdidos,
+                    "torneos" => $model[$i]->torneos
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function listar_estadisticas_por_id_equipo(){
+        try{
+            $id_equipo = $_POST['id_equipo'];
+            $model = $this->torneo->listar_estadisticas_por_id_equipo($id_equipo);
+            $resources[] = array(
+                "equipo_id" => $model->equipo_id,
+                "nombre" => $model->equipo_nombre,
+                "foto" => $model->equipo_foto,
+                "temporada" => $model->temporada,
+                "semana" => $model->semana,
+                "puntaje_acumulado" => $model->puntaje_acumulado,
+                "puntaje_semanal" => $model->puntaje_semanal,
+                "retos_enviados" => $model->retos_enviados,
+                "retos_recibidos" => $model->retos_recibidos,
+                "retos_ganados" => $model->retos_ganados,
+                "retos_empatados" => $model->retos_empatados,
+                "retos_perdidos" => $model->retos_perdidos,
+                "torneos" => $model->torneos
             );
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function listar_equipos(){
-        $model = $this->torneo->listar_equipos();
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $resources[$i] = array(
-                "equipo_id" => $model[$i]->equipo_id,
-                "nombre" => $model[$i]->equipo_nombre,
-                "foto" => $model[$i]->equipo_foto,
-                "capitan" => $model[$i]->usuario_nombre
-            );
+        try{
+            $model = $this->torneo->listar_equipos();
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "equipo_id" => $model[$i]->equipo_id,
+                    "nombre" => $model[$i]->equipo_nombre,
+                    "foto" => $model[$i]->equipo_foto,
+                    "capitan" => $model[$i]->usuario_nombre
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function listar_equipos_por_torneo_not(){
-        $id_torneo = $_POST["id_torneo"];
-        $model = $this->torneo->listar_equipos_por_torneo_not($id_torneo);
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $resources[$i] = array(
-                "equipo_id" => $model[$i]->equipo_id,
-                "nombre" => $model[$i]->equipo_nombre,
-                "foto" => $model[$i]->equipo_foto,
-                "capitan" => $model[$i]->usuario_nombre
-            );
+        try{
+            $id_torneo = $_POST["id_torneo"];
+            $model = $this->torneo->listar_equipos_por_torneo_not($id_torneo);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "equipo_id" => $model[$i]->equipo_id,
+                    "nombre" => $model[$i]->equipo_nombre,
+                    "foto" => $model[$i]->equipo_foto,
+                    "capitan" => $model[$i]->usuario_nombre
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function listar_equipos_por_id_usuario_not(){
-        $id_usuario = $_POST['id_usuario'];
-        $model = $this->torneo->listar_equipos_por_id_usuario_not($id_usuario);
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $resources[$i] = array(
-                "equipo_id" => $model[$i]->equipo_id,
-                "nombre" => $model[$i]->equipo_nombre,
-                "foto" => $model[$i]->equipo_foto,
-                "capitan" => $model[$i]->usuario_nombre,
-                "capitan_id" => $model[$i]->usuario_id
-            );
+        try{
+            $id_usuario = $_POST['id_usuario'];
+            $model = $this->torneo->listar_equipos_por_id_usuario_not($id_usuario);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "equipo_id" => $model[$i]->equipo_id,
+                    "nombre" => $model[$i]->equipo_nombre,
+                    "foto" => $model[$i]->equipo_foto,
+                    "capitan" => $model[$i]->usuario_nombre,
+                    "capitan_id" => $model[$i]->usuario_id
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function listar_detalle_equipo(){
-        $id_equipo = $_POST['id_equipo'];
-        $model = $this->torneo->listar_detalle_equipo($id_equipo);
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $resources[$i] = array(
-                "usuario_id" => $model[$i]->equipo_id,
-                "nombre" => $model[$i]->usuario_nombre,
-                "foto" => $model[$i]->usuario_foto,
-                "posicion" => $model[$i]->usuario_posicion,
-                "habilidad" => $model[$i]->usuario_habilidad,
-                "num" => $model[$i]->usuario_num
-            );
+        try{
+            $id_equipo = $_POST['id_equipo'];
+            $model = $this->torneo->listar_detalle_equipo($id_equipo);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "usuario_id" => $model[$i]->id_user,
+                    "nombre" => $model[$i]->user_nickname,
+                    "foto" => $model[$i]->user_image,
+                    "posicion" => $model[$i]->user_posicion,
+                    "habilidad" => $model[$i]->user_habilidad,
+                    "num" => $model[$i]->user_num
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
@@ -718,9 +773,14 @@ class TorneoController{
         echo json_encode($data);
     }
     public function registrar_equipo_usuario() {
-        $equipo_id = $_POST['id_equipo'];
-        $usuario_id = $_POST['id_usuario'];
-        $result = $this->torneo->registrar_equipo_usuario($equipo_id,$usuario_id);
+        try{
+            $equipo_id = $_POST['id_equipo'];
+            $usuario_id = $_POST['id_usuario'];
+            $result = $this->torneo->registrar_equipo_usuario($equipo_id,$usuario_id);
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = "Code 2: General error";
+        }
         $resources = array();
         $resources[0] = array("valor"=>$result);
         $data = array("results" => $resources);
@@ -1112,6 +1172,25 @@ class TorneoController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+    public function listar_torneos_en_equipo()
+    {
+        $id_equipo = $_POST['id_equipo'];
+        $model = $this->torneo->listar_torneos_por_equipo($id_equipo);
+        $resources = array();
+        for ($i = 0; $i < count($model); $i++) {
+            $resources[$i] = array(
+                "id_torneo" => $model[$i]->torneo_id,
+                "equipo_id" => $id_equipo,
+                "nombre" => $model[$i]->torneo_nombre,
+                "foto" => $model[$i]->torneo_imagen,
+                "lugar" => $model[$i]->torneo_lugar,
+                "fecha" => $model[$i]->torneo_fecha,
+                "organizador" => $model[$i]->torneo_organizador
+            );
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
     public function listar_publicaciones_por_id_torneo(){
         $id_usuario = $_POST['id_usuario'];
         $id_torneo = $_POST['id_torneo'];
@@ -1177,116 +1256,201 @@ class TorneoController{
         echo json_encode($data);
     }
     public function listar_tabla_por_id_torneo(){
-        $id_torneo = $_POST['id_torneo'];
-        $grupos = $this->torneo->listar_grupos_por_id_torneo($id_torneo);
-        $resources = [];
-        for ($i=0;$i<count($grupos);$i++) {
-            $model = [];
-            $equipos = $this->torneo->listar_equipos_por_id_grupo($grupos[$i]->id_torneo_grupo);
-            for($j=0;$j<count($equipos);$j++){
-                $partidos = $this->torneo->listar_partidos_terminados_equipo_fase1($equipos[$j]->equipo_id);
-                $part_j = count($partidos);
-                $part_g = 0;
-                $part_e = 0;
-                $part_p = 0;
-                $gf =0 ;
-                $gc = 0;
-                for ($k=0;$k<count($partidos);$k++){
-                    if($equipos[$j]->equipo_id==$partidos[$k]->id_equipo_local){
-                        if($partidos[$k]->marcador_local>$partidos[$k]->marcador_visita){
-                            $part_g++;
-                        }elseif ($partidos[$k]->marcador_local<$partidos[$k]->marcador_visita){
-                            $part_p++;
-                        }else{
-                            $part_e++;
+        try{
+            $id_torneo = $_POST['id_torneo'];
+            $grupos = $this->torneo->listar_grupos_por_id_torneo($id_torneo);
+            $resources = [];
+            for ($i=0;$i<count($grupos);$i++) {
+                $model = [];
+                $equipos = $this->torneo->listar_equipos_por_id_grupo($grupos[$i]->id_torneo_grupo);
+                for($j=0;$j<count($equipos);$j++){
+                    $partidos = $this->torneo->listar_partidos_terminados_equipo_fase1($equipos[$j]->equipo_id);
+                    $part_j = count($partidos);
+                    $part_g = 0;
+                    $part_e = 0;
+                    $part_p = 0;
+                    $gf =0 ;
+                    $gc = 0;
+                    for ($k=0;$k<count($partidos);$k++){
+                        if($equipos[$j]->equipo_id==$partidos[$k]->id_equipo_local){
+                            if($partidos[$k]->marcador_local>$partidos[$k]->marcador_visita){
+                                $part_g++;
+                            }elseif ($partidos[$k]->marcador_local<$partidos[$k]->marcador_visita){
+                                $part_p++;
+                            }else{
+                                $part_e++;
+                            }
+                            $gf = $gf+ $partidos[$k]->marcador_local;
+                            $gc = $gc+ $partidos[$k]->marcador_visita;
+                        }elseif ($equipos[$j]->equipo_id==$partidos[$k]->id_equipo_visita){
+                            if($partidos[$k]->marcador_visita>$partidos[$k]->marcador_local){
+                                $part_g++;
+                            }elseif ($partidos[$k]->marcador_visita<$partidos[$k]->marcador_local){
+                                $part_p++;
+                            }else{
+                                $part_e++;
+                            }
+                            $gf = $gf+ $partidos[$k]->marcador_visita;
+                            $gc = $gc+ $partidos[$k]->marcador_local;
                         }
-                        $gf = $gf+ $partidos[$k]->marcador_local;
-                        $gc = $gc+ $partidos[$k]->marcador_visita;
-                    }elseif ($equipos[$j]->equipo_id==$partidos[$k]->id_equipo_visita){
-                        if($partidos[$k]->marcador_visita>$partidos[$k]->marcador_local){
-                            $part_g++;
-                        }elseif ($partidos[$k]->marcador_visita<$partidos[$k]->marcador_local){
-                            $part_p++;
-                        }else{
-                            $part_e++;
-                        }
-                        $gf = $gf+ $partidos[$k]->marcador_visita;
-                        $gc = $gc+ $partidos[$k]->marcador_local;
                     }
+                    $total = (3 * $part_g) + $part_e;
+                    $model[] = array(
+                        "equipo_id"=>$equipos[$j]->equipo_id,
+                        "equipo_nombre"=>$equipos[$j]->equipo_nombre,
+                        "equipo_foto"=>$equipos[$j]->equipo_foto,
+                        "part_j"=>$part_j,
+                        "part_g"=>$part_g,
+                        "part_e"=>$part_e,
+                        "part_p"=>$part_p,
+                        "gf"=>$gf,
+                        "gc"=>$gc,
+                        "total"=>$total
+                    );
                 }
-                $total = (3 * $part_g) + $part_e;
-                $model[] = array(
-                    "equipo_id"=>$equipos[$j]->equipo_id,
-                    "equipo_nombre"=>$equipos[$j]->equipo_nombre,
-                    "equipo_foto"=>$equipos[$j]->equipo_foto,
-                    "part_j"=>$part_j,
-                    "part_g"=>$part_g,
-                    "part_e"=>$part_e,
-                    "part_p"=>$part_p,
-                    "gf"=>$gf,
-                    "gc"=>$gc,
-                    "total"=>$total
+                $resources[] = array(
+                    "id_grupo"=>$grupos[$i]->id_torneo_grupo,
+                    "nombre_grupo"=>$grupos[$i]->grupo_nombre,
+                    "equipos" => $model
                 );
             }
-            $resources[] = array(
-                "id_grupo"=>$grupos[$i]->id_torneo_grupo,
-                "nombre_grupo"=>$grupos[$i]->grupo_nombre,
-                "equipos" => $model
-            );
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function listar_equipos_por_grupo(){
-        $id_torneo = $_POST['id_torneo'];
-        $grupos = $this->torneo->listar_grupos_por_id_torneo($id_torneo);
-        $resources = [];
-        for ($i=0;$i<count($grupos);$i++) {
-            $model = [];
-            $equipos = $this->torneo->listar_equipos_por_id_grupo($grupos[$i]->id_torneo_grupo);
-            for($j=0;$j<count($equipos);$j++){
-                $model[] = array(
-                    "equipo_id"=>$equipos[$j]->equipo_id,
-                    "equipo_nombre"=>$equipos[$j]->equipo_nombre,
-                    "equipo_foto"=>$equipos[$j]->equipo_foto
+        try{
+            $id_torneo = $_POST['id_torneo'];
+            $grupos = $this->torneo->listar_grupos_por_id_torneo($id_torneo);
+            $resources = [];
+            for ($i=0;$i<count($grupos);$i++) {
+                $model = [];
+                $equipos = $this->torneo->listar_equipos_por_id_grupo($grupos[$i]->id_torneo_grupo);
+                for($j=0;$j<count($equipos);$j++){
+                    $model[] = array(
+                        "equipo_id"=>$equipos[$j]->equipo_id,
+                        "equipo_nombre"=>$equipos[$j]->equipo_nombre,
+                        "equipo_foto"=>$equipos[$j]->equipo_foto
+                    );
+                }
+                $resources[] = array(
+                    "nombre_grupo"=>$grupos[$i]->grupo_nombre,
+                    "equipos" => $model
                 );
             }
-            $resources[] = array(
-                "nombre_grupo"=>$grupos[$i]->grupo_nombre,
-                "equipos" => $model
-            );
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function listar_instancias_partidos_por_id_torneo(){
-        $id_torneo = $_POST['id_torneo'];
-        $instancias = $this->torneo->listar_instancias_por_id_torneo($id_torneo);
-        $resources = [];
-        for ($i=0;$i<count($instancias);$i++) {
-            $model = [];
-            $partidos = $this->torneo->listar_partidos_por_id_instancia($instancias[$i]->id_torneo_instancia);
-            for($j=0;$j<count($partidos);$j++){
-                $model[] = array(
-                    "id_torneo_partido"=>$partidos[$j]->id_torneo_partido,
-                    "id_equipo_local"=>$partidos[$j]->id_equipo_local,
-                    "nombre_equipo_local"=>$partidos[$j]->nombre_local,
-                    "foto_equipo_local"=>$partidos[$j]->foto_local,
-                    "id_equipo_visita"=>$partidos[$j]->id_equipo_visita,
-                    "nombre_equipo_visita"=>$partidos[$j]->nombre_visita,
-                    "foto_equipo_visita"=>$partidos[$j]->foto_visita,
-                    "partido_fecha"=>$partidos[$j]->torneo_partido_fecha,
-                    "partido_hora"=>$partidos[$j]->torneo_partido_hora,
-                    "partido_estado"=>$partidos[$j]->torneo_partido_estado
+        try{
+            $id_torneo = $_POST['id_torneo'];
+            $instancias = $this->torneo->listar_instancias_por_id_torneo($id_torneo);
+            $resources = [];
+            for ($i=0;$i<count($instancias);$i++) {
+                $model = [];
+                $partidos = $this->torneo->listar_partidos_por_id_instancia($instancias[$i]->id_torneo_instancia);
+                for($j=0;$j<count($partidos);$j++){
+                    $model[] = array(
+                        "id_torneo_partido"=>$partidos[$j]->id_torneo_partido,
+                        "id_equipo_local"=>$partidos[$j]->id_equipo_local,
+                        "nombre_equipo_local"=>$partidos[$j]->nombre_local,
+                        "foto_equipo_local"=>$partidos[$j]->foto_local,
+                        "id_equipo_visita"=>$partidos[$j]->id_equipo_visita,
+                        "nombre_equipo_visita"=>$partidos[$j]->nombre_visita,
+                        "foto_equipo_visita"=>$partidos[$j]->foto_visita,
+                        "partido_fecha"=>$partidos[$j]->torneo_partido_fecha,
+                        "partido_hora"=>$partidos[$j]->torneo_partido_hora,
+                        "partido_estado"=>$partidos[$j]->torneo_partido_estado
+                    );
+                }
+                $resources[] = array(
+                    "id_instancia"=>$instancias[$i]->id_torneo_instancia,
+                    "nombre_instancia"=>$instancias[$i]->torneo_instancia_nombre,
+                    "partidos" => $model
                 );
             }
-            $resources[] = array(
-                "id_instancia"=>$instancias[$i]->id_torneo_instancia,
-                "nombre_instancia"=>$instancias[$i]->torneo_instancia_nombre,
-                "partidos" => $model
-            );
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources);
         echo json_encode($data);
+    }
+    public function listar_goleadores_por_id_torneo(){
+        try{
+            $id_torneo = $_POST['id_torneo'];
+            $model = $this->torneo->listar_goleadores_por_id_torneo($id_torneo);
+            for($i=0;$i<count($model);$i++){
+                $resources[$i] = array(
+                    "user_image" => $model[$i]->user_image,
+                    "user_nickname" => $model[$i]->user_nickname,
+                    "equipo_foto" => $model[$i]->equipo_foto,
+                    "equipo_nombre" => $model[$i]->equipo_nombre,
+                    "conteo" => $model[$i]->conteo
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function agregar_colaboracion() {
+        try{
+            $ok_data = true;
+            if(isset($_POST['id_colab']) && isset($_POST['monto']) ){
+                $_POST['id_colab'] = $this->clean->clean_post_int($_POST['id_colab']);
+                $ok_data = $this->clean->validate_post_int($_POST['id_colab'], true, $ok_data, 11);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $id_user = $this->crypt->decrypt($_SESSION['id_user'],_FULL_KEY_);
+                $id_colab = $_POST['id_colab'];
+                $monto = $_POST['monto'];
+                $fecha = date('Y-m-d H:i:s');
+                $result = $this->torneo->agregar_colaboracion($id_colab,$id_user,$monto,$fecha);
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        echo json_encode($result);
+    }
+    public function agregar_chancha() {
+        try{
+            $ok_data = true;
+            if(isset($_POST['nombre']) && isset($_POST['monto'])&& isset($_POST['id_equipo']) ){
+                $_POST['id_equipo'] = $this->clean->clean_post_int($_POST['id_equipo']);
+                $_POST['nombre'] = $this->clean->clean_post_str($_POST['nombre']);
+                $ok_data = $this->clean->validate_post_int($_POST['id_equipo'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_str($_POST['nombre'], true, $ok_data, 100);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $id_equipo = $_POST['id_equipo'];
+                $nombre = $_POST['nombre'];
+                $monto = $_POST['monto'];
+                $fecha = date('Y-m-d H:i:s');
+                $result = $this->torneo->agregar_chancha($id_equipo,$nombre,$monto,$fecha);
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        echo json_encode($result);
     }
 }

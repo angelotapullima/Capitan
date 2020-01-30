@@ -1,7 +1,7 @@
 package com.tec.bufeo.capitan.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
+
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +11,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tec.bufeo.capitan.Activity.RegistroReserva;
 import com.tec.bufeo.capitan.Modelo.Reserva;
 import com.tec.bufeo.capitan.R;
 
@@ -66,9 +65,10 @@ public class AdapListadoCanchaReserva extends RecyclerView.Adapter<AdapListadoCa
             imb_reserva_llamada.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, RegistroReserva.class);
+                    listener.onItemClick(reserva,"imb_reserva_llamada",getAdapterPosition());
+                    /*Intent intent = new Intent(context, RegistroReserva.class);
                     intent.putExtra("h_reserva",reserva.getReserva_hora_cancha());
-                    context.startActivity(intent);
+                    context.startActivity(intent);*/
                    // listener.onItemClick(reserva,getAdapterPosition());
                 }
             });
@@ -119,7 +119,7 @@ public class AdapListadoCanchaReserva extends RecyclerView.Adapter<AdapListadoCa
 
 
     public interface  OnItemClickListener{
-        void onItemClick(Reserva reserva, int position);
+        void onItemClick(Reserva reserva,String tipo, int position);
     }
 
 }

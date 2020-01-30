@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Activity.DetalleEquipo.EstadisticasDeEquiposFragment">
+    tools:context=".Activity.DetalleEquipo.TabEstadisticasEquipos.Views.EstadisticasDeEquiposFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
@@ -23,7 +23,82 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="16dp"
                     android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="10"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <!--android:background="#73000000"-->
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="3"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <TextView
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:textSize="18sp"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                android:textColor="#000"
+                                android:text="Temporada"/>
+                            <TextView
+
+                                android:id="@+id/temporada"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:textSize="18sp"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                android:textColor="#000"/>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/foto_estadisticas_equipo"
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:layout_height="100dp"
+                            android:padding="10dp"
+                            android:src="@drawable/logo"/>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="3"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <TextView
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:gravity="center"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#000"
+                                android:text="Semana"/>
+                            <TextView
+                                android:id="@+id/semana"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:textSize="18sp"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                android:textColor="#000"/>
+
+
+                    </LinearLayout>
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -32,29 +107,247 @@
                         <!--android:background="#73000000"-->
 
                         <TextView
-                            android:id="@+id/txt_titulo"
+
                             android:layout_width="0dp"
-                            android:layout_weight="9.2"
+                            android:layout_weight="8"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="#000"
-                            android:text="Estadísticas"/>
+                            android:text="Puntaje Acumulado"/>
+
+                        <TextView
+                            android:id="@+id/puntaje_acumulado"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"/>
+
 
 
                     </LinearLayout>
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rcv_estadisticas_equipos"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    </androidx.recyclerview.widget.RecyclerView>
+                        android:layout_height="wrap_content"
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+                        <!--android:background="#73000000"-->
+
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="8"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:text="Puntaje Semanal"/>
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:id="@+id/puntaje_semanal"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"/>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+                        <!--android:background="#73000000"-->
+
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="8"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:text="Retos enviados"/>
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:id="@+id/retos_enviados"
+                            android:textStyle="bold"
+                            android:textColor="#000"/>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+                        <!--android:background="#73000000"-->
+
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="8"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:text="Retos recibidos"/>
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:id="@+id/retos_recibidos"
+                            android:textColor="#000"/>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+                        <!--android:background="#73000000"-->
+
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="8"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:text="Retos ganados"/>
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:id="@+id/retos_ganados"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"/>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+                        <!--android:background="#73000000"-->
+
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="8"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:text="Retos empatados"/>
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:id="@+id/retos_empatados"/>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+                        <!--android:background="#73000000"-->
+
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="8"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:text="Retos perdidos"/>
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:id="@+id/retos_perdidos"
+                            android:textColor="#000"/>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+                        <!--android:background="#73000000"-->
+
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="8"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:text="Torneos inscritos"/>
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:id="@+id/torneos_estadisticas_equipos"/>
+
+
+
+                    </LinearLayout>
                 </LinearLayout>
-
-
-
             </LinearLayout>
 
 
