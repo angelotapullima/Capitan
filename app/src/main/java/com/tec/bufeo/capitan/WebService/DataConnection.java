@@ -312,9 +312,11 @@ public class DataConnection extends AppCompatActivity {
                 url = new URL(IP+"/index.php?c=Torneo&a=listar_equipos_en_torneo&key_mobile=123456asdfgh");
             }
             if(funcion.equals("listarEquipo")){
-                parametros = "id_usuario=" + URLEncoder.encode(equipo.getUsuario_id(),"UTF-8");
+                parametros = "id_usuario=" + URLEncoder.encode(equipo.getUsuario_id(),"UTF-8")
+                        + "&token=" + URLEncoder.encode(preferences.getToken(),"UTF-8")
+                        + "&app=" + URLEncoder.encode("true","UTF-8");
 
-                url = new URL(IP+"/index.php?c=Torneo&a=listar_equipos_por_id_usuario&key_mobile=123456asdfgh");
+                url = new URL(IP2+"/api/Torneo/listar_equipos_por_id_usuario");
             }
             if(funcion.equals("listarEquiposEnTorneoNot")){
                 parametros = "id_torneo=" + URLEncoder.encode(idciudad,"UTF-8");

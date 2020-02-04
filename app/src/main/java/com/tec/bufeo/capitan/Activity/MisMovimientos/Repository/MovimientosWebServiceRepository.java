@@ -1,12 +1,13 @@
-package com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository;
+package com.tec.bufeo.capitan.Activity.MisMovimientos.Repository;
 
 import android.app.Application;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.tec.bufeo.capitan.Activity.MisMovimientos.Models.Movimientos;
 import com.tec.bufeo.capitan.Util.APIUrl;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,11 +25,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class RetosWebServiceRepository {
+public class MovimientosWebServiceRepository {
 
     Application application;
-
-    public RetosWebServiceRepository(Application application){
+    public MovimientosWebServiceRepository(Application application){
         this.application = application;
     }
     private static OkHttpClient providesOkHttpClientBuilder(){
@@ -40,13 +40,13 @@ public class RetosWebServiceRepository {
     }
 
 
-    List<Retos> webserviceResponseList = new ArrayList<>();
+    List<Movimientos> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Retos>> providesWebService(String id_usuario,String token) {
+ public LiveData<List<Movimientos>> providesWebService(String id_user,String token) {
 
-     final MutableLiveData<List<Retos>> data = new MutableLiveData<>();
+     final MutableLiveData<List<Movimientos>> data = new MutableLiveData<>();
 
-     String response = "";
+     String token33 = "pOO+4LTcy7vf172x7MTVqo+52bK16M/N7d3T4ZnUzKiv68/gwq/SuYyx3rvUwc2dwZjV5dnk2NWS4Mzcw5XX4K7N3JLY39e23NjZzaTT4ry+tw==}";
      try {
          Retrofit retrofit = new Retrofit.Builder()
                  .baseUrl(APIUrl.BASE_URL)
@@ -55,16 +55,15 @@ public class RetosWebServiceRepository {
                  .client(providesOkHttpClientBuilder())
                  .build();
 
-         //Defining retrofit api service
-         RetosAPIService service = retrofit.create(RetosAPIService.class);
-        //  response = service.makeRequest().execute().body();
-         service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
+         MovimientosAPIService service = retrofit.create(MovimientosAPIService.class);
+         //response = service.getEquipo(id,"true",token).execute().body();
+         service.getEquipo(id_user,"true",token33).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.d("Repository retos","Response::::"+response.body());
+                 Log.e("Repository movimientos","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
-                 RetosRoomDBRepository retosRoomDBRepository = new RetosRoomDBRepository(application);
-                 retosRoomDBRepository.insertRetos(webserviceResponseList);
+                 MovimientosRoomDBRepository movimientosRoomDBRepository = new MovimientosRoomDBRepository(application);
+                 movimientosRoomDBRepository.insertEquipos(webserviceResponseList);
                  data.setValue(webserviceResponseList);
 
              }
@@ -74,6 +73,9 @@ public class RetosWebServiceRepository {
                  Log.d("Repository","Failed:::");
              }
          });
+         //Defining retrofit api service
+
+
      }catch (Exception e){
          e.printStackTrace();
      }
@@ -84,9 +86,9 @@ public class RetosWebServiceRepository {
     }
 
 
-    private List<Retos> parseJson(String response) {
+    private List<Movimientos> parseJson(String response ) {
 
-        List<Retos> apiResults = new ArrayList<>();
+        List<Movimientos> apiResults = new ArrayList<>();
 
         JSONObject jsonObject;
 
@@ -98,31 +100,27 @@ public class RetosWebServiceRepository {
 
             int count = resultJSON.length();
 
+            MovimientosRoomDBRepository movimientosRoomDBRepository = new MovimientosRoomDBRepository(application);
+            movimientosRoomDBRepository.deleteAllEquipos();
 
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
-                Retos retos = new Retos();
+                Movimientos movimientos = new Movimientos();
+
+                //movimientos.setMovimiento_id(jsonNode.optString("pago_id"));
+                movimientos.setMovimiento_id(String.valueOf(i));
+                movimientos.setMovimiento_nombre(jsonNode.optString("concepto"));
+                movimientos.setMovimiento_monto(jsonNode.optString("monto"));
+                //movimientos.setMovimiento_estado(jsonNode.optString("1"));
+                movimientos.setMovimiento_estado("1");
+                movimientos.setMovimiento_fecha(jsonNode.optString("fecha"));
 
 
 
-                retos.setRetos_id(jsonNode.optString("id_reto"));
-                retos.setRetador_id(jsonNode.optString("equipo_id_1"));
-                retos.setRetado_id(jsonNode.optString("equipo_id_2"));
-                retos.setRetos_nombre_retador(jsonNode.optString("nombre_1"));
-                retos.setRetos_nombre_retado(jsonNode.optString("nombre_2"));
-                retos.setRetos_foto_retador(jsonNode.optString("foto_1"));
-                retos.setRetos_foto_retado(jsonNode.optString("foto_2"));
-                retos.setRetos_fecha(jsonNode.optString("fecha"));
-                retos.setRetos_hora(jsonNode.optString("hora"));
-                retos.setRetos_lugar(jsonNode.optString("lugar"));
-                retos.setRetos_estado(jsonNode.optString("estado"));
-                retos.setRetos_respuesta(jsonNode.optString("respuesta"));
-                retos.setUser_respuesta(jsonNode.optString("user_respuesta"));
-                //retos.setRetos_respuesta("2");
-
-
-                apiResults.add(retos);
+                apiResults.add(movimientos);
             }
+
+
 
 
         } catch (JSONException e) {

@@ -35,6 +35,7 @@ import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -230,7 +231,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
         }
     }
 
-
+    int conteo_envios=0;
     StringRequest stringRequest;
     private void registarJugadores(final JugadoresSeleccionados jugadoresSeleccionados){
 
@@ -242,14 +243,24 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
             public void onResponse(String response) {
 
 
-                Log.e("response", "response: "+response.toString() );
+                Log.e("respons e", "registrar_equipo_usuario: "+response.toString() );
                 JSONObject json_data;
                 int code;
                 try {
 
                     json_data = new JSONObject(response);
-                    JSONObject result_json = json_data.optJSONObject("result");
-                    code = result_json.optInt("valor");
+                    JSONArray result_json = json_data.optJSONArray("results");
+                    JSONObject jsonNodev = result_json.getJSONObject(0);
+                    code = jsonNodev.optInt("valor");
+                    
+                    if (code==1){
+                        conteo_envios++;
+                        
+                        if (conteo_envios==listaDatos.size()){
+                            Toast.makeText(RegistrarJugadoresEnEquipos.this, "Registro completo", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
                     //menssage = result_json.optString("message");
 
 

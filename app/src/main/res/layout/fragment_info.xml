@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cdv_perfil"
             android:layout_width="match_parent"
@@ -58,7 +59,7 @@
                         android:text="Cuenta"
                         android:textStyle="bold" />
                     <TextView
-                        android:id="@+id/txt_descripcionPerfil"
+
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textColor="#383838"
@@ -66,21 +67,204 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:gravity="center_vertical"
-                        android:text="jfjefbjefbjffndnfjjjbjbjbbbbbbbbbbbbbbbbbbbbbbbbbjbbj" />
+                        android:text="Ver perfil" />
 
                 </LinearLayout>
 
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-       <androidx.recyclerview.widget.RecyclerView
-           android:id="@+id/rcv_configuracion"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent">
 
 
-       </androidx.recyclerview.widget.RecyclerView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bufeo_coin"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Bufis"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/misMovimientos"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bufeo_coin"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Mis Movimientos"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/realizarRecarga"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bufeo_coin"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Solicitar Recargas"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bufeo_coin"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Codigos De Recarga Generados"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bufeo_coin"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Mensajes"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bufeo_coin"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Crear Chancha"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bufeo_coin"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Info de BufeoTec"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:id="@+id/logout"
+                    android:padding="8dp"
+                    android:background="@drawable/back_logout"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Cerrar sesión"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/red_400"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     </LinearLayout>

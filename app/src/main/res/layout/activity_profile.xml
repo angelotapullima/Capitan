@@ -74,7 +74,6 @@
                     android:id="@+id/nombre_perfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Angelo Tapullima Del Aguila"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textColor="@android:color/white" />
 

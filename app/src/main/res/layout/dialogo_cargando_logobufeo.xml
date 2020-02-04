@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="#80000000"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/background_cargando"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                style="@style/CircularProgress"
+                android:indeterminateDrawable="@drawable/style_progress"
+                android:layout_height="wrap_content">
+
+            </ProgressBar>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                style="@style/CircularProgress"
+                android:indeterminateDrawable="@drawable/style_progress_gradient"
+                android:layout_height="wrap_content">
+
+            </ProgressBar>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cargando"
+                android:textSize="18sp"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold"
+                android:textColor="#000"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:id="@+id/LogoBufeo"
+                android:src="@drawable/logobufeopng"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

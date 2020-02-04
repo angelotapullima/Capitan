@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -104,11 +105,16 @@ public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.O
             @Override
             public void onItemClick(Retos retos, int position) {
 
-                String retos_id = retos.getRetos_id();
-                String usuario= retos.getRetador_id();
+                if (preferences.getIdUsuarioPref().equals(retos.getUser_respuesta())){
+                    String retos_id = retos.getRetos_id();
+                    String usuario= retos.getRetador_id();
 
-                if (!usuario.equals(preferences.getIdUsuarioPref())){
-                    dialogoAceptar(retos_id);
+                    if (!usuario.equals(preferences.getIdUsuarioPref())){
+                        dialogoAceptar(retos_id);
+                    }
+
+                }else{
+                    Toast.makeText(getContext(), "usted no puede responder este reto", Toast.LENGTH_SHORT).show();
                 }
 
 

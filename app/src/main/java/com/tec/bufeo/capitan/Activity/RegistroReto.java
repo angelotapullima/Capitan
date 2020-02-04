@@ -40,6 +40,7 @@ import com.tec.bufeo.capitan.WebService.DataConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,22 +48,22 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class RegistroReto extends AppCompatActivity implements View.OnClickListener,TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
 
    Spinner spn_misEquipos;
    CircleImageView civ_fotoEquipoRetador, civ_fotoEquipoRetado;
-   TextView txt_equipoRetador, txt_equipoRetado;
-   Button btn_fechaReto,btn_horaReto, btn_registrarReto;
+   TextView txt_equipoRetador, txt_equipoRetado,btn_fechaReto,btn_horaReto;
+   Button  btn_registrarReto;
    EditText edt_lugarReto;
    DataConnection dc,d1;
    Retos retos;
    public static ArrayList<Equipo> arrayEquipo;
    ArrayList<String> arrayequipo;
    Context context;
-    public static String nombre_retado,foto_retado,id_retado, fecha;
+    public String nombre_retado,foto_retado,id_retado, fecha;
     private Date date;
     Preferences preferences;
     RetosViewModel retosViewModel;
@@ -74,6 +75,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_registro_reto);
         retosViewModel = ViewModelProviders.of(this).get(RetosViewModel.class);
 
+        preferences= new Preferences(this);
         /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);
         preferences = new Preferences(this);*/
@@ -100,12 +102,12 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
 
         txt_equipoRetado.setText(nombre_retado);
-        Picasso.with(context).load(IP+"/"+ foto_retado).into(civ_fotoEquipoRetado);
+        Picasso.with(context).load(IP2+"/"+ foto_retado).into(civ_fotoEquipoRetado);
         Log.e("registroReto", "foto " + foto_retado );
 
 
 
-        dc = new DataConnection(RegistroReto.this,"listarEquipo",new Equipo(usuario_id),false);
+        dc = new DataConnection(RegistroReto.this,"listarEquipo",new Equipo(preferences.getIdUsuarioPref()),false);
         new RegistroReto.GetEquipo().execute();
 
         spn_misEquipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -118,7 +120,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                     //falta imagen
                 }else {
                     txt_equipoRetador.setText(arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_nombre());
-                    Picasso.with(context).load(IP+"/"+ arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_foto()).into(civ_fotoEquipoRetador);
+                    Picasso.with(context).load(IP2+"/"+ arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_foto()).into(civ_fotoEquipoRetador);
 
                 }
             }
@@ -204,17 +206,59 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private String twoDigits(int n) {
+        return (n<=9) ? ("0"+n) : String.valueOf(n);
+    }
+
+    private void showDatePickerDialog(final TextView editText) {
+        DateDialog.DatePickerFragment newFragment = DateDialog.DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                // +1 because january is zero
+                final String selectedDate =  year+ "-" + twoDigits(month+1) + "-" + twoDigits(day);
+                editText.setText(selectedDate);
+            }
+        });
+        newFragment.show(this.getSupportFragmentManager(), "datePicker");
+    }
+
+    private  final String CERO = "0";
+    private  final String DOS_PUNTOS = ":";
+    private void obtenerHora(final TextView Hora){
+        Calendar cur_calender = Calendar.getInstance();
+        TimePickerDialog recogerHora = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                //Formateo el hora obtenido: antepone el 0 si son menores de 10
+                String horaFormateada =  (hourOfDay < 10)? String.valueOf(CERO + hourOfDay) : String.valueOf(hourOfDay);
+                //Formateo el minuto obtenido: antepone el 0 si son menores de 10
+                String minutoFormateado = (minute < 10)? String.valueOf(CERO + minute):String.valueOf(minute);
+                //Obtengo el valor a.m. o p.m., dependiendo de la selección del usuario
+                String AM_PM;
+                if(hourOfDay < 12) {
+                    AM_PM = "a.m.";
+                } else {
+                    AM_PM = "p.m.";
+                }
+                //Muestro la hora con el formato deseado
+                Hora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado);
+            }
+            //Estos valores deben ir en ese orden
+            //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
+            //Pero el sistema devuelve la hora en formato 24 horas
+        }, cur_calender.get(Calendar.HOUR_OF_DAY), cur_calender.get(Calendar.MINUTE), true);
+
+        recogerHora.show();
+
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_fechaReto:
-                new DateDialog().show(getSupportFragmentManager(), "DatePicker");
-
-
-
+                showDatePickerDialog(btn_fechaReto);
                 break;
             case R.id.btn_horaReto:
-                new horaDialog().show(getSupportFragmentManager(), "TimePicker");
+                obtenerHora(btn_horaReto);
                 break;
 
             case R.id.btn_registrarReto:
@@ -246,7 +290,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
     StringRequest stringRequest;
     private void enviarReto(final Retos retos) {
-        String url =IP+"/index.php?c=Torneo&a=retar_equipo&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Torneo/retar_equipo";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -277,7 +321,9 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                 parametros.put("fecha",retos.getRetos_fecha());
                 parametros.put("hora",retos.getRetos_hora());
                 parametros.put("lugar",retos.getRetos_lugar());
-
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
+                Log.e("registro reto", "getParams: " +parametros );
                 return parametros;
 
             }
@@ -288,7 +334,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
         VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
     public void crearChatReto(final String retado, final String retador){
-        String url =IP+"/index.php?c=Usuario&a=crear_chat&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Usuario/crear_chat";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -312,7 +358,8 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("id_1",retado);
                 parametros.put("id_2",retador);
-
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
                 return parametros;
 
             }

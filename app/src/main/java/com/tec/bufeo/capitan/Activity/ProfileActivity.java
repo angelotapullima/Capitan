@@ -29,6 +29,8 @@ import com.tec.bufeo.capitan.Util.Preferences;
 
 import java.util.List;
 
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
+
 public class ProfileActivity extends AppCompatActivity {
 
     RecyclerView recyler_publish,recycler_equipos;
@@ -149,7 +151,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-        Picasso.with(this).load(preferences.getFotoUsuario()).into(fotodeperfil);
+        Picasso.with(this).load(IP2+"/"+preferences.getFotoUsuario()).into(fotodeperfil);
         nombre_perfil.setText(preferences.getPersonName()+" "+preferences.getPersonSurname());
     }
 }

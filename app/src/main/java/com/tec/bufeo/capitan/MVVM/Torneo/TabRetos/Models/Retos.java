@@ -70,6 +70,10 @@ public class Retos {
     @SerializedName("retos_respuesta")
     private String retos_respuesta;
 
+    @ColumnInfo(name = "user_respuesta")
+    @SerializedName("user_respuesta")
+    private String user_respuesta;
+
 
 
 
@@ -176,6 +180,14 @@ public class Retos {
 
     public void setRetos_respuesta(String retos_respuesta) {
         this.retos_respuesta = retos_respuesta;
+    }
+
+    public String getUser_respuesta() {
+        return user_respuesta;
+    }
+
+    public void setUser_respuesta(String user_respuesta) {
+        this.user_respuesta = user_respuesta;
     }
 
     @Override

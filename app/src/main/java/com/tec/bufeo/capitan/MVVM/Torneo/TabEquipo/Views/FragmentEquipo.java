@@ -24,6 +24,7 @@ import com.tec.bufeo.capitan.Activity.CrearEquipos;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipoNuevo;
 import com.tec.bufeo.capitan.Activity.MasEquipos;
 import com.tec.bufeo.capitan.Activity.MasMisEquipos;
+import com.tec.bufeo.capitan.Activity.RegistroReto;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.R;
@@ -164,7 +165,16 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
                     intent.putExtra("foto_equipo", mequipos.getEquipo_foto());
                     intent.putExtra("capitan_equipo", mequipos.getCapitan_nombre());
                     startActivity(intent);
+                }if (tipo.equals("btn_retar")){
+
+                    Intent intent = new Intent(getContext(), RegistroReto.class);
+                    intent.putExtra("nombre_retado", mequipos.getEquipo_nombre());
+                    intent.putExtra("foto_retado", mequipos.getEquipo_foto());
+                    intent.putExtra("id_retado", mequipos.getEquipo_id());
+                    intent.putExtra("capitan_id", mequipos.getCapitan_id());
+                    startActivity(intent);
                 }
+
 
             }
         });

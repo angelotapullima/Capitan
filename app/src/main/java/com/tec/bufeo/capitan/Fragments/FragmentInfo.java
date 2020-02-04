@@ -9,13 +9,13 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,7 +28,11 @@ import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.ViewMode
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Repository.FeedTorneoRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.FeedTorneoListViewModel;
 import com.tec.bufeo.capitan.Activity.Login;
+import com.tec.bufeo.capitan.Activity.MisMovimientos.Repository.MovimientosRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.MisMovimientos.ViewModels.MovimientosViewModel;
+import com.tec.bufeo.capitan.Activity.MisMovimientos.Views.MisMovimientos;
 import com.tec.bufeo.capitan.Activity.PerfilEdit;
+import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Repository.RegistroEquiposTorneoRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.ViewModels.RegistroEquiposTorneoViewModel;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Repository.Jugadores.JugadoresRoomDBRepository;
@@ -37,20 +41,16 @@ import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.ViewModel.Juga
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.ViewModel.Seleccionados.SeleccionadosViewModel;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Repository.GruposRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.ViewModels.GruposListViewModel;
-import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.Instancias;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Repository.InstanciasRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.ViewModels.InstanciasViewModel;
-import com.tec.bufeo.capitan.Adapters.AdaptadorListadoConfiguracion;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Repository.CommentsRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.ViewModels.CommentsListViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Repository.MensajesRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.ViewModels.MensajesViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Repository.ChatsRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.ViewModels.ChatsListViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Models.Estadisticas;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Repository.EstadisticasRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.ViewModels.EstadisticasViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposRoomDBRepository;
@@ -61,29 +61,23 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Repository.MisTorn
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.ViewModels.MisTorneoViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.Repository.OtrosTorneosRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.ViewModels.OtrosTorneosViewModel;
-import com.tec.bufeo.capitan.Modelo.MConfiguracion;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
-import java.util.ArrayList;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_nombre;
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_posicion;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
-public class FragmentInfo extends Fragment {
+public class FragmentInfo extends Fragment implements View.OnClickListener {
 
   CardView cdv_perfil;
   CircleImageView civ_iconoPerfil;
-  TextView txt_tituloPerfil,txt_descripcionPerfil;
-  RecyclerView rcv_configuracion;
-  ArrayList<MConfiguracion>arrayList;
+  TextView txt_tituloPerfil;
   ProgressBar prog_imagenloading;
-  AdaptadorListadoConfiguracion adaptadorListadoConfiguracion;
   SharedPreferences preferencesUser;
+
+  LinearLayout misMovimientos,logout,realizarRecarga;
 
 
   EequiposViewModel eequiposViewModel;
@@ -103,6 +97,7 @@ public class FragmentInfo extends Fragment {
   RetosViewModel retosViewModel;
   MisTorneoViewModel misTorneoViewModel;
   OtrosTorneosViewModel otrosTorneosViewModel;
+  MovimientosViewModel movimientosViewModel;
 
 
 
@@ -122,6 +117,9 @@ public class FragmentInfo extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_info, container, false);
 
+        preferencesUser = getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+        pref =  new Preferences(getContext());
+
         otrosTorneosViewModel = ViewModelProviders.of(getActivity()).get(OtrosTorneosViewModel.class);
         misTorneoViewModel = ViewModelProviders.of(getActivity()).get(MisTorneoViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(getActivity()).get(MisEquiposViewModel.class);
@@ -139,23 +137,25 @@ public class FragmentInfo extends Fragment {
         instanciasViewModel = ViewModelProviders.of(getActivity()).get(InstanciasViewModel.class);
         estadisticasViewModel = ViewModelProviders.of(getActivity()).get(EstadisticasViewModel.class);
         retosViewModel = ViewModelProviders.of(getActivity()).get(RetosViewModel.class);
+        movimientosViewModel = ViewModelProviders.of(getActivity()).get(MovimientosViewModel.class);
 
 
 
-        pref =  new Preferences(getContext());
+
 
 
         civ_iconoPerfil = view.findViewById(R.id.civ_iconoPerfil);
         txt_tituloPerfil = view.findViewById(R.id.txt_tituloPerfil);
-        txt_descripcionPerfil = view.findViewById(R.id.txt_descripcionPerfil);
-        rcv_configuracion = view.findViewById(R.id.rcv_configuracion);
         cdv_perfil = view.findViewById(R.id.cdv_perfil);
         prog_imagenloading = view.findViewById(R.id.prog_imagenloading);
+        misMovimientos = view.findViewById(R.id.misMovimientos);
+        realizarRecarga = view.findViewById(R.id.realizarRecarga);
+        logout = view.findViewById(R.id.logout);
 
 
 
-        txt_tituloPerfil.setText(usuario_nombre);
-        txt_descripcionPerfil.setText(usuario_posicion);
+        txt_tituloPerfil.setText(pref.getPersonName() + " " + pref.getPersonSurname());
+
 
         cdv_perfil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,73 +177,51 @@ public class FragmentInfo extends Fragment {
             }
         });
 
-        arrayList = new ArrayList<>();
-        arrayList.add(new MConfiguracion("Cuenta","nknfkfdndkndffnfd",R.drawable.alarm_check));
-        arrayList.add(new MConfiguracion("Ayuda","jsbjsbdjbjdsbdsjdsds",R.drawable.brain));
-        arrayList.add(new MConfiguracion("Cuenta","nknfkfdndkndffnfd",R.drawable.alarm_check));
-        arrayList.add(new MConfiguracion("Ayuda","jsbjsbdjbjdsbdsjdsds",R.drawable.brain));
-        arrayList.add(new MConfiguracion("Cuenta","nknfkfdndkndffnfd",R.drawable.alarm_check));
-        arrayList.add(new MConfiguracion("Ayuda","jsbjsbdjbjdsbdsjdsds",R.drawable.brain));
-        arrayList.add(new MConfiguracion("Cuenta","nknfkfdndkndffnfd",R.drawable.alarm_check));
-        arrayList.add(new MConfiguracion("Ayuda","jsbjsbdjbjdsbdsjdsds",R.drawable.brain));
-        arrayList.add(new MConfiguracion("Cuenta","nknfkfdndkndffnfd",R.drawable.alarm_check));
-        arrayList.add(new MConfiguracion("Cerrar Sesion","Salir de la Cuenta",R.drawable.brain));
 
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
-        rcv_configuracion.setLayoutManager(linearLayoutManager);
 
-        adaptadorListadoConfiguracion = new AdaptadorListadoConfiguracion(getActivity(), arrayList, R.layout.rcv_item_list_configuracion, new AdaptadorListadoConfiguracion.OnItemClickListener() {
-            @Override
-            public void onItemClick(MConfiguracion mConfiguracion, final int position) {
-                switch (mConfiguracion.getTitulo()) {
-                    case "Cerrar Sesion":
-                        final Dialog dialogr = new Dialog(getActivity());
-                        dialogr.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialogr.setContentView(R.layout.dialogo_mensaje);
-
-                        Button btn_cancela = dialogr.findViewById(R.id.btn_cancelar);
-                        Button btn_acepta =  dialogr.findViewById(R.id.btn_aceptar);
-                        TextView txtMensaje = dialogr.findViewById(R.id.txtMensaje);
-                        txtMensaje.setText("¿Desea cerrar Sesión?");
-
-                        btn_cancela.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogr.dismiss();
-                            }
-                        });
-
-                        btn_acepta.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                //Eliminamos los datos de la SharedPreferences
-                                preferencesUser.edit().clear().apply();
-                                dialogr.dismiss();
-                                EliminarDBs();
-
-                                Intent intent = new Intent(getActivity(),Login.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-
-                            }
-                        });
-                        dialogr.show();
-                        break;
-                }
-
-
-            }
-        });
-        rcv_configuracion.setAdapter(adaptadorListadoConfiguracion);
-        preferencesUser = getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
-
+        misMovimientos.setOnClickListener(this);
+        realizarRecarga.setOnClickListener(this);
+        logout.setOnClickListener(this);
         return view;
     }
 
     Application application;
+
+  public void logout(){
+      final Dialog dialogr = new Dialog(getActivity());
+      dialogr.requestWindowFeature(Window.FEATURE_NO_TITLE);
+      dialogr.setContentView(R.layout.dialogo_mensaje);
+
+      Button btn_cancela = dialogr.findViewById(R.id.btn_cancelar);
+      Button btn_acepta =  dialogr.findViewById(R.id.btn_aceptar);
+      TextView txtMensaje = dialogr.findViewById(R.id.txtMensaje);
+      txtMensaje.setText("¿Desea cerrar Sesión?");
+
+      btn_cancela.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              dialogr.dismiss();
+          }
+      });
+
+      btn_acepta.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+
+              //Eliminamos los datos de la SharedPreferences
+              preferencesUser.edit().clear().apply();
+              dialogr.dismiss();
+              EliminarDBs();
+
+              Intent intent = new Intent(getActivity(),Login.class);
+              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+              startActivity(intent);
+
+          }
+      });
+      dialogr.show();
+  }
     private void EliminarDBs() {
 
         EequiposRoomDbRepository eequiposRoomDbRepository =  new EequiposRoomDbRepository(application);
@@ -296,7 +274,23 @@ public class FragmentInfo extends Fragment {
 
         OtrosTorneosRoomDBRepository otrosTorneosRoomDBRepository = new OtrosTorneosRoomDBRepository(application);
         otrosTorneosRoomDBRepository.deleteAllRetos();
+
+        MovimientosRoomDBRepository movimientosRoomDBRepository = new MovimientosRoomDBRepository(application);
+        movimientosRoomDBRepository.deleteAllEquipos();
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v.equals(misMovimientos)){
+
+            Intent i = new Intent(getContext(), MisMovimientos.class);
+            startActivity(i);
+        }else if (v.equals(logout)){
+            logout();
+        }else if (v.equals(realizarRecarga)){
+            Intent i = new Intent(getContext(), RealizarRecarga.class);
+            startActivity(i);
+        }
+    }
 }
