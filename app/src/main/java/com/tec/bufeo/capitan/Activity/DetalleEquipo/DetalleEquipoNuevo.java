@@ -11,12 +11,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Views.EstadisticasDeEquiposFragment;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Views.TorneoDequiposFragment;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos;
 import com.tec.bufeo.capitan.Activity.old.AgregarJugador;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
@@ -25,11 +28,12 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
     public TabLayout tabs_Dequipo;
     Button btn_retarDequipo,unirse_Dequipo;
     ImageView imagen_Dequipo;
+    TextView name_Equipex;
     public ViewPager container_Dequipo;
     private SectionsDetalleEquipoAdapter sectionsDetalleEquipoAdapter;
-    String equipo_id,equipo_nombre,equipo_foto,capitan_nombre;
+    String equipo_id,equipo_nombre,equipo_foto,capitan_nombre,capitan_id;
     UniversalImageLoader universalImageLoader;
-
+    Preferences preferences;
 
     FloatingActionButton fab_agregarParticipantesEquipo;
 
@@ -45,6 +49,7 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_equipo_nuevo);
 
+        preferences = new Preferences(this);
         universalImageLoader = new UniversalImageLoader(getApplicationContext());
 
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
@@ -56,13 +61,21 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         tabs_Dequipo =  findViewById(R.id.tabs_Dequipo);
         imagen_Dequipo =  findViewById(R.id.imagen_Dequipo);
         btn_retarDequipo =  findViewById(R.id.btn_retarDequipo);
-        unirse_Dequipo =  findViewById(R.id.unirse_Dequipo);
+        name_Equipex =  findViewById(R.id.name_Equipex);
         fab_agregarParticipantesEquipo = findViewById(R.id.fab_agregarParticipantesEquipo);
 
         equipo_id=getIntent().getExtras().getString("id_equipo");
         equipo_nombre=getIntent().getExtras().getString("nombre_equipo");
         equipo_foto=getIntent().getExtras().getString("foto_equipo");
         capitan_nombre=getIntent().getExtras().getString("capitan_equipo");
+        capitan_id=getIntent().getExtras().getString("capitan_id");
+
+        if (capitan_id.equals(preferences.getIdUsuarioPref())){
+            btn_retarDequipo.setVisibility(View.GONE);
+
+        }
+
+        name_Equipex.setText(equipo_nombre);
         for(int i=0;i<4;i++) {
             tabs_Dequipo.addTab(tabs_Dequipo.newTab().setText(tituloIds[i]) );
         }

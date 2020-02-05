@@ -134,6 +134,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
                 intent.putExtra("nombre_equipo", mequipos.getEquipo_nombre());
                 intent.putExtra("foto_equipo", mequipos.getEquipo_foto());
                 intent.putExtra("capitan_equipo", mequipos.getCapitan_nombre());
+                intent.putExtra("capitan_id", mequipos.getCapitan_id());
                 startActivity(intent);
             }
         });
@@ -156,6 +157,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
                     intent.putExtra("nombre_equipo", mequipos.getEquipo_nombre());
                     intent.putExtra("foto_equipo", mequipos.getEquipo_foto());
                     intent.putExtra("capitan_equipo", mequipos.getCapitan_nombre());
+                    intent.putExtra("capitan_id", mequipos.getCapitan_id());
                     startActivity(intent);
                 }else if (tipo.equals("civ_fotoEquipoRetar")){
 
@@ -164,6 +166,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
                     intent.putExtra("nombre_equipo", mequipos.getEquipo_nombre());
                     intent.putExtra("foto_equipo", mequipos.getEquipo_foto());
                     intent.putExtra("capitan_equipo", mequipos.getCapitan_nombre());
+                    intent.putExtra("capitan_id", mequipos.getCapitan_id());
                     startActivity(intent);
                 }if (tipo.equals("btn_retar")){
 

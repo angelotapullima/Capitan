@@ -341,10 +341,58 @@ class User{
         }
         return $okey;
     }
+    public function crear_chat($id_1,$id_2,$fecha){
+        try {
+            $sql = 'insert into chat(id_usuario_1,id_usuario_2,chat_fecha) values(?,?,?)';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([
+                $id_1,$id_2,$fecha
+            ]);
+            $result = 1;
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
+    public function listar_cuenta_por_id_user($id){
+        try{
+            $sql = 'select * from user u inner join cuenta c on u.id_user = c.id_user inner join person p on p.id_person=u.id_person where c.id_user = ? limit 1';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$id]);
+            $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_mensajes_por_chat($id_chat){
+        try {
+            $stm = $this->pdo->prepare("SELECT * from detalle_chat where chat_id=?");
+            $stm->execute([$id_chat]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
     public function listar_chats_por_id_usuario($id_usuario){
         try {
-            $stm = $this->pdo->prepare("SELECT chat_id,(SELECT us.user_nickname from user us where us.id_user = c.id_usuario_1) as usuario_1,(SELECT us.user_nickname from user us where us.id_user = c.id_usuario_2) as usuario_2,chat_fecha from chat c where c.id_usuario_1=? or c.id_usuario_2=?");
+            $stm = $this->pdo->prepare("SELECT chat_id,(SELECT us.user_nickname from user us where us.id_user = c.id_usuario_1) as usuario_1,(SELECT us.id_user from user us where us.id_user = c.id_usuario_1) as id_usuario_1,(SELECT us.user_nickname from user us where us.id_user = c.id_usuario_2) as usuario_2,(SELECT us.id_user from user us where us.id_user = c.id_usuario_2) as id_usuario_2,chat_fecha from chat c where c.id_usuario_1=? or c.id_usuario_2=?");
             $stm->execute([$id_usuario,$id_usuario]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_pagos_por_id_usuario($id_usuario){
+        try {
+            $stm = $this->pdo->prepare("SELECT * from pago p inner join transferencia_u_e tue on tue.id_pago=p.pago_id inner join equipo eq on eq.equipo_id=p.equipo_id where p.id_user=?");
+            $stm->execute([$id_usuario]);
             $result = $stm->fetchAll();
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);

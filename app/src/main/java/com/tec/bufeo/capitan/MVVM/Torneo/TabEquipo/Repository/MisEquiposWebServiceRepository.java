@@ -127,6 +127,7 @@ public class MisEquiposWebServiceRepository {
                 misequipos.setEquipo_nombre(jsonNode.optString("nombre"));
                 misequipos.setEquipo_foto(jsonNode.optString("foto"));
                 misequipos.setCapitan_nombre(jsonNode.optString("capitan"));
+                misequipos.setCapitan_id(jsonNode.optString("capitan_id"));
                 misequipos.setEstado_seleccion("0");
 
                 if (tipo.equals("mi_equipo")) {

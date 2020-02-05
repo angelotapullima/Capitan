@@ -24,6 +24,8 @@ public interface RetosDao {
     @Query("DELETE FROM Retos")
     void deleteAll();
 
+    @Query("SELECT * from Retos  ")
+    LiveData<List<Retos>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertRetos(List<Retos> resultModel);

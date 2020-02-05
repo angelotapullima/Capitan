@@ -11,6 +11,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tec.bufeo.capitan.Activity.RegistroUsuario.RegistroPaso1;
+import com.tec.bufeo.capitan.Activity.RegistroUsuario.RegistroUsuario;
 import com.tec.bufeo.capitan.Modelo.Usuario;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.WebService.DataConnection;
@@ -21,7 +23,6 @@ public class Login extends AppCompatActivity {
     EditText edt_usuario,edt_password;
     Button btn_login;
     TextView txt_resgistrate;
-    Switch swc_recordarClave;
 
     Usuario usuario;
     DataConnection dc;
@@ -38,14 +39,14 @@ public class Login extends AppCompatActivity {
         btn_login =  findViewById(R.id.btn_login);
         edt_password = findViewById(R.id.edt_password);
         txt_resgistrate = findViewById(R.id.txt_resgistrate);
-        swc_recordarClave = findViewById(R.id.swc_recordarClave);
+
 
 
 
         txt_resgistrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),RegistroUsuario.class);
+                Intent intent = new Intent(getApplicationContext(), RegistroPaso1.class);
                 startActivity(intent);
             }
         });

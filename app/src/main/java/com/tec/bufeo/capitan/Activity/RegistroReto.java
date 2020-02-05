@@ -1,7 +1,10 @@
 package com.tec.bufeo.capitan.Activity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -10,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,12 +41,17 @@ import com.tec.bufeo.capitan.Util.DateDialog;
 import com.tec.bufeo.capitan.Util.horaDialog;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -68,6 +77,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
     Preferences preferences;
     RetosViewModel retosViewModel;
     String capitan_id;
+    int cantidad_de_retos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +142,14 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
         });
 
 
+        retosViewModel.getAll().observe(this, new Observer<List<Retos>>() {
+            @Override
+            public void onChanged(List<Retos> retos) {
+                if (retos.size()>0){
+                    cantidad_de_retos = retos.size();
+                }
+            }
+        });
 
     }
 
@@ -206,20 +224,40 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private String twoDigits(int n) {
-        return (n<=9) ? ("0"+n) : String.valueOf(n);
-    }
 
-    private void showDatePickerDialog(final TextView editText) {
-        DateDialog.DatePickerFragment newFragment = DateDialog.DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+
+    int year,month,day; String dia,mes;
+    private void showDateDailog(final TextView editText) {
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
             @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                // +1 because january is zero
-                final String selectedDate =  year+ "-" + twoDigits(month+1) + "-" + twoDigits(day);
-                editText.setText(selectedDate);
+            public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDate) {
+
+                year = selectedYear;
+                month = selectedMonth;
+                day = selectedDate;
+
+
+                if (day<10){
+                    dia = CERO + String.valueOf(day);
+                }else{
+                    dia = String.valueOf(day);
+                }
+
+                if (month<10){
+                    month = month+1;
+                    mes = CERO + String.valueOf(month);
+                }else{
+                    month = month+1;
+                    mes = String.valueOf(month);
+                }
+                editText.setText(new StringBuilder().append(year).append("-").append(mes).append("-").append(dia));
+
             }
-        });
-        newFragment.show(this.getSupportFragmentManager(), "datePicker");
+        }, year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.show();
     }
 
     private  final String CERO = "0";
@@ -255,7 +293,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_fechaReto:
-                showDatePickerDialog(btn_fechaReto);
+                showDateDailog(btn_fechaReto);
                 break;
             case R.id.btn_horaReto:
                 obtenerHora(btn_horaReto);
@@ -267,6 +305,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
 
                     retos = new Retos();
+                    retos.setRetos_id(String.valueOf(cantidad_de_retos+1));
                     retos.setRetador_id(arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_id());
                     retos.setRetado_id(id_retado);
                     retos.setRetos_fecha(btn_fechaReto.getText().toString());
@@ -274,11 +313,6 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                     retos.setRetos_lugar(edt_lugarReto.getText().toString());
 
                     enviarReto(retos);
-                    //dc = new DataConnection(RegistroReto.this, "registrarReto", retos, true);
-
-
-
-                    crearChatReto(capitan_id,preferences.getIdUsuarioPref());
                     }
                 else {
                     Toast.makeText(getApplicationContext(), "Llene los campos", Toast.LENGTH_LONG).show();}
@@ -288,15 +322,49 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    List<Retos> retosList = new ArrayList<>();
+
+    String valor;
     StringRequest stringRequest;
     private void enviarReto(final Retos retos) {
+        dialogCarga();
         String url =IP2+"/api/Torneo/retar_equipo";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("registro reto: ",""+response);
 
-                retosViewModel.insertOneReto(retos);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray resultJSON = jsonObject.getJSONArray("results");
+
+                    int count = resultJSON.length();
+
+                    //for (int i = 0; i < count;i++){
+
+                        JSONObject jsonNode = resultJSON.getJSONObject(0);
+                        valor = jsonNode.optString("valor");
+                    //}
+
+
+                    if(valor.equals("1")){
+                        retosList.add(retos);
+                        retosViewModel.insertRetos(retosList);
+
+                        //crearChatReto(capitan_id,preferences.getIdUsuarioPref());
+                    }else if(valor.equals("3")){
+                        preferences.codeAdvertencia("Ya cuentas con un reto pendiente");
+                        dialog_cargando.dismiss();
+                    }else if(valor.equals("2")){
+                        preferences.toasRojo("Ocurrio un error","vuelva intentarlo más tarde");
+                        dialog_cargando.dismiss();
+                    }else{
+                        preferences.toasRojo("Ocurrio un error","vuelva intentarlo más tarde");
+                        dialog_cargando.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
 
@@ -307,6 +375,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
                 Log.i("RESPUESTA: ",""+error.toString());
+                dialog_cargando.dismiss();
 
             }
         })  {
@@ -333,12 +402,16 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
+
     public void crearChatReto(final String retado, final String retador){
-        String url =IP2+"/api/Usuario/crear_chat";
+        String url =IP2+"/api/User/crear_chat";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("crear chat: ",""+response);
+                dialog_cargando.dismiss();
+                preferences.toasVerde("Reto creado Correctamente");
+                finish();
 
             }
 
@@ -347,6 +420,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
                 Log.i("RESPUESTA: ",""+error.toString());
+                dialog_cargando.dismiss();
 
             }
         })  {
@@ -360,6 +434,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                 parametros.put("id_2",retador);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
+                Log.e("registro chat", "getParams: " +parametros );
                 return parametros;
 
             }
@@ -371,5 +446,16 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    Dialog dialog_cargando;
+    public void dialogCarga(){
+
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_cargando.setCancelable(true);
+        dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+
+        dialog_cargando.show();
+
+    }
 
 }

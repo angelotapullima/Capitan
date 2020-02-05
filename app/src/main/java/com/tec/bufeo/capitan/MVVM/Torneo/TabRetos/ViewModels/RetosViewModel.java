@@ -29,6 +29,11 @@ public class RetosViewModel extends AndroidViewModel {
         mAllRetos = retosRoomDBRepository.getAllRetos(respuesta_reto);
         return mAllRetos;
     }
+    public LiveData<List<Retos>> getAll() {
+
+        mAllRetos = retosRoomDBRepository.getAll();
+        return mAllRetos;
+    }
 
 
 
@@ -36,6 +41,9 @@ public class RetosViewModel extends AndroidViewModel {
         retosRoomDBRepository.inserOneReto(retos);
     }
 
+    public void insertRetos(List<Retos> retos){
+        retosRoomDBRepository.insertRetos(retos);
+    }
     public void  ElimarRetos (){
         retosRoomDBRepository.deleteAllRetos();
     }

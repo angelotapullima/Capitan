@@ -25,6 +25,11 @@ public class RetosRoomDBRepository {
          mAllRetosResulados = retosDao.getRetosResutado(id_reto);
          return mAllRetosResulados;
      }
+
+     public LiveData<List<Retos>> getAll (){
+         mAllRetos = retosDao.getAll();
+         return mAllRetos;
+     }
     public LiveData<List<Retos>> getAllRetos( String respuesta_reto) {
         boolean online = ForoFragment.isOnLine();
 

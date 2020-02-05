@@ -2,11 +2,13 @@
 require_once 'app/models/Torneo.php';
 require_once 'app/models/Empresa.php';
 require_once 'app/models/Foro.php';
+require_once 'app/models/User.php';
 class TorneoController{
     private $torneo;
     private $nav;
     private $foro;
     private $empresa;
+    private $user;
     private $crypt;
     private $clean;
     private $log;
@@ -15,6 +17,7 @@ class TorneoController{
         $this->torneo = new Torneo();
         $this->foro = new Foro();
         $this->empresa= new Empresa();
+        $this->user= new User();
         $this->crypt = new Crypt();
         $this->clean = new Clean();
         $this->log = new Log();
@@ -89,6 +92,8 @@ class TorneoController{
                     }
                 }
             }
+            $chats = $this->user->listar_chats_por_id_usuario($usuario_id);
+            $estadisticas = $this->torneo->listar_estadisticas();
             require _VIEW_PATH_ . 'header.php';
             require _VIEW_PATH_ . 'navbar.php';
             require _VIEW_PATH_ . 'torneo/index.php';
@@ -291,12 +296,26 @@ class TorneoController{
             if($id == 0){
                 throw new Exception('ID Sin Declarar');
             }
-            $saldo_Actual = $this->empresa->obtener_saldo_actual($this->crypt->decrypt($_SESSION['id_user'],_FULL_KEY_));
+            $id_user=$this->crypt->decrypt($_SESSION['id_user'],_FULL_KEY_);
+            $saldo_Actual = $this->empresa->obtener_saldo_actual($id_user);
             $equipo = $this->torneo->listar_equipo_por_id($id);
             $jugadores = $this->torneo->listar_detalle_equipo($id);
             $chanchas = $this->empresa->obtener_chanchas_disponibles_por_equipo($id);
-            $torneos = $this->torneo->listar_torneos_por_id_equipo($id);
-
+            $torneos = $this->torneo->listar_torneos_por_equipo($id);
+            $mis_retos = $this->torneo->listar_mis_retos($id_user);
+            foreach ($mis_retos as $m){
+                if($m->equipo_id_1 == null){
+                    $equipo___ = $this->torneo->listar_equipo_por_id($m->retador_id);
+                    $m->nombre_1 = $equipo___->equipo_nombre;
+                    $m->equipo_id_1 = $equipo___->equipo_id;
+                    $m->foto_1 = $equipo___->equipo_foto;
+                }elseif($m->equipo_id_2 == null){
+                    $equipo___ = $this->torneo->listar_equipo_por_id($m->retado_id);
+                    $m->nombre_2 = $equipo___->equipo_nombre;
+                    $m->equipo_id_2 = $equipo___->equipo_id;
+                    $m->foto_2 = $equipo___->equipo_foto;
+                }
+            }
             require _VIEW_PATH_ . 'header.php';
             require _VIEW_PATH_ . 'navbar.php';
             require _VIEW_PATH_ . 'torneo/ver_equipo.php';
@@ -824,6 +843,7 @@ class TorneoController{
                         $valor_2++;
                         $this->torneo->sumar_estadistica($retador_id,"retos_enviados",$valor_1);
                         $this->torneo->sumar_estadistica($retado_id,"retos_recibidos",$valor_2);
+                        $this->user->crear_chat($retador_id,$retado_id,date('Y-m-d H:i:s'));
                         if($datos->user_token!=""){
                             //$this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
                         }
@@ -1056,6 +1076,7 @@ class TorneoController{
                 $id_e2 = $equipo2->equipo_id;
                 $nombre_e2 = $equipo2->equipo_nombre;
                 $foto_e2 = $equipo2->equipo_foto;
+                $user_respuesta = $equipo2->usuario_id;
             }else{
                 $id_e2 = $model[$i]->equipo_id_2;
                 $nombre_e2 = $model[$i]->nombre_2;
@@ -1069,6 +1090,7 @@ class TorneoController{
                 "id_reto" => $model[$i]->reto_id,
                 "equipo_id_1" => $id_e1,
                 "equipo_id_2" => $id_e2,
+                "user_respuesta" => $user_respuesta,
                 "nombre_1" => $nombre_e1,
                 "nombre_2" => $nombre_e2,
                 "foto_1" => $foto_e1,

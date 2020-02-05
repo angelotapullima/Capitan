@@ -7,7 +7,7 @@ import retrofit2.http.POST;
 
 public interface MensajesAPIService {
     @FormUrlEncoded
-    @POST("api/Usuario/listar_mensajes_por_chat")
+    @POST("api/User/listar_mensajes_por_chat")
     Call<String> makeRequest(@Field("id_chat") String id,
                              @Field("app") String app,
                              @Field("token") String token);

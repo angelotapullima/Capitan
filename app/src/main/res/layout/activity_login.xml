@@ -179,15 +179,7 @@
                             android:textColor="@color/colorTextIcons"
                             android:textSize="18dp" />
 
-                        <Switch
-                            android:id="@+id/swc_recordarClave"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="No Recordar  "
-                            android:textSize="18sp"
-                            android:checked="false"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorTextIcons" />
+
                     </LinearLayout>
                 </LinearLayout>
 

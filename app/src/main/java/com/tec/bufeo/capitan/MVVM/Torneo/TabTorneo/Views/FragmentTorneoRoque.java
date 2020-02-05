@@ -37,7 +37,6 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
 
 
     Preferences preferences;
-    ImageButton imb_ver_equipofav, imb_agregar_torneo;
     RecyclerView rcv_mis_torneos, rcv_torneos;
     Activity activity;
     Context context;
@@ -82,7 +81,6 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
 
         rcv_mis_torneos = (RecyclerView) view.findViewById(R.id.rcv_mis_torneos);
         rcv_torneos = (RecyclerView) view.findViewById(R.id.rcv_torneos);
-        imb_agregar_torneo = (ImageButton) view.findViewById(R.id.imb_agregar_torneo);
         reg_torneo = (FloatingActionButton) view.findViewById(R.id.reg_torneo);
         swipeTorneos = (SwipeRefreshLayout) view.findViewById(R.id.swipeTorneos);
         swipeTorneos.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);

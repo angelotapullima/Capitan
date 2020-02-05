@@ -41,8 +41,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
     ArrayList<GroupItem> arraycanchasdisponiblesOriginal;
     ArrayList<HoraFecha> arrayHoraFecha;
     View view;
-    static ProgressBar progressBar;
-    static CardView cdv_mensaje;
+    LinearLayout layout_carga;
+    CardView cdv_mensaje;
     FragmentBuscar fragmentBuscar;
     SwipeRefreshLayout swipeRefreshLayout;
     Context context;
@@ -55,7 +55,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_buscar, container, false);
         context=getContext();
-        progressBar =  view.findViewById(R.id.progressbar);
+        layout_carga =  view.findViewById(R.id.layout_carga);
         cdv_mensaje =  view.findViewById(R.id.cdv_mensaje);
 
         swipeRefreshLayout =  view.findViewById(R.id.SwipeRefreshLayout);
@@ -130,7 +130,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
             adapter.setData(arraycanchasdisponiblesOriginal);
 
             listView.setAdapter(adapter);
-            progressBar.setVisibility(ProgressBar.INVISIBLE);
+            layout_carga.setVisibility(View.GONE);
 
             if (arraycanchasdisponiblesOriginal.size() > 0) {
                 cdv_mensaje.setVisibility(View.INVISIBLE);

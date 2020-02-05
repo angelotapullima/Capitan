@@ -1,6 +1,7 @@
 package com.tec.bufeo.capitan.Activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,6 +74,7 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
         startActivity(intent);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,8 +107,8 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
         cdv_mensaje = (CardView)findViewById(R.id.cdv_mensaje);
         context = this;
         activity =this;
-     //   rtb_valorar.setRating(0);
-        rtb_valoracion.setEnabled(false);
+        //rtb_valorar.setRating(4);
+        rtb_valoracion.setEnabled(true);
 
 
 
@@ -148,6 +151,10 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
 
                     btn_enviarV.setVisibility(View.VISIBLE);
                     btn_cancelarV.setVisibility(View.VISIBLE);
+                    Intent i = new Intent(DetalleNegocio.this,CalificarNegocios.class);
+                    i.putExtra("valor_rating",Float.toString (rtb_valorar.getRating()));
+                    startActivity(i);
+                //dialogCarga();
 
             }
         });
@@ -156,6 +163,17 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
 
     }
 
+    Dialog dialog_cargando;
+    public void dialogCarga(){
+
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_cargando.setCancelable(true);
+        dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+
+        dialog_cargando.show();
+
+    }
 
     public static class GetSaldo extends AsyncTask<Void,Void,Void> {
 
@@ -202,7 +220,8 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
                 break;
 
             case R.id.btn_enviarV:
-                dc = new DataConnection(DetalleNegocio.this, "valorarEmpresa", new Empresas(usuario_id, id_empresa,Float.toString (rtb_valorar.getRating())), true);
+                dc = new DataConnection(DetalleNegocio.this, "valorarEmpresa",
+                        new Empresas(usuario_id, id_empresa,Float.toString (rtb_valorar.getRating())), true);
 
                 break;
             case R.id.btn_cancelarV:
@@ -269,7 +288,7 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
                 progressbar.setVisibility(ProgressBar.INVISIBLE);
 
                 //Toast.makeText(getApplicationContext(),"fecha  "+fecha+"  "+"Hora  "+ hora,Toast.LENGTH_SHORT).show();
-                Toast.makeText(context,"V "+ arrayempresa.get(0).getEmpresas_valoracion(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context,"V "+ arrayempresa.get(0).getEmpresas_valoracion(), Toast.LENGTH_SHORT).show();
                 //int nun =09;
 
                 abl_detalleEmpresa.setVisibility(View.VISIBLE);
@@ -488,7 +507,11 @@ public class DetalleNegocio extends AppCompatActivity  implements View.OnClickLi
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_btn_reporte, menu);
+        if (tipo_usuario.equals("admin")){
+            getMenuInflater().inflate(R.menu.menu_btn_reporte, menu);
+            //menu.getItem(0).setVisible(false);
+        }
+
         return true;
     }
     @Override

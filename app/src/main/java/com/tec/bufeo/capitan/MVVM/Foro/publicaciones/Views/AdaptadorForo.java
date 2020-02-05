@@ -95,7 +95,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             btn_mas_contenido.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick("prueba2", feedTorneo, getAdapterPosition());
+                    listener.onItemClick("masContenido", feedTorneo, getAdapterPosition());
                     frame_mas_contenido.setVisibility(View.GONE);
                     progress_mas_contenido.setVisibility(View.VISIBLE);
 

@@ -16,7 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 
 import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.Activity.MisNegocios;
@@ -40,7 +40,7 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
     DataConnection dc;
     static DataConnection dc1;
     static RecyclerView rcv_empresas;
-    static ProgressBar progressBar;
+    static LinearLayout layout_carga;
     static CardView cdv_mensaje;
     Toolbar tlb_negocios;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -61,7 +61,7 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
 
         preferences= new Preferences(getActivity());
         rcv_empresas = (RecyclerView) view.findViewById(R.id.rcv_empresas);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
+        layout_carga = view.findViewById(R.id.layout_carga);
 
         cdv_mensaje = (CardView) view.findViewById(R.id.cdv_mensaje);
         mis_negocios = (ImageView) view.findViewById(R.id.mis_negocios);
@@ -122,7 +122,7 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            progressBar.setVisibility(ProgressBar.INVISIBLE);
+            layout_carga.setVisibility(View.INVISIBLE);
             swipeRefreshLayout.setRefreshing(false);
 
             //Toast.makeText(getActivity(),"Z "+arrayempresas.size(),Toast.LENGTH_SHORT).show();
@@ -162,7 +162,7 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar.setVisibility(ProgressBar.VISIBLE);
+            layout_carga.setVisibility(View.GONE);
         }
 
         @Override
@@ -193,7 +193,7 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
                 }
             });
 
-            progressBar.setVisibility(ProgressBar.INVISIBLE);
+            layout_carga.setVisibility(View.GONE);
 
             rcv_empresas.setAdapter(adaptadorEmpresas);
 

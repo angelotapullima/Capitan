@@ -26,24 +26,7 @@
                 android:layout_weight="1"
                 android:textColor="#000"
                 android:text="Duelos Pendientes"/>
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="4"
-                android:title="Ver más"
-                android:backgroundTint="@color/colorPrimary"
-                android:background="@drawable/eye_plus"
-                android:layout_gravity="center" />
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="4"
-                android:backgroundTint="@color/colorPrimary"
-                android:title="Agregar"
-                android:layout_gravity="center"
-                android:background="@drawable/plus_circle" />
+
         </LinearLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

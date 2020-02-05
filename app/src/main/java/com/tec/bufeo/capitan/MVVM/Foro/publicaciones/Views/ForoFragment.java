@@ -256,7 +256,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         adapter= new AdaptadorForo(getActivity(), new AdaptadorForo.OnItemClickListener() {
             @Override
             public void onItemClick(String dato, ModelFeed feedTorneo, int position) {
-                if (dato.equals("dato")){
+                if (dato.equals("masContenido")){
+                    Log.e("Mas contenido", "onItemClick: " );
                     feed();
                 }
             }

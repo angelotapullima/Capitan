@@ -19,7 +19,13 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name,android:allowBackup">
-        <activity android:name=".Activity.RealizarRecarga"></activity>
+        <activity android:name=".Activity.RegistroUsuario.RegistroPaso1"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".Activity.CalificarNegocios"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".Activity.RealizarRecarga" />
         <activity android:name=".Activity.MisMovimientos.Views.MisMovimientos" />
         <activity android:name=".Activity.RegistroReserva.ReservaEnBusqueda" />
         <activity android:name=".Activity.MisNegocios" />
@@ -67,9 +73,10 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activity.RegistroUsuario"
+            android:name=".Activity.RegistroUsuario.RegistroUsuario"
             android:configChanges="orientation|screenSize"
             android:label="Registro de Usuarios"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.RegistroNegocio"

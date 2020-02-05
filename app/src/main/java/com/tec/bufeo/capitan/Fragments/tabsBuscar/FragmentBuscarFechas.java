@@ -2,6 +2,7 @@ package com.tec.bufeo.capitan.Fragments.tabsBuscar;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,6 +24,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -58,7 +61,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
     RecyclerView recyclerBusquedaCancha;
     AdaptadorListaCanchasBusqueda adaptadorListaCanchasBusqueda;
     LinearLayout layoutNormal , layoutExpandable, layoutInfoHora,layoutInfoHoraExpandable;
-
+    RelativeLayout carga_Empresas;
 
     public FragmentBuscarFechas() {
         // Required empty public constructor
@@ -95,6 +98,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         infoHoraBusqueda = view.findViewById(R.id.infoHoraBusqueda);
         layoutInfoHora = view.findViewById(R.id.layoutInfoHora);
         layoutInfoHoraExpandable = view.findViewById(R.id.layoutInfoHoraExpandable);
+        carga_Empresas = view.findViewById(R.id.carga_Empresas);
 
         boolean online = ForoFragment.isOnLine();
 
@@ -165,68 +169,100 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
     }
 
-    private String twoDigits(int n) {
-        return (n<=9) ? ("0"+n) : String.valueOf(n);
+
+    String hours;
+
+    int year,month,day;
+    String dia,mes;
+    private void showDateDailog(final TextView editText) {
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDate) {
+
+                year = selectedYear;
+                month = selectedMonth;
+                day = selectedDate;
+
+                if (day<10){
+                    dia = CERO + String.valueOf(day);
+                }else{
+                    dia = String.valueOf(day);
+                }
+
+                if (month<10){
+                    month = month+1;
+                    mes = CERO + String.valueOf(month);
+                }else{
+                    month = month+1;
+                    mes = String.valueOf(month);
+                }
+                editText.setText(new StringBuilder().append(year).append("-").append(mes).append("-").append(dia));
+
+            }
+        }, year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.show();
     }
 
-    private void showDatePickerDialog(final TextView editText) {
-        DateDialog.DatePickerFragment newFragment = DateDialog.DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                // +1 because january is zero
-                final String selectedDate =  year+ "-" + twoDigits(month+1) + "-" + twoDigits(day);
-                editText.setText(selectedDate);
-            }
-        });
-        newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
-    }
-    String hours;
 
     @Override
     public void onClick(View v) {
         if (v.equals(fecha)){
-            showDatePickerDialog(fecha);
+            showDateDailog(fecha);
+           // showDatePickerDialog(fecha);
         }if (v.equals(btnHoraCancha)){
             obtenerHora(btnHoraCancha);
         }if (v.equals(buscar)){
-            Log.e("click buscar", "onClick: funciona" );
 
-             hours = btnHoraCancha.getText().toString();
-            if ((hours.equals("Todos"))){
-
-                Reserva e = new Reserva();
-                if (spn_empresas.getSelectedItem().toString().equals("Todos")){
-
-                    e.setCancha_nombre("Todos");
-                }else{
-                    e.setCancha_nombre(ArrayEmpresas.get(spn_empresas.getSelectedItemPosition()-1).getEmpresas_id());
-                }
-                e.setReserva_fecha(fecha.getText().toString());
-                e.setReserva_hora("Todos");
-
-
-                dc2 = new DataConnection(getActivity(),"listarCanchasDisponiblesBusqueda",e,false);
-                new GetCanchasDisponiblesBusqueda().execute();
-
+            dialogCarga();
+            if (fecha.getText().toString().isEmpty()){
+                preferences.codeAdvertencia("El campo fecha no debe estar vacio");
             }else{
 
+                    Log.e("click buscar", "onClick: funciona" );
 
-                Reserva e = new Reserva();
-                if (spn_empresas.getSelectedItem().toString().equals("Todos")){
-                    e.setCancha_nombre("Todos");
-                }else{
-                    e.setCancha_nombre(ArrayEmpresas.get(spn_empresas.getSelectedItemPosition()-1).getEmpresas_id());
-                }
+                    hours = btnHoraCancha.getText().toString();
+                    if ((hours.equals("Todos"))){
 
-                e.setReserva_fecha(fecha.getText().toString());
-                e.setReserva_hora(hours.substring(0,2));
-                //e.setReserva_hora(btnHoraCancha.getText().toString().substring(0,2));
+                        Reserva e = new Reserva();
+                        if (spn_empresas.getSelectedItem().toString().equals("Todos")){
+
+                            e.setCancha_nombre("Todos");
+                        }else{
+                            e.setCancha_nombre(ArrayEmpresas.get(spn_empresas.getSelectedItemPosition()-1).getEmpresas_id());
+                        }
+                        e.setReserva_fecha(fecha.getText().toString());
+                        e.setReserva_hora("Todos");
 
 
-                dc3 = new DataConnection(getActivity(),"listarCanchasDisponiblesBusqueda2",e,false);
-                new GetCanchasDisponiblesBusqueda2().execute();
+                        dc2 = new DataConnection(getActivity(),"listarCanchasDisponiblesBusqueda",e,false);
+                        new GetCanchasDisponiblesBusqueda().execute();
+
+                    }else{
+
+
+                        Reserva e = new Reserva();
+                        if (spn_empresas.getSelectedItem().toString().equals("Todos")){
+                            e.setCancha_nombre("Todos");
+                        }else{
+                            e.setCancha_nombre(ArrayEmpresas.get(spn_empresas.getSelectedItemPosition()-1).getEmpresas_id());
+                        }
+
+                        e.setReserva_fecha(fecha.getText().toString());
+                        e.setReserva_hora(hours.substring(0,2));
+                        //e.setReserva_hora(btnHoraCancha.getText().toString().substring(0,2));
+
+
+                        dc3 = new DataConnection(getActivity(),"listarCanchasDisponiblesBusqueda2",e,false);
+                        new GetCanchasDisponiblesBusqueda2().execute();
+                    }
+                    btnHoraCancha.setText("Todos");
+
+
             }
-            btnHoraCancha.setText("Todos");
+
         }
     }
     ArrayList<GroupItemBusqueda> arraycanchasdisponiblesbusqueda;
@@ -267,6 +303,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
             } else {
                 //cdv_mensaje.setVisibility(View.VISIBLE);
             }
+            dialog_cargando.dismiss();
             //Toast.makeText(getContext(),"S:" +arraycanchasdisponibles.size(),Toast.LENGTH_SHORT).show();
 
         }
@@ -293,7 +330,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
 
             recycler();
-
+            dialog_cargando.dismiss();
 
         }
     }
@@ -357,6 +394,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
             ArrayAdapter<String> adapEquipos = new ArrayAdapter<String>(context, R.layout.spiner_item, arrayEmpresaID);
             adapEquipos.setDropDownViewResource(R.layout.spiner_dropdown_item);
             spn_empresas.setAdapter(adapEquipos);
+            carga_Empresas.setVisibility(View.GONE);
 
         }
     }
@@ -519,4 +557,16 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
     }
 
+
+    Dialog dialog_cargando;
+    public void dialogCarga(){
+
+        dialog_cargando= new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_cargando.setCancelable(true);
+        dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+
+        dialog_cargando.show();
+
+    }
 }

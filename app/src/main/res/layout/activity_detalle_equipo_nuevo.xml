@@ -39,23 +39,27 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="match_parent">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Cacheros FC"
+                            android:id="@+id/name_Equipex"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical"
+                            android:textSize="18sp"
+                            android:textColor="#000"/>
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="left"
+                            android:layout_alignParentEnd="true"
                             android:id="@+id/btn_retarDequipo"
                             android:text="Retar"/>
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:gravity="end"
 
-                            android:id="@+id/unirse_Dequipo"
-                            android:layout_alignParentEnd="true"
-                            android:layout_height="wrap_content"
-                            android:text="unirse al Equipo"/>
                     </RelativeLayout>
 
 

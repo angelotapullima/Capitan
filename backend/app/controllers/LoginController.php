@@ -88,7 +88,7 @@ class LoginController{
                             "id_person" => $singin[0]->id_person,
                             "user_nickname" => $singin[0]->user_nickname,
                             "user_email" => $singin[0]->user_email,
-                            "user_image" => _SERVER_ . $singin[0]->user_image,
+                            "user_image" => $singin[0]->user_image,
                             "person_name" => $singin[0]->person_name,
                             "person_surname" => $singin[0]->person_surname,
                             "person_dni" => $singin[0]->person_dni,

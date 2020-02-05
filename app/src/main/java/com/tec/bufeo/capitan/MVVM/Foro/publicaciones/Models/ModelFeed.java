@@ -58,14 +58,9 @@ public class ModelFeed {
     @SerializedName("usuario_id")
     private String usuario_id;
 
-
-
-
-
     @ColumnInfo(name = "foro_feccha")
     @SerializedName("foro_feccha")
     private String foro_feccha;
-
 
     @ColumnInfo(name = "foro_conteo")
     @SerializedName("foro_conteo")
@@ -84,6 +79,9 @@ public class ModelFeed {
     @SerializedName("cant_Comentarios")
     private String cant_Comentarios;
 
+
+    //para confirmar si el usuario dio o no dio like
+    // 0 para el que no dio like y 1 para que el si lo dio
     @ColumnInfo(name = "dio_like")
     @SerializedName("dio_like")
     private String dio_like;
@@ -92,6 +90,8 @@ public class ModelFeed {
     @SerializedName("usuario_foto")
     private String usuario_foto;
 
+    //dato paea mostrar las nuevas publicaciones en primer lugar
+    //0 datos antiguos , 1 para datos nuevos al publicar
     @ColumnInfo(name = "orden")
     @SerializedName("orden")
     private String orden;
@@ -108,9 +108,7 @@ public class ModelFeed {
     @SerializedName("nuevos_datos")
     private String nuevos_datos;
 
-    @ColumnInfo(name = "vamos_puts")
-    @SerializedName("vamos_puts")
-    private String vamos_puts;
+
 
 
     @NonNull
@@ -274,11 +272,5 @@ public class ModelFeed {
         this.nuevos_datos = nuevos_datos;
     }
 
-    public String getVamos_puts() {
-        return vamos_puts;
-    }
 
-    public void setVamos_puts(String vamos_puts) {
-        this.vamos_puts = vamos_puts;
-    }
 }

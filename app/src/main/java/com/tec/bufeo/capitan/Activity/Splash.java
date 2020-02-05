@@ -1,6 +1,8 @@
 package com.tec.bufeo.capitan.Activity;
 
 import android.app.Application;
+
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +10,12 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposWebServiceRepository;
@@ -18,6 +23,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewMode
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,7 +45,28 @@ public class Splash extends AppCompatActivity {
 
         feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
-        cargarFeed();
+
+        feedListViewModel.getAllPosts().observe(this, new Observer<List<ModelFeed>>() {
+            @Override
+            public void onChanged(List<ModelFeed> modelFeeds) {
+                if (modelFeeds.size()>0){
+
+                    limite_sup = modelFeeds.get(modelFeeds.size()-1).getLimite_sup();
+                    limite_inf = modelFeeds.get(modelFeeds.size()-1).getLimite_inf();
+
+                    //Toast.makeText(getContext(), "sup: " + limite_sup + " inf: " + limite_inf, Toast.LENGTH_SHORT).show();
+                }else{
+                    limite_sup= "0";
+                    limite_inf= "0";
+                }
+
+                preferences.saveValuePORT("lim_sup",limite_sup);
+                preferences.saveValuePORT("lim_inf",limite_inf);
+
+                cargarFeed();
+            }
+        });
+
         cargarEquipos();
         Tarea tarea = new Tarea();
         tarea.execute();
@@ -98,10 +125,12 @@ public class Splash extends AppCompatActivity {
         }
     }
 
+    String limite_sup,limite_inf;
     Application application;
     public void cargarFeed(){
+        Log.e("feed", "cargarFeed: " +limite_inf + " - " + limite_sup );
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0","0",preferences.getToken());
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),limite_sup,limite_inf,"0",preferences.getToken());
     }
     public void cargarEquipos(){
         MisEquiposWebServiceRepository misEquiposWebServiceRepository =  new MisEquiposWebServiceRepository(application);

@@ -73,7 +73,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
         preferences = new Preferences(this);
 
         preferencesUser = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Toast.makeText(getApplicationContext(),"p "+preferencesUser.getString("posicion",""),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"p "+preferencesUser.getString("posicion",""),Toast.LENGTH_SHORT).show();
         if(preferencesUser.getString("idusuario", "").equals("")){
             usuario_nombre = getIntent().getStringExtra("usuario_nombre");
             usuario_id = preferences.getIdUsuarioPref();

@@ -188,6 +188,17 @@ class Empresa{
         }
         return $result;
     }
+    public function existe_reserva($id_cancha,$fecha,$hora){
+        try {
+            $stm = $this->pdo->prepare("SELECT * from reserva where cancha_id=? and reserva_fecha=? and reserva_hora=?");
+            $stm->execute([$id_cancha,$fecha,$hora]);
+            $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
     public function estadisticas_por_empresa($fecha_i,$fecha_f,$id_empresa){
         try {
             $stm = $this->pdo->prepare("SELECT * FROM reserva r inner join cancha c on r.cancha_id=c.cancha_id inner join empresa e on e.empresa_id=c.empresa_id where r.reserva_fecha between ? and ? and e.empresa_id = ?");

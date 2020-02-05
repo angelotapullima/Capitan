@@ -270,6 +270,55 @@ class UserController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+    public function listar_pagos_por_id_usuario(){
+        try{
+            $id_usuario = $_POST['id_user'];
+            $model = $this->user->listar_pagos_por_id_usuario($id_usuario);
+            $resources=array();
+            for ($i=0;$i<count($model);$i++) {
+                $fecha = $this->validate->get_date_nominal($model[$i]->pago_date,"DateTime","DateTime","es");
+                $resources[$i] = array(
+                    "concepto" => $model[$i]->transferencia_u_e_concepto,
+                    "monto" => $model[$i]->pago_total,
+                    "fecha" => $fecha
+                );
+            }
+        }catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General Error";
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function crear_chat() {
+        try{
+            $ok_data = true;
+            if(isset($_POST['id_1']) && isset($_POST['retado'])){
+                $_POST['id_1'] = $this->clean->clean_post_int($_POST['id_1']);
+                $_POST['id_2'] = $this->clean->clean_post_int($_POST['id_2']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['id_1'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_int($_POST['id_2'], true, $ok_data, 11);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $id_1 = $_POST['id_1'];
+                $id_2 = $_POST['id_2'];
+                $fecha = date('Y-m-d H:i:s');
+                $result = $this->user->crear_chat($id_1,$id_2,$fecha);
+                $resources = array();
+            }else{
+                $result=6;
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        $resources[0] = array("valor"=>$result);
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
     public function listar_ciudades(){
         try{
             $model = $this->user->listar_ciudades();
