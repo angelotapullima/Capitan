@@ -10,15 +10,17 @@ public class DetalleEstadisticasEmpresa {
     private String reserva_pago1;
     private String cancha_nombre;
     private String monto_cancha;
+    private String reserva_tipopago;
     private List<DetalleEstadisticasEmpresa> detalleEstadisticasEmpresas;
 
 
-    public DetalleEstadisticasEmpresa(String reserva_nombre, String reserva_hora, String reserva_pago1,String cancha_nombre) {
+    public DetalleEstadisticasEmpresa(String reserva_nombre, String reserva_hora, String reserva_pago1,String cancha_nombre,String reserva_tipopago) {
 
         this.reserva_nombre = reserva_nombre;
         this.reserva_hora = reserva_hora;
         this.reserva_pago1 = reserva_pago1;
         this.cancha_nombre = cancha_nombre;
+        this.reserva_tipopago = reserva_tipopago;
     }
 
     public DetalleEstadisticasEmpresa(String monto_cancha, String cancha_nombre, List<DetalleEstadisticasEmpresa> detalleEstadisticasEmpresas) {
@@ -81,5 +83,13 @@ public class DetalleEstadisticasEmpresa {
 
     public void setCancha_nombre(String cancha_nombre) {
         this.cancha_nombre = cancha_nombre;
+    }
+
+    public String getReserva_tipopago() {
+        return reserva_tipopago;
+    }
+
+    public void setReserva_tipopago(String reserva_tipopago) {
+        this.reserva_tipopago = reserva_tipopago;
     }
 }

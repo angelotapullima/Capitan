@@ -28,7 +28,7 @@ public class AdapterDetalleEstadisticasEmpresa extends RecyclerView.Adapter<Adap
     }
 
     class DetalleEstadisticasViewHolder extends RecyclerView.ViewHolder {
-        private TextView hora_detalle,nombre_detalle,monto_detalle;
+        private TextView hora_detalle,nombre_detalle,monto_detalle,origen_tipo_pago;
 
 
         private DetalleEstadisticasViewHolder(View itemView) {
@@ -38,6 +38,7 @@ public class AdapterDetalleEstadisticasEmpresa extends RecyclerView.Adapter<Adap
             monto_detalle =  itemView.findViewById(R.id.monto_detalle);
             hora_detalle =  itemView.findViewById(R.id.hora_detalle);
             nombre_detalle =  itemView.findViewById(R.id.nombre_detalle);
+            origen_tipo_pago =  itemView.findViewById(R.id.origen_tipo_pago);
 
 
 
@@ -64,6 +65,13 @@ public class AdapterDetalleEstadisticasEmpresa extends RecyclerView.Adapter<Adap
             holder.nombre_detalle.setText(detalleColaboraciones.getReserva_nombre());
             holder.hora_detalle.setText(detalleColaboraciones.getReserva_hora());
             holder.monto_detalle.setText(detalleColaboraciones.getReserva_pago1());
+
+            if (detalleColaboraciones.getReserva_tipopago().equals("0")){
+                holder.origen_tipo_pago.setText("Local");
+            }else{
+                holder.origen_tipo_pago.setText("App");
+            }
+
         }
 
 

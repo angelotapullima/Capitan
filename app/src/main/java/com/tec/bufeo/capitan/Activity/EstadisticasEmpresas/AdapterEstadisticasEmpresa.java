@@ -39,7 +39,7 @@ public class AdapterEstadisticasEmpresa extends RecyclerView.Adapter<AdapterEsta
     }
 
     class EstadisticasViewHolder extends RecyclerView.ViewHolder {
-        private TextView fecha,monto_fecha;
+        private TextView fecha,monto_fecha,total_por_app,monto_total_por_app,total_por_local,monto_total_por_local;
         private RecyclerView rcv_item_estadistica;
         private View Viewfecha,ViewfechaAbajo;
         private LinearLayout layout_monto_fecha;
@@ -51,6 +51,12 @@ public class AdapterEstadisticasEmpresa extends RecyclerView.Adapter<AdapterEsta
             super(itemView);
             fecha =  itemView.findViewById(R.id.fecha);
             monto_fecha =  itemView.findViewById(R.id.monto_fecha);
+            total_por_app =  itemView.findViewById(R.id.total_por_app);
+            monto_total_por_app =  itemView.findViewById(R.id.monto_total_por_app);
+            total_por_local =  itemView.findViewById(R.id.total_por_local);
+            monto_total_por_local =  itemView.findViewById(R.id.monto_total_por_local);
+
+
             Viewfecha =  itemView.findViewById(R.id.Viewfecha);
             ViewfechaAbajo =  itemView.findViewById(R.id.ViewfechaAbajo);
             rcv_item_estadistica =  itemView.findViewById(R.id.rcv_item_estadistica);
@@ -87,6 +93,8 @@ public class AdapterEstadisticasEmpresa extends RecyclerView.Adapter<AdapterEsta
             holder.monto_fecha.setText(tablaTorneoItem.getMontoFinal());
             holder.setIsRecyclable(false);
 
+            int cantidad0=0,cantidad1=0;
+            double monto0 = 0,montex0 = 0,monto1 = 0 ,montex1 =0;
 
 
             listaSubItems.clear();
@@ -106,6 +114,37 @@ public class AdapterEstadisticasEmpresa extends RecyclerView.Adapter<AdapterEsta
 
 
             }
+
+             for (int a =0;a<tablaTorneoItems.get(position).getEstadisticaSubItems().size();a++){
+
+                if (tablaTorneoItem.getEstadisticaSubItems().get(a).getReserva_tipopago().equals("0")){
+                    cantidad0 = cantidad0 +1;
+                    montex0 = Double.parseDouble(tablaTorneoItems.get(position).getEstadisticaSubItems().get(a).getReserva_pago1());
+                    monto0 = monto0 + montex0;
+                }else{
+                    cantidad1 = cantidad1 +1;
+                    montex1 = Double.parseDouble(tablaTorneoItems.get(position).getEstadisticaSubItems().get(a).getReserva_pago1());
+                    monto1 = monto1 + montex1;
+                }
+
+            }
+
+             if (cantidad1 ==1){
+                 holder.total_por_app.setText("Total por App (" + cantidad1+" reserva )");
+             }else{
+                 holder.total_por_app.setText("Total por App (" + cantidad1+" reservas )");
+             }
+
+            if (cantidad0 ==1){
+                holder.total_por_local.setText("Total por Local (" + cantidad0+" reserva )");
+            }else{
+                holder.total_por_local.setText("Total por Local (" + cantidad0+" reservas )");
+            }
+
+
+
+            holder.monto_total_por_app.setText(String.valueOf(monto1));
+            holder.monto_total_por_local.setText(String.valueOf(monto0));
 
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(
@@ -184,17 +223,18 @@ public class AdapterEstadisticasEmpresa extends RecyclerView.Adapter<AdapterEsta
 
 
 
-                String monto,hora,reserva,cancha;
+                String monto,hora,reserva,cancha,reserva_tipopago;
 
                 monto = lista.get(i).getReserva_pago1();
                 hora = lista.get(i).getReserva_hora();
                 reserva = lista.get(i).getReserva_nombre();
                 cancha = lista.get(i).getCancha_nombre();
+                reserva_tipopago = lista.get(i).getReserva_tipopago();
 
                 if (dato.equals(cancha)){
 
 
-                    detalleEstadisticasEmpresa = new DetalleEstadisticasEmpresa(reserva,hora,monto,cancha);
+                    detalleEstadisticasEmpresa = new DetalleEstadisticasEmpresa(reserva,hora,monto,cancha,reserva_tipopago);
                     subItemList.add(detalleEstadisticasEmpresa);
                 }
 

@@ -42,6 +42,7 @@ public class AdapterEstadisticaSubItem extends RecyclerView.Adapter<AdapterEstad
 
             super(itemView);
             cancha =  itemView.findViewById(R.id.cancha);
+
             layout_cancha =  itemView.findViewById(R.id.layout_cancha);
             monto_cancha =  itemView.findViewById(R.id.monto_cancha);
             ViewCancha =  itemView.findViewById(R.id.ViewCancha);
@@ -71,11 +72,34 @@ public class AdapterEstadisticaSubItem extends RecyclerView.Adapter<AdapterEstad
 
         DetalleEstadisticasEmpresa tablaTorneoItem = tablaTorneoItems.get(position);
 
+       /* int cantidad0=0,cantidad1=0;
+        double monto0 = 0,montex0 = 0,monto1 = 0 ,montex1 =0;*/
+
         if (tablaTorneoItems.get(position).getDetalleEstadisticasEmpresas().size()>0){
-            holder.cancha.setText(tablaTorneoItems.get(position).getCancha_nombre());
-            holder.monto_cancha.setText(tablaTorneoItems.get(position).getMonto_cancha());
+
             holder.setIsRecyclable(false);
 
+            /*for (int i =0;i<tablaTorneoItems.get(position).getDetalleEstadisticasEmpresas().size();i++){
+
+                if (tablaTorneoItem.getDetalleEstadisticasEmpresas().get(i).getReserva_tipopago().equals("0")){
+                    cantidad0 = cantidad0 +1;
+                    montex0 = Double.parseDouble(tablaTorneoItems.get(position).getDetalleEstadisticasEmpresas().get(i).getReserva_pago1());
+                    monto0 = monto0 + montex0;
+                }else{
+                    cantidad1 = cantidad1 +1;
+                    montex1 = Double.parseDouble(tablaTorneoItems.get(position).getDetalleEstadisticasEmpresas().get(i).getReserva_pago1());
+                    monto1 = monto1 + montex1;
+                }
+
+            }
+
+            holder.total_por_app.setText("Total por App (" + cantidad1+" reservas )");
+            holder.total_por_local.setText("Total por Local (" + cantidad0+" reservas )");
+
+            holder.monto_total_por_app.setText(String.valueOf(monto1));
+            holder.monto_total_por_local.setText(String.valueOf(monto0));*/
+            holder.cancha.setText(tablaTorneoItems.get(position).getCancha_nombre());
+            holder.monto_cancha.setText(tablaTorneoItems.get(position).getMonto_cancha());
         /*holder.nombre_chancha.setText(tablaTorneoItem.getColaboracion_nombre());
         holder.equipo_chancha.setText(tablaTorneoItem.getEquipo_nombre());
         holder.fecha_chancha.setText(tablaTorneoItem.getColaboracion_date());

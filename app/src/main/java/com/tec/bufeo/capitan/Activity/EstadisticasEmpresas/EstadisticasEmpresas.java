@@ -47,7 +47,7 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
 
     RecyclerView rcv_estadisticas_empresa;
     Preferences preferences;
-    TextView f_inicio,f_final;
+    TextView f_inicio,f_final,monto_totalex;
     Button btn_buscar_estadisticas;
 
     @Override
@@ -59,6 +59,7 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
         rcv_estadisticas_empresa= findViewById(R.id.rcv_estadisticas_empresa);
         f_inicio= findViewById(R.id.f_inicio);
         f_final= findViewById(R.id.f_final);
+        monto_totalex= findViewById(R.id.monto_totalex);
         btn_buscar_estadisticas= findViewById(R.id.btn_buscar_estadisticas);
 
         f_inicio.setOnClickListener(this);
@@ -103,6 +104,7 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
                 Log.d("estadisticas_empresa ",""+response);
 
 
+                double monto_total =0;
 
                 try {
                     jsonObject = new JSONObject(response);
@@ -156,8 +158,11 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
 
                         date = sumarRestarHorasFecha(date,1);
                         fecha = formate.format(date);
+                        monto_total = monto_total + monto_final;
+
 
                     }
+                    monto_totalex.setText(String.valueOf(monto_total));
 
                     GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
                     linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
@@ -219,15 +224,16 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
             try {
                 jsonNode2 = array.getJSONObject(i);
 
-                String monto,hora,reserva,cancha;
+                String monto,hora,reserva,cancha,reserva_tipopago;
 
                 monto = jsonNode2.optString("reserva_pago1");
                 hora = jsonNode2.optString("reserva_hora");
                 reserva = jsonNode2.optString("reserva_nombre");
                 cancha = jsonNode2.optString("cancha_nombre");
+                reserva_tipopago = jsonNode2.optString("reserva_tipopago");
 
 
-                detalleEstadisticasEmpresa = new DetalleEstadisticasEmpresa(reserva,hora,monto,cancha);
+                detalleEstadisticasEmpresa = new DetalleEstadisticasEmpresa(reserva,hora,monto,cancha,reserva_tipopago);
                 subItemList.add(detalleEstadisticasEmpresa);
 
                 canchas.add(cancha);

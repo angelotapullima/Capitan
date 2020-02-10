@@ -10,7 +10,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -19,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:id="@+id/hora_detalle"
                 android:text="HORA"/>
 
@@ -31,7 +31,7 @@
             android:background="#000"/>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -39,10 +39,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:id="@+id/nombre_detalle"
                 android:text="RESERVA"/>
         </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#000"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:id="@+id/origen_tipo_pago"
+                android:text="RESERVA"/>
+        </LinearLayout>
+
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -62,4 +82,10 @@
                 android:text="MONTO"/>
         </LinearLayout>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D1CDCD"/>
+
+
 </LinearLayout>
