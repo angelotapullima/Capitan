@@ -491,7 +491,7 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
 
 
         nombre_empresa_dialog.setText(nombre_empresa);
-        fecha_dialog.setText(fecha_actual);
+        fecha_dialog.setText(fecha_actual_mas_uno_insert);
         nombre_cancha_dialog.setText(cancha_nombre);
         hora_reserva_dialog.setText(hora_reserva);
         precio_cancha_dialog.setText(precio_cancha);
@@ -652,7 +652,7 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
                 parametros.put("pago1",String.valueOf(monto));
                 parametros.put("tipopago",tipopago);
                 parametros.put("estado",estado);
-                parametros.put("fecha",fecha_actual);
+                parametros.put("fecha",fecha_actual_mas_uno_insert);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
                 Log.e("parametros", "parametros: "+parametros.toString() );

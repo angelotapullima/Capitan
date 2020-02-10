@@ -151,7 +151,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
         if (view.equals(camara)){
             selectImage();
         }if (view.equals(btn_fechaTorneo)){
-            showDatePickerDialog(btn_fechaTorneo);
+            showDateDailog(btn_fechaTorneo);
 
         }if (view.equals(btn_horaTorneo)){
             obtenerHora(btn_horaTorneo);
@@ -583,21 +583,41 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private String twoDigits(int n) {
-        return (n<=9) ? ("0"+n) : String.valueOf(n);
+
+    int year,month,day; String dia,mes;
+    private void showDateDailog(final TextView textView) {
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDate) {
+
+                year = selectedYear;
+                month = selectedMonth;
+                day = selectedDate;
+
+
+                if (day<10){
+                    dia = CERO + String.valueOf(day);
+                }else{
+                    dia = String.valueOf(day);
+                }
+
+                if (month<10){
+                    month = month+1;
+                    mes = CERO + String.valueOf(month);
+                }else{
+                    month = month+1;
+                    mes = String.valueOf(month);
+                }
+                textView.setText(new StringBuilder().append(year).append("-").append(mes).append("-").append(dia));
+
+            }
+        }, year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.show();
     }
 
-    private void showDatePickerDialog(final TextView editText) {
-        DateDialog.DatePickerFragment newFragment = DateDialog.DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                // +1 because january is zero
-                final String selectedDate =  year+ "-" + twoDigits(month+1) + "-" + twoDigits(day);
-                editText.setText(selectedDate);
-            }
-        });
-        newFragment.show(this.getSupportFragmentManager(), "datePicker");
-    }
 
 
     android.app.AlertDialog dialog_carga;

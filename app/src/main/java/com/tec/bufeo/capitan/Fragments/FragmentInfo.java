@@ -27,6 +27,7 @@ import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Reposito
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.ViewModels.TequiposViewModel;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Repository.FeedTorneoRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.FeedTorneoListViewModel;
+import com.tec.bufeo.capitan.Activity.EstadisticasEmpresas.EstadisticasEmpresas;
 import com.tec.bufeo.capitan.Activity.Login;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Repository.MovimientosRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.ViewModels.MovimientosViewModel;
@@ -51,6 +52,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Repository.MensajesRoomD
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.ViewModels.MensajesViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Repository.ChatsRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.ViewModels.ChatsListViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Models.Estadisticas;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Repository.EstadisticasRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.ViewModels.EstadisticasViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposRoomDBRepository;
@@ -77,7 +79,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
   ProgressBar prog_imagenloading;
   SharedPreferences preferencesUser;
 
-  LinearLayout misMovimientos,logout,realizarRecarga;
+  LinearLayout misMovimientos,logout,realizarRecarga,bufis;
 
 
   EequiposViewModel eequiposViewModel;
@@ -151,6 +153,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         misMovimientos = view.findViewById(R.id.misMovimientos);
         realizarRecarga = view.findViewById(R.id.realizarRecarga);
         logout = view.findViewById(R.id.logout);
+        bufis = view.findViewById(R.id.bufis);
 
 
 
@@ -183,6 +186,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         misMovimientos.setOnClickListener(this);
         realizarRecarga.setOnClickListener(this);
         logout.setOnClickListener(this);
+        bufis.setOnClickListener(this);
         return view;
     }
 
@@ -290,6 +294,9 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
             logout();
         }else if (v.equals(realizarRecarga)){
             Intent i = new Intent(getContext(), RealizarRecarga.class);
+            startActivity(i);
+        }else if (v.equals(bufis)){
+            Intent i = new Intent(getContext(), EstadisticasEmpresas.class);
             startActivity(i);
         }
     }
