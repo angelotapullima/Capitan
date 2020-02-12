@@ -49,9 +49,7 @@ import java.util.UUID;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_foto;
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
 import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
@@ -68,7 +66,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
     String userChoosenTask,opcionCarpeta;
     public Uri output,resultUriRecortada;
     private int REQUEST_CAMERA = 0,  SELET_GALERRY = 9;
-    ProgressBar prog_imagenloading;
+
     Preferences preferences;
 
     @Override
@@ -77,7 +75,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_detalle_foto_usuario);
         preferences= new Preferences(this);
         img_iconoPerfil = findViewById(R.id.img_iconoPerfil) ;
-        prog_imagenloading = findViewById(R.id.prog_imagenloading);
+
         //Picasso.with(getApplicationContext()).load("http://"+IP+"/"+usuario_foto).into(img_iconoPerfil);
         /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);
@@ -86,16 +84,16 @@ public class DetalleFotoUsuario extends AppCompatActivity {
         activity = DetalleFotoUsuario.this;
         context = getApplicationContext();
 
-       Picasso.with(getApplicationContext()).load(IP + "/" + usuario_foto).error(R.drawable.error).fit().into(img_iconoPerfil, new Callback() {
+       Picasso.with(getApplicationContext()).load(IP2 + "/" + preferences.getFotoUsuario()).error(R.drawable.error).fit().into(img_iconoPerfil, new Callback() {
 
             @Override
             public void onSuccess() {
-                prog_imagenloading.setVisibility(View.GONE);
+
             }
 
             @Override
             public void onError() {
-                prog_imagenloading.setVisibility(View.GONE);
+
             }
 
         });
@@ -143,7 +141,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
                     File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/",carpetacChild);
                     carpetas.mkdirs();
 
-                    String aleatorio = usuario_id+"_"+new Double(Math.random() * 100).intValue();
+                    String aleatorio = preferences.getIdUsuarioPref()+"_"+new Double(Math.random() * 100).intValue();
 
                     String nombre = aleatorio +".jpg";
 
@@ -240,82 +238,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
 
                 uploadMultipart();
 
-                /*RequestParams params1 = new RequestParams();
 
-                try {
-                    File imagen  = new File(resultUriRecortada.getPath());
-                    params1.put("imagen", imagen);
-                    params1.put("usuario_id",usuario_id );
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                AsyncHttpClient client = new AsyncHttpClient();
-                client.setTimeout(200000);
-
-
-                client.post("http://www.guabba.com/capitan/index.php?c="+controlador+"&a="+accion+"&key_mobile=123456asdfgh", params1, new AsyncHttpResponseHandler() {
-
-                    ProgressDialog loading;
-                    String str=null;
-                    String ruta = "http://"+IP+"/";
-
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                        loading = new ProgressDialog(activity);
-                        loading.setTitle("Capitan");
-                        loading.setMessage("Por favor espere...");
-                        loading.setIndeterminate(false);
-                        loading.setCancelable(false);
-                        loading.show();
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        if (statusCode == 200){
-
-                            try {
-                                str = new String(responseBody, "UTF-8");
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-
-                            ruta = ruta+str.substring(1,str.length()-1);
-                            Toast.makeText(context,"Actualizado correctamente"+"-"+ruta, Toast.LENGTH_LONG).show();
-
-
-                            if(opcionCarpeta.equals("Perfil")){
-
-                                prog_imagenloading.setVisibility(View.VISIBLE);
-
-                                Picasso.with(context).load(ruta).memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.error).into(img_iconoPerfil,new Callback() {
-
-                                    @Override
-                                    public void onSuccess() {
-                                        prog_imagenloading.setVisibility(View.GONE);
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        prog_imagenloading.setVisibility(View.GONE);
-                                    }
-                                });
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Toast.makeText(context,"Error al registrar", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        loading.dismiss();
-                    }
-                });*/
 
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -342,7 +265,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
     }
 
 
-    String url = IP+"/index.php?c=Usuario&a=actualizar_perfil&key_mobile=123456asdfgh";
+    String url = IP2+"/index.php?c=Usuario&a=actualizar_perfil&key_mobile=123456asdfgh";
     String path;
 
     public void uploadMultipart() {
@@ -357,7 +280,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
             //Creating a multi part request
             new MultipartUploadRequest(context, uploadId, url)
                     .addFileToUpload(path, "imagen") //Adding file
-                    .addParameter("usuario_id", usuario_id) //Adding text parameter to the request
+                    .addParameter("usuario_id", preferences.getIdUsuarioPref()) //Adding text parameter to the request
 
                     .setNotificationConfig(getNotificationConfig(uploadId,R.string.cargando))
                     .setMaxRetries(2)
@@ -365,7 +288,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
                         @Override
                         public void onProgress(Context context, UploadInfo uploadInfo) {
 
-                            prog_imagenloading.setVisibility(View.VISIBLE);
+
                         }
 
                         @Override
@@ -376,7 +299,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
                         @Override
                         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
-                            String ruta = IP+"/";
+                            String ruta = IP2+"/";
 
                             final String str = serverResponse.getBodyAsString();
                             ruta = ruta+str.substring(1,str.length()-1);
@@ -387,7 +310,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
 
                                 @Override
                                 public void onSuccess() {
-                                    prog_imagenloading.setVisibility(View.GONE);
+
 
 
                                     preferences.saveValuePORT("usuario_foto",str.substring(1,str.length()-1));
@@ -397,7 +320,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
 
                                 @Override
                                 public void onError() {
-                                    prog_imagenloading.setVisibility(View.GONE);
+
                                 }
                             });
                         }

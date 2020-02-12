@@ -99,9 +99,9 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
             if (edt_Usuario.getText().toString().isEmpty()){
                 preferences.codeAdvertencia("El campo Usuario no puede estar vacio");
             }else if(edt_clave.getText().toString().equals(edt_confirmarClave.getText().toString())){
-                preferences.codeAdvertencia("las contraseñas no son iguales");
-            }else{
                 CrarUsuario();
+            }else{
+                preferences.codeAdvertencia("las contraseñas no son iguales");
             }
 
         } else if (v.equals(back_paso1)) {

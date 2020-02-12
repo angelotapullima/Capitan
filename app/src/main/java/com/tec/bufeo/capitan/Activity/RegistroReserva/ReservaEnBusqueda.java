@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
@@ -57,8 +58,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     LinearLayout l_todo;
     Spinner spn_equipex_busqueda;
     TextView total_cancha_todo,pago_total_todo,comision_todo;
-    EditText pago1_todo;
-    double comision_todo_dato = 3,monto_todo;
+    double comision_todo_dato = 3;
 
 
     //chancha
@@ -84,7 +84,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     ArrayList<String> arrayEquipo_busqueda,arrayCanchaBusqueda;
     ArrayList<Mequipos> ListEquipos_busqueda = new ArrayList<>();
 
-    double total_busqueda ,precio_cancha_busqueda;
+    double total_busqueda ;
     ArrayList<String> saldo;
     String saldo_cargado;
 
@@ -118,7 +118,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
         comision_todo  = findViewById(R.id.comision_todo);
         pago_total_todo  = findViewById(R.id.pago_total_todo);
-        pago1_todo = findViewById(R.id.pago1_todo);
+        //pago1_todo = findViewById(R.id.pago1_todo);
         total_cancha_todo  = findViewById(R.id.total_cancha_todo);
         saldo_bufis_busqueda  = findViewById(R.id.saldo_bufis_busqueda);
 
@@ -200,7 +200,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
         btn_reservar_busqueda.setOnClickListener(this);
 
-        pago_total_todo.setText(String.valueOf(Double.parseDouble(pago1_todo.getText().toString()) + comision_todo_dato));
+
     }
 
     @Override
@@ -209,30 +209,38 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
         if (v.equals(btn_reservar_busqueda)){
 
-            String pagox =pago1_todo.getText().toString();
-            if (!pagox.equals("0")){
+
+
                 if (spn_tipo_pago_busqueda.getSelectedItem().toString().equals("Seleccionar")){
 
-                    Toast.makeText(getApplicationContext(), "Debe seleccionar un tipo de Pago", Toast.LENGTH_SHORT).show();
+
+                    preferences.codeAdvertencia("Debe seleccionar un tipo de Pago");
                 }else{
                     if (spn_tipo_pago_busqueda.getSelectedItem().toString().equals("Yo pago todo")){
 
                         if (nombre_reserva_busqueda.getText().toString().isEmpty()){
 
-                            Toast.makeText(getApplicationContext(), "el campo nombre no debe estar vacio", Toast.LENGTH_SHORT).show();
+                            preferences.codeAdvertencia("el campo nombre no debe estar vacio");
                         }else{
                             if (spn_equipex_busqueda.getSelectedItem().toString().equals("Seleccionar Equipo")){
 
-                                Toast.makeText(getApplicationContext(), "Debe seleccionar un Equipo", Toast.LENGTH_SHORT).show();
+                                preferences.codeAdvertencia("Debe seleccionar un Equipo");
                             }else{
 
-                                if (Double.parseDouble(pago1_todo.getText().toString()) > Double.parseDouble(total_cancha_todo.getText().toString())){
+
+                                if (Double.parseDouble(saldo_bufis_busqueda.getText().toString())>= Double.parseDouble(total_cancha_todo.getText().toString())){
+                                    registrarReservaUsuario("0","0","1");
+                                }else{
+                                    preferences.codeAdvertencia("No cuenta con las Bufis Suficientes para la operación");
+                                }
+
+                                /*if (Double.parseDouble(pago1_todo.getText().toString()) > Double.parseDouble(total_cancha_todo.getText().toString())){
                                     Toast.makeText(getApplicationContext(), "El monto a pagar no puede ser mayor al costo de la cancha", Toast.LENGTH_SHORT).show();
                                 }else if (Double.parseDouble(pago1_todo.getText().toString()) < Double.parseDouble(total_cancha_todo.getText().toString())){
                                     Toast.makeText(getApplicationContext(), "El monto a pagar no puede ser menor al costo de la cancha", Toast.LENGTH_SHORT).show();
                                 }else{
-                                    registrarReservaUsuario("0","0","1");
-                                }
+
+                                }*/
 
                             }
                         }
@@ -240,9 +248,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
 
                 }
-            }else{
-                Toast.makeText(getApplicationContext(), "Debe Elegir el con el que desea reservar", Toast.LENGTH_SHORT).show();
-            }
+
 
         }
     }
@@ -520,7 +526,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
                     posicion_equipo= spn_equipex_busqueda.getSelectedItemPosition()-1;
                     pago_tipo_busqueda="1";
-                    pago1_busqueda=pago1_todo.getText().toString();
+                    pago1_busqueda=total_cancha_todo.getText().toString();
                     colaboracion_busqueda="0";
                     comision = comision_todo.getText().toString();
 
@@ -617,14 +623,27 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    if (Integer.parseInt(hora )< 18){
+
+                    String separador,part1,part2,separador_part1,hora_apertura,hora_cierre,separador_hora;
+                    String[] resultado,resultado_part1,resultado_part2,resultado_hora;
+
+                    separador = Pattern.quote("-");
+                    resultado = h_reserva.split(separador);
+                    part1 = resultado[0];
+                    part2 = resultado[1];
+
+                    separador_part1 = Pattern.quote(":");
+                    resultado_part1 = part1.split(separador_part1);
+                    resultado_part2 = part2.split(separador_part1);
+                    hora_apertura = resultado_part1[0];
+                    hora_cierre= resultado_part2[0];
+
+                    if (Integer.parseInt(hora_apertura )< 18){
                         total_cancha_todo.setText(arraycancha.get(position).getCancha_precioD());
                         pago1_chancha.setText(arraycancha.get(position).getCancha_precioD());
-                        //precioDeLaCancha_busqueda.setText(arraycancha.get(position).getCancha_precioD());
                     }else{
                         total_cancha_todo.setText(arraycancha.get(position).getCancha_precioN());
                         pago1_chancha.setText(arraycancha.get(position).getCancha_precioN());
-                        //precioDeLaCancha_busqueda.setText(arraycancha.get(position).getCancha_precioN());
                     }
                     comision_todo.setText(String.valueOf(comision_todo_dato));
                     comision_chancha.setText(String.valueOf(comision_todo_dato));
@@ -634,31 +653,8 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                     pagoFinalChancha = Double.parseDouble(pago1_chancha.getText().toString()) + comision_todo_dato;
                     pago_total_chancha.setText(String.valueOf(pagoFinalChancha));
 
-                    pago1_todo.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    pago_total_todo.setText(String.valueOf(Double.parseDouble(total_cancha_todo.getText().toString()) + comision_todo_dato));
 
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                            String v = String.valueOf(s);
-
-                            if (v.isEmpty()){
-
-                            }else{
-                                monto_todo = Double.parseDouble(v) + comision_todo_dato;
-                                pago_total_todo.setText(String.valueOf(monto_todo));
-                            }
-
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-
-                        }
-                    });
                 }
 
                 @Override

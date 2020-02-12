@@ -79,7 +79,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
   ProgressBar prog_imagenloading;
   SharedPreferences preferencesUser;
 
-  LinearLayout misMovimientos,logout,realizarRecarga,bufis;
+  LinearLayout misMovimientos,logout,realizarRecarga,bufis,mensajes;
 
 
   EequiposViewModel eequiposViewModel;
@@ -151,6 +151,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         cdv_perfil = view.findViewById(R.id.cdv_perfil);
         prog_imagenloading = view.findViewById(R.id.prog_imagenloading);
         misMovimientos = view.findViewById(R.id.misMovimientos);
+        mensajes = view.findViewById(R.id.mensajes);
         realizarRecarga = view.findViewById(R.id.realizarRecarga);
         logout = view.findViewById(R.id.logout);
         bufis = view.findViewById(R.id.bufis);
@@ -187,6 +188,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         realizarRecarga.setOnClickListener(this);
         logout.setOnClickListener(this);
         bufis.setOnClickListener(this);
+        mensajes.setOnClickListener(this);
         return view;
     }
 
@@ -297,6 +299,9 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
             startActivity(i);
         }else if (v.equals(bufis)){
             Intent i = new Intent(getContext(), EstadisticasEmpresas.class);
+            startActivity(i);
+        }else if (v.equals(mensajes)){
+            Intent i = new Intent(getContext(), PerfilEdit.class);
             startActivity(i);
         }
     }

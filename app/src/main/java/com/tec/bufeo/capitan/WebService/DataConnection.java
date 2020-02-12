@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import android.os.AsyncTask;
@@ -983,11 +984,16 @@ public class DataConnection extends AppCompatActivity {
                             if (Integer.parseInt(neo) >=Integer.parseInt(hora_apertura) && Integer.parseInt(neo) < Integer.parseInt(hora_cierre.trim()) ){
                                 child.txt_buscar_nombreEmpresa = jsonNodehora.optString("empresa_nombre") ;
                                 child.txt_buscar_direccionEmpresa = jsonNodehora.optString("empresa_direccion");
-                                child.txt_buscar_precioCancha = jsonNodehora.optString("cancha_precioD");
                                 child.img_cancha = jsonNodehora.optString("empresa_foto");
                                 child.empresa_id = jsonNodehora.optString("empresa_id");
                                 child.h_reserva = h_res;
                                 //child.h_reserva = jsonNodehora.optString("empresa_horario_ls");
+                                if (Integer.parseInt(neo)<18){
+                                    child.txt_buscar_precioCancha = jsonNodehora.optString("cancha_precioD");
+                                }else{
+                                    child.txt_buscar_precioCancha = jsonNodehora.optString("cancha_precioN");
+                                }
+
 
                                 // child.imb_llamar = jsonNodehora.optString("cancha_telefono");;
                                 child.txt_llamar = jsonNodehora.optString("empresa_telefono_1");;
@@ -1011,53 +1017,94 @@ public class DataConnection extends AppCompatActivity {
                     //final int horaactual = 06;
                     int horasuma = 0;
                     int horafinal = 0;
+                    String neo;
 
+                    String fecha  = reserva.getReserva_fecha();
                     // Populate our list with groups and it's children
                     for(int i = 0; i < count-1;i++) {
 
                         JSONObject jsonNode = resultJSON.getJSONObject(i);
 
                         horasuma = horaactual + i;
-                        JSONArray resultJSONhora = jsonNode.optJSONArray(String.valueOf(horasuma));
+                        if (horasuma<10){
+                            if (i==0){
+                                neo ="0"+ String.valueOf(horasuma);
+                            }else{
+                                neo = String.valueOf(horasuma);
+                            }
+                        }else{
+                            neo = String.valueOf(horasuma);
+                        }
+                        JSONArray resultJSONhora = jsonNode.optJSONArray(String.valueOf(neo));
                         int counthora = resultJSONhora.length();
 
 
                         FragmentBuscarFechas.GroupItemBusqueda item = new FragmentBuscarFechas.GroupItemBusqueda();
 
                         int hf =0;
-                        // int ii=i;
-                       /* if(hf==0){
-                            hf=12;
-                        }*/
-                        if(horasuma>12){
-                            hf= horasuma-12;
-                            //horaFinal =  ii+":00 - "+hf+":00 pm";
-                            horafinal = hf + 1 ;
-                            item.title = hf+":00 - " + horafinal+":00 pm";
 
-                        }
-                        else{
-                            horafinal = horasuma + 1 ;
-                            item.title = horasuma+":00 - " + horafinal+":00 am";
-                        }
+                        String h_res;
 
-                        //horafinal = horasuma + 1 ;
-                        //item.title = horasuma+":00 - " + horafinal+":00";
+                        horafinal = horasuma + 1 ;
+                        item.title = horasuma+":00 - " + horafinal+":00";
+                        h_res = horasuma+":00-" + horafinal+":00";
+
 
                         for(int i1 = 0; i1 < counthora;i1++) {
                             JSONObject jsonNodehora = resultJSONhora.getJSONObject(i1);
 
 
+
+
+                            String l_s,separador,part1,part2,separador_part1,hora_apertura,hora_cierre;
+                            String[] resultado,resultado_part1,resultado_part2;
+
                             FragmentBuscarFechas.ChildItemBusqueda child = new FragmentBuscarFechas.ChildItemBusqueda();
-                            child.txt_buscar_nombreEmpresa = jsonNodehora.optString("empresa_nombre") ;
-                            child.txt_buscar_direccionEmpresa = jsonNodehora.optString("empresa_direccion");
-                            child.txt_buscar_precioCancha = jsonNodehora.optString("cancha_precioD");
-                            child.img_cancha = jsonNodehora.optString("empresa_foto");
 
-                            // child.imb_llamar = jsonNodehora.optString("cancha_telefono");;
-                            child.txt_llamar = jsonNodehora.optString("empresa_telefono");;
 
-                            item.items.add(child);
+                            DateFormat fechaHora = new SimpleDateFormat("yyyy-MM-dd");
+                            Date convertido = fechaHora.parse(fecha);
+
+                            SimpleDateFormat formatex = new SimpleDateFormat("E");
+
+                            String dia = formatex.format(convertido);
+
+
+                            if (dia.equals("dom")){
+                                l_s = jsonNodehora.optString("empresa_horario_d") ;
+                            }else{
+                                l_s = jsonNodehora.optString("empresa_horario_ls") ;
+                            }
+
+                            separador = Pattern.quote("-");
+                            resultado = l_s.split(separador);
+                            part1 = resultado[0];
+                            part2 = resultado[1];
+
+                            separador_part1 = Pattern.quote(":");
+                            resultado_part1 = part1.split(separador_part1);
+                            resultado_part2 = part2.split(separador_part1);
+                            hora_apertura = resultado_part1[0];
+                            hora_cierre= resultado_part2[0];
+
+                            hora_cierre =hora_cierre.trim();
+
+                            if (Integer.parseInt(neo) >=Integer.parseInt(hora_apertura) && Integer.parseInt(neo) < Integer.parseInt(hora_cierre.trim()) ){
+                                child.txt_buscar_nombreEmpresa = jsonNodehora.optString("empresa_nombre") ;
+                                child.txt_buscar_direccionEmpresa = jsonNodehora.optString("empresa_direccion");
+                                child.txt_buscar_precioCancha = jsonNodehora.optString("cancha_precioD");
+                                child.img_cancha = jsonNodehora.optString("empresa_foto");
+                                child.h_reserva = jsonNodehora.optString("empresa_foto");
+                                child.empresa_id = jsonNodehora.optString("empresa_id");
+                                child.h_reserva = h_res;
+                                // child.imb_llamar = jsonNodehora.optString("cancha_telefono");;
+                                child.txt_llamar = jsonNodehora.optString("empresa_telefono");;
+
+                                item.items.add(child);
+                            }
+
+
+
                         }
 
                         listaCanchasDisponiblesBusqueda.add(item);
@@ -1065,6 +1112,9 @@ public class DataConnection extends AppCompatActivity {
 
 
                 }if(funcion.equals("listarCanchasDisponiblesBusqueda2")){
+
+                    String fecha  = reserva.getReserva_fecha();
+                    String horabusqueda  = reserva.getReserva_hora();
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
                     int count = resultJSON.length();
@@ -1074,22 +1124,75 @@ public class DataConnection extends AppCompatActivity {
 
                         JSONObject jsonNode = resultJSON.getJSONObject(i);
 
-                        empresas = new Empresas();
-                        empresas.setEmpresas_id(jsonNode.optString("empresa_id"));
-                        empresas.setUsuario_id(jsonNode.optString("usuario_id"));
-                        empresas.setUbigeo_id(jsonNode.optString("ubigeo_id"));
-                        empresas.setEmpresas_nombre(jsonNode.optString("empresa_nombre"));
-                        empresas.setEmpresas_direccion(jsonNode.optString("empresa_direccion"));
-                        empresas.setEmpresas_telefono(jsonNode.optString("empresa_telefono"));
-                        empresas.setEmpresas_descripcion(jsonNode.optString("empresa_descripcion"));
-                        empresas.setEmpresas_horario(jsonNode.optString("empresa_horario"));
-                        empresas.setEmpresas_valoracion(jsonNode.optString("empresa_valoracion"));
-                        empresas.setEmpresas_foto(jsonNode.optString("empresa_foto"));
-                        empresas.setEmpresas_estado(jsonNode.optString("empresa_estado"));
-                        empresas.setCancha_precioD(jsonNode.optString("cancha_precioD"));
-                        empresas.setCancha_precioN(jsonNode.optString("cancha_precioN"));
 
-                        listaCachasHoraEmpresa.add(empresas);
+                        String l_s,separador,part1,part2,separador_part1,hora_apertura,hora_cierre,separador_hora;
+                        String[] resultado,resultado_part1,resultado_part2,resultado_hora;
+
+                        DateFormat fechaHora = new SimpleDateFormat("yyyy-MM-dd");
+                        Date convertido = fechaHora.parse(fecha);
+
+                        SimpleDateFormat formatex = new SimpleDateFormat("E");
+
+                        String dia = formatex.format(convertido);
+
+                        if (dia.equals("dom")){
+                            l_s = jsonNode.optString("empresa_horario_d") ;
+                        }else{
+                            l_s = jsonNode.optString("empresa_horario_ls") ;
+                        }
+
+                        separador = Pattern.quote("-");
+                        resultado = l_s.split(separador);
+                        part1 = resultado[0];
+                        part2 = resultado[1];
+
+                        separador_part1 = Pattern.quote(":");
+                        resultado_part1 = part1.split(separador_part1);
+                        resultado_part2 = part2.split(separador_part1);
+                        hora_apertura = resultado_part1[0];
+                        hora_cierre= resultado_part2[0];
+
+                        hora_cierre =hora_cierre.trim();
+
+
+                        separador_hora= Pattern.quote(":");
+                        resultado_hora= horabusqueda.split(separador_hora);
+
+                        int horex = Integer.parseInt(resultado_hora[0]);
+
+
+                        if (horex > Integer.parseInt(hora_apertura )&& horex <= Integer.parseInt(hora_cierre)){
+
+
+                            empresas = new Empresas();
+                            empresas.setEmpresas_id(jsonNode.optString("empresa_id"));
+                            empresas.setUsuario_id(jsonNode.optString("usuario_id"));
+                            empresas.setUbigeo_id(jsonNode.optString("ubigeo_id"));
+                            empresas.setEmpresas_nombre(jsonNode.optString("empresa_nombre"));
+                            empresas.setEmpresas_direccion(jsonNode.optString("empresa_direccion"));
+                            empresas.setEmpresas_telefono(jsonNode.optString("empresa_telefono"));
+                            empresas.setEmpresas_descripcion(jsonNode.optString("empresa_descripcion"));
+                            empresas.setEmpresas_horario(jsonNode.optString("empresa_horario"));
+                            empresas.setEmpresas_valoracion(jsonNode.optString("empresa_valoracion"));
+                            empresas.setEmpresas_foto(jsonNode.optString("empresa_foto"));
+                            empresas.setEmpresas_estado(jsonNode.optString("empresa_estado"));
+
+                            if (horex > 17){
+                                empresas.setPrecio(jsonNode.optString("cancha_precioN"));
+                            }else{
+                                empresas.setPrecio(jsonNode.optString("cancha_precioD"));
+                            }
+
+                            String horacio = String.valueOf(horex)+":00-"+String.valueOf(horex+1)+":00";
+                            empresas.setHora_reserva(horacio);
+
+
+                            listaCachasHoraEmpresa.add(empresas);
+                        }
+
+
+
+
                     }
                 }
 
@@ -1414,6 +1517,8 @@ public class DataConnection extends AppCompatActivity {
                 return true;
             }
         }catch (JSONException e){
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 

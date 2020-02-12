@@ -26,7 +26,7 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class DetalleEquipoNuevo extends AppCompatActivity {
 
     public TabLayout tabs_Dequipo;
-    Button btn_retarDequipo,unirse_Dequipo;
+    Button btn_retarDequipo;
     ImageView imagen_Dequipo;
     TextView name_Equipex;
     public ViewPager container_Dequipo;
@@ -40,7 +40,6 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
     private   String[] tituloIds = {
             "Jugadores",
             "Torneos",
-            "Proximos Partidos",
             "Estadísticas"
     };
 
@@ -76,7 +75,7 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         }
 
         name_Equipex.setText(equipo_nombre);
-        for(int i=0;i<4;i++) {
+        for(int i=0;i<3;i++) {
             tabs_Dequipo.addTab(tabs_Dequipo.newTab().setText(tituloIds[i]) );
         }
 
@@ -166,14 +165,8 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
                     bundle1.putString("nombre", equipo_nombre);
                     fragment.setArguments(bundle1);
                     break;
+
                 case 2:
-                    fragment = new ProximoPartidosDequiposFragment();
-                    Bundle bundle2 =  new Bundle();
-                    bundle2.putString("id_equipo", equipo_id);
-                    bundle2.putString("nombre", equipo_nombre);
-                    fragment.setArguments(bundle2);
-                    break;
-                case 3:
                     fragment = new EstadisticasDeEquiposFragment();
                     Bundle bundle3 =  new Bundle();
                     bundle3.putString("id_equipo", equipo_id);
@@ -189,7 +182,7 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
 
     }

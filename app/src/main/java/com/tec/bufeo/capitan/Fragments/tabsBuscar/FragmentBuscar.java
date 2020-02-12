@@ -153,8 +153,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         public String txt_buscar_nombreEmpresa;
         public String txt_buscar_precioCancha;
         public String txt_buscar_direccionEmpresa;
-        public String h_reserva;
         public String img_cancha;
+        public String h_reserva;
         public String empresa_id;
         public String txt_llamar;
         //String hint;

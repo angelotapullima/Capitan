@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +32,7 @@ import static com.tec.bufeo.capitan.Activity.DetalleNegocio.fecha_actual;
 import static com.tec.bufeo.capitan.Activity.DetalleNegocio.hora_actual;
 import static com.tec.bufeo.capitan.Activity.DetalleNegocio.horario;
 
-public class DetalleCanchas extends AppCompatActivity {
+public class DetalleCanchas extends AppCompatActivity implements View.OnClickListener {
 
     public static  TabLayout tabLayout;
     DataConnection dc;
@@ -41,6 +43,7 @@ public class DetalleCanchas extends AppCompatActivity {
     public Date date;
     private FloatingActionButton fab_verReportes;
     TextView saldo_contable;
+    ImageView arrow_back;
 
 
     public static boolean existeHoy = true;
@@ -76,6 +79,7 @@ public class DetalleCanchas extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         saldo_contable= findViewById(R.id.saldo_contable);
+        arrow_back= findViewById(R.id.arrow_back);
         mViewPager = (ViewPager)findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         cancha_id = getIntent().getStringExtra("id_cancha");
@@ -159,8 +163,17 @@ public class DetalleCanchas extends AppCompatActivity {
 
 
 
+        arrow_back.setOnClickListener(this);
 
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(arrow_back)){
+
+            finish();
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

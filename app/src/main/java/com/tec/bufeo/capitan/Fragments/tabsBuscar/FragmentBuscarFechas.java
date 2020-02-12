@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.squareup.picasso.Picasso;
+import com.tec.bufeo.capitan.Activity.RegistroReserva.ReservaEnBusqueda;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListaCanchasBusqueda;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 import com.tec.bufeo.capitan.Modelo.Empresas;
@@ -40,8 +41,12 @@ import com.tec.bufeo.capitan.Util.DateDialog;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
@@ -295,7 +300,20 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
             //progressBar.setVisibility(ProgressBar.INVISIBLE);
 
             if (arraycanchasdisponiblesbusqueda.size() > 0) {
-                infoExpandable.setText(fecha.getText().toString());
+
+                DateFormat fechaHora = new SimpleDateFormat("yyyy-MM-dd");
+                Date convertido = null;
+                try {
+                    convertido = fechaHora.parse(fecha.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                SimpleDateFormat formatex = new SimpleDateFormat("EEE, d MMM yyyy");
+
+                //fecha2 = formatex.format(convertido);
+
+                infoExpandable.setText(formatex.format(convertido));
                 //e.setReserva_hora(btnHoraCancha.getText().toString().substring(0,2));
 
                 layoutExpandable.setVisibility(View.VISIBLE);
@@ -357,6 +375,9 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
         recyclerBusquedaCancha.setAdapter(adaptadorListaCanchasBusqueda);
         if( listCanchaHoraEmpresa.size()>0){
+
+
+
             infoHoraBusqueda.setText(hours);
             layoutNormal.setVisibility(View.VISIBLE);
             layoutExpandable.setVisibility(View.GONE);
@@ -415,6 +436,8 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         public String txt_buscar_direccionEmpresa;
         public String imb_llamar;
         public String img_cancha;
+        public String h_reserva;
+        public String empresa_id;
         public String txt_llamar;
         //String hint;
 
@@ -429,7 +452,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         public TextView txt_buscar_telefonoEmpresa;
         public ImageButton imb_llamar;
         public ImageView imagen_cancha;
-        public TextView txt_llamar;
+        public LinearLayout layout_reserva_busqueda;
 
     }
 
@@ -466,7 +489,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         @Override
         public View getRealChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
             final ChildHolderBusqueda holder;
-            ChildItemBusqueda item = getChild(groupPosition, childPosition);
+            final ChildItemBusqueda item = getChild(groupPosition, childPosition);
             if (convertView == null) {
                 holder = new ChildHolderBusqueda();
                 convertView = inflater.inflate(R.layout.rcv_item_card_buscar_horario_general, parent, false);
@@ -479,6 +502,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                 holder.txt_buscar_telefonoEmpresa = (TextView) convertView.findViewById(R.id.txt_buscar_telefonoEmpresa);
                 holder.imagen_cancha = (ImageView) convertView.findViewById(R.id.imagen_cancha);
                 holder.imb_llamar = (ImageButton) convertView.findViewById(R.id.imb_llamar);
+                holder.layout_reserva_busqueda =  convertView.findViewById(R.id.layout_reserva_busqueda);
 
 
                 //holder.hint = (TextView) convertView.findViewById(R.id.textHint);
@@ -494,6 +518,17 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
             holder.txt_buscar_precioCancha.setText(item.txt_buscar_precioCancha);
             holder.txt_buscar_direccionEmpresa.setText(item.txt_buscar_direccionEmpresa);
             holder.txt_buscar_telefonoEmpresa.setText(item.txt_llamar);
+            holder.layout_reserva_busqueda.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, ReservaEnBusqueda.class);
+                    i.putExtra("nombre_empresa",item.txt_buscar_nombreEmpresa);
+                    //i.putExtra("h_reserva",item.h_reserva);
+                    i.putExtra("h_reserva",item.h_reserva);
+                    i.putExtra("empresa_id",item.empresa_id);
+                    context.startActivity(i);
+                }
+            });
             holder.imb_llamar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

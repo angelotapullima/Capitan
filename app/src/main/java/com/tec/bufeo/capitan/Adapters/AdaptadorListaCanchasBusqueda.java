@@ -2,14 +2,18 @@ package com.tec.bufeo.capitan.Adapters;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.tec.bufeo.capitan.Activity.RegistroReserva.ReservaEnBusqueda;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
 
@@ -41,7 +45,7 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
 
         private ImageButton imb_llamar;
         private TextView txt_buscar_nombreEmpresa, txt_buscar_precioCancha, txt_buscar_telefonoEmpresa, txt_buscar_direccionEmpresa;
-        //private LinearLayout lny_precioAbonado;
+        private LinearLayout layout_reserva_busqueda;
         //private CardView cdv_canchas_horario_reserva;
         private ImageView imagen_cancha;
 
@@ -55,12 +59,25 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
             txt_buscar_direccionEmpresa = (TextView) itemView.findViewById(R.id.txt_buscar_direccionEmpresa);
             imagen_cancha = (ImageView) itemView.findViewById(R.id.imagen_cancha);
             imb_llamar =(ImageButton)itemView.findViewById(R.id.imb_llamar);
+            layout_reserva_busqueda =(LinearLayout) itemView.findViewById(R.id.layout_reserva_busqueda);
 
 
         }
 
         public void bid(final Empresas empresas, final OnItemClickListener listener) {
 
+            layout_reserva_busqueda.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(context, ReservaEnBusqueda.class);
+                            i.putExtra("nombre_empresa",empresas.getEmpresas_nombre());
+                            i.putExtra("h_reserva",empresas.getHora_reserva());
+                            i.putExtra("empresa_id",empresas.getEmpresas_id());
+                            context.startActivity(i);
+                        }
+                    }
+            );
             /*imb_reserva_llamada.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,7 +107,7 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
         Picasso.with(context).load(IP+"/"+ obj.getEmpresas_foto()).into(holder.imagen_cancha);
         holder.txt_buscar_nombreEmpresa.setText(obj.getEmpresas_nombre());
         holder.txt_buscar_direccionEmpresa.setText(obj.getEmpresas_direccion());
-        holder.txt_buscar_precioCancha.setText(obj.getCancha_precioD());
+        holder.txt_buscar_precioCancha.setText(obj.getPrecio());
         holder.txt_buscar_telefonoEmpresa.setText(obj.getEmpresas_telefono());
         //holder.txt_precioAbonadoCancha.setText(obj.getReserva_costo());
 

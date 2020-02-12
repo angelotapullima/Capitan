@@ -22,6 +22,8 @@ public class Empresas {
     private String cancha_precioN;
     private String horario_ls;
     private String horario_d;
+    private String precio;
+    private String Hora_reserva;
 
     public Empresas() {
 
@@ -223,6 +225,22 @@ public class Empresas {
 
     public void setHorario_d(String horario_d) {
         this.horario_d = horario_d;
+    }
+
+    public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
+    }
+
+    public String getHora_reserva() {
+        return Hora_reserva;
+    }
+
+    public void setHora_reserva(String hora_reserva) {
+        Hora_reserva = hora_reserva;
     }
 }
 

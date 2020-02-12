@@ -3,33 +3,27 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
         android:background="@color/colorPrimaryText"
         tools:context=".Activity.DetalleFotoUsuario">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:layout_height="match_parent">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/img_iconoPerfil"
+                android:layout_centerInParent="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerInside"
+                android:scaleType="center"
                 android:src="@drawable/logo" />
 
-            <ProgressBar
-                android:id="@+id/prog_imagenloading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="gone"
-                android:theme="@style/CircularProgress"
-                android:layout_gravity="center" />
-        </FrameLayout>
-    </LinearLayout>
+
+    </RelativeLayout>
     </LinearLayout>
 
 

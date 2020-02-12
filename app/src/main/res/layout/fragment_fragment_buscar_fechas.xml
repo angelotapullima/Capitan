@@ -160,6 +160,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#000"
                 android:textSize="18sp"
+                android:layout_marginLeft="10dp"
                 android:text="Canchas Disponibles el ">
 
             </TextView>
@@ -202,6 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
+                android:layout_marginLeft="10dp"
                 android:textSize="18sp"
                 android:text="Canchas Disponibles a las : ">
 
