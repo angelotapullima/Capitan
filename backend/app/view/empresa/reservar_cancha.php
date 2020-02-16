@@ -120,10 +120,10 @@ require _VIEW_PATH_ . 'footer.php';
                     if(pago=="yo"){
                         var saldo = r.cuenta_saldo;
                         var total = $("#cr_t").html();
-                        if(saldo>total){
-                            $("#forma_pago").html("<table class='table table-bordered table-responsive'><tr><td>Saldo Actual</td><td>"+saldo+"</td></tr><tr><td colspan='2'>El saldo es insuficiente.Puedes intentar comprar más Bufis o pagar con una chancha.</td></tr></table>");
+                        if(saldo<total){
+                            $("#forma_pago").html("<table class='table table-bordered table-responsive'><tr><td>Saldo Actual</td><td style='font-weight: bold;color: green;'><img src=\"<?= _SERVER_ ?>media/bufi.png\" width=\"30\" alt=\"bufi\"> "+saldo+"</td></tr><tr><td colspan='2'> El saldo es insuficiente.Puedes intentar comprar más Bufis o pagar con una chancha.</td></tr></table>");
                         }else{
-                            $("#forma_pago").html("<table class='table table-bordered table-responsive'><tr><td>Saldo Actual</td><td>"+saldo+"</td></tr></table><button onclick='confirmar_reserva()' class='btn btn-sm btn-danger'>Confirmar Reserva</button>");
+                            $("#forma_pago").html("<table class='table table-bordered table-responsive'><tr><td>Saldo Actual</td><td style='font-weight: bold;color: green;'><img src=\"<?= _SERVER_ ?>media/bufi.png\" width=\"30\" alt=\"bufi\"> "+saldo+"</td></tr></table><button onclick='confirmar_reserva()' class='btn btn-sm btn-danger'>Confirmar Reserva</button>");
                         }
                         $("#forma2").html("");
                         $("#equipos").show();

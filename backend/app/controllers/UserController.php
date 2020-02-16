@@ -293,7 +293,7 @@ class UserController{
     public function crear_chat() {
         try{
             $ok_data = true;
-            if(isset($_POST['id_1']) && isset($_POST['retado'])){
+            if(isset($_POST['id_1']) && isset($_POST['id_2'])){
                 $_POST['id_1'] = $this->clean->clean_post_int($_POST['id_1']);
                 $_POST['id_2'] = $this->clean->clean_post_int($_POST['id_2']);
 
@@ -306,7 +306,9 @@ class UserController{
                 $id_1 = $_POST['id_1'];
                 $id_2 = $_POST['id_2'];
                 $fecha = date('Y-m-d H:i:s');
-                $result = $this->user->crear_chat($id_1,$id_2,$fecha);
+                $hora=date('H:i:s');
+                $microtime = microtime(true);
+                $result = $this->user->crear_chat($id_1,$id_2,$fecha,$microtime);
                 $resources = array();
             }else{
                 $result=6;
@@ -474,7 +476,7 @@ class UserController{
             'data' =>array('tipo'=> $tipo ,
                 'Contenido' => $contenido
             ));
-        define('GOOGLE_API_KEY', 'AIzaSyAbpEpTfha5E7CQJMLvNC3SMhF2wQnPGVc');
+        define('GOOGLE_API_KEY', 'AAAAj5-Syog:APA91bFAMP0UmglvTddGLwEqtTJmfEtFTmVkSElOOEcmAI1rW-GaJ6uTfGuUvdzbwcMxyyLswqYUkM3ALdSvcUNM60rb9ryY-MIN2oLUHVIoT9SyKPE6uyo7omdwNQZjaVZtEDkYnxX7');
         $headers = array(
             'Authorization:key='.GOOGLE_API_KEY,
             'Content-Type: application/json');
@@ -501,7 +503,7 @@ class UserController{
                 'hora' => $hora,
                 'fecha' => $fecha
             ));
-        define('GOOGLE_API_KEY', 'AIzaSyAbpEpTfha5E7CQJMLvNC3SMhF2wQnPGVc');
+        define('GOOGLE_API_KEY', 'AAAAj5-Syog:APA91bFAMP0UmglvTddGLwEqtTJmfEtFTmVkSElOOEcmAI1rW-GaJ6uTfGuUvdzbwcMxyyLswqYUkM3ALdSvcUNM60rb9ryY-MIN2oLUHVIoT9SyKPE6uyo7omdwNQZjaVZtEDkYnxX7');
         $headers = array(
             'Authorization:key='.GOOGLE_API_KEY,
             'Content-Type: application/json');
@@ -526,7 +528,7 @@ class UserController{
             $resources[$i] = array(
                 "chat_id" => $id_chat,
                 "detalle_chat_id" => $model[$i]->detalle_chat_id,
-                "id_usuario" => $model[$i]->id_user,
+                "id_usuario" => $model[$i]->id_usuario,
                 "mensaje" => $model[$i]->detalle_chat_mensaje,
                 "fecha" => $fecha[0],
                 "hora" => $fecha[1],
@@ -536,4 +538,14 @@ class UserController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
-}
+}
+/*
+ * <!-- drawable/tshirt_crew.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="24dp"
+    android:width="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path android:fillColor="@color/colorPrimary" android:pathData="M16,21H8A1,1 0 0,1 7,20V12.07L5.7,13.07C5.31,13.46 4.68,13.46 4.29,13.07L1.46,10.29C1.07,9.9 1.07,9.27 1.46,8.88L7.34,3H9C9,4.1 10.34,5 12,5C13.66,5 15,4.1 15,3H16.66L22.54,8.88C22.93,9.27 22.93,9.9 22.54,10.29L19.71,13.12C19.32,13.5 18.69,13.5 18.3,13.12L17,12.12V20A1,1 0 0,1 16,21" />
+</vector>
+ * */

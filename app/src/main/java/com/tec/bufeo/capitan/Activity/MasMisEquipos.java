@@ -74,6 +74,8 @@ public class MasMisEquipos extends AppCompatActivity implements SwipeRefreshLayo
                 intent.putExtra("id_equipo", mequipos.getEquipo_id());
                 intent.putExtra("nombre_equipo", mequipos.getEquipo_nombre());
                 intent.putExtra("foto_equipo", mequipos.getEquipo_foto());
+                intent.putExtra("capitan_equipo", mequipos.getCapitan_nombre());
+                intent.putExtra("capitan_id", mequipos.getCapitan_id());
                 startActivity(intent);
             }
         });

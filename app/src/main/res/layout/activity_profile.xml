@@ -124,43 +124,18 @@
                         android:textColor="@color/blue_600"
                         android:textStyle="bold"/>
 
+
+
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="@dimen/spacing_xmlarge"
-                        android:orientation="horizontal">
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/spacing_xmlarge"
-                            android:background="@android:color/transparent"
-                            android:tint="@color/grey_40"/>
-                            <!--app:srcCompat="@drawable/ic_local_cafe" -->
-
-                        <View
-                            android:layout_width="@dimen/spacing_middle"
-                            android:layout_height="0dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:minHeight="@dimen/spacing_xmlarge"
-                            android:text="Food &amp; Cafe"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                            android:textColor="@color/grey_40" />
-
-                    </LinearLayout>
-
-                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:weightSum="10"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:orientation="vertical">
 
                         <TextView
@@ -168,7 +143,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:text="Posición"
-                            android:minHeight="@dimen/spacing_xmlarge"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/blue_600" />
                         <TextView
@@ -176,22 +150,24 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:text="Volante"
-                            android:minHeight="@dimen/spacing_xmlarge"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_40" />
 
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    <View
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:minHeight="@dimen/spacing_xmlarge"
                             android:text="Número de Camiseta"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
 
@@ -200,7 +176,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:minHeight="@dimen/spacing_xmlarge"
                             android:text="9"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_40" />
@@ -210,23 +185,25 @@
 
 
                 </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:weightSum="10"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="3"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
-                                android:minHeight="@dimen/spacing_xmlarge"
                                 android:text="Habilidad"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                                 android:textColor="@color/blue_600" />
@@ -234,16 +211,19 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
-                                android:minHeight="@dimen/spacing_xmlarge"
                                 android:text="Remate"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                                 android:textColor="@color/grey_40" />
 
                         </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <View
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="1"/>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="6"
                             android:orientation="vertical">
 
                             <TextView
@@ -251,7 +231,6 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
                                 android:text="Email"
-                                android:minHeight="@dimen/spacing_xmlarge"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
 
                                 android:textColor="@color/blue_600" />
@@ -260,7 +239,6 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
                                 android:text="angelo.anked@gmail.com"
-                                android:minHeight="@dimen/spacing_xmlarge"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                                 android:textColor="@color/grey_40" />
 
@@ -287,7 +265,7 @@
                                 android:layout_height="@dimen/tamaño_button_profile"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginTop="10dp"
-                                android:src="@drawable/ic_add_black"
+                                app:srcCompat="@drawable/ic_add_black"
                                 android:tint="@color/blue_600"
                                 android:background="@drawable/button_profile"
                                 android:layout_gravity="center"/>
@@ -296,7 +274,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:textColor="#000"
-                                android:text="Agregar Publicacion"/>
+                                android:text="Agregar Publicación"/>
 
                         </LinearLayout>
                         <LinearLayout
@@ -310,7 +288,7 @@
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_person_black"
+                                app:srcCompat="@drawable/ic_person_black"
                                 android:background="@drawable/button_profile"/>
                             <TextView
                                 android:layout_width="wrap_content"
@@ -330,7 +308,7 @@
                                 android:layout_height="@dimen/tamaño_button_profile"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginTop="10dp"
-                                android:src="@drawable/ic_more_horiz"
+                                app:srcCompat="@drawable/ic_more_horiz"
                                 android:layout_gravity="center"
                                 android:background="@drawable/button_profile"/>
                             <TextView

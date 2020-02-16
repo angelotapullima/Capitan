@@ -247,4 +247,36 @@ class ForoController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+    public function eliminar_publicacion() {
+        try{
+            $ok_data = true;
+            if(isset($_POST['publicacion_id'])){
+                $_POST['publicacion_id'] = $this->clean->clean_post_int($_POST['publicacion_id']);
+                $ok_data = $this->clean->validate_post_int($_POST['publicacion_id'], true, $ok_data, 11);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $publicacion_id = $_POST['publicacion_id'];
+                $result = $this->foro->eliminar_comentarios_por_id_publicacion($publicacion_id);
+                $pub = $this->foro->listar_publicacion($publicacion_id);
+                $img = $pub->publicaciones_foto;
+                if($result ==1){
+                    $result = $this->foro->eliminar_likes($publicacion_id);
+                    if($result ==1){
+                        $result=$this->foro->eliminar_publicacion($publicacion_id);
+                        if($result==1){
+                            unlink(_SERVER_.$img);
+                        }
+                    }
+                }
+            }else{
+                $result = 6;
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        echo json_encode($result);
+    }
 }

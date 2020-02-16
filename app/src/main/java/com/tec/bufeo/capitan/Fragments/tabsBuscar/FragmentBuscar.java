@@ -37,9 +37,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
 
     private AnimatedExpandableListView listView;
     private ExampleAdapter adapter;
-    DataConnection dc ,dc1;
+    DataConnection dc ;
     ArrayList<GroupItem> arraycanchasdisponiblesOriginal;
-    ArrayList<HoraFecha> arrayHoraFecha;
     View view;
     LinearLayout layout_carga;
     CardView cdv_mensaje;
@@ -242,7 +241,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
                 public void onClick(View v) {
                     Intent i = new Intent(context, ReservaEnBusqueda.class);
                     i.putExtra("nombre_empresa",item.txt_buscar_nombreEmpresa);
-                    //i.putExtra("h_reserva",item.h_reserva);
+                    i.putExtra("precio",item.txt_buscar_precioCancha);
                     i.putExtra("h_reserva",item.h_reserva);
                     i.putExtra("empresa_id",item.empresa_id);
                     context.startActivity(i);

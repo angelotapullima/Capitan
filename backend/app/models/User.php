@@ -341,12 +341,12 @@ class User{
         }
         return $okey;
     }
-    public function crear_chat($id_1,$id_2,$fecha){
+    public function crear_chat($id_1,$id_2,$fecha,$microtime){
         try {
-            $sql = 'insert into chat(id_usuario_1,id_usuario_2,chat_fecha) values(?,?,?)';
+            $sql = 'insert into chat(id_usuario_1,id_usuario_2,chat_fecha,chat_microtime) values(?,?,?,?)';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([
-                $id_1,$id_2,$fecha
+                $id_1,$id_2,$fecha,$microtime
             ]);
             $result = 1;
         } catch (Exception $e){
@@ -355,7 +355,18 @@ class User{
         }
         return $result;
     }
-    public function listar_cuenta_por_id_user($id){
+    public function listar_chat_por_microtime($mt){
+        try{
+            $sql = 'select * from chat where chat_microtime = ? limit 1';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$mt]);
+            $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }public function listar_cuenta_por_id_user($id){
         try{
             $sql = 'select * from user u inner join cuenta c on u.id_user = c.id_user inner join person p on p.id_person=u.id_person where c.id_user = ? limit 1';
             $stm = $this->pdo->prepare($sql);

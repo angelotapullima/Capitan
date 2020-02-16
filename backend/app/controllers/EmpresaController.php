@@ -62,6 +62,23 @@ class EmpresaController{
             echo "<script language=\"javascript\">window.location.href=\"". _SERVER_ ."\";</script>";
         }
     }
+    public function reporte(){
+        try{
+            $this->nav = new Navbar();
+            $navs = $this->nav->listMenu($this->crypt->decrypt($_SESSION['role'],_FULL_KEY_));
+            $id = $_GET['id'] ?? 0;
+            if($id == 0){
+                throw new Exception('ID Sin Declarar');
+            }
+            require _VIEW_PATH_ . 'header.php';
+            require _VIEW_PATH_ . 'navbar.php';
+            require _VIEW_PATH_ . 'empresa/reporte.php';
+        } catch (Throwable $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            echo "<script language=\"javascript\">alert(\"Error Al Mostrar Contenido. Redireccionando Al Inicio\");</script>";
+            echo "<script language=\"javascript\">window.location.href=\"". _SERVER_ ."\";</script>";
+        }
+    }
     public function ver_cancha(){
         try{
             $this->nav = new Navbar();
@@ -324,6 +341,7 @@ class EmpresaController{
         }else{
             $mi_rating_final= $mi_rating_final * 1;
         }
+        $detalles = $this->empresa->listar_rating_empresa_agrupado($id_empresa);
         $conteo = $listado->conteo;
         if($conteo=="0"){$conteo=0;}
         $suma = $listado->suma;
@@ -348,7 +366,8 @@ class EmpresaController{
             "hora_actual" => date('H:i'),
             "dia" => date('N'),
             "promedio" => $promedio,
-            "conteo" => $conteo
+            "conteo" => $conteo,
+            "rating" => $detalles
         );
         $data = array("results" => $resources);
         echo json_encode($data);
@@ -583,35 +602,50 @@ class EmpresaController{
         $fecha_i = $_POST['fecha_i'];
         $fecha_f = $_POST['fecha_f'];
         $id_empresa = $_POST['id_empresa'];
-        $model = $this->empresa->estadisticas_por_empresa($fecha_i,$fecha_f,$id_empresa);
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $resources[$i] = array(
-                "cancha_id" => $model[$i]->cancha_id,
-                "reserva_id" => $model[$i]->reserva_id,
-                "cancha_nombre" => $model[$i]->cancha_nombre,
-                "reserva_nombre" => $model[$i]->reserva_nombre,
-                "reserva_hora" => $model[$i]->reserva_hora,
-                "reserva_costo" => $model[$i]->reserva_costo
+
+        /*$fecha_i = '2020-01-22';
+        $fecha_f = '2020-02-04';
+        $id_empresa = 4;*/
+        $resources = [];
+        $fecha_inicio = strtotime($fecha_i);
+        $fecha_final = strtotime($fecha_f);
+        for ($j=$fecha_inicio;$j<=$fecha_final;$j+=86400) {
+            $fecha_d = date('Y-m-d',$j);
+            $model = $this->empresa->estadisticas_por_empresa_fecha($fecha_d,$id_empresa);
+            $resources[] = array(
+                $fecha_d => $model
             );
         }
         $data = array("results" => $resources);
         echo json_encode($data);
     }
     public function valorar_empresa() {
-        $usuario_id = $_POST['id_usuario'];
-        $id_empresa = $_POST['id_empresa'];
-        $valor = $_POST['valor'];
-        $mi_rating = $this->empresa->listar_detalle_rating_empresa($id_empresa,$usuario_id);
-        if($mi_rating->rating_empresa_valor!=null){
-            $result = $this->empresa->actualizar_valorar_empresa($usuario_id,$id_empresa,$valor);
-        }else{
-            $result = $this->empresa->valorar_empresa($usuario_id,$id_empresa,$valor);
+        try{
+            $usuario_id = $_POST['id_usuario'];
+            $id_empresa = $_POST['id_empresa'];
+            $valor = $_POST['valor'];
+            $comment = $_POST['comentario'];
+            $mi_rating = $this->empresa->listar_detalle_rating_empresa($id_empresa,$usuario_id);
+            if($mi_rating->rating_empresa_valor!=null){
+                $result = $this->empresa->actualizar_valorar_empresa($usuario_id,$id_empresa,$valor,$comment);
+            }else{
+                $result = $this->empresa->valorar_empresa($usuario_id,$id_empresa,$valor,$comment);
+            }
+        }catch (Exception $e){
+                $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+                $result = 2;
         }
-        $resources = array();
-        $resources[0] = array("valor"=>$result);
-        $data = array("results" => $resources);
-        echo json_encode($data);
+        echo json_encode($result);
+    }
+    public function listar_valoraciones() {
+        try{
+            $id_empresa = $_POST['id_empresa'];
+            $result = $this->empresa->listar_valoraciones($id_empresa);
+        }catch (Exception $e){
+                $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+                $result = 2;
+        }
+        echo json_encode($result);
     }
     public function listar_mis_negocios_reserva() {
         try{

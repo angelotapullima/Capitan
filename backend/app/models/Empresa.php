@@ -199,7 +199,17 @@ class Empresa{
         }
         return $result;
     }
-    public function estadisticas_por_empresa($fecha_i,$fecha_f,$id_empresa){
+    public function estadisticas_por_empresa_fecha($fecha,$id_empresa){
+        try {
+            $stm = $this->pdo->prepare("SELECT * FROM reserva r inner join cancha c on r.cancha_id=c.cancha_id inner join empresa e on e.empresa_id=c.empresa_id where r.reserva_fecha = ? and e.empresa_id = ?");
+            $stm->execute([$fecha,$id_empresa]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }public function estadisticas_por_empresa($fecha_i,$fecha_f,$id_empresa){
         try {
             $stm = $this->pdo->prepare("SELECT * FROM reserva r inner join cancha c on r.cancha_id=c.cancha_id inner join empresa e on e.empresa_id=c.empresa_id where r.reserva_fecha between ? and ? and e.empresa_id = ?");
             $stm->execute([$fecha_i,$fecha_f,$id_empresa]);
@@ -294,6 +304,28 @@ class Empresa{
         }
         return $result;
     }
+    public function listar_rating_empresa_agrupado($id_empresa){
+        try {
+            $stm = $this->pdo->prepare("select rating_empresa_valor,count(rating_empresa_valor) as conteo from rating_empresa where id_empresa =? group by rating_empresa_valor");
+            $stm->execute([$id_empresa]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_valoraciones($id_empresa){
+        try {
+            $stm = $this->pdo->prepare("select * from rating_empresa re inner join user u on re.id_usuario=u.id_user where re.id_empresa =?");
+            $stm->execute([$id_empresa]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
     public function pagar_restante($pago2,$fecha,$id){
         try {
             $sql = 'update reserva set reserva_pago2 = ?,reserva_pago2_date=?,reserva_estado=1 where reserva_id = ?';
@@ -342,12 +374,12 @@ class Empresa{
             $result = 2;
         }
         return $result;
-    }public function actualizar_valorar_empresa($usuario_id,$id_empresa,$valor){
+    }public function actualizar_valorar_empresa($usuario_id,$id_empresa,$valor,$comment){
         try {
-            $sql = 'update rating_empresa set rating_empresa_valor = ? where id_usuario = ? and id_empresa = ?';
+            $sql = 'update rating_empresa set rating_empresa_valor = ?,rating_empresa_comentario=? where id_usuario = ? and id_empresa = ?';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([
-                $valor,$usuario_id,$id_empresa
+                $valor,$comment,$usuario_id,$id_empresa
             ]);
             $result = 1;
         } catch (Exception $e){
@@ -356,16 +388,17 @@ class Empresa{
         }
         return $result;
     }
-    public function valorar_empresa($usuario_id,$id_empresa,$valor){
+    public function valorar_empresa($usuario_id,$id_empresa,$valor,$comment){
         try {
             $sql = 'insert into rating_empresa(
                     id_usuario,
                     id_empresa,
-                    rating_empresa_valor
-                    ) values(?,?,?)';
+                    rating_empresa_valor,
+                    rating_empresa_comentario
+                    ) values(?,?,?,?)';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([
-                $usuario_id,$id_empresa,$valor
+                $usuario_id,$id_empresa,$valor,$comment
             ]);
             $result = 1;
         } catch (Exception $e){

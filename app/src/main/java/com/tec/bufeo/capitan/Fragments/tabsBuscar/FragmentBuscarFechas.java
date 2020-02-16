@@ -105,6 +105,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         layoutInfoHoraExpandable = view.findViewById(R.id.layoutInfoHoraExpandable);
         carga_Empresas = view.findViewById(R.id.carga_Empresas);
 
+        buscar.setEnabled(false);
         boolean online = ForoFragment.isOnLine();
 
         if (online){
@@ -417,6 +418,8 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
             spn_empresas.setAdapter(adapEquipos);
             carga_Empresas.setVisibility(View.GONE);
 
+            buscar.setEnabled(true);
+
         }
     }
 
@@ -523,7 +526,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                 public void onClick(View v) {
                     Intent i = new Intent(context, ReservaEnBusqueda.class);
                     i.putExtra("nombre_empresa",item.txt_buscar_nombreEmpresa);
-                    //i.putExtra("h_reserva",item.h_reserva);
+                    i.putExtra("precio",item.txt_buscar_precioCancha);
                     i.putExtra("h_reserva",item.h_reserva);
                     i.putExtra("empresa_id",item.empresa_id);
                     context.startActivity(i);

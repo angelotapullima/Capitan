@@ -5,11 +5,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -49,6 +52,7 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
     Preferences preferences;
     TextView f_inicio,f_final,monto_totalex;
     Button btn_buscar_estadisticas;
+    LinearLayout layout_total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +64,19 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
         f_inicio= findViewById(R.id.f_inicio);
         f_final= findViewById(R.id.f_final);
         monto_totalex= findViewById(R.id.monto_totalex);
+        layout_total= findViewById(R.id.layout_total);
         btn_buscar_estadisticas= findViewById(R.id.btn_buscar_estadisticas);
 
         f_inicio.setOnClickListener(this);
         f_final.setOnClickListener(this);
         btn_buscar_estadisticas.setOnClickListener(this);
+
+        Date date =new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        f_final.setText(sdf.format(date));
+        f_inicio.setText(sdf.format(date));
+        obtenerEstadisticas();
     }
 
 
@@ -96,6 +108,7 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
     public List<ModelEstadisticasEmpresa> listaItem = new ArrayList<>();
     private void obtenerEstadisticas() {
 
+        dialogCarga();
         fecha = f_inicio.getText().toString();
         String url =IP2+"/api/Empresa/estadisticas_por_empresa";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -113,6 +126,7 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
                     listaItem.clear();
                     int count = resultJSON.length();
 
+
                     for (int i = 0; i < count; i++) {
 
 
@@ -125,43 +139,52 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
 
                        int coun1 = jsonArray.length();
 
-                        double monto_final_chancha=0,monto_final=0;
-                        for (int x = 0; x < coun1; x++) {
-                            jsonNodecito = jsonArray.getJSONObject(x);
+                       if (coun1 > 0){
+                           layout_total.setVisibility(View.VISIBLE);
+                           double monto_final_chancha=0,monto_final=0;
+                           for (int x = 0; x < coun1; x++) {
+                               jsonNodecito = jsonArray.getJSONObject(x);
 
-                            monto_final_chancha = Double.parseDouble(jsonNodecito.optString("reserva_pago1"));
-                            monto_final = monto_final + monto_final_chancha;
+                               monto_final_chancha = Double.parseDouble(jsonNodecito.optString("reserva_pago1"));
+                               monto_final = monto_final + monto_final_chancha;
 
-                        }
-
-
-                        DateFormat fechaHora = new SimpleDateFormat("yyyy-MM-dd");
-                        Date convertido = fechaHora.parse(fecha);
-
-                        SimpleDateFormat formatex = new SimpleDateFormat("EEE, d MMM yyyy");
-
-                        fecha2 = formatex.format(convertido);
-                        //fecha2 = String.valueOf(convertido);
+                           }
 
 
+                           DateFormat fechaHora = new SimpleDateFormat("yyyy-MM-dd");
+                           Date convertido = fechaHora.parse(fecha);
 
-                        modelEstadisticasEmpresa = new ModelEstadisticasEmpresa(String.valueOf(monto_final),fecha2,buildSubItemList(jsonArray));
-                        listaItem.add(modelEstadisticasEmpresa);
-                        //listaItem.clear();
-                        String dtStart = fecha;
-                        SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
-                        try {
-                            date = formate.parse(dtStart);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                           SimpleDateFormat formatex = new SimpleDateFormat("EEE, d MMM yyyy");
 
-                        date = sumarRestarHorasFecha(date,1);
-                        fecha = formate.format(date);
-                        monto_total = monto_total + monto_final;
+                           fecha2 = formatex.format(convertido);
+                           //fecha2 = String.valueOf(convertido);
+
+
+
+                           modelEstadisticasEmpresa = new ModelEstadisticasEmpresa(String.valueOf(monto_final),fecha2,buildSubItemList(jsonArray));
+                           listaItem.add(modelEstadisticasEmpresa);
+                           //listaItem.clear();
+                           String dtStart = fecha;
+                           SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
+                           try {
+                               date = formate.parse(dtStart);
+                           } catch (ParseException e) {
+                               e.printStackTrace();
+                           }
+
+                           date = sumarRestarHorasFecha(date,1);
+                           fecha = formate.format(date);
+                           monto_total = monto_total + monto_final;
+                       }else {
+                           layout_total.setVisibility(View.GONE);
+                           rcv_estadisticas_empresa.setVisibility(View.GONE);
+                           dialog_cargando.dismiss();
+                       }
+
 
 
                     }
+
                     monto_totalex.setText(String.valueOf(monto_total));
 
                     GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -176,6 +199,7 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
                     });
                     rcv_estadisticas_empresa.setAdapter(itemAdapter);
 
+                    dialog_cargando.dismiss();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -189,7 +213,7 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
                 Log.i("RESPUESTA: ",""+error.toString());
-
+                dialog_cargando.dismiss();
             }
         })  {
             @Override
@@ -275,6 +299,19 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
 
             obtenerEstadisticas();
         }
+
+    }
+
+
+    Dialog dialog_cargando;
+    public void dialogCarga(){
+
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_cargando.setCancelable(true);
+        dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+
+        dialog_cargando.show();
 
     }
 }

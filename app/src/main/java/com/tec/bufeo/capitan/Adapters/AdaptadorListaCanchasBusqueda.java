@@ -74,6 +74,7 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
                             i.putExtra("nombre_empresa",empresas.getEmpresas_nombre());
                             i.putExtra("h_reserva",empresas.getHora_reserva());
                             i.putExtra("empresa_id",empresas.getEmpresas_id());
+                            i.putExtra("precio",empresas.getPrecio());
                             context.startActivity(i);
                         }
                     }

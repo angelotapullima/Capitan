@@ -57,14 +57,15 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     //yo pago todo
     LinearLayout l_todo;
     Spinner spn_equipex_busqueda;
-    TextView total_cancha_todo,pago_total_todo,comision_todo;
     double comision_todo_dato = 3;
 
+    TextView total,costo,comision;
 
     //chancha
     LinearLayout l_chancha;
     RecyclerView rcv_colaboraciones_busqueda;
-    TextView pago1_chancha,comision_chancha,pago_total_chancha;
+
+
 
 
     //ambos
@@ -75,7 +76,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     DataConnection dc4,dc2;
     Preferences preferences;
 
-    String nombre_empresa_dato,empresa_id,h_reserva,fecha,hora;
+    String nombre_empresa_dato,empresa_id,h_reserva,fecha,hora,precio;
     LinearLayout btn_reservar_busqueda;
     TextView nombre_reserva_busqueda,saldo_bufis_busqueda;
 
@@ -97,6 +98,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         nombre_empresa_dato = getIntent().getExtras().getString("nombre_empresa");
         empresa_id = getIntent().getExtras().getString("empresa_id");
         h_reserva = getIntent().getExtras().getString("h_reserva");
+        precio = getIntent().getExtras().getString("precio");
 
         dc4 = new DataConnection(ReservaEnBusqueda.this,"ObtenerSaldo",false);
         new ReservaEnBusqueda.GetSaldo().execute();
@@ -116,19 +118,19 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         //layout para ocultar contenido de yo pagoTodo
         l_todo = findViewById(R.id.l_todo);
 
-        comision_todo  = findViewById(R.id.comision_todo);
-        pago_total_todo  = findViewById(R.id.pago_total_todo);
+        comision  = findViewById(R.id.comision);
+        costo  = findViewById(R.id.costo);
         //pago1_todo = findViewById(R.id.pago1_todo);
-        total_cancha_todo  = findViewById(R.id.total_cancha_todo);
+        total= findViewById(R.id.total);
         saldo_bufis_busqueda  = findViewById(R.id.saldo_bufis_busqueda);
 
 
+        costo.setText(precio);
+
+        total.setText(String.valueOf(comision_todo_dato + Double.parseDouble(precio)));
         /*  Widgets que trabajan con Chancha*/
         //layout para ocultar contenido de Chancha
         l_chancha = findViewById(R.id.l_chancha);
-        comision_chancha  = findViewById(R.id.comision_chancha);
-        pago_total_chancha  = findViewById(R.id.pago_total_chancha);
-        pago1_chancha = findViewById(R.id.pago1_chancha);
 
 
         /*  Datos Generales*/
@@ -228,7 +230,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                             }else{
 
 
-                                if (Double.parseDouble(saldo_bufis_busqueda.getText().toString())>= Double.parseDouble(total_cancha_todo.getText().toString())){
+                                if (Double.parseDouble(saldo_bufis_busqueda.getText().toString())>= Double.parseDouble(total.getText().toString())){
                                     registrarReservaUsuario("0","0","1");
                                 }else{
                                     preferences.codeAdvertencia("No cuenta con las Bufis Suficientes para la operación");
@@ -388,10 +390,10 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                         public void onItemClick(Colaboraciones mequipos, String tipo, int position) {
                             if (tipo.equals("btn_reservar_en_chancha")){
                                 Log.e("precios", "onItemClick: " + total_busqueda +" - " + mequipos.getMonto_final() );
-                                if (Double.parseDouble(mequipos.getMonto_final())> Double.parseDouble(pago_total_chancha.getText().toString())){
+                                if (Double.parseDouble(mequipos.getMonto_final())> Double.parseDouble(total.getText().toString())){
 
                                     Toast.makeText(getApplicationContext(), "El monto de la chancha supera el precio de la  cancha", Toast.LENGTH_SHORT).show();
-                                }else if (Double.parseDouble(mequipos.getMonto_final())< Double.parseDouble(pago_total_chancha.getText().toString())){
+                                }else if (Double.parseDouble(mequipos.getMonto_final())< Double.parseDouble(total.getText().toString())){
 
                                     Toast.makeText(getApplicationContext(), "El monto de la chancha es menor al precio de la  cancha", Toast.LENGTH_SHORT).show();
                                 }else{
@@ -518,7 +520,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         })  {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                String comision ="";
+                String comisionex ="";
                 int  posicion_equipo;
 
                 if (spn_tipo_pago_busqueda.getSelectedItem().toString().equals("Yo pago todo")){
@@ -526,9 +528,9 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
                     posicion_equipo= spn_equipex_busqueda.getSelectedItemPosition()-1;
                     pago_tipo_busqueda="1";
-                    pago1_busqueda=total_cancha_todo.getText().toString();
+                    pago1_busqueda=total.getText().toString();
                     colaboracion_busqueda="0";
-                    comision = comision_todo.getText().toString();
+                    comisionex = comision.getText().toString();
 
                     equipo_id_busqueda = ListEquipos_busqueda.get(posicion_equipo).getEquipo_id();
 
@@ -537,8 +539,8 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                     colaboracion_busqueda=id_chancha;
 
                     equipo_id_busqueda = id_equipo;
-                    pago1_busqueda=pago1_chancha.getText().toString();
-                    comision = comision_chancha.getText().toString();
+                    pago1_busqueda=costo.getText().toString();
+                    comisionex = comision.getText().toString();
                 }
 
 
@@ -552,7 +554,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 parametros.put("pago1",pago1_busqueda);
                 parametros.put("pago_tipo",pago_tipo_busqueda);
                 parametros.put("id_colaboracion",colaboracion_busqueda);
-                parametros.put("pago_comision",comision);
+                parametros.put("pago_comision",comisionex);
                 parametros.put("tipopago","1");
                 parametros.put("estado",estado_pago);
                 parametros.put("fecha",fecha);
@@ -638,22 +640,20 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                     hora_apertura = resultado_part1[0];
                     hora_cierre= resultado_part2[0];
 
+
                     if (Integer.parseInt(hora_apertura )< 18){
-                        total_cancha_todo.setText(arraycancha.get(position).getCancha_precioD());
-                        pago1_chancha.setText(arraycancha.get(position).getCancha_precioD());
+                        total.setText(arraycancha.get(position).getCancha_precioD());
+                        costo.setText(arraycancha.get(position).getCancha_precioD());
                     }else{
-                        total_cancha_todo.setText(arraycancha.get(position).getCancha_precioN());
-                        pago1_chancha.setText(arraycancha.get(position).getCancha_precioN());
+                        total.setText(arraycancha.get(position).getCancha_precioN());
+                        costo.setText(arraycancha.get(position).getCancha_precioN());
                     }
-                    comision_todo.setText(String.valueOf(comision_todo_dato));
-                    comision_chancha.setText(String.valueOf(comision_todo_dato));
+                    comision.setText(String.valueOf(comision_todo_dato));
 
                     double pagoFinalChancha = 0;
 
-                    pagoFinalChancha = Double.parseDouble(pago1_chancha.getText().toString()) + comision_todo_dato;
-                    pago_total_chancha.setText(String.valueOf(pagoFinalChancha));
 
-                    pago_total_todo.setText(String.valueOf(Double.parseDouble(total_cancha_todo.getText().toString()) + comision_todo_dato));
+                    total.setText(String.valueOf(Double.parseDouble(costo.getText().toString()) + comision_todo_dato));
 
                 }
 

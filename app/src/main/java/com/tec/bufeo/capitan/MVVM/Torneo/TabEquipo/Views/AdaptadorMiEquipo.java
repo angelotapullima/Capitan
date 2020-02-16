@@ -95,12 +95,19 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
 
             if (tipo.equals("mas")){
                 UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo,null);
+                //UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo_300,null);
+
                 holder.txt_nombreEquipo.setText(current.getEquipo_nombre());
-                holder.cdv_foto_equipo.setVisibility(View.GONE);
-            }else{
-                UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo_300,null);
-                holder.txt_nombreEquipo_300.setText(current.getEquipo_nombre());
+                //holder.txt_nombreEquipo_300.setText(current.getEquipo_nombre());
+
                 holder.card_300.setVisibility(View.GONE);
+            }else{
+                //UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo,null);
+                UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo_300,null);
+
+                //holder.txt_nombreEquipo.setText(current.getEquipo_nombre());
+                holder.txt_nombreEquipo_300.setText(current.getEquipo_nombre());
+                holder.cdv_foto_equipo.setVisibility(View.GONE);
 
 
             }

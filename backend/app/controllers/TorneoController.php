@@ -571,7 +571,8 @@ class TorneoController{
                 "equipo_id" => $model[$i]->equipo_id,
                 "nombre" => $model[$i]->equipo_nombre,
                 "foto" => $model[$i]->equipo_foto,
-                "capitan" => $model[$i]->usuario_id
+                "capitan" => $model[$i]->user_nickname,
+                "capitan_id" => $model[$i]->id_user
             );
         }
         $data = array("results" => $resources);
@@ -713,8 +714,8 @@ class TorneoController{
                     "equipo_id" => $model[$i]->equipo_id,
                     "nombre" => $model[$i]->equipo_nombre,
                     "foto" => $model[$i]->equipo_foto,
-                    "capitan" => $model[$i]->usuario_nombre,
-                    "capitan_id" => $model[$i]->usuario_id
+                    "capitan" => $model[$i]->user_nickname,
+                    "capitan_id" => $model[$i]->id_user
                 );
             }
         }catch (Exception $e){
@@ -843,9 +844,13 @@ class TorneoController{
                         $valor_2++;
                         $this->torneo->sumar_estadistica($retador_id,"retos_enviados",$valor_1);
                         $this->torneo->sumar_estadistica($retado_id,"retos_recibidos",$valor_2);
-                        $this->user->crear_chat($retador_id,$retado_id,date('Y-m-d H:i:s'));
+                        $microtime = microtime(true);
+                        $fechahora=date('Y-m-d H:i:s');
+                        $this->user->crear_chat($datos2->id_user,$datos->id_user,$fechahora,$microtime);
                         if($datos->user_token!=""){
-                            //$this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
+                            $detalle_Chat = $this->user->listar_chat_por_microtime($microtime);
+                            $this->user->enviar_mensaje($detalle_Chat->chat_id,$datos->id_user,"Hola! He retado a tu equipo",$fechahora);
+                            $notificar = $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
                         }
                     }
                 }else{
@@ -1016,7 +1021,7 @@ class TorneoController{
             'data' =>array('tipo'=> $tipo ,
                 'Contenido' => $contenido
             ));
-        define('GOOGLE_API_KEY', 'AIzaSyB_gvN5IfIxPHiZ-rFcqUowmh7DBfUaEv4');
+        define('GOOGLE_API_KEY', 'AAAAj5-Syog:APA91bFAMP0UmglvTddGLwEqtTJmfEtFTmVkSElOOEcmAI1rW-GaJ6uTfGuUvdzbwcMxyyLswqYUkM3ALdSvcUNM60rb9ryY-MIN2oLUHVIoT9SyKPE6uyo7omdwNQZjaVZtEDkYnxX7');
         $headers = array(
             'Authorization:key='.GOOGLE_API_KEY,
             'Content-Type: application/json');
@@ -1040,7 +1045,7 @@ class TorneoController{
             'data' =>array('tipo'=> $tipo ,
                 'Contenido' => $contenido
             ));
-        define('GOOGLE_API_KEY', 'AIzaSyB_gvN5IfIxPHiZ-rFcqUowmh7DBfUaEv4');
+        define('GOOGLE_API_KEY', 'AAAAj5-Syog:APA91bFAMP0UmglvTddGLwEqtTJmfEtFTmVkSElOOEcmAI1rW-GaJ6uTfGuUvdzbwcMxyyLswqYUkM3ALdSvcUNM60rb9ryY-MIN2oLUHVIoT9SyKPE6uyo7omdwNQZjaVZtEDkYnxX7');
         $headers = array(
             'Authorization:key='.GOOGLE_API_KEY,
             'Content-Type: application/json');
