@@ -1,7 +1,10 @@
 package com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -10,6 +13,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -27,7 +39,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -39,14 +53,17 @@ import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRe
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
-public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     Preferences preferences;
     RecyclerView rcv_foro;
@@ -63,6 +80,14 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     ImageView fotoPerfil;
     EditText floating_search_view;
     FrameLayout FrameNuevosDatos;
+
+    View bottomShet;
+    BottomSheetBehavior mBottomSheetBehavior;
+    LinearLayout tap_de_accion,bottomDelete;
+    ImageView btnClose;
+    TextView titulotap;
+    String idpublicacion;
+
 
     public ForoFragment() {
     }
@@ -139,6 +164,13 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initViews(View view){
 
 
+        bottomShet = view.findViewById(R.id.bottomShet);
+        tap_de_accion = view.findViewById(R.id.tap_de_accion);
+        titulotap = view.findViewById(R.id.titulotap);
+        bottomDelete = view.findViewById(R.id.bottomDelete);
+        btnClose = view.findViewById(R.id.btnClose);
+
+
         fotoPerfil = view.findViewById(R.id.fotoPerfil);
         partidos = view.findViewById(R.id.partidos);
         rcv_foro = (RecyclerView) view.findViewById(R.id.rcv_foro);
@@ -160,6 +192,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
+        btnClose.setOnClickListener(this);
+        bottomDelete.setOnClickListener(this);
         partidos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +234,45 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
 
+        rcv_foro.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && fab_registrarForo.isShown())
+                    fab_registrarForo.hide();
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    fab_registrarForo.show();
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         //feed();
+
+
+        mBottomSheetBehavior= BottomSheetBehavior.from(bottomShet);
+        mBottomSheetBehavior.setPeekHeight(0);
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    tap_de_accion.setVisibility(View.GONE);
+                }
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    tap_de_accion.setVisibility(View.VISIBLE);
+                }
+                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                    tap_de_accion.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+        });
     }
 
 
@@ -259,6 +331,13 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 if (dato.equals("masContenido")){
                     Log.e("Mas contenido", "onItemClick: " );
                     feed();
+                }if (dato.equals("btnAccion")){
+
+                    idpublicacion=feedTorneo.getPublicacion_id();
+                    fab_registrarForo.hide();
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
                 }
             }
         });
@@ -297,9 +376,103 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v.equals(btnClose)){
+            fab_registrarForo.show();
+            if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }else if(v.equals(bottomDelete)){
+            dialogoEliminarPublicacion();
+        }
+    }
+
+    //Dialog dialogr;
+    AlertDialog dialog_eliminar;
+    LinearLayout fondoDialogo;
+    public void dialogoEliminarPublicacion(){
+
+        AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View vista = inflater.inflate(R.layout.dialogo_eliminar,null);
+        builder.setView(vista);
+
+        dialog_eliminar = builder.create();
+        dialog_eliminar.show();
 
 
 
 
+        fondoDialogo = vista.findViewById(R.id.fondoDialogo);
+        MaterialButton btn_cancela = vista.findViewById(R.id.btn_cancelar);
+        MaterialButton btn_acepta =  vista.findViewById(R.id.btn_eliminar);
 
+
+        fondoDialogo.getBackground().setAlpha(150);
+        btn_cancela.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_eliminar.dismiss();
+            }
+        });
+
+        btn_acepta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                fondoDialogo.setVisibility(View.VISIBLE);
+                EliminarPublicacionWeb(idpublicacion);
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+            }
+        });
+    }
+
+    StringRequest stringRequest;
+    private void EliminarPublicacionWeb(final String publicacion_id) {
+        String url =IP2+"/api/Foro/eliminar_publicacion";
+
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("foro","respuesta al eliminar publicacion "+response);
+
+                if (response.toString().equals("1")){
+                    Toast.makeText(context, "Publicacion eliminada", Toast.LENGTH_SHORT).show();
+                    //retroViewModel.deleteAllFeed();
+                    //onRefresh();
+                    feedListViewModel.deleteOneFeed(publicacion_id);
+                    dialog_eliminar.dismiss();
+                }
+            }
+
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
+                Log.i("foro: ","respuesta error eliminar publicacion "+error.toString());
+
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //String imagen=convertirImgString(bitmap);
+
+
+                Map<String,String> parametros=new HashMap<>();
+                parametros.put("publicacion_id",publicacion_id);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
+                Log.i("foro: ","parametros "+parametros.toString());
+                return parametros;
+
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
+    }
 }

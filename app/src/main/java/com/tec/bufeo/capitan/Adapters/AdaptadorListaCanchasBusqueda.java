@@ -70,24 +70,18 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent i = new Intent(context, ReservaEnBusqueda.class);
-                            i.putExtra("nombre_empresa",empresas.getEmpresas_nombre());
-                            i.putExtra("h_reserva",empresas.getHora_reserva());
-                            i.putExtra("empresa_id",empresas.getEmpresas_id());
-                            i.putExtra("precio",empresas.getPrecio());
-                            context.startActivity(i);
+
+                            listener.onItemClick(empresas,"layout_reserva_busqueda",getAdapterPosition());
+
                         }
                     }
             );
-            /*imb_reserva_llamada.setOnClickListener(new View.OnClickListener() {
+            imb_llamar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, RegistroReserva.class);
-                    intent.putExtra("h_reserva",reserva.getReserva_hora_cancha());
-                    context.startActivity(intent);
-                    // listener.onItemClick(reserva,getAdapterPosition());
+                    listener.onItemClick(empresas,"imb_llamar",getAdapterPosition());
                 }
-            });*/
+            });
 
 
         }
@@ -109,22 +103,7 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
         holder.txt_buscar_nombreEmpresa.setText(obj.getEmpresas_nombre());
         holder.txt_buscar_direccionEmpresa.setText(obj.getEmpresas_direccion());
         holder.txt_buscar_precioCancha.setText(obj.getPrecio());
-        holder.txt_buscar_telefonoEmpresa.setText(obj.getEmpresas_telefono());
-        //holder.txt_precioAbonadoCancha.setText(obj.getReserva_costo());
 
-        /*switch (obj.getReserva_color()) {
-            case "rojo":
-                holder.cdv_canchas_horario_reserva.setCardBackgroundColor(context.getResources().getColor(R.color.colorRojo));
-
-                break;
-            case "verde":
-                holder.cdv_canchas_horario_reserva.setCardBackgroundColor(context.getResources().getColor(R.color.colorVerde));
-                break;
-            case "anaranjado":
-                holder.cdv_canchas_horario_reserva.setCardBackgroundColor(context.getResources().getColor(R.color.colorAnaranjado));
-                break;
-
-        }*/
         holder.bid(obj, listener);
     }
 
@@ -135,7 +114,7 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
 
 
     public interface OnItemClickListener {
-        void onItemClick(Empresas empresas, int position);
+        void onItemClick(Empresas empresas,String tipo, int position);
     }
 }
 

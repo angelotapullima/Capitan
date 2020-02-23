@@ -37,8 +37,8 @@ public class InstanciasViewModel extends AndroidViewModel {
 
 
 
-    public LiveData<List<InstanciasModel>> getIdTorneo(String id_torneo) {
-        retroObservable = instanciasWebServiceRepository.providesWebService(id_torneo);
+    public LiveData<List<InstanciasModel>> getIdTorneo(String id_torneo,String token) {
+        retroObservable = instanciasWebServiceRepository.providesWebService(id_torneo,token);
         mAllPosts = instanciasRoomDBRepository.getIdTorneo(id_torneo);
         return mAllPosts;
     }

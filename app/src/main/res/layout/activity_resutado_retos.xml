@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="10"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:paddingBottom="2dp"
         android:orientation="horizontal">
         <LinearLayout
@@ -106,7 +108,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="10"
+        android:background="@drawable/bgnoseleccionado"
         android:layout_margin="16dp"
+        android:padding="5dp"
         android:orientation="horizontal">
 
         <TextView
@@ -129,7 +133,7 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:id="@+id/button_enviar_resultado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

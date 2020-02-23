@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
-                android:background="@drawable/edt_bordes"
+                android:background="@drawable/bgnoseleccionado"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="3dp">
@@ -51,28 +51,22 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
-                android:background="@drawable/edt_bordes"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:paddingLeft="5dp">
+                style="@style/cajaDeTexto">
 
                 <EditText
                     android:id="@+id/edt_nombreEquipo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
                     android:hint="Nombre "
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    style="@style/InputTexto"/>
             </LinearLayout>
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_registrarEquipo"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:backgroundTint="@color/colorPrimary"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_azul"
                 android:textColor="@color/colorTextIcons"
                 android:textStyle="bold"
                 android:text="Crear " />

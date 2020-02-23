@@ -11,15 +11,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tec.bufeo.capitan.Activity.AgregarEquipos;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.GruposYEquipos.GruposYEquiposFragment;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Views.InfoDtorneoFragment;
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Views.PosicionesFragment;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
@@ -27,15 +29,15 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class DetalleTorneoNuevo extends AppCompatActivity {
 
     public TabLayout tabs_Dtorneo;
-    Button fecha_Dtorneo,unirse_Dtorneo;
+    Button unirse_Dtorneo;
     ImageView imagen_Dtorneo;
+    TextView nombre_torneo_Detalle;
     public ViewPager container_Dtorneo;
     private SectionsDetalleTorneoAdapter sectionsDetalleTorneoAdapter;
     String id_torneo,nombre,descripcion,lugar,fecha,hora,organizador, id_usuario,foto;
-
-
+    ImageButton finishDetalleTorneo;
+    Preferences preferences;
     UniversalImageLoader universalImageLoader;
-    FloatingActionButton fab_agregarParticipantesTorneo;
 
 
 
@@ -53,6 +55,7 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_torneo_nuevo);
 
+        preferences = new Preferences(this);
         universalImageLoader = new UniversalImageLoader(getApplicationContext());
 
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
@@ -76,9 +79,15 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
         container_Dtorneo.setAdapter(sectionsDetalleTorneoAdapter);
         tabs_Dtorneo =  findViewById(R.id.tabs_Dtorneo);
         imagen_Dtorneo =  findViewById(R.id.imagen_Dtorneo);
-        fecha_Dtorneo =  findViewById(R.id.fecha_Dtorneo);
+        nombre_torneo_Detalle =  findViewById(R.id.nombre_torneo_Detalle);
         unirse_Dtorneo =  findViewById(R.id.unirse_Dtorneo);
-        fab_agregarParticipantesTorneo =  findViewById(R.id.fab_agregarParticipantesTorneo);
+        finishDetalleTorneo =  findViewById(R.id.finishDetalleTorneo);
+
+
+        if (id_usuario.equals(preferences.getIdUsuarioPref())){
+            unirse_Dtorneo.setVisibility(View.GONE);
+
+        }
 
 
         for(int i=0;i<5;i++) {
@@ -108,17 +117,17 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
 
         tabs_Dtorneo.getSelectedTabPosition();
 
-        fab_agregarParticipantesTorneo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(DetalleTorneoNuevo.this, AgregarEquipos.class);
-                startActivity(i);
-            }
-        });
 
 
         UniversalImageLoader.setImage(IP2+"/"+ foto,imagen_Dtorneo,null);
+        nombre_torneo_Detalle.setText(nombre);
 
+        finishDetalleTorneo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 

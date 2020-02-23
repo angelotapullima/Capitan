@@ -49,7 +49,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
 
     BottomNavigationView bnv_menu;
     int id=0;
-    public static String usuario_nombre,usuario_id,usuario_foto,ubigeo_id, usuario_posicion;
+    //public static String usuario_nombre,usuario_id,usuario_foto,ubigeo_id, usuario_posicion;
     public Fragment fragmentactual;
     FragmentTransaction fragmentTransaction;
     static  String  token = "";
@@ -74,7 +74,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
 
         preferencesUser = getSharedPreferences("User", Context.MODE_PRIVATE);
         //Toast.makeText(getApplicationContext(),"p "+preferencesUser.getString("posicion",""),Toast.LENGTH_SHORT).show();
-        if(preferencesUser.getString("idusuario", "").equals("")){
+        /*if(preferencesUser.getString("idusuario", "").equals("")){
             usuario_nombre = getIntent().getStringExtra("usuario_nombre");
             usuario_id = preferences.getIdUsuarioPref();
             usuario_foto = getIntent().getStringExtra("usuario_foto");
@@ -82,7 +82,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
             usuario_posicion = getIntent().getStringExtra("posicion");
             token = preferencesUser.getString("token_firebase","");
             //Toast.makeText(getApplicationContext(),"p0 "+usuario_posicion,Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener
                 ( MenuPrincipal.this,  new OnSuccessListener<InstanceIdResult>() {
@@ -259,7 +259,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
 
                 //enviamos los parametros id_usuario y el token nuevo asignado al telefono
                 Map<String,String> parametros=new HashMap<>();
-                parametros.put("id_user",usuario_id);
+                parametros.put("id_user",preferences.getIdUsuarioPref());
                 parametros.put("token_firebase",tokenNuevo);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());

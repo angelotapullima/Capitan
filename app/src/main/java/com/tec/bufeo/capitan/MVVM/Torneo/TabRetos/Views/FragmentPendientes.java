@@ -137,7 +137,6 @@ public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.O
 
         Button btn_cancela = dialogr.findViewById(R.id.btn_cancelar);
         Button btn_acepta =  dialogr.findViewById(R.id.btn_aceptar);
-        Button btn_ver_mas_tarde =  dialogr.findViewById(R.id.btn_ver_mas_tarde);
         TextView txtMensaje = dialogr.findViewById(R.id.txtMensaje);
         txtMensaje.setText("¿Desea Aceptar el reto?");
 
@@ -149,12 +148,7 @@ public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.O
             }
         });
 
-        btn_ver_mas_tarde.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogr.dismiss();
-            }
-        });
+
 
         btn_acepta.setOnClickListener(new View.OnClickListener() {
             @Override

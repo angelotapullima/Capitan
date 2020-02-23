@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoItem;
-import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipoPadre;
+import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipo;
 import com.tec.bufeo.capitan.R;
 
 import java.util.List;
@@ -66,8 +66,8 @@ public class AdapterRegistroEquiposGruposItem extends RecyclerView.Adapter<Adapt
         holder.agg_equipo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =  new Intent(context, RegistroEquipoPadre.class);
-                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent i =  new Intent(context, RegistroEquipo.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("id_grupo",tablaTorneoItem.getId_grupo());
 
                 context.startActivity(i);

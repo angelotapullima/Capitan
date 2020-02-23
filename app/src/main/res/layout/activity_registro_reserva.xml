@@ -127,20 +127,16 @@
                         android:textStyle="bold"
                         android:textSize="18sp"/>
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@drawable/edt_bordes"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="5dp">
+                        style="@style/cajaDeTexto">
 
                         <EditText
                             android:id="@+id/nombre_reserva"
                             android:layout_width="match_parent"
-                            android:layout_height="39dp"
+                            android:layout_height="wrap_content"
                             android:backgroundTint="@color/transparent"
                             android:hint="Nombre "
+                            style="@style/InputTexto"
                             android:inputType="textPersonName" />
                     </LinearLayout>
 
@@ -155,7 +151,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:background="@drawable/bg_spinner"
+                        android:background="@drawable/bgnoseleccionado"
                         android:orientation="vertical">
                         <Spinner
                             android:id="@+id/spn_tipo_pago"
@@ -185,7 +181,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:background="@drawable/bg_spinner"
+                            android:background="@drawable/bgnoseleccionado"
                             android:id="@+id/InputSpinner"
                             android:orientation="vertical">
                             <Spinner
@@ -206,7 +202,7 @@
                         android:layout_marginTop="10dp"
                         android:id="@+id/layout_precios"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_spinner"
+                        android:background="@drawable/bgnoseleccionado"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -407,7 +403,7 @@
                         android:padding="5dp"
                         android:id="@+id/layout_bufis"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_spinner">
+                        android:background="@drawable/bgnoseleccionado">
 
                         <TextView
                             android:layout_width="0dp"

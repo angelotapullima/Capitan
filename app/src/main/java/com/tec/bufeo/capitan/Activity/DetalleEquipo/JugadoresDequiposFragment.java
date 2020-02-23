@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.Jugadores;
@@ -37,6 +38,7 @@ public class JugadoresDequiposFragment extends Fragment implements SwipeRefreshL
     String id_equipo,nombre;
     Preferences preferences;
     Context context;
+    LinearLayout cargando_layout_juegadores;
     public JugadoresDequiposFragment() {
         // Required empty public constructor
     }
@@ -69,9 +71,8 @@ public class JugadoresDequiposFragment extends Fragment implements SwipeRefreshL
 
     private void initViews(View view) {
         rcv_juegadores = view.findViewById(R.id.rcv_juegadores);
+        cargando_layout_juegadores = view.findViewById(R.id.cargando_layout_juegadores);
         swipeJuegadores = view.findViewById(R.id.swipeJuegadores);
-
-
         swipeJuegadores.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
         swipeJuegadores.setOnRefreshListener(this);
 
@@ -98,7 +99,11 @@ public class JugadoresDequiposFragment extends Fragment implements SwipeRefreshL
         jugadoresViewModel.getAllMisJugadores(id_equipo,preferences.getToken(),"si").observe(this, new Observer<List<Jugadores>>() {
             @Override
             public void onChanged(List<Jugadores> jugadores) {
-                adapterJugadores.setWords(jugadores);
+                if(jugadores.size()>0){
+                    adapterJugadores.setWords(jugadores);
+                    cargando_layout_juegadores.setVisibility(View.GONE);
+                }
+
             }
         });
     }

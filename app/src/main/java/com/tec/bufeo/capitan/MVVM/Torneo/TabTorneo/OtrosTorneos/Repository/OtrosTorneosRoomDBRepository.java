@@ -44,7 +44,7 @@ public class OtrosTorneosRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             retosDao.deleteAll();
-            Log.i("eliminado otros retos", "doInBackground: eliminado");
+            Log.e("eliminado otros retos", "doInBackground: eliminado");
             return null;
         }
     }

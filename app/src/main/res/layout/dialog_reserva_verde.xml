@@ -114,20 +114,14 @@
                 android:textStyle="bold"
                 android:textSize="18sp"/>
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/edt_bordes"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp">
+                style="@style/cajaDeTexto">
 
                 <EditText
                     android:id="@+id/nombre_reserva_naranja"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-
-                    android:backgroundTint="@color/transparent"
+                    android:layout_height="wrap_content"
+                    style="@style/InputTexto"
                     android:hint="Nombre "
                     android:inputType="textPersonName" />
             </LinearLayout>
@@ -227,19 +221,14 @@
 
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="55dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@drawable/edt_bordes"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="5dp">
+                        style="@style/cajaDeTexto">
 
                         <EditText
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:id="@+id/monto_pagado"
-                            android:backgroundTint="@color/transparent"
+                            style="@style/InputTexto"
                             android:hint="Monto "
                             android:inputType="textPersonName" />
                     </LinearLayout>

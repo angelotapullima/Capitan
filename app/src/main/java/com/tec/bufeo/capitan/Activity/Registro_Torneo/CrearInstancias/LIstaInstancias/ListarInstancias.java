@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneoFinalizado;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import org.json.JSONArray;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class ListarInstancias extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,17 +42,17 @@ public class ListarInstancias extends AppCompatActivity implements View.OnClickL
     Context context;
     Button btn_finish;
     public List<Instancias> listaItem = new ArrayList<>();
+    Preferences preferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_instancias);
-
+        preferences =new Preferences(this);
         rcv_partidos_instancias= findViewById(R.id.rcv_partidos_instancias);
         btn_finish= findViewById(R.id.btn_finish);
         id_torneo= getIntent().getExtras().getString("id_torneo");
-        //id_torneo="1";
 
         btn_finish.setOnClickListener(this);
 
@@ -69,7 +71,7 @@ public class ListarInstancias extends AppCompatActivity implements View.OnClickL
 
     StringRequest stringRequest;
     private void pedir_tabla(final String id_torneo) {
-        String url =IP+"/index.php?c=Torneo&a=listar_instancias_partidos_por_id_torneo&key_mobile=123456asdfgh";
+        String url =IP2+"/api/Torneo/listar_instancias_partidos_por_id_torneo";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -136,6 +138,8 @@ public class ListarInstancias extends AppCompatActivity implements View.OnClickL
 
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("id_torneo",id_torneo);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
 
 
                 return parametros;

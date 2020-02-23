@@ -32,48 +32,65 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:layout_width="35dp"
-                            android:id="@+id/foto_perfil_publicacion"
-                            android:layout_height="35dp"
-                            app:srcCompat="@drawable/account" />
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_toRightOf="@+id/foto_perfil_publicacion"
-                            android:orientation="vertical">
-                            <TextView
-                                android:id="@+id/txt_usuarioForo"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="#212121"
-                                android:textSize="12dp"
-                                android:layout_marginLeft="2dp"
-                                android:text="Luis Antonio Lomas Valles"
-                                android:textStyle="bold|italic" />
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                            android:layout_toLeftOf="@id/btnAccion"
+                            android:orientation="horizontal">
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:layout_width="35dp"
+                                android:id="@+id/foto_perfil_publicacion"
+                                android:layout_height="35dp"
+                                app:srcCompat="@drawable/account" />
 
-                                <ImageView
-                                    android:layout_width="18dp"
-                                    android:layout_height="18dp"
-                                    app:srcCompat="@drawable/ic_clock" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_toRightOf="@+id/foto_perfil_publicacion"
+                                android:orientation="vertical">
                                 <TextView
-                                    android:id="@+id/txt_fechaHora"
-                                    android:layout_width="match_parent"
+                                    android:id="@+id/txt_usuarioForo"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textColor="#757575"
-                                    android:textSize="10sp"
-                                    android:layout_gravity="center_vertical"
-                                    android:maxLines="1"
-                                    android:text="hace : 14 dias"
-                                    android:textStyle="italic" />
+                                    android:textColor="#212121"
+                                    android:textSize="12dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:text="Luis Antonio Lomas Valles"
+                                    android:textStyle="bold|italic" />
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="18dp"
+                                        android:layout_height="18dp"
+                                        app:srcCompat="@drawable/ic_clock" />
+                                    <TextView
+                                        android:id="@+id/txt_fechaHora"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="#757575"
+                                        android:textSize="10sp"
+                                        android:layout_gravity="center_vertical"
+                                        android:maxLines="1"
+                                        android:text="hace : 14 dias"
+                                        android:textStyle="italic" />
+                                </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
+
+
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="#FFF"
+                            android:id="@+id/btnAccion"
+                            android:layout_alignParentEnd="true"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_more_horiz"/>
 
 
                     </RelativeLayout>

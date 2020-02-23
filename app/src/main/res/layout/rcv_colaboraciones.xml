@@ -6,7 +6,7 @@
     android:padding="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginRight="16dp"
-    android:background="@drawable/bg_spinner"
+    android:background="@drawable/bgnoseleccionado"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout

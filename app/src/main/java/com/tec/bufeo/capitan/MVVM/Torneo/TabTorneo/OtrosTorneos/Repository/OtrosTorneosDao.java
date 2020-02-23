@@ -17,7 +17,7 @@ public interface OtrosTorneosDao {
     @Query("SELECT * from Torneo WHERE mi_torneo =  :no  ")
     LiveData<List<Torneo>> getAllOtrosTorneos(String no);
 
-    @Query("DELETE FROM Torneo")
+    @Query("DELETE FROM Torneo WHERE mi_torneo =  'no'")
     void deleteAll();
 
 

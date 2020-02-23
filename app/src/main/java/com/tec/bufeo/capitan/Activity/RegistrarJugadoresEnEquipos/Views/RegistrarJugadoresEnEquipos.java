@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Application;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -234,7 +236,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
     int conteo_envios=0;
     StringRequest stringRequest;
     private void registarJugadores(final JugadoresSeleccionados jugadoresSeleccionados){
-
+        dialogCarga();
 
 
         String url =IP2+"/api/Torneo/registrar_equipo_usuario";
@@ -258,6 +260,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
                         
                         if (conteo_envios==listaDatos.size()){
                             Toast.makeText(RegistrarJugadoresEnEquipos.this, "Registro completo", Toast.LENGTH_SHORT).show();
+                            dialog_cargando.dismiss();
                             finish();
                         }
                     }
@@ -301,6 +304,18 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
     @Override
     protected void onStart() {
         super.onStart();
+
+    }
+
+    Dialog dialog_cargando;
+    public void dialogCarga(){
+
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_cargando.setCancelable(true);
+        dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+
+        dialog_cargando.show();
 
     }
 }

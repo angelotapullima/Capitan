@@ -27,6 +27,7 @@ import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.LIstaInsta
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Models.InstanciasModel;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.ViewModels.InstanciasViewModel;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import org.json.JSONArray;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class CrearInstancias extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,6 +53,7 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
     AdapterInstancias adapterInstancias;
     Spinner spn_tipo_instancias;
     ArrayList<String> arrayDatos;
+    Preferences preferences;
 
     int cantidad;
     String id_torneo,valor_spinner,valor_tipo;
@@ -63,6 +66,7 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
 
         instanciasViewModel = ViewModelProviders.of(this).get(InstanciasViewModel.class);
 
+        preferences= new Preferences(this);
 
         initViews();
         setAdapter();
@@ -119,7 +123,7 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
 
     private void cargarvista() {
 
-        instanciasViewModel.getIdTorneo(id_torneo).observe(this, new Observer<List<InstanciasModel>>() {
+        instanciasViewModel.getIdTorneo(id_torneo, preferences.getToken()).observe(this, new Observer<List<InstanciasModel>>() {
             @Override
             public void onChanged(List<InstanciasModel> instanciasModels) {
                 if (instanciasModels.size()>0) {
@@ -133,7 +137,7 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    String url = IP+"/index.php?c=Torneo&a=registrar_instancia&key_mobile=123456asdfgh";
+    String url = IP2+"/api/Torneo/registrar_instancia";
     StringRequest stringRequest;
     int valor;
     private void crear_instancia() {
@@ -142,7 +146,7 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Torneo","registrar grupo"+response);
+                Log.d("Torneo","registrar_instancia"+response);
 
 
                 try {
@@ -153,7 +157,7 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
                     JSONObject jsonNode = resultJSON.getJSONObject(0);
                     valor = jsonNode.optInt("valor");
                     if (valor==1){
-                        instanciasViewModel.getIdTorneo(id_torneo);
+                        instanciasViewModel.getIdTorneo(id_torneo, preferences.getToken());
                         nombre_instancia.setText("");
                     }
 
@@ -184,7 +188,10 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
 
                 parametros.put("id_torneo", id_torneo);
                 parametros.put("instancia_tipo", valor_tipo);
+                parametros.put("token", preferences.getToken());
+                parametros.put("app", "true");
                 parametros.put("instancia_nombre", nombre_instancia.getText().toString());
+
 
 
                 Log.e("torneo", "getParams: "+parametros.toString() );

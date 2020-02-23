@@ -216,7 +216,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
                     File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/","Equipo");
                     carpetas.mkdirs();
 
-                    String aleatorio = MenuPrincipal.usuario_id+"_"+ edt_nombreEquipo.getText().toString();
+                    String aleatorio = preferences.getIdUsuarioPref()+"_"+ edt_nombreEquipo.getText().toString();
                     String nombre = aleatorio +".jpg";
 
                     File imagen = new File(carpetas,nombre);
@@ -480,7 +480,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
 
         android.app.AlertDialog.Builder builder =  new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View vista = inflater.inflate(R.layout.dialog_cargando,null);
+        View vista = inflater.inflate(R.layout.dialogo_cargando_logobufeo,null);
         builder.setView(vista);
 
 

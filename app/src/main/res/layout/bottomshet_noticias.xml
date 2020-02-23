@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/back_top_corner"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:background="@drawable/back_top_corner"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp">
+            <LinearLayout
+                android:id="@+id/tap_de_accion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:id="@+id/btnClose"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:srcCompat="@drawable/ic_close"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:id="@+id/titulotap"
+                    android:textStyle="bold"
+                    android:text="Opciones"
+                    />
+
+            </LinearLayout>
+
+
+
+            <!-- Modal Eliminar Publicación-->
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bottomDelete"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:srcCompat="@drawable/ic_delete"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/blue_500"
+                        android:textStyle="bold"
+                        android:textSize="17sp"
+                        android:layout_height="wrap_content"
+                        android:text="Eliminar Publicación"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.core.widget.NestedScrollView>

@@ -16,12 +16,12 @@ public interface EequiposDao {
     void insert(EstadisticasDeEquipos resultModel);
 
     @Query("SELECT * from estadisticas_equipos ")
-    LiveData<List<EstadisticasDeEquipos>> getAllTorneoEquipos();
+    LiveData<List<EstadisticasDeEquipos>> getAllEstadisticasDeEquipos();
 
     @Query("DELETE FROM estadisticas_equipos")
     void deleteAll();
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTorneosEquipos(List<EstadisticasDeEquipos> resultModel);
+    void insertEstadisticasEquipos(List<EstadisticasDeEquipos> resultModel);
 }

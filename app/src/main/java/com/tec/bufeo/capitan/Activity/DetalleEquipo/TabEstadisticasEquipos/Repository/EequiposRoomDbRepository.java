@@ -23,37 +23,37 @@ public class EequiposRoomDbRepository {
 
     }
 
-    public LiveData<List<EstadisticasDeEquipos>> getAllTorneoEquipos() {
+    public LiveData<List<EstadisticasDeEquipos>> getAllEstadisticas() {
         boolean online = ForoFragment.isOnLine();
 
         /*if (online){
             deleteAllRetos();
         }*/
-        mAllTorneosEquipos = e.getAllTorneoEquipos();
+        mAllTorneosEquipos = e.getAllEstadisticasDeEquipos();
         return mAllTorneosEquipos;
     }
 
-    public void deleteAllTorneosEquipos() {
-        new DeleteAllTorneosEquiposAsyncTask(e).execute();
+    public void DeleteAllEstadisticasEquipos() {
+        new DeleteAllEstadisticasEquiposAsyncTask(e).execute();
     }
 
-    private static class DeleteAllTorneosEquiposAsyncTask extends AsyncTask<Void, Void, Void> {
+    private static class DeleteAllEstadisticasEquiposAsyncTask extends AsyncTask<Void, Void, Void> {
         private EequiposDao tequiposDao;
 
-        private DeleteAllTorneosEquiposAsyncTask(EequiposDao retosDao) {
+        private DeleteAllEstadisticasEquiposAsyncTask(EequiposDao retosDao) {
             this.tequiposDao = retosDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             tequiposDao.deleteAll();
-            Log.i("elim Torneos Equipos", "doInBackground: eliminado");
+            Log.i("elim Estadisticas equ", "doInBackground: eliminado");
             return null;
         }
     }
 
 
-    public void insertTorneosEquipos(List<EstadisticasDeEquipos> menuModel) {
+    public void insertEstadisticasEquipos(List<EstadisticasDeEquipos> menuModel) {
         new insertAsyncTask(e).execute(menuModel);
     }
 
@@ -67,7 +67,7 @@ public class EequiposRoomDbRepository {
 
         @Override
         protected Void doInBackground(final List<EstadisticasDeEquipos>... params) {
-            mAsyncTaskDao.insertTorneosEquipos(params[0]);
+            mAsyncTaskDao.insertEstadisticasEquipos(params[0]);
             return null;
         }
     }

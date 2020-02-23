@@ -117,14 +117,22 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
+
+
+
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/reg_equipos"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:elevation="8dp"
         android:layout_gravity="bottom|right|end"
+        app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_add_white"
         android:layout_margin="@dimen/activity_horizontal_margin"
+        style="@style/Widget.Design.FloatingActionButton"
+        app:tint="#fff"
         android:clickable="true"
         android:visibility="visible"/>
 

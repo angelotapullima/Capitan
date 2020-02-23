@@ -46,6 +46,25 @@ public class Splash extends AppCompatActivity {
         feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
 
+
+        if(!preferences.getIdUsuarioPref().equals("")){
+
+            inicio();
+        }
+        else{
+            Intent i1= new Intent(getApplicationContext(),Login.class);
+            startActivity(i1);
+            finish();
+        }
+
+
+
+
+
+    }
+
+    private void inicio() {
+
         feedListViewModel.getAllPosts().observe(this, new Observer<List<ModelFeed>>() {
             @Override
             public void onChanged(List<ModelFeed> modelFeeds) {
@@ -76,23 +95,13 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
 
-               if(!preferences.getIdUsuarioPref().equals("")){
-                    Intent i= new Intent(getApplicationContext(),MenuPrincipal.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
-                    //finish();
-                }
-                else{
-                    Intent i1= new Intent(getApplicationContext(),Login.class);
-                    startActivity(i1);
-                    //finish();
-                }
-
+                Intent i= new Intent(getApplicationContext(),MenuPrincipal.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+                finish();
 
             }
         };
-
-
     }
 
     public class Tarea extends AsyncTask<Void,Integer,Void> {

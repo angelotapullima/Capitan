@@ -21,29 +21,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/edt_bordes">
 
-                    <ImageView
-                        android:id="@+id/img_banner_torneo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop" />
-
-                    <ImageView
-                        android:id="@+id/camara"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:src="@drawable/ic_camera_24dp" />
-
-                </RelativeLayout>
 
 
                 <TextView
@@ -54,19 +32,14 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/edt_bordes"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="5dp">
+                    style="@style/cajaDeTexto">
 
                     <EditText
                         android:id="@+id/edt_nombreTorneo"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/transparent"
+                        android:layout_height="wrap_content"
+                        style="@style/InputTexto"
                         android:hint="Nombre del Torneo "
                         android:inputType="textPersonName" />
                 </LinearLayout>
@@ -82,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginBottom="18dp"
-                    android:background="@drawable/edt_bordes"
+                    android:background="@drawable/bgnoseleccionado"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="10dp"
@@ -126,7 +99,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="45dp"
-                                android:background="@drawable/edt_bordes"
+                                android:background="@drawable/bgnoseleccionado"
                                 android:orientation="horizontal"
                                 android:padding="10dp">
 
@@ -166,7 +139,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="45dp"
-                                android:background="@drawable/edt_bordes"
+                                android:background="@drawable/bgnoseleccionado"
                                 android:orientation="horizontal"
                                 android:padding="10dp">
 
@@ -197,21 +170,14 @@
                 android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
                     android:layout_marginBottom="18dp"
-                    android:background="@drawable/edt_bordes"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:paddingLeft="5dp">
+                    style="@style/cajaDeTexto">
 
                     <EditText
                         android:id="@+id/edt_lugarTorneo"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/transparent"
-                        android:ems="10"
+                        android:layout_height="wrap_content"
+                        style="@style/InputTexto"
                         android:hint="Lugar "
                         android:inputType="textPersonName" />
                 </LinearLayout>
@@ -224,21 +190,14 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
                     android:layout_marginBottom="18dp"
-                    android:background="@drawable/edt_bordes"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:paddingLeft="5dp">
+                    style="@style/cajaDeTexto">
 
                     <EditText
                         android:id="@+id/edt_organizador"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/transparent"
-                        android:ems="10"
+                        android:layout_height="wrap_content"
+                        style="@style/InputTexto"
                         android:hint="organizador "
                         android:inputType="textPersonName" />
                 </LinearLayout>
@@ -251,21 +210,14 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
                     android:layout_marginBottom="18dp"
-                    android:background="@drawable/edt_bordes"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:paddingLeft="5dp">
+                    style="@style/cajaDeTexto">
 
                     <EditText
                         android:id="@+id/edt_costo"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:backgroundTint="@color/transparent"
-                        android:ems="10"
+                        android:layout_height="wrap_content"
+                        style="@style/InputTexto"
                         android:hint="Costo del torneo "
                         android:inputType="numberDecimal" />
                 </LinearLayout>
@@ -283,7 +235,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/edt_bordes"
+                    android:background="@drawable/bgnoseleccionado"
                     android:orientation="vertical">
 
                     <Spinner

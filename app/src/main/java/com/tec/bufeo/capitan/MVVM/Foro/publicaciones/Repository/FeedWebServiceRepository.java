@@ -95,6 +95,7 @@ public class FeedWebServiceRepository {
         JSONObject jsonObject;
         JSONArray jsonArray;
 
+
         try {
             jsonObject = new JSONObject(response);
 
@@ -106,6 +107,7 @@ public class FeedWebServiceRepository {
             JSONArray resultJSON = jsonObject.getJSONArray("results");
 
             int count = resultJSON.length();
+
 
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
@@ -125,6 +127,7 @@ public class FeedWebServiceRepository {
                 foro.setForo_tipo(jsonNode.optString("tipo"));
                 foro.setCant_likes(jsonNode.optString("cant_likes"));
                 foro.setDio_like(jsonNode.optString("dio_like"));
+                foro.setEstado(jsonNode.optString("estado"));
                 foro.setCant_Comentarios(jsonNode.optString("cant_comentarios"));
                 foro.setOrden("0");
                 foro.setLimite_sup(limite_sup2);

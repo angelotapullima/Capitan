@@ -75,19 +75,19 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:weightSum="10"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:id="@+id/agg_partido"
             android:padding="2dp"
             android:orientation="horizontal">
 
 
-            <View
-                android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:layout_height="match_parent"/>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="4"
+                android:layout_weight="4.5"
+                android:background="@drawable/bgnoseleccionado"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/local"
@@ -112,7 +112,8 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="4"
+                android:layout_weight="4.5"
+                android:background="@drawable/bgnoseleccionado"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -123,10 +124,7 @@
                     android:layout_height="match_parent"/>
 
             </LinearLayout>
-            <View
-                android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:layout_height="match_parent"/>
+
 
 
         </LinearLayout>

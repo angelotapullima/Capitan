@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Models.TorneosDeEquipos;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Repository.TequiposWebServiceRepository;
@@ -35,6 +36,7 @@ public class TorneoDequiposFragment extends Fragment implements SwipeRefreshLayo
     String id_equipo;
     Preferences preferences;
     SwipeRefreshLayout swipeTorneosEquipo;
+    LinearLayout cargando_layout_torneos;
     public TorneoDequiposFragment() {
         // Required empty public constructor
     }
@@ -70,7 +72,7 @@ public class TorneoDequiposFragment extends Fragment implements SwipeRefreshLayo
     private void initViews(View view) {
         rcv_torneosEquipo=view.findViewById(R.id.rcv_torneosEquipo);
         swipeTorneosEquipo = view.findViewById(R.id.swipeTorneosEquipo);
-
+        cargando_layout_torneos = view.findViewById(R.id.cargando_layout_torneos);
         swipeTorneosEquipo.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
         swipeTorneosEquipo.setOnRefreshListener(this);
     }
@@ -78,7 +80,13 @@ public class TorneoDequiposFragment extends Fragment implements SwipeRefreshLayo
         tequiposViewModel.getAllOtrosTorneos(id_equipo,preferences.getToken()).observe(this, new Observer<List<TorneosDeEquipos>>() {
             @Override
             public void onChanged(List<TorneosDeEquipos> torneosDeEquipos) {
-                adaptersTorneoEquipos.setWords(torneosDeEquipos);
+
+                if(torneosDeEquipos.size()>0){
+
+                    adaptersTorneoEquipos.setWords(torneosDeEquipos);
+                    cargando_layout_torneos.setVisibility(View.GONE);
+                }
+
             }
         });
 

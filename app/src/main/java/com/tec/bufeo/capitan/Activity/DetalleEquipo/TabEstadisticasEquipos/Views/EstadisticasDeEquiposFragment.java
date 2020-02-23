@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -41,7 +42,7 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
     TextView  temporada,semana,puntaje_acumulado,puntaje_semanal,
     retos_enviados,retos_recibidos,retos_ganados,retos_empatados,retos_perdidos,torneos_estadisticas_equipos;
     ImageView foto_estadisticas_equipo;
-
+    LinearLayout cargando_layout_estadis;
 
     public EstadisticasDeEquiposFragment() {
         // Required empty public constructor
@@ -88,6 +89,7 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
         retos_ganados = view.findViewById(R.id.retos_ganados);
         retos_empatados = view.findViewById(R.id.retos_empatados);
         retos_perdidos = view.findViewById(R.id.retos_perdidos);
+        cargando_layout_estadis = view.findViewById(R.id.cargando_layout_estadis);
         torneos_estadisticas_equipos = view.findViewById(R.id.torneos_estadisticas_equipos);
 
         swipeEstadisticaEquipos = view.findViewById(R.id.swipeEstadisticaEquipos);
@@ -97,7 +99,7 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
     }
 
     private void cargarvista() {
-        eequiposViewModel.getAllOtrosTorneos(id_equipo,preferences.getToken()).observe(this, new Observer<List<EstadisticasDeEquipos>>() {
+        eequiposViewModel.getAllEstadisticas(id_equipo,preferences.getToken()).observe(this, new Observer<List<EstadisticasDeEquipos>>() {
             @Override
             public void onChanged(List<EstadisticasDeEquipos> estadisticasDeEquipos) {
 
@@ -115,6 +117,8 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
                     retos_empatados.setText(estadisticasDeEquipos.get(0).getRetos_empatados());
                     retos_perdidos.setText(estadisticasDeEquipos.get(0).getRetos_perdidos());
                     torneos_estadisticas_equipos.setText(estadisticasDeEquipos.get(0).getTorneos());
+
+                    cargando_layout_estadis.setVisibility(View.GONE);
                 }
 
             }

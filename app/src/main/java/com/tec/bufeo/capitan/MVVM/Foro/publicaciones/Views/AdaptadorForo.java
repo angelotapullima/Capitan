@@ -64,7 +64,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
         private ImageView img_fotoForo,foto_perfil_publicacion;
         private TextView txt_tituloForo, txt_usuarioForo, txt_descripcionForo, txt_fechaHora,txt_totallike,txt_totalcoment;
         private ProgressBar prog_like;
-        private ImageButton imgbt_like,imgbt_comment;
+        private ImageButton imgbt_like,btnAccion;
         private LinearLayout layout_comentar,layout_like;
         FrameLayout frame_mas_contenido,progress_mas_contenido;
         MaterialButton btn_mas_contenido;
@@ -82,7 +82,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             layout_comentar = itemView.findViewById(R.id.layout_comentar);
             layout_like = itemView.findViewById(R.id.layout_like);
             txt_totallike = itemView.findViewById(R.id.txt_totallike);
-            imgbt_comment=itemView.findViewById(R.id.imgbt_comment);
+            btnAccion=itemView.findViewById(R.id.btnAccion);
             txt_totalcoment=itemView.findViewById(R.id.txt_totalcoment);
             frame_mas_contenido=itemView.findViewById(R.id.frame_mas_contenido);
             progress_mas_contenido=itemView.findViewById(R.id.progress_mas_contenido);
@@ -99,6 +99,13 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
                     frame_mas_contenido.setVisibility(View.GONE);
                     progress_mas_contenido.setVisibility(View.VISIBLE);
 
+                }
+            });
+
+            btnAccion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick("btnAccion",feedTorneo,getAdapterPosition());
                 }
             });
 

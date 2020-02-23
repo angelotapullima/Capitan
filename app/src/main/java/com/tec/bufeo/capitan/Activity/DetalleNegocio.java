@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.os.Bundle;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,16 +31,21 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
+import com.tec.bufeo.capitan.Activity.EstadisticasEmpresas.EstadisticasEmpresas;
+import com.tec.bufeo.capitan.Activity.ratings.BarLabels;
+import com.tec.bufeo.capitan.Activity.ratings.RatingReviews;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoCanchaEmpresa;
 import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class DetalleNegocio extends AppCompatActivity implements View.OnClickListener {
@@ -45,21 +53,22 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     static ImageView img_fotoEmpresa;
     Empresas empresas;
     static RecyclerView rcv_canchas;
-    static FloatingActionButton fab_registrarCancha;
     static AppBarLayout abl_detalleEmpresa;
-    public static TextView txt_nombreEmpresa, txt_nombreUsuarioEmpresa, txt_descripcionEmpresa, txt_direccionEmpresa,
-            txt_telefonoEmpresa, txt_horario, txt_promedio, txt_conteo;
+    public static TextView txt_nombreEmpresa, txt_descripcionEmpresa, txt_direccionEmpresa,
+            txt_telefonoEmpresa, txt_horario,rating_float,conteo,txt_telefonoEmpresa_2;
 
-    public static RatingBar rtb_valoracion, rtb_valorar;
+    /*TextView txt_promedio,txt_conteo;
+    RatingBar rtb_valoracion;*/
+    public static RatingBar  rtb_valorar,ratingBar_promedio;
     static CardView cdv_detalleEmpresa;
-    static LinearLayout lny_telefono;
+    static LinearLayout lny_telefono,lny_telefono_2;
     static AdaptadorListadoCanchaEmpresa adaptadorListadoCanchaEmpresa;
     static CardView cdv_mensaje;
     public static Context context;
     public static Activity activity;
-
+    CoordinatorLayout cordinator;
     static ArrayList<Cancha> arraycanchaactual;
-
+    Preferences preferences;
     static String id_empresa, tipo_usuario;
 
     static DataConnection dc, dc1, dc2, dc3;
@@ -68,12 +77,12 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     public static String fecha_actual, hora_actual, cancha_id, horario;
     static String saldo_cargado;
     public static ArrayList<Empresas> arrayempresa;
-    public static ArrayList<Empresas> arrayempresaVal;
     public static ArrayList<Cancha> arraycancha;
     static ArrayList<String> saldo;
 
     public void getReportes() {
-        Intent intent = new Intent(this, ReporteDiario2.class);
+        Intent intent = new Intent(this, EstadisticasEmpresas.class);
+        intent.putExtra("id_empresa",id_empresa);
         startActivity(intent);
     }
 
@@ -83,20 +92,49 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_negocio);
 
+        preferences= new Preferences(this);
         /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);*/
 
         img_fotoEmpresa = (ImageView) findViewById(R.id.img_fotoEmpresa);
 
+        cordinator=(CoordinatorLayout)findViewById(R.id.cordinator);
+        int colors[] = new int[]{
+                Color.parseColor("#0e9d58"),
+                Color.parseColor("#bfd047"),
+                Color.parseColor("#ffc105"),
+                Color.parseColor("#ef7e14"),
+                Color.parseColor("#d36259")};
+
+        int raters[] = new int[5];
+
+        for (int i = 0; i < 5; i++) {
+            raters[i] = i + 10 ;
+
+        }
+        /*{
+                new Random().nextInt(100),
+                new Random().nextInt(100),
+                new Random().nextInt(100),
+                new Random().nextInt(100),
+                new Random().nextInt(100)
+        };*/
+        RatingReviews rating_reviews =  findViewById(R.id.rating_reviews);
+
+        rating_reviews.createRatingBars(100, BarLabels.STYPE3, colors, raters);
+
         txt_nombreEmpresa = (TextView) findViewById(R.id.txt_nombreEmpresa);
-        txt_promedio = (TextView) findViewById(R.id.txt_promedio);
-        txt_conteo = (TextView) findViewById(R.id.txt_conteo);
+        rating_float = (TextView) findViewById(R.id.rating_float);
+        ratingBar_promedio = (RatingBar) findViewById(R.id.ratingBar_promedio);
+        conteo = (TextView) findViewById(R.id.conteo);
+        /*txt_promedio = (TextView) findViewById(R.id.txt_promedio);
+        txt_conteo = (TextView) findViewById(R.id.txt_conteo);*/
         txt_telefonoEmpresa = (TextView) findViewById(R.id.txt_telefonoEmpresa);
-        txt_nombreUsuarioEmpresa = (TextView) findViewById(R.id.txt_nombreUsuarioEmpresa);
+        txt_telefonoEmpresa_2 = (TextView) findViewById(R.id.txt_telefonoEmpresa_2);
         txt_descripcionEmpresa = (TextView) findViewById(R.id.txt_descripcionEmpresa);
         txt_horario = (TextView) findViewById(R.id.txt_horario);
         txt_direccionEmpresa = (TextView) findViewById(R.id.txt_direccionEmpresa);
-        rtb_valoracion = (RatingBar) findViewById(R.id.rtb_valoracion);
+        /*rtb_valoracion = (RatingBar) findViewById(R.id.rtb_valoracion);*/
         rtb_valorar = (RatingBar) findViewById(R.id.rtb_valorar);
         cdv_detalleEmpresa = (CardView) findViewById(R.id.cdv_detalleEmpresa);
         progressbar = (ProgressBar) findViewById(R.id.progressbar);
@@ -104,22 +142,15 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         progressbarcanchas = (ProgressBar) findViewById(R.id.progressbarCanchas);
         abl_detalleEmpresa = (AppBarLayout) findViewById(R.id.abl_detalleEmpresa);
         lny_telefono = (LinearLayout) findViewById(R.id.lny_telefono);
-        fab_registrarCancha = (FloatingActionButton) findViewById(R.id.fab_registrarCancha);
+        lny_telefono_2 = (LinearLayout) findViewById(R.id.lny_telefono_2);
         cdv_mensaje = (CardView) findViewById(R.id.cdv_mensaje);
         context = this;
         activity = this;
         //rtb_valorar.setRating(4);
-        rtb_valoracion.setEnabled(true);
+        //rtb_valoracion.setEnabled(true);
 
 
-        fab_registrarCancha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RegistroCancha.class);
-                intent.putExtra("id_empresa", id_empresa);
-                startActivity(intent);
-            }
-        });
+
 
 
         id_empresa = getIntent().getStringExtra("id_empresa");
@@ -129,12 +160,10 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         lny_telefono.setOnClickListener(this);
 
 
-        dc4 = new DataConnection(DetalleNegocio.this, "ObtenerSaldo", false);
-        new DetalleNegocio.GetSaldo().execute();
+        obtenerSaldo();
 
-        dc1 = new DataConnection(DetalleNegocio.this, "mostrarDetalleEmpresa", new Empresas(id_empresa, usuario_id), false);
-        new GetDetalleNegocio().execute();
 
+        cargarEmpresa();
         dc2 = new DataConnection(DetalleNegocio.this, "listarcanchasEmpresas", new Cancha(id_empresa), false);
         new GetListadoCanchas().execute();
 
@@ -145,9 +174,12 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                 //Toast.makeText(getApplicationContext(),"V "+rating,Toast.LENGTH_SHORT).show();
 
 
+
                 Intent i = new Intent(DetalleNegocio.this, CalificarNegocios.class);
                 i.putExtra("valor_rating", Float.toString(rtb_valorar.getRating()));
-                startActivity(i);
+                i.putExtra("id_empresa", id_empresa);
+                i.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
+                startActivityForResult(i,LAUNCH_SECOND_ACTIVITY);
                 //dialogCarga();
 
             }
@@ -155,6 +187,48 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
         // rtb_valoracion.setRating();
 
+    }
+
+    public static void obtenerSaldo(){
+        dc4 = new DataConnection(activity, "ObtenerSaldo", false);
+        new DetalleNegocio.GetSaldo().execute();
+    }
+    public void cargarEmpresa(){
+        dc1 = new DataConnection(DetalleNegocio.this, "mostrarDetalleEmpresa", new Empresas(id_empresa, preferences.getIdUsuarioPref()), false);
+        new GetDetalleNegocio().execute();
+    }
+    int LAUNCH_SECOND_ACTIVITY = 1;
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("result");
+                String valor=data.getStringExtra("valor");
+
+                if (result.equals("1")){
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(android.R.id.content), "Comentario enviado correctamente", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
+
+
+                }else{
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(android.R.id.content), "hubo un error", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
     Dialog dialog_cargando;
@@ -211,27 +285,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
                 break;
 
-            /*case R.id.btn_enviarV:
-                dc = new DataConnection(DetalleNegocio.this, "valorarEmpresa",
-                        new Empresas(usuario_id, id_empresa,Float.toString (rtb_valorar.getRating())), true);
 
-                break;
-            case R.id.btn_cancelarV:
-                rtb_valorar.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_valoracion()));
-               // rtb_valorar.setEnabled(false);
-                if(arrayempresa.get(0).getEmpresas_valoracion().equals("0")){
-                    rtb_valorar.setEnabled(true);
-                }
-                else{
-                    rtb_valorar.setEnabled(false);
-                    btn_editVal.setVisibility(View.VISIBLE);
-                }
-                btn_enviarV.setVisibility(View.GONE);
-                btn_cancelarV.setVisibility(View.GONE);
-                break;
-            case R.id.btn_editVal:
-                rtb_valorar.setEnabled(true);
-                break;*/
         }
     }
 
@@ -263,15 +317,32 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                 Picasso.with(context).load(IP2 + "/" + arrayempresa.get(0).getEmpresas_foto()).into(img_fotoEmpresa);
 
                 txt_nombreEmpresa.setText(arrayempresa.get(0).getEmpresas_nombre());
-                txt_nombreUsuarioEmpresa.setText(arrayempresa.get(0).getUsuario_id());
                 txt_descripcionEmpresa.setText(arrayempresa.get(0).getEmpresas_descripcion());
                 txt_horario.setText(arrayempresa.get(0).getEmpresas_horario());
                 txt_direccionEmpresa.setText(arrayempresa.get(0).getEmpresas_direccion());
-                rtb_valorar.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_valoracion()));
-                rtb_valoracion.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_promedio()));
-                txt_conteo.setText(arrayempresa.get(0).getEmpresas_conteo());
-                txt_promedio.setText(arrayempresa.get(0).getEmpresas_promedio());
-                txt_telefonoEmpresa.setText(arrayempresa.get(0).getEmpresas_telefono());
+
+                if (arrayempresa.get(0).getArrayRatingList().size() >0){
+                    rating_float.setText(arrayempresa.get(0).getArrayRatingList().get(0).getRatingfloat());
+                    conteo.setText(arrayempresa.get(0).getArrayRatingList().get(0).getConteo());
+                    ratingBar_promedio.setRating(Float.parseFloat(arrayempresa.get(0).getArrayRatingList().get(0).getRatingfloat()));
+                }else{
+                    rating_float.setText("0");
+                    conteo.setText("0");
+                    ratingBar_promedio.setRating(0);
+                }
+
+                if (arrayempresa.get(0).getEmpresas_telefono_1().equals("")){
+                    lny_telefono.setVisibility(View.GONE);
+                }else{
+                    txt_telefonoEmpresa.setText(arrayempresa.get(0).getEmpresas_telefono_1());
+                }
+
+                if (arrayempresa.get(0).getEmpresas_telefono_2().equals("")){
+                    lny_telefono_2.setVisibility(View.GONE);
+                }else{
+                    txt_telefonoEmpresa_2.setText(arrayempresa.get(0).getEmpresas_telefono_2());
+                }
+
 
 
                 horario = arrayempresa.get(0).getEmpresas_horario();
@@ -279,95 +350,18 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                 hora_actual = arrayempresa.get(0).getEmpresa_cancha_hora();
                 progressbar.setVisibility(ProgressBar.INVISIBLE);
 
-                //Toast.makeText(getApplicationContext(),"fecha  "+fecha+"  "+"Hora  "+ hora,Toast.LENGTH_SHORT).show();
-                //Toast.makeText(context,"V "+ arrayempresa.get(0).getEmpresas_valoracion(), Toast.LENGTH_SHORT).show();
-                //int nun =09;
 
                 abl_detalleEmpresa.setVisibility(View.VISIBLE);
                 cdv_detalleEmpresa.setVisibility(View.VISIBLE);
 
-         /*   btn_cancelarV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    btn_enviarV.setVisibility(View.GONE);
-                    btn_cancelarV.setVisibility(View.GONE);
-                    rtb_valorar.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_promedio()));
-                    rtb_valorar.setEnabled(false);
-                }
-            });*/
 
-                if (arrayempresa.get(0).getEmpresas_valoracion().equals("0")) {
-                    rtb_valorar.setEnabled(true);
-                    /*btn_editVal.setVisibility(View.INVISIBLE);
-                    btn_enviarV.setVisibility(View.GONE);
-                    btn_cancelarV.setVisibility(View.GONE);*/
-
-                } else {
-                    rtb_valorar.setEnabled(false);
-                    /*btn_cancelarV.setVisibility(View.GONE);
-                    btn_enviarV.setVisibility(View.GONE);
-                    btn_editVal.setVisibility(View.VISIBLE);*/
-                }
             }
 
 
         }
     }
 
-    public static class GetDetalleNegocioVal extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //abl_detalleEmpresa.setVisibility(View.INVISIBLE);
-            //cdv_detalleEmpresa.setVisibility(View.INVISIBLE);
-
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            arrayempresa = dc1.getListadoEmpresas();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-
-            rtb_valorar.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_valoracion()));
-            rtb_valoracion.setRating(Float.parseFloat(arrayempresa.get(0).getEmpresas_promedio()));
-            txt_conteo.setText(arrayempresa.get(0).getEmpresas_conteo());
-            txt_promedio.setText(arrayempresa.get(0).getEmpresas_promedio());
-
-
-            progressbar.setVisibility(ProgressBar.INVISIBLE);
-
-            Toast.makeText(context, "AV " + arrayempresa.get(0).getEmpresas_valoracion(), Toast.LENGTH_SHORT).show();
-
-
-//            btn_enviarV.setVisibility(View.GONE);
-//            btn_cancelarV.setVisibility(View.GONE);
-
-
-            if (arrayempresa.get(0).getEmpresas_valoracion().equals("0")) {
-                rtb_valorar.setEnabled(true);
-//                btn_editVal.setVisibility(View.INVISIBLE);
-//                btn_enviarV.setVisibility(View.GONE);
-//                btn_cancelarV.setVisibility(View.GONE);
-
-            } else {
-                rtb_valorar.setEnabled(false);
-//                btn_enviarV.setVisibility(View.GONE);
-//                btn_cancelarV.setVisibility(View.GONE);
-//                btn_editVal.setVisibility(View.VISIBLE);
-            }
-
-
-
-        }
-    }
 
 
     public static class GetListadoCanchas extends AsyncTask<Void, Void, Void> {
@@ -402,17 +396,23 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                     cancha_id = cancha.getCancha_id().toString();
                     Toast.makeText(context, "ID cancha :" + cancha_id, Toast.LENGTH_SHORT).show();
 
-                    if (!saldo_cargado.equals("") && !saldo_cargado.equals(null)) {
-                        Intent intent = new Intent(context, DetalleCanchas.class);
-                        intent.putExtra("id_cancha", cancha.getCancha_id());
-                        intent.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
-                        intent.putExtra("nombre_cancha", cancha.getCancha_nombre());
-                        intent.putExtra("precio_dia", cancha.getCancha_precioD());
-                        intent.putExtra("precio_noche", cancha.getCancha_precioN());
-                        intent.putExtra("horario", horario);
-                        intent.putExtra("tipo_usuario", tipo_usuario);
-                        intent.putExtra("saldo", saldo_cargado);
-                        context.startActivity(intent);
+                    if (!saldo_cargado.equals("") && !saldo_cargado.equals(null) ) {
+
+                        if (!saldo_cargado.equals("vacio")){
+                            Intent intent = new Intent(context, DetalleCanchas.class);
+                            intent.putExtra("id_cancha", cancha.getCancha_id());
+                            intent.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
+                            intent.putExtra("nombre_cancha", cancha.getCancha_nombre());
+                            intent.putExtra("precio_dia", cancha.getCancha_precioD());
+                            intent.putExtra("precio_noche", cancha.getCancha_precioN());
+                            intent.putExtra("horario", horario);
+                            intent.putExtra("tipo_usuario", tipo_usuario);
+                            intent.putExtra("saldo", saldo_cargado);
+                            context.startActivity(intent);
+                        }else{
+                            obtenerSaldo();
+                        }
+
                     }
 
 

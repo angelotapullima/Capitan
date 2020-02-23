@@ -244,47 +244,17 @@
                         android:textStyle="bold"
                         android:textSize="18sp"/>
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@drawable/edt_bordes"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="5dp">
+                        style="@style/cajaDeTexto">
 
                         <EditText
                             android:id="@+id/nombre_reserva_busqueda"
                             android:layout_width="match_parent"
-                            android:layout_height="39dp"
-                            android:backgroundTint="@color/transparent"
+                            android:layout_height="wrap_content"
+                            style="@style/InputTexto"
                             android:hint="Nombre "
                             android:inputType="textPersonName" />
                     </LinearLayout>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tipo de pago"
-                        android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_spinner"
-                        android:orientation="vertical">
-                        <Spinner
-                            android:id="@+id/spn_tipo_pago_busqueda"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:entries="@array/tipo_pago"
-                            android:backgroundTint="@color/colorPrimaryDark"
-                            android:popupBackground="@color/colorCeniza" />
-
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                     <LinearLayout
@@ -304,7 +274,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:background="@drawable/bg_spinner"
+                            android:background="@drawable/bgnoseleccionado"
                             android:orientation="vertical">
 
                             <Spinner
@@ -318,6 +288,32 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tipo de pago"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bgnoseleccionado"
+                        android:orientation="vertical">
+                        <Spinner
+                            android:id="@+id/spn_tipo_pago_busqueda"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:entries="@array/tipo_pago"
+                            android:backgroundTint="@color/colorPrimaryDark"
+                            android:popupBackground="@color/colorCeniza" />
+
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -340,7 +336,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
-                                android:background="@drawable/bg_spinner"
+                                android:background="@drawable/bgnoseleccionado"
                                 android:id="@+id/InputSpinner"
                                 android:orientation="vertical">
 
@@ -364,7 +360,7 @@
                             android:weightSum="10"
                             android:padding="5dp"
                             android:layout_marginTop="10dp"
-                            android:background="@drawable/bg_spinner">
+                            android:background="@drawable/bgnoseleccionado">
 
                             <TextView
                                 android:layout_width="0dp"

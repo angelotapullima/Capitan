@@ -37,8 +37,6 @@ import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 import com.tec.bufeo.capitan.others.Equipo;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.DateDialog;
-import com.tec.bufeo.capitan.Util.horaDialog;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import org.json.JSONArray;
@@ -56,7 +54,6 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.tec.bufeo.capitan.Activity.MenuPrincipal.usuario_id;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class RegistroReto extends AppCompatActivity implements View.OnClickListener,TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {

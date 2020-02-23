@@ -31,10 +31,10 @@ public class EequiposViewModel extends AndroidViewModel {
         //mAllRetos = retosRoomDBRepository.getAllRetos();
     }
 
-    public LiveData<List<EstadisticasDeEquipos>> getAllOtrosTorneos( String id_equipo,String token ) {
+    public LiveData<List<EstadisticasDeEquipos>> getAllEstadisticas( String id_equipo,String token ) {
         retroObservable = tequiposWebServiceRepository.providesWebService(id_equipo,token);
         //listPlatosRoomDBRepository.insertPosts(retroObservable.getValue());
-        mAllTorneo = tequiposRoomDbRepository.getAllTorneoEquipos();
+        mAllTorneo = tequiposRoomDbRepository.getAllEstadisticas();
         return mAllTorneo;
     }
 

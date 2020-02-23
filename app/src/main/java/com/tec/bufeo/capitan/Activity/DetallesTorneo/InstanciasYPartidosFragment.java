@@ -5,12 +5,14 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -37,13 +39,16 @@ import java.util.Map;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
-public class InstanciasYPartidosFragment extends Fragment {
+public class InstanciasYPartidosFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
     RecyclerView rcv_partidos_y_instancias;
     String id_torneo;
     public List<Instancias> listaItem = new ArrayList<>();
     Preferences preferences;
+    LinearLayout cargando_layoutInstancias;
+    SwipeRefreshLayout swipeInstancias;
+
 
 
     public InstanciasYPartidosFragment() {
@@ -62,14 +67,14 @@ public class InstanciasYPartidosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_instancias_y_partidos, container, false);
+        View view = inflater.inflate(R.layout.fragment_instancias_y_partidos, container, false);
         final Bundle bdl = getArguments();
 
 
-        preferences= new Preferences(getActivity());
+        preferences = new Preferences(getActivity());
         id_torneo = bdl.getString("id_torneo");
 
-        rcv_partidos_y_instancias= view.findViewById(R.id.rcv_partidos_y_instancias);
+        initViews(view);
         pedir_tabla(id_torneo);
         return  view;
     }
@@ -79,6 +84,14 @@ public class InstanciasYPartidosFragment extends Fragment {
     Instancias Item;
     PartidosInstancias subItem ;
 
+    public void initViews(View view){
+        rcv_partidos_y_instancias = view.findViewById(R.id.rcv_partidos_y_instancias);
+        cargando_layoutInstancias = view.findViewById(R.id.cargando_layoutInstancias);
+
+        swipeInstancias = view.findViewById(R.id.swipeInstancias);
+        swipeInstancias.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
+        swipeInstancias.setOnRefreshListener(this);
+    }
     StringRequest stringRequest;
     private void pedir_tabla(final String id_torneo) {
         String url =IP2+"/api/Torneo/listar_instancias_partidos_por_id_torneo";
@@ -115,7 +128,7 @@ public class InstanciasYPartidosFragment extends Fragment {
                             Item = new Instancias(id_instancias,nombre_grupo, buildSubItemList(jsonArray));
                             listaItem.add(Item);
                         }
-
+                        cargando_layoutInstancias.setVisibility(View.GONE);
 
                     }
                 }
@@ -200,5 +213,13 @@ public class InstanciasYPartidosFragment extends Fragment {
 
         }
         return subItemList;
+    }
+
+
+    @Override
+    public void onRefresh() {
+        pedir_tabla(id_torneo);
+        cargando_layoutInstancias.setVisibility(View.VISIBLE);
+        swipeInstancias.setRefreshing(false);
     }
 }

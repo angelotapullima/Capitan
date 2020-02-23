@@ -363,7 +363,7 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
 
         android.app.AlertDialog.Builder builder =  new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View vista = inflater.inflate(R.layout.dialog_cargando,null);
+        View vista = inflater.inflate(R.layout.dialogo_cargando_logobufeo,null);
         builder.setView(vista);
 
 

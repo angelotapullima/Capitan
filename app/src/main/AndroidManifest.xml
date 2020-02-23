@@ -5,10 +5,9 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -29,8 +28,12 @@
         <activity android:name=".Activity.RealizarRecarga" />
         <activity android:name=".Activity.MisMovimientos.Views.MisMovimientos" />
         <activity android:name=".Activity.RegistroReserva.ReservaEnBusqueda" />
-        <activity android:name=".Activity.MisNegocios" />
-        <activity android:name=".Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos" />
+
+        <activity android:name=".Activity.MisNegocios"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Activity.CrearEquipos" />
         <activity android:name=".Activity.MasMisEquipos" />
         <activity android:name=".Activity.MasEquipos" />
@@ -38,11 +41,19 @@
         <activity android:name=".Activity.RegistrarEquipo.RegistroEquiposInstancias.Views.RegistrarPartidos" />
         <activity android:name=".Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.ListarInstancias" />
         <activity android:name=".Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Views.CrearInstancias" />
-        <activity android:name=".Activity.RegistrarEquipo.RegistroEquipoPadre" />
+        <activity android:name=".Activity.RegistrarEquipo.RegistroEquipo" />
         <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo" />
-        <activity android:name=".Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago" />
-        <activity android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo" />
-        <activity android:name=".Activity.DetallesTorneo.DetalleTorneoNuevo" />
+        <activity android:name=".Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Activity.DetallesTorneo.DetalleTorneoNuevo"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Activity.ResutadoRetos" />
         <activity
             android:name=".MVVM.Torneo.Chats.Mensajes.Views.ChatsActivity"
@@ -80,19 +91,9 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activity.RegistroNegocio"
-            android:configChanges="orientation|screenSize"
-            android:label="Registro de Negocio"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".Activity.DetalleNegocio"
             android:configChanges="orientation|screenSize"
             android:label="Detalle de Negocio"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".Activity.RegistroCancha"
-            android:configChanges="orientation|screenSize"
-            android:label="Registro de Cancha"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.DetalleCanchas"
@@ -106,11 +107,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activity.old.DetalleEquipo"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
@@ -119,17 +115,9 @@
         <activity
             android:name=".Activity.Registro_Torneo.RegistroTorneo"
             android:label="Registro Torneo" />
-        <activity android:name=".Activity.AgregarEquipos" />
-        <activity android:name=".Activity.old.AgregarJugador" />
-        <activity
-            android:name=".Activity.old.old2"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+
         <activity android:name=".Activity.RegistroForo" />
         <activity android:name=".Activity.PerfilEdit" />
-        <activity android:name=".Activity.ReporteDiario" />
-        <activity android:name=".Activity.ReporteDiario2" />
         <activity android:name=".Activity.DetalleFotoUsuario" />
 
         <provider

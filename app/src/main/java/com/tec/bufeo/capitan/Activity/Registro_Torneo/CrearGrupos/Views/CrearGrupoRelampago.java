@@ -66,11 +66,15 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
     }
 
     private void initViews() {
-        if(getIntent().getExtras()!=null){
+        /*if(getIntent().getExtras()!=null){
             id_torneo = getIntent().getExtras().getString("id_torneo");
 
             nombre_torneo = getIntent().getExtras().getString("nombre_torneo");
-        }
+        }*/
+
+        id_torneo = "1";
+        nombre_torneo = "nombre_torne";
+
 
         rcv_grupos =  findViewById(R.id.rcv_grupos);
         nombre_torneo_grupo =  findViewById(R.id.nombre_torneo_grupo);
@@ -130,7 +134,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Torneo","registrar grupo"+response);
+                Log.e("Torneo","registrar grupo"+response);
 
 
                 try {
@@ -173,9 +177,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
                 parametros.put("id_torneo", id_torneo);
                 parametros.put("grupo_nombre", nombre_grupo_grupos.getText().toString());
                 parametros.put("app", "true");
-                parametros.put("grupo_nombre", preferences.getToken());
-
-
+                parametros.put("token", preferences.getToken());
                 Log.e("torneo", "getParams: "+parametros.toString() );
                 return parametros;
 

@@ -5,6 +5,7 @@ package com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Views;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -37,13 +39,18 @@ import java.util.Map;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
-public class PosicionesFragment extends Fragment {
+public class PosicionesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     RecyclerView rcv_item;
     String id_torneo;
     Context context;
     public List<TablaTorneoItem> listaItem = new ArrayList<>();
     Preferences preferences;
+    LinearLayout cargando_layoutPosiciones;
+    SwipeRefreshLayout swipePosiciones;
+
+
+
 
     public PosicionesFragment() {
         // Required empty public constructor
@@ -68,10 +75,20 @@ public class PosicionesFragment extends Fragment {
 
 
         id_torneo = bdl.getString("id_torneo");
-        rcv_item = (RecyclerView) view.findViewById(R.id.rcv_item);
+
+        initViews(view);
+
 
         pedir_tabla(id_torneo);
         return view;
+    }
+
+    private void initViews(View view) {
+        rcv_item = (RecyclerView) view.findViewById(R.id.rcv_item);
+        cargando_layoutPosiciones = (LinearLayout) view.findViewById(R.id.cargando_layoutPosiciones);
+        swipePosiciones= view.findViewById(R.id.swipePosiciones);
+        swipePosiciones.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
+        swipePosiciones.setOnRefreshListener(this);
     }
 
 
@@ -115,6 +132,7 @@ public class PosicionesFragment extends Fragment {
                     AdapterItemTablaTorneo itemAdapter = new AdapterItemTablaTorneo(getContext(),listaItem);
                     rcv_item.setAdapter(itemAdapter);
                     rcv_item.setLayoutManager(layoutManager);
+                    cargando_layoutPosiciones.setVisibility(View.GONE);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -183,5 +201,12 @@ public class PosicionesFragment extends Fragment {
 
         }
         return subItemList;
+    }
+
+    @Override
+    public void onRefresh() {
+        pedir_tabla(id_torneo);
+        cargando_layoutPosiciones.setVisibility(View.VISIBLE);
+        swipePosiciones.setRefreshing(false);
     }
 }

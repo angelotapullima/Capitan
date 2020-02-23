@@ -53,6 +53,8 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
     TextView f_inicio,f_final,monto_totalex;
     Button btn_buscar_estadisticas;
     LinearLayout layout_total;
+    String id_empresa;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_estadisticas_empresas);
 
         preferences= new Preferences(this);
+
+        id_empresa = getIntent().getExtras().getString("id_empresa");
         rcv_estadisticas_empresa= findViewById(R.id.rcv_estadisticas_empresa);
         f_inicio= findViewById(R.id.f_inicio);
         f_final= findViewById(R.id.f_final);
@@ -222,7 +226,7 @@ public class EstadisticasEmpresas extends AppCompatActivity implements View.OnCl
 
 
                 Map<String,String> parametros=new HashMap<>();
-                parametros.put("id_empresa","4");
+                parametros.put("id_empresa",id_empresa);
                 parametros.put("fecha_i",f_inicio.getText().toString());
                 parametros.put("fecha_f",f_final.getText().toString());
                 parametros.put("app","true");

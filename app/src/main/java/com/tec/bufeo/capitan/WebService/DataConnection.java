@@ -56,9 +56,6 @@ import java.util.GregorianCalendar;
 import java.util.regex.Pattern;
 
 import static com.tec.bufeo.capitan.Activity.DetalleCanchas.tabLayout;
-import static com.tec.bufeo.capitan.Activity.DetalleNegocio.btn_cancelarV;
-import static com.tec.bufeo.capitan.Activity.DetalleNegocio.btn_editVal;
-import static com.tec.bufeo.capitan.Activity.DetalleNegocio.btn_enviarV;
 import static com.tec.bufeo.capitan.Activity.DetalleNegocio.rtb_valorar;
 
 public class DataConnection extends AppCompatActivity {
@@ -82,6 +79,7 @@ public class DataConnection extends AppCompatActivity {
 
 
     public ArrayList<Empresas> listaEmpresa = new ArrayList();
+    public ArrayList<Empresas.ArrayRating> arrayRatings= new ArrayList();
     public ArrayList<Empresas> listaCachasHoraEmpresa = new ArrayList();
     public ArrayList<FragmentBuscar.GroupItem> listaCanchasDisponiblesOriginal = new ArrayList();
     public ArrayList<FragmentBuscarFechas.GroupItemBusqueda> listaCanchasDisponiblesBusqueda= new ArrayList();
@@ -260,7 +258,7 @@ public class DataConnection extends AppCompatActivity {
                         + "&ubigeo_id=" + URLEncoder.encode(empresas.getUbigeo_id(),"UTF-8")
                         + "&nombre=" + URLEncoder.encode(empresas.getEmpresas_nombre(),"UTF-8")
                         + "&direccion=" + URLEncoder.encode(empresas.getEmpresas_direccion(),"UTF-8")
-                        + "&telefono=" + URLEncoder.encode(empresas.getEmpresas_telefono(),"UTF-8")
+                        //+ "&telefono=" + URLEncoder.encode(empresas.getEmpresas_telefono(),"UTF-8")
                         + "&horario=" + URLEncoder.encode(empresas.getEmpresas_horario(),"UTF-8")
                         + "&descripcion=" + URLEncoder.encode(empresas.getEmpresas_descripcion(),"UTF-8")
                         + "&foto=" + URLEncoder.encode(empresas.getEmpresas_foto(),"UTF-8");
@@ -1098,7 +1096,8 @@ public class DataConnection extends AppCompatActivity {
                                 child.empresa_id = jsonNodehora.optString("empresa_id");
                                 child.h_reserva = h_res;
                                 // child.imb_llamar = jsonNodehora.optString("cancha_telefono");;
-                                child.txt_llamar = jsonNodehora.optString("empresa_telefono");;
+                                child.txt_llamar1 = jsonNodehora.optString("empresa_telefono_1");;
+                                child.txt_llamar2 = jsonNodehora.optString("empresa_telefono_2");;
 
                                 item.items.add(child);
                             }
@@ -1170,7 +1169,8 @@ public class DataConnection extends AppCompatActivity {
                             empresas.setUbigeo_id(jsonNode.optString("ubigeo_id"));
                             empresas.setEmpresas_nombre(jsonNode.optString("empresa_nombre"));
                             empresas.setEmpresas_direccion(jsonNode.optString("empresa_direccion"));
-                            empresas.setEmpresas_telefono(jsonNode.optString("empresa_telefono"));
+                            empresas.setEmpresas_telefono_1(jsonNode.optString("empresa_telefono_1"));
+                            empresas.setEmpresas_telefono_2(jsonNode.optString("empresa_telefono_2"));
                             empresas.setEmpresas_descripcion(jsonNode.optString("empresa_descripcion"));
                             empresas.setEmpresas_horario(jsonNode.optString("empresa_horario"));
                             empresas.setEmpresas_valoracion(jsonNode.optString("empresa_valoracion"));
@@ -1433,9 +1433,12 @@ public class DataConnection extends AppCompatActivity {
                     int count = resultJSON.length();
                     Empresas obj;
 
+
                     for (int i = 0; i < count;i++){
 
                         JSONObject jsonNode = resultJSON.getJSONObject(i);
+
+
 
                         obj = new Empresas();
                         obj.setEmpresas_nombre(jsonNode.optString("nombre"));
@@ -1451,8 +1454,23 @@ public class DataConnection extends AppCompatActivity {
                         obj.setUbigeo_id(jsonNode.optString("distrito"));
                         obj.setEmpresa_cancha_fecha(jsonNode.optString("fecha_actual"));
                         obj.setEmpresa_cancha_hora(jsonNode.optString("hora_actual"));
-                        obj.setEmpresas_telefono(jsonNode.optString("telefono"));
+                        obj.setEmpresas_telefono_1(jsonNode.optString("telefono_1"));
+                        obj.setEmpresas_telefono_2(jsonNode.optString("telefono_2"));
 
+                        JSONArray jsonArray = jsonNode.getJSONArray("rating");
+
+                        int count1 = jsonArray.length();
+
+
+                        for (int j = 0; j <count1 ; j++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(j);
+                            Empresas.ArrayRating arrayRating =  new Empresas.ArrayRating();
+                            arrayRating.setConteo(jsonObject.optString("conteo"));
+                            arrayRating.setRatingfloat(jsonObject.optString("rating_empresa_valor"));
+
+                            arrayRatings.add(arrayRating);
+                        }
+                        obj.setArrayRatingList(arrayRatings);
                         //Llenamos los datos al Array
                         listaEmpresa.add(obj);
                     }
@@ -1528,11 +1546,12 @@ public class DataConnection extends AppCompatActivity {
 
 
 
+    String valor = "";
 
     class GetAndSet extends AsyncTask<String,String,String > {
 
 
-        String valor = "";
+
         ProgressDialog loading;
 
         @Override
@@ -1549,6 +1568,7 @@ public class DataConnection extends AppCompatActivity {
 
         @Override
         protected  String doInBackground(String... params) {
+
 
             try{
                 if(filtrardDatos()){
@@ -1589,20 +1609,7 @@ public class DataConnection extends AppCompatActivity {
 
                         Intent intent = new Intent(context, MenuPrincipal.class);
 
-                        intent.putExtra("usuario_nombre",usuario.getPerson_name() + " "+ usuario.getPerson_surname());
-                        intent.putExtra("usuario_id",usuario.getId_user());
-                        intent.putExtra("usuario_email",usuario.getUser_email());
-                        intent.putExtra("usuario_foto",usuario.getUser_image());
-                        intent.putExtra("ubigeo_id",usuario.getUbigeo_id());
-                        intent.putExtra("posicion",usuario.getUser_posicion());
 
-
-                        /*intent.putExtra("usuario_nombre",usuario.getUsuario_nombre());
-                        intent.putExtra("usuario_id",usuario.getUsuario_id());
-                        intent.putExtra("usuario_email",usuario.getUsuario_email());
-                        intent.putExtra("usuario_foto",usuario.getUsuario_foto());
-                        intent.putExtra("ubigeo_id",usuario.getUbigeo_id());
-                        intent.putExtra("posicion",usuario.getUsuario_posicion());*/
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         context.startActivity(intent);
 
@@ -1702,9 +1709,9 @@ public class DataConnection extends AppCompatActivity {
                         Toast.makeText(context, "Valoracion enviada correctamente", Toast.LENGTH_SHORT).show();
                       //  btn_enviarV.setVisibility(View.GONE);
                         //btn_cancelarV.setVisibility(View.GONE);
-                        btn_enviarV.setVisibility(View.GONE);
+                       /* btn_enviarV.setVisibility(View.GONE);
                         btn_cancelarV.setVisibility(View.GONE);
-                        btn_editVal.setVisibility(View.VISIBLE);
+                        btn_editVal.setVisibility(View.VISIBLE);*/
                         rtb_valorar.setEnabled(false);
                         //actualizarDetalle();
 

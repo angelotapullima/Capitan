@@ -1,19 +1,15 @@
-package com.tec.bufeo.capitan.Activity.RegistrarEquipo.BuscarEquipo;
+package com.tec.bufeo.capitan.Activity.RegistrarEquipo;
 
-
-import android.app.Application;
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Application;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -36,10 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
-
-public class RegistroEquipoFragment extends Fragment {
+public class RegistroEquipo extends AppCompatActivity {
 
 
     RecyclerView rcv_busqueda_requipos;
@@ -48,36 +43,26 @@ public class RegistroEquipoFragment extends Fragment {
     String id_grupo;
     Preferences preferences;
 
-    public RegistroEquipoFragment() {
-        // Required empty public constructor
-    }
-
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_registro_equipo, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registro_equipo);
+
         misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
-
-        preferences= new Preferences(getActivity());
-        final Bundle bdl = getArguments();
-        //id_grupo = bdl.getString("id_grupo");
-        id_grupo = bdl.getString("id_grupo");
-
-        initViews(view);
+        preferences= new Preferences(this);
+        id_grupo =getIntent().getExtras().getString("id_grupo");
+        initViews();
         setAdapter();
         cargarvista();
-        return  view;
     }
 
-    private void initViews(View view) {
-        rcv_busqueda_requipos = view.findViewById(R.id.rcv_busqueda_requipos);
+    private void initViews() {
+        rcv_busqueda_requipos = findViewById(R.id.rcv_busqueda_requipos);
     }
     private void setAdapter() {
 
-        adaptadorEquipos =  new AdapterEquipos(getContext(), new AdapterEquipos.OnItemClickListener() {
+
+        adaptadorEquipos =  new AdapterEquipos(this, new AdapterEquipos.OnItemClickListener() {
             @Override
             public void onItemClick(Mequipos mequipos, int position) {
 
@@ -87,7 +72,7 @@ public class RegistroEquipoFragment extends Fragment {
         });
 
         rcv_busqueda_requipos.setAdapter(adaptadorEquipos);
-        rcv_busqueda_requipos.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcv_busqueda_requipos.setLayoutManager(new LinearLayoutManager(this));
 
 
 
@@ -100,7 +85,12 @@ public class RegistroEquipoFragment extends Fragment {
         misEquiposViewModel.getAll().observe(this, new Observer<List<Mequipos>>() {
             @Override
             public void onChanged(List<Mequipos> mequipos) {
-                adaptadorEquipos.setWords(mequipos);
+                if (mequipos.size()>0){
+                    adaptadorEquipos.setWords(mequipos);
+                }else{
+                    Toast.makeText(RegistroEquipo.this, "no hay datos bateria", Toast.LENGTH_SHORT).show();
+                }
+                
             }
         });
 
@@ -115,7 +105,7 @@ public class RegistroEquipoFragment extends Fragment {
     private void agregar_equipo(final String id) {
 
 
-        String url =IP+"/api/Torneo/registrar_equipo_en_torneo";
+        String url =IP2+"/api/Torneo/registrar_equipo_en_torneo";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -173,7 +163,7 @@ public class RegistroEquipoFragment extends Fragment {
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
+        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
     }
 
 }

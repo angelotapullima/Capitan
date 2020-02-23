@@ -1,5 +1,7 @@
 package com.tec.bufeo.capitan.Modelo;
 
+import java.util.List;
+
 public class Empresas {
 
     private String empresas_id;
@@ -14,7 +16,8 @@ public class Empresas {
     private String empresas_estado;
     private String ubigeo_id;
     private String empresas_horario;
-    private String empresas_telefono;
+    private String empresas_telefono_1;
+    private String empresas_telefono_2;
     private String empresa_cancha_hora;
     private String empresa_cancha_fecha;
     private String empresa_cancha_fecha_reporte;
@@ -24,6 +27,7 @@ public class Empresas {
     private String horario_d;
     private String precio;
     private String Hora_reserva;
+    private List<ArrayRating> arrayRatingList;
 
     public Empresas() {
 
@@ -49,7 +53,7 @@ public class Empresas {
         this.usuario_id = usuario_id;
     }
 
-    public Empresas(String empresas_id, String usuario_id, String empresas_nombre, String empresas_foto, String empresas_descripcion, String empresas_direccion, String empresas_valoracion, String empresas_estado, String ubigeo_id, String empresas_horario, String empresas_telefono, String empresa_cancha_hora, String empresa_cancha_fecha, String empresa_cancha_fecha_reporte) {
+    public Empresas(String empresas_id, String usuario_id, String empresas_nombre, String empresas_foto, String empresas_descripcion, String empresas_direccion, String empresas_valoracion, String empresas_estado, String ubigeo_id, String empresas_horario, String empresas_telefono_1,String empresas_telefono_2,  String empresa_cancha_hora, String empresa_cancha_fecha, String empresa_cancha_fecha_reporte) {
         this.empresas_id = empresas_id;
         this.usuario_id = usuario_id;
         this.empresas_nombre = empresas_nombre;
@@ -60,12 +64,20 @@ public class Empresas {
         this.empresas_estado = empresas_estado;
         this.ubigeo_id = ubigeo_id;
         this.empresas_horario = empresas_horario;
-        this.empresas_telefono = empresas_telefono;
+        this.empresas_telefono_1 = empresas_telefono_1;
+        this.empresas_telefono_2 = empresas_telefono_2;
         this.empresa_cancha_hora = empresa_cancha_hora;
         this.empresa_cancha_fecha = empresa_cancha_fecha;
         this.empresa_cancha_fecha_reporte = empresa_cancha_fecha_reporte;
     }
 
+    public List<ArrayRating> getArrayRatingList() {
+        return arrayRatingList;
+    }
+
+    public void setArrayRatingList(List<ArrayRating> arrayRatingList) {
+        this.arrayRatingList = arrayRatingList;
+    }
 
     public String getEmpresas_id() {
         return empresas_id;
@@ -147,12 +159,20 @@ public class Empresas {
         this.empresas_horario = empresas_horario;
     }
 
-    public String getEmpresas_telefono() {
-        return empresas_telefono;
+    public String getEmpresas_telefono_1() {
+        return empresas_telefono_1;
     }
 
-    public void setEmpresas_telefono(String empresas_telefono) {
-        this.empresas_telefono = empresas_telefono;
+    public void setEmpresas_telefono_1(String empresas_telefono_1) {
+        this.empresas_telefono_1 = empresas_telefono_1;
+    }
+
+    public String getEmpresas_telefono_2() {
+        return empresas_telefono_2;
+    }
+
+    public void setEmpresas_telefono_2(String empresas_telefono_2) {
+        this.empresas_telefono_2 = empresas_telefono_2;
     }
 
     public String getEmpresa_cancha_hora() {
@@ -242,6 +262,34 @@ public class Empresas {
     public void setHora_reserva(String hora_reserva) {
         Hora_reserva = hora_reserva;
     }
+
+
+    public static class ArrayRating{
+
+        public ArrayRating() {
+        }
+
+        String conteo;
+        String  ratingfloat;
+
+        public String getConteo() {
+            return conteo;
+        }
+
+        public void setConteo(String conteo) {
+            this.conteo = conteo;
+        }
+
+        public String getRatingfloat() {
+            return ratingfloat;
+        }
+
+        public void setRatingfloat(String ratingfloat) {
+            this.ratingfloat = ratingfloat;
+        }
+    }
+
 }
+
 
 

@@ -54,21 +54,22 @@
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:layout_height="40dp"
-                android:background="@drawable/bg_spinner"
+                android:background="@drawable/bgnoseleccionado"
                 android:gravity="center"
                 android:textColor="#000"
                 android:layout_marginRight="5dp"/>
 
-            <TextView
+            <Spinner
                 android:id="@+id/btnHoraCancha"
                 android:layout_width="0dp"
                 android:layout_weight="4"
                 android:text="Todos"
-                android:gravity="center"
+                style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
+                android:entries="@array/hora"
                 android:textColor="#000"
                 android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
-                android:background="@drawable/bg_spinner" />
+                android:background="@drawable/bgnoseleccionado" />
 
 
 
@@ -111,7 +112,7 @@
                 android:layout_weight="6"
                 android:layout_height="45dp"
                 android:weightSum="10"
-                android:background="@drawable/bg_spinner"
+                android:background="@drawable/bgnoseleccionado"
                 android:orientation="vertical">
                 <Spinner
 

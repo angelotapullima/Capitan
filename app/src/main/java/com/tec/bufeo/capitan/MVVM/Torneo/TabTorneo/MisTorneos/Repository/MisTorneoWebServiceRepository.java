@@ -98,6 +98,9 @@ public class MisTorneoWebServiceRepository {
             int count = resultJSON.length();
 
 
+            MisTorneoRoomDBRepository misTorneoRoomDBRepository =  new MisTorneoRoomDBRepository(application);
+            misTorneoRoomDBRepository.deleteAllRetos();
+
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
                 Torneo torneo = new Torneo();

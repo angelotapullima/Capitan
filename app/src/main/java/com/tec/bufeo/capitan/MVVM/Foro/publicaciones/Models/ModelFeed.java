@@ -109,6 +109,11 @@ public class ModelFeed {
     private String nuevos_datos;
 
 
+    @ColumnInfo(name = "estado")
+    @SerializedName("estado")
+    private String estado;
+
+
 
 
     @NonNull
@@ -272,5 +277,11 @@ public class ModelFeed {
         this.nuevos_datos = nuevos_datos;
     }
 
+    public String getEstado() {
+        return estado;
+    }
 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 }

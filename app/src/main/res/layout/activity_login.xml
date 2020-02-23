@@ -88,19 +88,29 @@
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/usuariop"/>
 
-                                <EditText
-                                    android:id="@+id/edt_usuario"
+                                <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:padding="15dp"
-                                    android:background="@android:color/transparent"
-                                    android:drawablePadding="10dp"
-                                    android:hint="Usuario"
-                                    android:textColor="@color/colorTextIcons"
+                                    android:layout_height="60dp"
+                                    android:gravity="center_vertical"
                                     android:textColorHint="@color/colorTextIcons"
-                                    android:textColorHighlight="@color/colorTextIcons"
-                                    android:inputType="textPersonName"
-                                    android:maxLines="1"/>
+                                    app:passwordToggleTint="@color/colorTextIcons">
+
+                                    <EditText
+                                        android:id="@+id/edt_usuario"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@android:color/transparent"
+                                        android:textColor="@color/colorTextIcons"
+                                        android:paddingBottom="10dp"
+                                        android:paddingLeft="10dp"
+
+                                        android:hint="Usuario"
+                                        android:textColorHint="@color/colorTextIcons"
+                                        android:textColorHighlight="@color/colorTextIcons"
+                                        android:maxLines="1"/>
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
 
                             </LinearLayout>
 
@@ -121,7 +131,7 @@
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="60dp"
                                     app:passwordToggleEnabled="true"
                                     android:gravity="center_vertical"
                                     android:textColorHint="@color/colorTextIcons"
@@ -135,6 +145,7 @@
                                         android:textColor="@color/colorTextIcons"
                                         android:paddingBottom="10dp"
                                         android:paddingLeft="10dp"
+                                        android:hint="Contraseña"
                                         android:textColorHint="@color/colorTextIcons"
                                         android:textColorHighlight="@color/colorTextIcons"
                                         android:inputType="textPassword"

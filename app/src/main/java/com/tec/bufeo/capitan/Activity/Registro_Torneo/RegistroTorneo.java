@@ -90,24 +90,19 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
     Spinner spn_rutas;
    DataConnection dc;
    TextView btn_fechaTorneo ,btn_horaTorneo;
-   ImageView camara,img_banner_torneo;
-    int valor;
+   int valor;
     String id_torneo,valor_tipo,valor_spinner;
     Preferences preferences;
 
 
 
 
-    private int REQUEST_CAMERA = 0,  SELET_GALERRY = 9;
-    public Uri output,resultUriRecortada;
-    String userChoosenTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_torneo);
-        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);*/
+
 
         preferences = new Preferences(this);
         edt_nombreTorneo = findViewById(R.id.edt_nombreTorneo);
@@ -119,8 +114,6 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
         btn_horaTorneo = findViewById(R.id.btn_horaTorneo);
         btn_crearTorneo = findViewById(R.id.btn_crearTorneo);
         spn_rutas= findViewById(R.id.spn_rutas);
-        camara= findViewById(R.id.camara);
-        img_banner_torneo= findViewById(R.id.img_banner_torneo);
 
         arrayDatos =  new ArrayList<String>();
         arrayDatos.add(0,"Seleccione");
@@ -130,7 +123,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
         adapEquipos.setDropDownViewResource(R.layout.spiner_dropdown_item);
         spn_rutas.setAdapter(adapEquipos);
 
-        camara.setOnClickListener(this);
+        //camara.setOnClickListener(this);
         btn_crearTorneo.setOnClickListener(this);
         btn_horaTorneo.setOnClickListener(this);
         btn_fechaTorneo.setOnClickListener(this);
@@ -148,9 +141,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
 
-        if (view.equals(camara)){
-            selectImage();
-        }if (view.equals(btn_fechaTorneo)){
+        if (view.equals(btn_fechaTorneo)){
             showDateDailog(btn_fechaTorneo);
 
         }if (view.equals(btn_horaTorneo)){
@@ -159,309 +150,40 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
         }
         if (view.equals(btn_crearTorneo)){
 
-            valor_spinner = spn_rutas.getSelectedItem().toString();
-            if (valor_spinner.equals("Campeonato")){
-                valor_tipo = "2";
-            }else{
-                valor_tipo = "1";
-            }
-
-            if (img_banner_torneo.getDrawable() == null){
+            if (edt_nombreTorneo.getText().toString().isEmpty()){
+                preferences.codeAdvertencia("debe registrar un nombre para el torneo");
+            }else if (edt_descripcionTorneo.getText().toString().isEmpty()) {
+                preferences.codeAdvertencia("debe registrar una descripción para el torneo");
+            }else if(btn_fechaTorneo.getText().toString().equals("Fecha")){
+                preferences.codeAdvertencia("debe seleccionar una Fecha para el torneo");
+            }else if(btn_horaTorneo.getText().toString().equals("Hora")){
+                preferences.codeAdvertencia("debe seleccionar una Hora para el torneo");
+            }else if (edt_lugarTorneo.getText().toString().isEmpty()) {
+                preferences.codeAdvertencia("debe registrar un Lugar para el torneo");
+            }else if (edt_organizador.getText().toString().isEmpty()) {
+                preferences.codeAdvertencia("debe registrar un Organizador del torneo");
+            }else if (edt_costo.getText().toString().isEmpty()) {
+                preferences.codeAdvertencia("debe el costo del torneo");
+            }else if (spn_rutas.getSelectedItem().toString().equals("Seleccione")) {
+                preferences.codeAdvertencia("debe seleccionar un tipo de torneo");
+            }else {
+                    valor_spinner = spn_rutas.getSelectedItem().toString();
+                    if (valor_spinner.equals("Campeonato")){
+                        valor_tipo = "2";
+                    }else{
+                        valor_tipo = "1";
+                    }
                     publicar_sin_foto();
-            }else{
-                uploadMultipart();
-            }
-        }
-    }
-    private void selectImage() {
-        final CharSequence[] items = { "Camara", "Galería","Cancelar" };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(RegistroTorneo.this);
-        builder.setTitle("Seleccione :");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (items[item].equals("Camara")) {
-                    userChoosenTask ="Camara";
-
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                    File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/","Torneo");
-                    carpetas.mkdirs();
-
-                    String aleatorio = MenuPrincipal.usuario_id+"_"+ edt_nombreTorneo.getText().toString();
-                    String nombre = aleatorio +".jpg";
-
-                    File imagen = new File(carpetas,nombre);
-
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
-                    {
-
-                        String authorities=getApplicationContext().getPackageName()+".provider";
-                        Uri imageUri = FileProvider.getUriForFile(getApplicationContext(),authorities,imagen);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    }else
-                    {
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
-
-                    }
-                    output = Uri.fromFile(imagen);
-                    startActivityForResult(intent,REQUEST_CAMERA);
-
-                }else if (items[item].equals("Galería")){
-                    userChoosenTask ="Galería";
-
-
-                    Intent intentgaleria = new Intent(Intent.ACTION_PICK);
-                    intentgaleria.setType("image/*");
-                    if (intentgaleria.resolveActivity(getPackageManager())!=null){
-
-
-                        startActivityForResult(intentgaleria,SELET_GALERRY);
-                    }
-                } else if (items[item].equals("Cancelar")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent result) {
-        super.onActivityResult(requestCode, resultCode, result);
-
-        if (resultCode == Activity.RESULT_OK) {
-
-            if (requestCode == REQUEST_CAMERA){
-
-                CropImage.activity(output).start(this);
-                //CropImage.activity(output).setMaxCropResultSize(1080,566 ).setMinCropResultSize(800,400).start(this);
-            }
-
-            else if (requestCode == SELET_GALERRY) {
-
-                Uri uri = result.getData();
-
-
-                File f1,f2;
-                f1 = new File(getRealPathFromUri(this,uri));
-                String fname = f1.getName();
-
-
-                f2= new File(Environment.getExternalStorageDirectory() + "/.Capitan/","Foro");
-                f2.mkdirs();
-                try {
-                    FileUtils.copyFileToDirectory(f1,f2);
-                    ContentValues values =new ContentValues();
-                    values.put(MediaStore.Images.Media.DATE_TAKEN,System.currentTimeMillis());
-                    values.put(MediaStore.Images.Media.MIME_TYPE,"image/*");
-                    values.put(MediaStore.MediaColumns.DATA,f2.toString()+"/"+fname);
-                    getApplicationContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-                }  finally {
-                    //Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_LONG).show();
-                }
-
-
-                CropImage.activity(uri).start(this);
-
-            }
-        }if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult resultado = CropImage.getActivityResult(result);
-            if (resultCode == RESULT_OK) {
-
-                resultUriRecortada = resultado.getUri();
-
-                img_banner_torneo.setImageBitmap(BitmapFactory.decodeFile(resultUriRecortada.getPath()));
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = resultado.getError();
-                //Toast.makeText(getApplicationContext(),"Error"+error, Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(),"Error: Intente de nuevo", Toast.LENGTH_SHORT).show();
-
             }
         }
 
-    }
-    public static String getRealPathFromUri(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
+
+
     }
 
 
 
     String url = IP2+"/api/Torneo/registrar_torneo";
-    String path;
-    public void uploadMultipart() {
-        dialogoCargando();
-        path = resultUriRecortada.getPath();
-
-
-
-        //Uploading code
-        try {
-            String uploadId = UUID.randomUUID().toString();
-
-            PendingIntent clickIntent = PendingIntent.getActivity(
-                    this, 1, new Intent(this, RegistroTorneo.class), PendingIntent.FLAG_UPDATE_CURRENT);
-            //Creating a multi part request
-            new MultipartUploadRequest(this, uploadId, url)
-                    .addFileToUpload(path, "imagen") //Adding file
-                    .addParameter("usuario_id", preferences.getIdUsuarioPref()) //Adding text parameter to the request
-                    .addParameter("app", "true") //Adding text parameter to the request
-                    .addParameter("token",preferences.getToken() ) //Adding text parameter to the request
-                    .addParameter("descripcion", edt_descripcionTorneo.getText().toString()) //Adding text parameter to the request
-                    .addParameter("organizador", edt_organizador.getText().toString())//Adding text parameter to the request
-                    .addParameter("costo", edt_costo.getText().toString()) //Adding text parameter to the request
-                    .addParameter("fecha", btn_fechaTorneo.getText().toString()) //Adding text parameter to the request
-                    .addParameter("hora", btn_horaTorneo.getText().toString()) //Adding text parameter to the request
-                    .addParameter("lugar", edt_lugarTorneo.getText().toString()) //Adding text parameter to the request
-                    .addParameter("nombre", edt_nombreTorneo.getText().toString()) //Adding text parameter to the request
-                    .addParameter("tipo", valor_tipo) //Adding text parameter to the request
-
-
-                    .setNotificationConfig(getNotificationConfig(uploadId,R.string.cargando))
-                    .setMaxRetries(2)
-                    .setDelegate(new UploadStatusDelegate() {
-                        @Override
-                        public void onProgress(Context context, UploadInfo uploadInfo) {
-
-
-                        }
-
-                        @Override
-                        public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
-
-                            Log.e("Torneo", "multipart error: " + serverResponse.toString() + " " +preferences.getIdUsuarioPref() );
-                            dialog_carga.dismiss();
-                        }
-
-                        @Override
-                        public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
-                            Log.e("Torneo", "multipart Completed: " + serverResponse.getBodyAsString() + " " +preferences.getIdUsuarioPref() );
-                            //Toast.makeText(RegistroForo.this, "completo", Toast.LENGTH_SHORT).show();
-
-                            try {
-                            JSONObject jsonObject;;
-
-                            jsonObject = new JSONObject(serverResponse.getBodyAsString());
-                            JSONArray resultJSON = jsonObject.getJSONArray("results");
-
-                            int count = resultJSON.length();
-
-
-                            for (int i = 0; i < count; i++) {
-                                JSONObject jsonNode = resultJSON.getJSONObject(i);
-                                Grupos grupos = new Grupos();
-
-                                valor = jsonNode.optInt("valor");
-                                id_torneo = jsonNode.optString("id_torneo");
-
-                                if (valor==1){
-
-                                    if (valor_tipo.equals("2")){
-                                        Log.e("tipo valor", "paso por campeonato: " + valor_tipo);
-                                        Intent x = new Intent(RegistroTorneo.this, CrearGrupoRelampago.class);
-                                        x.putExtra("id_torneo",id_torneo);
-                                        x.putExtra("nombre_torneo",edt_nombreTorneo.getText().toString());
-                                        startActivity(x);
-                                    }else{
-                                        Log.e("tipo valor", "paso por Relampago: " + valor_tipo);
-                                        Intent x = new Intent(RegistroTorneo.this, CrearGrupoRelampago.class);
-                                        x.putExtra("id_torneo",id_torneo);
-                                        startActivity(x);
-                                    }
-
-                                }
-
-                                dialog_carga.dismiss();
-                            }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-
-                        }
-
-                        @Override
-                        public void onCancelled(Context context, UploadInfo uploadInfo) {
-
-                            dialog_carga.dismiss();
-                        }
-                    })
-
-                    .startUpload(); //Starting the upload
-                            /*getNotificationConfig().setTitleForAllStatuses("Cargando Imagen")
-                            .setRingToneEnabled(false)
-                            .setClickIntentForAllStatuses(clickIntent)
-                            .setClearOnActionForAllStatuses(true))*/
-
-
-
-
-        } catch (Exception exc) {
-            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-
-    protected UploadNotificationConfig getNotificationConfig(final String uploadId, @StringRes int title) {
-        UploadNotificationConfig config = new UploadNotificationConfig();
-
-
-
-
-        PendingIntent clickIntent = PendingIntent.getActivity(
-                this, 1, new Intent(this, RegistroTorneo.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-        config.setTitleForAllStatuses(getString(title))
-                .setRingToneEnabled(false)
-                .setClickIntentForAllStatuses(clickIntent);
-
-
-
-        config.getProgress().message = "Subiendo " + UPLOADED_FILES + " de " + TOTAL_FILES
-                + " a " + UPLOAD_RATE + " - " + PROGRESS;
-        config.getProgress().iconResourceID = R.drawable.logo;
-        config.getProgress().iconColorResourceID = Color.BLUE;
-        config.getProgress().actions.add(new UploadNotificationAction(R.drawable.logo,"Ver progreso",clickIntent));
-
-
-
-        config.getCompleted().message = "Subida completada exitosamente en " + ELAPSED_TIME;
-        config.getCompleted().iconResourceID = R.drawable.logo;
-        config.getCompleted().iconColorResourceID = Color.GREEN;
-        config.getCompleted().actions.add(new UploadNotificationAction(R.drawable.logo,"Imagen Cargada Exitosamente",clickIntent));
-
-        config.getError().message = "Error al Cargar Imagen";
-        config.getError().iconResourceID = R.drawable.logo;
-        config.getError().iconColorResourceID = Color.RED;
-
-        config.getCancelled().message = "\n" +
-                "La carga ha sido cancelada";
-        config.getCancelled().iconResourceID = R.drawable.logo;
-        config.getCancelled().iconColorResourceID = Color.YELLOW;
-
-        return config;
-    }
-
 
     StringRequest stringRequest;
     private void publicar_sin_foto() {
@@ -471,7 +193,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Torneo","publicar sin foto"+response);
+                Log.e("Torneo","publicar sin foto"+response);
 
 
                 try {
@@ -513,14 +235,11 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                 }
             }
 
-
-
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
                 dialog_carga.dismiss();
-
 
             }
         })  {
@@ -626,7 +345,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
 
         android.app.AlertDialog.Builder builder =  new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View vista = inflater.inflate(R.layout.dialog_cargando,null);
+        View vista = inflater.inflate(R.layout.dialogo_cargando_logobufeo,null);
         builder.setView(vista);
 
 

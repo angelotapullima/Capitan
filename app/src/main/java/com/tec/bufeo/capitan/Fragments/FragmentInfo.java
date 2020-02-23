@@ -231,7 +231,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
     private void EliminarDBs() {
 
         EequiposRoomDbRepository eequiposRoomDbRepository =  new EequiposRoomDbRepository(application);
-        eequiposRoomDbRepository.deleteAllTorneosEquipos();
+        eequiposRoomDbRepository.DeleteAllEstadisticasEquipos();
 
         TequiposRoomDbRepository tequiposRoomDbRepository = new TequiposRoomDbRepository(application);
         tequiposRoomDbRepository.deleteAllTorneosEquipos();

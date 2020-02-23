@@ -29,7 +29,6 @@ public class MisNegocios extends AppCompatActivity implements SwipeRefreshLayout
     public  String empresa_id;
     AdaptadorListadoEmpresas adaptadorEmpresas;
     public ArrayList<Empresas> arrayempresas;
-    public ArrayList<Empresas> arrayempresaactual;
     DataConnection dc;
      RecyclerView rcv_mis_empresas;
     ProgressBar progressbar_mis_empresas;

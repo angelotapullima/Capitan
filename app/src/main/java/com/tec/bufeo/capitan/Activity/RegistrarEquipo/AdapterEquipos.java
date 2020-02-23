@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity.RegistrarEquipo.BuscarEquipo;
+package com.tec.bufeo.capitan.Activity.RegistrarEquipo;
 
 import android.content.Context;
 import android.view.LayoutInflater;

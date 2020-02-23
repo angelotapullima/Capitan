@@ -39,7 +39,6 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
 
     RecyclerView rcv_equipos_en_grupos;
     String id_torneo;
-    Context context;
     Button btnNext_a_instancias;
     public List<TablaTorneoItem> listaItem = new ArrayList<>();
     Preferences preferences;

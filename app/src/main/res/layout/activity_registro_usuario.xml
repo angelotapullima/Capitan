@@ -55,65 +55,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/bgnoseleccionado"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp">
+                style="@style/cajaDeTexto">
 
                 <EditText
                     android:id="@+id/edt_Usuario"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent"
                     android:hint="Usuario "
                     android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    style="@style/InputTexto"/>
 
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bgnoseleccionado"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp">
+                style="@style/cajaDeTexto">
 
                 <EditText
                     android:id="@+id/edt_clave"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent"
                     android:hint="Contraseña "
-
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    style="@style/InputTexto"
+                    android:inputType="textPassword" />
 
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bgnoseleccionado"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp">
+                style="@style/cajaDeTexto"
+                android:layout_marginTop="10dp">
 
                 <EditText
+                    style="@style/InputTexto"
                     android:id="@+id/edt_confirmarClave"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent"
                     android:hint="Repetir contraseña "
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    android:inputType="textPassword" />
 
 
             </LinearLayout>

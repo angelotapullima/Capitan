@@ -1,9 +1,14 @@
 package com.tec.bufeo.capitan.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +46,14 @@ public class Login extends AppCompatActivity {
         txt_resgistrate = findViewById(R.id.txt_resgistrate);
 
 
+        if((ContextCompat.checkSelfPermission(Login.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(Login.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED) ){
+
+            ActivityCompat.requestPermissions(Login.this,new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            },1);
+        }
 
 
         txt_resgistrate.setOnClickListener(new View.OnClickListener() {
@@ -66,15 +79,11 @@ public class Login extends AppCompatActivity {
 
 
                 }else {
-                    Toast.makeText(getApplicationContext(), "Lllene los campos", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Llene los campos", Toast.LENGTH_LONG).show();
 
                 }
 
-                /*String sintomas = "fiebre/diarrea/escalofrio/fiebre/diarrea/escalofrio";
-                String separador = Pattern.quote("/");
-                String[] sintomaslista = sintomas.split(separador);
 
-                Toast.makeText(getApplicationContext(),""+sintomaslista.length,Toast.LENGTH_SHORT).show();*/
             }
         });
     }

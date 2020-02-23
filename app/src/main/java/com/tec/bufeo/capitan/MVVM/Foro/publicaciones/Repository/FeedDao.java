@@ -18,7 +18,7 @@ public interface FeedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(ModelFeed feedTorneo);
 
-    @Query("SELECT * from feed ORDER BY orden DESC")
+    @Query("SELECT * from feed where estado =1  and foro_foto <> 0 ORDER BY orden DESC ")
     LiveData<List<ModelFeed>> getAllPosts();
 
     @Query("SELECT * from feed where id_torneo =:id_torneo ")

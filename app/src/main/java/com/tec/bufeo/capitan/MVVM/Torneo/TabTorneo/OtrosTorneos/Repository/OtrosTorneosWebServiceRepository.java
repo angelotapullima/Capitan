@@ -98,6 +98,8 @@ public class OtrosTorneosWebServiceRepository {
             int count = resultJSON.length();
 
 
+            OtrosTorneosRoomDBRepository otrosTorneosRoomDBRepository =  new OtrosTorneosRoomDBRepository(application);
+            otrosTorneosRoomDBRepository.deleteAllRetos();
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
                 Torneo torneo = new Torneo();

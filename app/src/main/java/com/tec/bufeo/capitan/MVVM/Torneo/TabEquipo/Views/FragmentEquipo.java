@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tec.bufeo.capitan.Activity.CrearEquipos;
@@ -48,7 +49,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
     AdaptadorEquipos adaptadorEquipos;
     SwipeRefreshLayout swipeEquipos;
     FloatingActionButton reg_equipos;
-
+    TextView txt_titulo2,txt_titulo;
     public FragmentEquipo() {
         // Required empty public constructor
     }
@@ -84,6 +85,8 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
         rcv_equipo =(RecyclerView)view.findViewById(R.id.rcv_equipo);
         rcv_equipoFav = (RecyclerView) view.findViewById(R.id.rcv_equipoFav);
         imb_ver_equipos =(ImageButton) view.findViewById(R.id.imb_ver_equipos) ;
+        txt_titulo2 =(TextView) view.findViewById(R.id.txt_titulo2) ;
+        txt_titulo =(TextView) view.findViewById(R.id.txt_titulo) ;
         imb_ver_misequipos =(ImageButton) view.findViewById(R.id.imb_ver_misequipos) ;
         reg_equipos =(FloatingActionButton) view.findViewById(R.id.reg_equipos) ;
 
@@ -96,6 +99,8 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
         imb_ver_misequipos.setOnClickListener(this);
         imb_ver_equipos.setOnClickListener(this);
         reg_equipos.setOnClickListener(this);
+        txt_titulo2.setOnClickListener(this);
+        txt_titulo.setOnClickListener(this);
         activity = getActivity();
         context = getContext();
     }
@@ -205,6 +210,13 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
         }if (v.equals(reg_equipos)){
             Intent i = new Intent(getContext(), CrearEquipos.class);
             startActivity(i);
+        }if (v.equals(txt_titulo2)){
+            Intent i = new Intent(getContext(), MasEquipos.class);
+            startActivity(i);
+        }if (v.equals(txt_titulo)){
+            Intent i = new Intent(getContext(), MasMisEquipos.class);
+            startActivity(i);
+
         }
     }
 

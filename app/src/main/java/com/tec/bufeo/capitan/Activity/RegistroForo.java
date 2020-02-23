@@ -218,7 +218,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
                 String fname = f1.getName();
 
 
-                f2= new File(Environment.getExternalStorageDirectory() + "/Capitan/","Foro");
+                f2= new File(Environment.getExternalStorageDirectory() + "/.Capitan/","Foro");
                 f2.mkdirs();
                 try {
                     FileUtils.copyFileToDirectory(f1,f2);
@@ -286,7 +286,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
                     File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/","Foro");
                     carpetas.mkdirs();
 
-                    String aleatorio = MenuPrincipal.usuario_id+"_"+ edt_tituloForo.getText().toString();
+                    String aleatorio = preferences.getIdUsuarioPref()+"_"+ edt_tituloForo.getText().toString();
                     String nombre = aleatorio +".jpg";
 
                     File imagen = new File(carpetas,nombre);
@@ -312,7 +312,6 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
                     Intent intentgaleria = new Intent(Intent.ACTION_PICK);
                     intentgaleria.setType("image/*");
                     if (intentgaleria.resolveActivity(getPackageManager())!=null){
-
 
                         startActivityForResult(intentgaleria,SELET_GALERRY);
                     }

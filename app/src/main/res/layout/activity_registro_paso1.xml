@@ -56,44 +56,30 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/bgnoseleccionado"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp">
+                style="@style/cajaDeTexto">
 
                 <EditText
                     android:id="@+id/edt_nombreUsuario"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent"
                     android:hint="Nombre "
                     android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    style="@style/InputTexto" />
 
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bgnoseleccionado"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp">
+                style="@style/cajaDeTexto">
 
                 <EditText
                     android:id="@+id/edt_apellidoUsuario"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent"
                     android:hint="Apellidos "
                     android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    style="@style/InputTexto" />
 
 
             </LinearLayout>
@@ -310,46 +296,31 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bgnoseleccionado"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp">
+                style="@style/cajaDeTexto" >
 
                 <EditText
                     android:id="@+id/edt_emailUsuario"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent"
                     android:hint="Email "
                     android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    style="@style/InputTexto"  />
 
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/bgnoseleccionado"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp">
+                style="@style/cajaDeTexto">
 
                 <EditText
                     android:id="@+id/edt_telefono"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent"
                     android:hint="Teléfono "
                     android:inputType="number"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    style="@style/InputTexto"/>
 
 
             </LinearLayout>

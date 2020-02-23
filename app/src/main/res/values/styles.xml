@@ -11,6 +11,9 @@
         <item name="android:dialogTheme">@style/Dialog.Theme</item>
     </style>
 
+
+
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="colorPrimaryDark">@color/black</item>
@@ -37,5 +40,18 @@
     </style>
 
 
+    <style name="cajaDeTexto">
+        <item name="android:background">@drawable/bgnoseleccionado</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
+    <style name="InputTexto">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 
 </resources>

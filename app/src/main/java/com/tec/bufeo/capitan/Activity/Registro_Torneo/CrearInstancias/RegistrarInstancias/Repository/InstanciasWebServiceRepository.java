@@ -42,7 +42,7 @@ public class InstanciasWebServiceRepository {
 
     List<InstanciasModel> webserviceResponseList = new ArrayList<>();
 
-    public LiveData<List<InstanciasModel>> providesWebService(final String id_torneo) {
+    public LiveData<List<InstanciasModel>> providesWebService(final String id_torneo, String token) {
 
         final MutableLiveData<List<InstanciasModel>> data = new MutableLiveData<>();
 
@@ -58,10 +58,10 @@ public class InstanciasWebServiceRepository {
 
             InstanciasAPIService service = retrofit.create(InstanciasAPIService.class);
             //  response = service.makeRequest().execute().body();
-            service.savePost(id_torneo).enqueue(new Callback<String>() {
+            service.savePost(id_torneo,"true",token).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.e("Repository","feed::::"+response.body());
+                    Log.e("Repository","instancias::::"+response.body());
                     webserviceResponseList = parseJson(response.body(), id_torneo);
                     InstanciasRoomDBRepository instanciasRoomDBRepository = new InstanciasRoomDBRepository(application);
                     instanciasRoomDBRepository.insertPosts(webserviceResponseList);

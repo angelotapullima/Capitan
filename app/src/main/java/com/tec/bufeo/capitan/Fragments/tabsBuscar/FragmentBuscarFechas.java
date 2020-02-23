@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,9 +61,9 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
     ArrayList<String> arrayEmpresaID;
     ArrayList<Empresas> ArrayEmpresas;
     ArrayList<Empresas> listCanchaHoraEmpresa;
-    Spinner spn_empresas;
+    Spinner spn_empresas,btnHoraCancha;
     Button buscar;
-    TextView fecha,btnHoraCancha,infoExpandable,infoHoraBusqueda;
+    TextView fecha,infoExpandable,infoHoraBusqueda;
     Preferences preferences;
     RecyclerView recyclerBusquedaCancha;
     AdaptadorListaCanchasBusqueda adaptadorListaCanchasBusqueda;
@@ -108,6 +110,8 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         buscar.setEnabled(false);
         boolean online = ForoFragment.isOnLine();
 
+
+
         if (online){
             dc = new DataConnection(activity, "listarEmpresasID",preferences.getUbigeoId(), false);
             new GetEmpresasID().execute();
@@ -132,7 +136,8 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
         });
 
-        btnHoraCancha.setOnClickListener(this);
+
+
         fecha.setOnClickListener(this);
         buscar.setOnClickListener(this);
 
@@ -142,38 +147,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
     }
 
     private  final String CERO = "0";
-    private  final String DOS_PUNTOS = ":";
 
-    private void obtenerHora(final TextView Hora){
-        Calendar cur_calender = Calendar.getInstance();
-        TimePickerDialog recogerHora = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                //Formateo el hora obtenido: antepone el 0 si son menores de 10
-                String horaFormateada =  (hourOfDay < 10)? String.valueOf(CERO + hourOfDay) : String.valueOf(hourOfDay);
-                //Formateo el minuto obtenido: antepone el 0 si son menores de 10
-                String minutoFormateado = (minute < 10)? String.valueOf(CERO + minute):String.valueOf(minute);
-                //Obtengo el valor a.m. o p.m., dependiendo de la selección del usuario
-                String AM_PM;
-                if(hourOfDay < 12) {
-                    AM_PM = "a.m.";
-                } else {
-                    AM_PM = "p.m.";
-                }
-                //Muestro la hora con el formato deseado
-                Hora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado);
-            }
-            //Estos valores deben ir en ese orden
-            //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
-            //Pero el sistema devuelve la hora en formato 24 horas
-        }, cur_calender.get(Calendar.HOUR_OF_DAY), cur_calender.get(Calendar.MINUTE), true);
-
-        recogerHora.show();
-
-
-
-
-    }
 
 
     String hours;
@@ -218,19 +192,20 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         if (v.equals(fecha)){
             showDateDailog(fecha);
            // showDatePickerDialog(fecha);
-        }if (v.equals(btnHoraCancha)){
-            obtenerHora(btnHoraCancha);
         }if (v.equals(buscar)){
 
-            dialogCarga();
+
             if (fecha.getText().toString().isEmpty()){
                 preferences.codeAdvertencia("El campo fecha no debe estar vacio");
             }else{
-
+                dialogCarga();
                     Log.e("click buscar", "onClick: funciona" );
 
-                    hours = btnHoraCancha.getText().toString();
+                    hours = btnHoraCancha.getSelectedItem().toString();
                     if ((hours.equals("Todos"))){
+
+                        layoutExpandable.setVisibility(View.VISIBLE);
+                        layoutNormal.setVisibility(View.GONE);
 
                         Reserva e = new Reserva();
                         if (spn_empresas.getSelectedItem().toString().equals("Todos")){
@@ -248,6 +223,8 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
                     }else{
 
+                        layoutExpandable.setVisibility(View.GONE);
+                        layoutNormal.setVisibility(View.VISIBLE);
 
                         Reserva e = new Reserva();
                         if (spn_empresas.getSelectedItem().toString().equals("Todos")){
@@ -258,13 +235,14 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
                         e.setReserva_fecha(fecha.getText().toString());
                         e.setReserva_hora(hours.substring(0,2));
-                        //e.setReserva_hora(btnHoraCancha.getText().toString().substring(0,2));
 
 
                         dc3 = new DataConnection(getActivity(),"listarCanchasDisponiblesBusqueda2",e,false);
                         new GetCanchasDisponiblesBusqueda2().execute();
                     }
-                    btnHoraCancha.setText("Todos");
+
+
+
 
 
             }
@@ -293,12 +271,10 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            //swipeRefreshLayout.setRefreshing(false);
             adapter = new ExampleAdapterBusqueda(fragmentBuscarFechas);
             adapter.setData(arraycanchasdisponiblesbusqueda);
 
             listViewBusqueda.setAdapter(adapter);
-            //progressBar.setVisibility(ProgressBar.INVISIBLE);
 
             if (arraycanchasdisponiblesbusqueda.size() > 0) {
 
@@ -312,18 +288,16 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
                 SimpleDateFormat formatex = new SimpleDateFormat("EEE, d MMM yyyy");
 
-                //fecha2 = formatex.format(convertido);
 
                 infoExpandable.setText(formatex.format(convertido));
-                //e.setReserva_hora(btnHoraCancha.getText().toString().substring(0,2));
 
                 layoutExpandable.setVisibility(View.VISIBLE);
-                layoutNormal.setVisibility(View.GONE);//cdv_mensaje.setVisibility(View.INVISIBLE);
+                layoutNormal.setVisibility(View.GONE);
+
             } else {
-                //cdv_mensaje.setVisibility(View.VISIBLE);
+
             }
             dialog_cargando.dismiss();
-            //Toast.makeText(getContext(),"S:" +arraycanchasdisponibles.size(),Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -357,21 +331,39 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
     private   void recycler() {
 
-
-
-        //progressBar.setVisibility(ProgressBar.INVISIBLE);
         recyclerBusquedaCancha.setHasFixedSize(true);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerBusquedaCancha.setLayoutManager(layoutManager);
 
-        adaptadorListaCanchasBusqueda =   new AdaptadorListaCanchasBusqueda(activity, listCanchaHoraEmpresa, R.layout.rcv_item_card_buscar_horario_general, new AdaptadorListaCanchasBusqueda.OnItemClickListener() {
+        adaptadorListaCanchasBusqueda = new AdaptadorListaCanchasBusqueda(activity, listCanchaHoraEmpresa, R.layout.rcv_item_card_buscar_horario_general, new AdaptadorListaCanchasBusqueda.OnItemClickListener() {
             @Override
-            public void onItemClick(Empresas empresas, int position) {
+            public void onItemClick(Empresas empresas, String tipo, int position) {
+                if (tipo.equals("layout_reserva_busqueda")){
 
+                    Intent i = new Intent(getActivity(), ReservaEnBusqueda.class);
+                    i.putExtra("nombre_empresa",empresas.getEmpresas_nombre());
+                    i.putExtra("h_reserva",empresas.getHora_reserva());
+                    i.putExtra("empresa_id",empresas.getEmpresas_id());
+                    i.putExtra("precio",empresas.getPrecio());
+                    startActivity(i);
+                }else if( tipo.equals("imb_llamar")){
+
+                    String telefono1 = empresas.getEmpresas_telefono_1();
+                    String telefono2 = empresas.getEmpresas_telefono_2();
+
+                    if (telefono2.equals("")){
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+  telefono1));
+                        startActivity(intent);
+                    }else{
+                        dialogoTelefonos(telefono1,telefono2);
+                    }
+
+                }
             }
         });
+
 
 
         recyclerBusquedaCancha.setAdapter(adaptadorListaCanchasBusqueda);
@@ -388,6 +380,43 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         }
     }
 
+
+    AlertDialog dialog_eliminar;
+    public void dialogoTelefonos(final String fono1, final String fono2){
+
+        AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View vista = inflater.inflate(R.layout.dialogo_telefonos,null);
+        builder.setView(vista);
+
+        dialog_eliminar = builder.create();
+        dialog_eliminar.show();
+
+        TextView fonito1 = vista.findViewById(R.id.fono1);
+        TextView fonito2 = vista.findViewById(R.id.fono2);
+
+        fonito1.setText(fono1);
+        fonito2.setText(fono2);
+
+
+        fonito1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+  fono1));
+                startActivity(intent);
+            }
+        });
+        fonito2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+  fono2));
+                startActivity(intent);
+            }
+        });
+
+
+
+    }
     public class GetEmpresasID extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -441,7 +470,8 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         public String img_cancha;
         public String h_reserva;
         public String empresa_id;
-        public String txt_llamar;
+        public String txt_llamar1;
+        public String txt_llamar2;
         //String hint;
 
     }
@@ -453,6 +483,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         public TextView txt_buscar_precioCancha;
         public TextView txt_buscar_direccionEmpresa;
         public TextView txt_buscar_telefonoEmpresa;
+        public TextView txt_buscar_telefonoEmpresa2;
         public ImageButton imb_llamar;
         public ImageView imagen_cancha;
         public LinearLayout layout_reserva_busqueda;
@@ -503,6 +534,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                 holder.txt_buscar_direccionEmpresa = (TextView) convertView.findViewById(R.id.txt_buscar_direccionEmpresa);
                 holder.txt_buscar_precioCancha = (TextView) convertView.findViewById(R.id.txt_buscar_precioCancha);
                 holder.txt_buscar_telefonoEmpresa = (TextView) convertView.findViewById(R.id.txt_buscar_telefonoEmpresa);
+                holder.txt_buscar_telefonoEmpresa2 = (TextView) convertView.findViewById(R.id.txt_buscar_telefonoEmpresa2);
                 holder.imagen_cancha = (ImageView) convertView.findViewById(R.id.imagen_cancha);
                 holder.imb_llamar = (ImageButton) convertView.findViewById(R.id.imb_llamar);
                 holder.layout_reserva_busqueda =  convertView.findViewById(R.id.layout_reserva_busqueda);
@@ -520,7 +552,8 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
             holder.txt_buscar_nombreEmpresa.setText(item.txt_buscar_nombreEmpresa);
             holder.txt_buscar_precioCancha.setText(item.txt_buscar_precioCancha);
             holder.txt_buscar_direccionEmpresa.setText(item.txt_buscar_direccionEmpresa);
-            holder.txt_buscar_telefonoEmpresa.setText(item.txt_llamar);
+            holder.txt_buscar_telefonoEmpresa.setText(item.txt_llamar1);
+            holder.txt_buscar_telefonoEmpresa2.setText(item.txt_llamar2);
             holder.layout_reserva_busqueda.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -536,11 +569,18 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+  holder.txt_buscar_telefonoEmpresa.getText().toString()));
-                    startActivity(intent);
+                    String telefono1 = item.txt_llamar1.toString();
+                    String telefono2 = item.txt_llamar2.toString();
+
+                    if (telefono2.equals("")){
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+  telefono1));
+                        startActivity(intent);
+                    }else{
+                        dialogoTelefonos(telefono1,telefono2);
+                    }
+
                 }
             });
-            //holder.imb_llamar.set(item.hint);
 
             return convertView;
         }

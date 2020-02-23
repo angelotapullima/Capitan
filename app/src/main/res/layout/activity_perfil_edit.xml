@@ -49,34 +49,24 @@
                 </FrameLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="18dp"
-                    android:background="@drawable/edt_bordes"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:paddingLeft="5dp">
+                    style="@style/cajaDeTexto"
+                    android:layout_marginBottom="18dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+
 
                         <EditText
                             android:id="@+id/edt_nombreUsuario"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Nombre completo"
-                            android:inputType="text"
-                            android:maxLines="1" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                            style="@style/InputTexto"
+                            android:inputType="text" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="18dp"
-                    android:background="@drawable/edt_bordes"
+                    android:background="@drawable/bgnoseleccionado"
                     android:padding="10dp"
                     android:paddingLeft="5dp"
                     android:orientation="horizontal">
@@ -172,18 +162,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginBottom="18dp"
-                    android:background="@drawable/edt_bordes"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:paddingLeft="5dp">
+                    style="@style/cajaDeTexto">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+
 
                         <EditText
                             android:id="@+id/edt_numFav"
@@ -191,9 +173,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Nº Favorito"
                             android:inputType="number"
-                            android:maxLines="1" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                            style="@style/InputTexto"/>
                 </LinearLayout>
                 <Button
                     android:id="@+id/btn_registrar"

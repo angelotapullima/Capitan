@@ -1,15 +1,19 @@
 package com.tec.bufeo.capitan.Activity.DetallesTorneo.GruposYEquipos;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -36,14 +40,18 @@ import java.util.Map;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
-public class GruposYEquiposFragment extends Fragment {
+public class GruposYEquiposFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
     RecyclerView rcv_equipos_y_grupos;
     String id_torneo;
-    Context context;
+    LinearLayout cargando_layout;
     public List<TablaTorneoItem> listaItem = new ArrayList<>();
     Preferences preferences;
+    SwipeRefreshLayout swipeGrupoYEquipos;
+
+
+
 
     public GruposYEquiposFragment() {
         // Required empty public constructor
@@ -80,6 +88,11 @@ public class GruposYEquiposFragment extends Fragment {
 
     private void initViews(View view) {
         rcv_equipos_y_grupos= view.findViewById(R.id.rcv_equipos_y_grupos);
+        cargando_layout= view.findViewById(R.id.cargando_layout);
+
+        swipeGrupoYEquipos = view.findViewById(R.id.swipeGrupoYEquipos);
+        swipeGrupoYEquipos.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
+        swipeGrupoYEquipos.setOnRefreshListener(this);
 
     }
 
@@ -91,6 +104,7 @@ public class GruposYEquiposFragment extends Fragment {
 
     StringRequest stringRequest;
     private void pedir_tabla(final String id_torneo) {
+
         String url =IP2+"/api/Torneo/listar_tabla_por_id_torneo";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -126,8 +140,10 @@ public class GruposYEquiposFragment extends Fragment {
                             listaItem.add(tablaTorneoItem);
                         }
 
-
+                        cargando_layout.setVisibility(View.GONE);
                     }
+
+
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
@@ -140,6 +156,8 @@ public class GruposYEquiposFragment extends Fragment {
                 rcv_equipos_y_grupos.setAdapter(itemAdapter);
                 rcv_equipos_y_grupos.setLayoutManager(layoutManager);
 
+
+                cargando_layout.setVisibility(View.GONE);
 
             }
 
@@ -202,4 +220,10 @@ public class GruposYEquiposFragment extends Fragment {
     }
 
 
+    @Override
+    public void onRefresh() {
+        pedir_tabla(id_torneo);
+        cargando_layout.setVisibility(View.VISIBLE);
+        swipeGrupoYEquipos.setRefreshing(false);
+    }
 }

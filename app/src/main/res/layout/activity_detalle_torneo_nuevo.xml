@@ -19,6 +19,9 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
@@ -31,36 +34,16 @@
                     android:layout_height="250dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/cancha"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
-                            android:id="@+id/fecha_Dtorneo"
-                            android:text="13 de Octubre"/>
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:gravity="end"
-                            android:id="@+id/unirse_Dtorneo"
-                            android:layout_alignParentEnd="true"
-                            android:layout_height="wrap_content"
-                            android:text="unirse al torneo"/>
-                    </RelativeLayout>
-
-
-
-                </LinearLayout>
             </LinearLayout>
+            <ImageButton
+                android:id="@+id/finishDetalleTorneo"
+                android:layout_width="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/ic_arrow_back"
+                android:background="@drawable/button_profile"/>
 
 
 
@@ -68,6 +51,48 @@
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/nombre_torneo_Detalle"
+                    android:layout_toLeftOf="@id/unirse_Dtorneo"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#000"
+                    android:gravity="center_vertical"
+                    android:textSize="19sp"
+                    android:textStyle="normal|bold"
+                    android:layout_marginLeft="10dp"
+                    android:text="Torneo copa Capitan"/>
+
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:id="@+id/unirse_Dtorneo"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content"
+                    android:text="Unirse"/>
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/colorPrimary"/>
+
+        </LinearLayout>
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs_Dtorneo"
             android:background="#FFF"
@@ -89,14 +114,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:visibility="visible"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_agregarParticipantesTorneo"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:elevation="8dp"
-        android:layout_gravity="bottom|right|end"
-        android:src="@drawable/plus_circle"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:clickable="true"
-        android:visibility="visible"/>
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

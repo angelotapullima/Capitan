@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipoPadre;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Views.RegistrarPartidos;
 import com.tec.bufeo.capitan.R;
 

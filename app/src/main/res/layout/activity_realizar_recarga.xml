@@ -23,7 +23,7 @@
             android:textSize="18sp"
             android:textStyle="bold"/>
     </LinearLayout>
-    
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -49,15 +49,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="10"
-                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="45dp"
+                    android:layout_height="40dp"
                     android:layout_weight="6"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/edt_bordes"
+                    android:background="@drawable/bgnoseleccionado"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingLeft="5dp">
@@ -65,9 +64,9 @@
                     <EditText
                         android:id="@+id/edt_monto_solicitar"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="wrap_content"
                         android:backgroundTint="@color/transparent"
-                        android:ems="10"
+                        style="@style/InputTexto"
                         android:hint="0.00"
                         android:inputType="numberDecimal" />
                 </LinearLayout>

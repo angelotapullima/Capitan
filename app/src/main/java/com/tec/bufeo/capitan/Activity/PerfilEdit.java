@@ -238,95 +238,9 @@ public class PerfilEdit extends AppCompatActivity implements View.OnClickListene
 
                 resultUriRecortada = resultado.getUri();
 
-                //Subir al servidor
 
-                String controlador ="";
-                String accion="";
-                if(opcionCarpeta.equals("Perfil")){
-                    controlador ="Usuario";
-                    accion ="actualizar_perfil" ;
-                }
 
                 uploadMultipart();
-                /*RequestParams params1 = new RequestParams();
-
-                try {
-                    File imagen  = new File(resultUriRecortada.getPath());
-                    params1.put("imagen", imagen);
-                    params1.put("usuario_id",usuario_id );
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                AsyncHttpClient client = new AsyncHttpClient();
-                client.setTimeout(300000);
-
-
-
-
-                client.post(IP+"/index.php?c="+controlador+"&a="+accion+"&key_mobile=123456asdfgh", params1, new AsyncHttpResponseHandler() {
-
-                    ProgressDialog loading;
-                    String str=null;
-                    String ruta = IP+"/";
-
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                        loading = new ProgressDialog(activity);
-                        loading.setTitle("Capitan");
-                        loading.setMessage("Por favor espere...");
-                        loading.setIndeterminate(false);
-                        loading.setCancelable(false);
-                        loading.show();
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        if (statusCode == 200){
-
-                            try {
-                                str = new String(responseBody, "UTF-8");
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-
-                            ruta = ruta+str.substring(1,str.length()-1);
-                            Toast.makeText(context,"Actualizado correctamente"+"-"+ruta, Toast.LENGTH_LONG).show();
-
-
-                            if(opcionCarpeta.equals("Perfil")){
-
-                                prog_imagenloading.setVisibility(View.VISIBLE);
-
-                                Picasso.with(context).load(ruta).memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.error).into(civ_iconoPerfil,new Callback() {
-
-                                    @Override
-                                    public void onSuccess() {
-                                        prog_imagenloading.setVisibility(View.GONE);
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        prog_imagenloading.setVisibility(View.GONE);
-                                    }
-                                });
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Toast.makeText(context,"Error al registrar", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        loading.dismiss();
-                    }
-                });*/
-
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = resultado.getError();

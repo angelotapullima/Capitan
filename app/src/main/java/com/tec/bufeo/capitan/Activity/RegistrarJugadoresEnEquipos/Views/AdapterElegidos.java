@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.JugadoresSeleccionados;
@@ -32,12 +33,14 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
     class ElegidosViewHolder extends RecyclerView.ViewHolder {
         CircleImageView foto_jugador_elegido;
         RelativeLayout contenedor_elegidos;
+        TextView name_juegador;
 
         private ElegidosViewHolder(View itemView) {
             super(itemView);
 
             foto_jugador_elegido= itemView.findViewById(R.id.foto_jugador_elegido);
             contenedor_elegidos= itemView.findViewById(R.id.contenedor_elegidos);
+            name_juegador= itemView.findViewById(R.id.name_juegador);
 
 
         }
@@ -84,6 +87,7 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
 
             UniversalImageLoader.setImage(IP2+"/"+ current.getJugadors_foto(),holder.foto_jugador_elegido,null);
 
+            holder.name_juegador.setText(current.getJugadors_nombre());
             /*holder.txt_nombreUsuario.setText(current.getJugador_nombre());
             holder.txt_habilidadUsuario.setText(current.getJugador_habilidad());
             holder.txt_numUsuario.setText(current.getJugador_numero());

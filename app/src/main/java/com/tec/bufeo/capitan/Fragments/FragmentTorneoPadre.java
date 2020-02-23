@@ -74,7 +74,7 @@ public class FragmentTorneoPadre extends Fragment  {
     };
 
     private   String[] tituloIds = {
-            "Mis Equipos",
+            "Equipos",
             "Torneo",
             "Retos",
             "Chats"

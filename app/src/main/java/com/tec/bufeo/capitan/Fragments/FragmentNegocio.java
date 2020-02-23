@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.cardview.widget.CardView;
@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 
 import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.Activity.MisNegocios;
-import com.tec.bufeo.capitan.Activity.RegistroNegocio;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoEmpresas;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
@@ -125,19 +124,13 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
             layout_carga.setVisibility(View.INVISIBLE);
             swipeRefreshLayout.setRefreshing(false);
 
-            //Toast.makeText(getActivity(),"Z "+arrayempresas.size(),Toast.LENGTH_SHORT).show();
-
 
             GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 1);
-            //linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
-            //LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             rcv_empresas.setLayoutManager(linearLayoutManager);
 
             adaptadorEmpresas = new AdaptadorListadoEmpresas(getActivity(), arrayempresas, R.layout.rcv_item_card_negocios, new AdaptadorListadoEmpresas.OnItemClickListener() {
                 @Override
                 public void onItemClick(Empresas empresas, final int position) {
-
-                  //Toast.makeText(getActivity(),"ID "+empresas.getEmpresas_id(), Toast.LENGTH_SHORT).show();
 
                    Intent intent = new Intent(getContext(), DetalleNegocio.class);
                     intent.putExtra("id_empresa",empresas.getEmpresas_id());
@@ -178,8 +171,6 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
 
 
             GridLayoutManager linearLayoutManager = new GridLayoutManager(activity, 1);
-            //linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
-            //LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             rcv_empresas.setLayoutManager(linearLayoutManager);
 
             adaptadorEmpresas = new AdaptadorListadoEmpresas(activity, arrayempresaactual, R.layout.rcv_item_card_negocios, new AdaptadorListadoEmpresas.OnItemClickListener() {

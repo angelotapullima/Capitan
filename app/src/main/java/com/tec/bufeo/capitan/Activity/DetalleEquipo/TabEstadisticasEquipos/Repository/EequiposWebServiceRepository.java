@@ -61,10 +61,10 @@ public class EequiposWebServiceRepository {
             service.getRetos(id_equipo,"true",token).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.d("Repository torneoEquipo","Response::::"+response.body());
+                    Log.d("Repository estadistica","Response::::"+response.body());
                     webserviceResponseList = parseJson(response.body());
                     EequiposRoomDbRepository tequiposRoomDbRepository = new EequiposRoomDbRepository(application);
-                    tequiposRoomDbRepository.insertTorneosEquipos(webserviceResponseList);
+                    tequiposRoomDbRepository.insertEstadisticasEquipos(webserviceResponseList);
                     data.setValue(webserviceResponseList);
 
                 }
@@ -95,6 +95,10 @@ public class EequiposWebServiceRepository {
         try {
             jsonObject = new JSONObject(response);
             JSONArray resultJSON = jsonObject.getJSONArray("results");
+
+
+            EequiposRoomDbRepository eequiposRoomDbRepository =  new EequiposRoomDbRepository(application);
+            eequiposRoomDbRepository.DeleteAllEstadisticasEquipos();
 
             int count = resultJSON.length();
 

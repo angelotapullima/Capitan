@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.tec.bufeo.capitan.Activity.old.DetalleEquipo;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipoNuevo;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.AdaptadorForo;
@@ -108,10 +108,12 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Mequipos mequipos, int position) {
 
-                Intent intent = new Intent(ProfileActivity.this, DetalleEquipo.class);
+                Intent intent = new Intent(ProfileActivity.this, DetalleEquipoNuevo.class);
                 intent.putExtra("id_equipo", mequipos.getEquipo_id());
                 intent.putExtra("nombre_equipo", mequipos.getEquipo_nombre());
                 intent.putExtra("foto_equipo", mequipos.getEquipo_foto());
+                intent.putExtra("capitan_equipo", mequipos.getCapitan_nombre());
+                intent.putExtra("capitan_id", mequipos.getCapitan_id());
                 startActivity(intent);
             }
         });
