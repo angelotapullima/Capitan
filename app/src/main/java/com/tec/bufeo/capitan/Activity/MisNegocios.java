@@ -10,10 +10,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoEmpresas;
@@ -31,12 +35,11 @@ public class MisNegocios extends AppCompatActivity implements SwipeRefreshLayout
     public ArrayList<Empresas> arrayempresas;
     DataConnection dc;
      RecyclerView rcv_mis_empresas;
-    ProgressBar progressbar_mis_empresas;
      CardView cdv_mis_mensaje;
-    Toolbar tlb_mis_negocios;
     SwipeRefreshLayout SwipeRefreshLayout_misNegocios;
     Activity activity;
     Context context;
+    LinearLayout layout_carga_misNegocios;
     Preferences preferences;
 
 
@@ -48,8 +51,8 @@ public class MisNegocios extends AppCompatActivity implements SwipeRefreshLayout
 
         preferences= new Preferences(this);
         rcv_mis_empresas = (RecyclerView) findViewById(R.id.rcv_mis_empresas);
-        progressbar_mis_empresas = (ProgressBar) findViewById(R.id.progressbar_mis_empresas);
-        tlb_mis_negocios = (Toolbar) findViewById(R.id.tlb_mis_negocios);
+
+        layout_carga_misNegocios = (LinearLayout) findViewById(R.id.layout_carga_misNegocios);
         cdv_mis_mensaje = (CardView) findViewById(R.id.cdv_mis_mensaje);
 
 
@@ -61,7 +64,6 @@ public class MisNegocios extends AppCompatActivity implements SwipeRefreshLayout
 
         rcv_mis_empresas.setHasFixedSize(true);
 
-        tlb_mis_negocios.setTitle("Mis Negocios");
 
 
         cdv_mis_mensaje.setVisibility(View.INVISIBLE);
@@ -75,8 +77,30 @@ public class MisNegocios extends AppCompatActivity implements SwipeRefreshLayout
 
         dc = new DataConnection(this,"listarMisEmpresas",false);
         new GetEmpresas().execute();
+
+        showToolbar("Mis Negocios",true);
     }
 
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.WHITE);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow); //y habilitamos la flacha hacia atras
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
     @Override
     public void onRefresh() {
 
@@ -106,7 +130,7 @@ public class MisNegocios extends AppCompatActivity implements SwipeRefreshLayout
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            progressbar_mis_empresas.setVisibility(ProgressBar.INVISIBLE);
+            layout_carga_misNegocios.setVisibility(ProgressBar.GONE);
             SwipeRefreshLayout_misNegocios.setRefreshing(false);
 
             //Toast.makeText(getActivity(),"Z "+arrayempresas.size(),Toast.LENGTH_SHORT).show();
@@ -134,6 +158,7 @@ public class MisNegocios extends AppCompatActivity implements SwipeRefreshLayout
 
             if (arrayempresas.size() > 0) {
                 cdv_mis_mensaje.setVisibility(View.INVISIBLE);
+                layout_carga_misNegocios.setVisibility(View.GONE);
             } else {
                 cdv_mis_mensaje.setVisibility(View.VISIBLE);
             }

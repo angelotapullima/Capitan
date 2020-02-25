@@ -13,6 +13,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/abl_detalleEmpresa"
         android:layout_width="match_parent"
+        android:background="#00000000"
         android:layout_height="300dp"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -21,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            android:background="#00000000"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleMarginEnd="64dp"
@@ -32,11 +34,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
+                android:src="@drawable/cancha"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"/>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetStartWithNavigation="0dp"
+                android:background="#33000000"/>
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -45,11 +55,90 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:id="@+id/frameCarga"
+                app:layout_anchor="@id/cdv_detalleEmpresa"
+                app:layout_anchorGravity="center_horizontal"
+                android:layout_gravity="center">
 
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="100dp"
+                        android:layout_gravity="center"
+                        android:layout_height="100dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_fileName="balon_futbol.json"
+                        app:lottie_imageAssetsFolder="assets"
+                        app:lottie_loop="true">
+
+                    </com.airbnb.lottie.LottieAnimationView>
+                    <LinearLayout
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="110dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/logobufeopng"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_anchor="@id/rcv_canchas"
+                android:background="#fff"
+                android:id="@+id/frameCarga2"
+                app:layout_anchorGravity="center_horizontal"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animacion_carga"
+                        android:layout_width="100dp"
+                        android:layout_gravity="center"
+                        android:layout_height="100dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_fileName="balon_futbol.json"
+                        app:lottie_imageAssetsFolder="assets"
+                        app:lottie_loop="true">
+
+                    </com.airbnb.lottie.LottieAnimationView>
+                    <LinearLayout
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="110dp"
+                            android:layout_height="50dp"
+                            android:id="@+id/LogoBufeo"
+                            android:src="@drawable/logobufeopng"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
             <androidx.cardview.widget.CardView
                 android:id="@+id/cdv_detalleEmpresa"
                 android:layout_width="match_parent"
@@ -239,110 +328,110 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
-                  <androidx.cardview.widget.CardView
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                      <LinearLayout
-                          android:layout_width="match_parent"
-                          android:orientation="vertical"
-                          android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
 
-                          <androidx.constraintlayout.widget.ConstraintLayout
-                              android:layout_width="match_parent"
-                              android:layout_height="match_parent"
-                              >
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                >
 
-                              <com.tec.bufeo.capitan.Activity.ratings.RatingReviews
-                                  xmlns:bar="http://schemas.android.com/apk/res-auto"
-                                  android:id="@+id/rating_reviews"
-                                  android:layout_width="0dp"
-                                  android:layout_height="wrap_content"
-                                  android:layout_marginStart="42dp"
-                                  android:layout_marginBottom="8dp"
-                                  app:layout_constraintBottom_toBottomOf="parent"
-                                  app:layout_constraintEnd_toEndOf="parent"
-                                  app:layout_constraintStart_toEndOf="@+id/rating_float"
-                                  app:layout_constraintTop_toTopOf="parent"
-                                  app:layout_constraintVertical_bias="0.499"
-                                  bar:max_value="100"
-                                  bar:show_label="true"
-                                  bar:show_raters="false"
-                                  bar:spaces="7dp"
-                                  bar:text_color="#333333"
-                                  bar:text_size="10sp"
-                                  bar:rounded="true"
-                                  bar:width="12dp" />
+                                <com.tec.bufeo.capitan.Activity.ratings.RatingReviews
+                                    xmlns:bar="http://schemas.android.com/apk/res-auto"
+                                    android:id="@+id/rating_reviews"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="42dp"
+                                    android:layout_marginBottom="8dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/rating_float"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.499"
+                                    bar:max_value="100"
+                                    bar:show_label="true"
+                                    bar:show_raters="false"
+                                    bar:spaces="7dp"
+                                    bar:text_color="#333333"
+                                    bar:text_size="10sp"
+                                    bar:rounded="true"
+                                    bar:width="12dp" />
 
-                              <TextView
-                                  android:id="@+id/rating_float"
-                                  android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  android:layout_marginStart="8dp"
-                                  android:layout_marginEnd="8dp"
-                                  android:background="?android:selectableItemBackground"
-                                  android:text="4.7"
-                                  android:textColor="#333333"
-                                  android:textSize="36sp"
-                                  android:textStyle="bold"
-                                  app:layout_constraintEnd_toEndOf="@+id/ratingBar_promedio"
-                                  app:layout_constraintHorizontal_bias="0.36"
-                                  app:layout_constraintStart_toStartOf="@+id/ratingBar_promedio"
-                                  app:layout_constraintTop_toTopOf="@+id/rating_reviews" />
+                                <TextView
+                                    android:id="@+id/rating_float"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:background="?android:selectableItemBackground"
+                                    android:text="4.7"
+                                    android:textColor="#333333"
+                                    android:textSize="36sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="@+id/ratingBar_promedio"
+                                    app:layout_constraintHorizontal_bias="0.36"
+                                    app:layout_constraintStart_toStartOf="@+id/ratingBar_promedio"
+                                    app:layout_constraintTop_toTopOf="@+id/rating_reviews" />
 
-                              <RatingBar
-                                  android:id="@+id/ratingBar_promedio"
-                                  style="@style/Widget.AppCompat.RatingBar.Small"
-                                  android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  android:layout_marginStart="16dp"
-                                  android:numStars="5"
-                                  android:progressTint="#0f9d58"
-                                  android:backgroundTint="#0f9d58"
-                                  android:rating="4"
-                                  android:stepSize="1"
-                                  app:layout_constraintBottom_toBottomOf="@+id/rating_reviews"
-                                  app:layout_constraintStart_toStartOf="parent"
-                                  app:layout_constraintTop_toBottomOf="@+id/rating_float"
-                                  app:layout_constraintVertical_bias="0.07999998"
-                                  android:layout_marginLeft="16dp" />
+                                <RatingBar
+                                    android:id="@+id/ratingBar_promedio"
+                                    style="@style/Widget.AppCompat.RatingBar.Small"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:numStars="5"
+                                    android:progressTint="#0f9d58"
+                                    android:backgroundTint="#0f9d58"
+                                    android:rating="4"
+                                    android:stepSize="1"
+                                    app:layout_constraintBottom_toBottomOf="@+id/rating_reviews"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/rating_float"
+                                    app:layout_constraintVertical_bias="0.07999998"
+                                    android:layout_marginLeft="16dp" />
 
-                              <TextView
-                                  android:id="@+id/conteo"
-                                  android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  android:layout_marginStart="10dp"
-                                  android:layout_marginTop="2dp"
-                                  android:text="756, 800"
-                                  android:textColor="#333333"
-                                  android:textSize="12sp"
-                                  android:gravity="center"
-                                  app:layout_constraintStart_toStartOf="@+id/rating_float"
-                                  app:layout_constraintTop_toBottomOf="@+id/ratingBar_promedio"
-                                  android:layout_marginLeft="8dp" />
+                                <TextView
+                                    android:id="@+id/conteo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginTop="2dp"
+                                    android:text="756, 800"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp"
+                                    android:gravity="center"
+                                    app:layout_constraintStart_toStartOf="@+id/rating_float"
+                                    app:layout_constraintTop_toBottomOf="@+id/ratingBar_promedio"
+                                    android:layout_marginLeft="8dp" />
 
-                              <TextView
-                                  android:id="@+id/textView3"
-                                  android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  android:layout_marginStart="16dp"
-                                  android:layout_marginEnd="8dp"
-                                  android:layout_marginBottom="24dp"
-                                  android:text="Ratings &amp; Reviews"
-                                  android:textAppearance="@android:style/TextAppearance.Material.WindowTitle"
-                                  android:textStyle="bold"
-                                  app:layout_constraintBottom_toTopOf="@+id/rating_reviews"
-                                  app:layout_constraintEnd_toEndOf="parent"
-                                  app:layout_constraintHorizontal_bias="0.0"
-                                  app:layout_constraintStart_toStartOf="parent"
-                                  tools:targetApi="lollipop" />
+                                <TextView
+                                    android:id="@+id/textView3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_marginBottom="24dp"
+                                    android:text="Ratings &amp; Reviews"
+                                    android:textAppearance="@android:style/TextAppearance.Material.WindowTitle"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toTopOf="@+id/rating_reviews"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    tools:targetApi="lollipop" />
 
-                          </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-                      </LinearLayout>
-                  </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
 
 
                 </LinearLayout>
@@ -415,35 +504,7 @@
     </androidx.core.widget.NestedScrollView>
 
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@id/cdv_detalleEmpresa"
-        app:layout_anchorGravity="center_horizontal"
-        android:layout_gravity="center">
 
-        <ProgressBar
-            android:id="@+id/progressbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
-            android:indeterminate="true"
-            android:theme="@style/CircularProgress" />
-    </FrameLayout>
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@id/rcv_canchas"
-        app:layout_anchorGravity="center_horizontal"
-        android:layout_gravity="center">
-
-        <ProgressBar
-            android:id="@+id/progressbarCanchas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
-            android:theme="@style/CircularProgress" />
-    </FrameLayout>
 
 
 

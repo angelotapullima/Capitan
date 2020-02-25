@@ -108,15 +108,26 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animacion_mapa"
+                        android:layout_width="40dp"
+                        android:layout_gravity="center"
+                        android:layout_height="40dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_fileName="map_rojo.json"
+                        app:lottie_imageAssetsFolder="assets"
+                        app:lottie_loop="true">
 
+                    </com.airbnb.lottie.LottieAnimationView>
                     <TextView
                         android:id="@+id/txt_buscar_direccionEmpresa"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:textColor="#FFF"
                         android:layout_marginLeft="10dp"
-                        android:text="Jr Putumayo y la csmare nº 123"
+                        android:text="Jr Putumayo y la csmare "
                         android:textStyle="bold"
                         android:textSize="17sp" />
 
@@ -124,30 +135,27 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="16"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/imb_llamar"
+                android:layout_marginTop="-10dp"
                 android:layout_gravity="end"
                 android:orientation="vertical">
-                <ImageButton
-                    android:id="@+id/imb_llamar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/phone"/>
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/phone_call"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="phone_call.json"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_loop="true">
+
+                </com.airbnb.lottie.LottieAnimationView>
+
 
             </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
         </FrameLayout>
 
 

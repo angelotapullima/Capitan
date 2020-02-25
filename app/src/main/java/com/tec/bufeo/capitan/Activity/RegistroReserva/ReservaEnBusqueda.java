@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,6 +29,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
 import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
@@ -76,7 +78,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     DataConnection dc4,dc2;
     Preferences preferences;
 
-    String nombre_empresa_dato,empresa_id,h_reserva,fecha,hora,precio;
+    String nombre_empresa_dato,empresa_id,h_reserva,fecha,hora,precio,telefono1,telefono2,direccion;
     LinearLayout btn_reservar_busqueda;
     TextView nombre_reserva_busqueda,saldo_bufis_busqueda;
 
@@ -99,6 +101,9 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         empresa_id = getIntent().getExtras().getString("empresa_id");
         h_reserva = getIntent().getExtras().getString("h_reserva");
         precio = getIntent().getExtras().getString("precio");
+        telefono1 = getIntent().getExtras().getString("telefono1");
+        telefono2 = getIntent().getExtras().getString("telefono2");
+        direccion = getIntent().getExtras().getString("direccion");
 
         dc4 = new DataConnection(ReservaEnBusqueda.this,"ObtenerSaldo",false);
         new ReservaEnBusqueda.GetSaldo().execute();
@@ -498,6 +503,17 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 if (response.equals("1")){
                     Toast.makeText(getApplicationContext(), "Registro Completo", Toast.LENGTH_SHORT).show();
                     dialog_carga.dismiss();
+                    Intent i = new Intent(ReservaEnBusqueda.this, ConfirmacionReserva.class);
+                    i.putExtra("cancha",spn_cancha_busqueda.getSelectedItem().toString());
+                    i.putExtra("lugar",nombre_empresa.getText().toString());
+                    i.putExtra("hora",h_reserva);
+                    i.putExtra("fecha",fecha);
+                    i.putExtra("precio",total.getText().toString());
+                    i.putExtra("nombre",nombre_reserva_busqueda.getText().toString());
+                    i.putExtra("direccion",direccion);
+                    i.putExtra("telefono",telefono1);
+                    i.putExtra("telefono2",telefono2);
+                    startActivity(i);
                     finish();
 
 

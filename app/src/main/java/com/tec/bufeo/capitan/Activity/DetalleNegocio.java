@@ -14,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -24,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -51,7 +53,6 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class DetalleNegocio extends AppCompatActivity implements View.OnClickListener {
 
     static ImageView img_fotoEmpresa;
-    Empresas empresas;
     static RecyclerView rcv_canchas;
     static AppBarLayout abl_detalleEmpresa;
     public static TextView txt_nombreEmpresa, txt_descripcionEmpresa, txt_direccionEmpresa,
@@ -70,10 +71,10 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     static ArrayList<Cancha> arraycanchaactual;
     Preferences preferences;
     static String id_empresa, tipo_usuario;
-
+    static FrameLayout frameCarga,frameCarga2;
     static DataConnection dc, dc1, dc2, dc3;
     static DataConnection dc4;
-    static ProgressBar progressbar, progressbarcanchas;
+    /*static ProgressBar progressbar, progressbarcanchas;*/
     public static String fecha_actual, hora_actual, cancha_id, horario;
     static String saldo_cargado;
     public static ArrayList<Empresas> arrayempresa;
@@ -137,9 +138,11 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         /*rtb_valoracion = (RatingBar) findViewById(R.id.rtb_valoracion);*/
         rtb_valorar = (RatingBar) findViewById(R.id.rtb_valorar);
         cdv_detalleEmpresa = (CardView) findViewById(R.id.cdv_detalleEmpresa);
-        progressbar = (ProgressBar) findViewById(R.id.progressbar);
+        frameCarga = (FrameLayout) findViewById(R.id.frameCarga);
+        frameCarga2 = (FrameLayout) findViewById(R.id.frameCarga2);
+        //progressbar = (ProgressBar) findViewById(R.id.progressbar);
+        //progressbarcanchas = (ProgressBar) findViewById(R.id.progressbarCanchas);
         rcv_canchas = (RecyclerView) findViewById(R.id.rcv_canchas);
-        progressbarcanchas = (ProgressBar) findViewById(R.id.progressbarCanchas);
         abl_detalleEmpresa = (AppBarLayout) findViewById(R.id.abl_detalleEmpresa);
         lny_telefono = (LinearLayout) findViewById(R.id.lny_telefono);
         lny_telefono_2 = (LinearLayout) findViewById(R.id.lny_telefono_2);
@@ -187,8 +190,24 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
         // rtb_valoracion.setRating();
 
+        showToolbar("Detalle de Negocio",true);
+    }
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);  //y habilitamos la flacha hacia atras
+
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
     public static void obtenerSaldo(){
         dc4 = new DataConnection(activity, "ObtenerSaldo", false);
         new DetalleNegocio.GetSaldo().execute();
@@ -294,7 +313,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            abl_detalleEmpresa.setVisibility(View.INVISIBLE);
+            //abl_detalleEmpresa.setVisibility(View.INVISIBLE);
             cdv_detalleEmpresa.setVisibility(View.INVISIBLE);
 
 
@@ -348,7 +367,9 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                 horario = arrayempresa.get(0).getEmpresas_horario();
                 fecha_actual = arrayempresa.get(0).getEmpresa_cancha_fecha();
                 hora_actual = arrayempresa.get(0).getEmpresa_cancha_hora();
-                progressbar.setVisibility(ProgressBar.INVISIBLE);
+                frameCarga.setVisibility(View.GONE);
+                frameCarga2.setVisibility(View.GONE);
+                //progressbar.setVisibility(ProgressBar.INVISIBLE);
 
 
                 abl_detalleEmpresa.setVisibility(View.VISIBLE);
@@ -383,7 +404,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
             super.onPostExecute(aVoid);
 
 
-            progressbarcanchas.setVisibility(ProgressBar.INVISIBLE);
+            //progressbarcanchas.setVisibility(ProgressBar.INVISIBLE);
 
             GridLayoutManager linearLayoutManager = new GridLayoutManager(context, 1);
             linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
@@ -435,7 +456,8 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressbarcanchas.setVisibility(ProgressBar.VISIBLE);
+            frameCarga.setVisibility(ProgressBar.VISIBLE);
+            frameCarga2.setVisibility(ProgressBar.VISIBLE);
         }
 
         @Override
@@ -475,7 +497,9 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
             });
 
-            progressbarcanchas.setVisibility(ProgressBar.INVISIBLE);
+            frameCarga.setVisibility(View.GONE);
+            frameCarga2.setVisibility(View.GONE);
+            //progressbarcanchas.setVisibility(ProgressBar.INVISIBLE);
 
             rcv_canchas.setAdapter(adaptadorListadoCanchaEmpresa);
 

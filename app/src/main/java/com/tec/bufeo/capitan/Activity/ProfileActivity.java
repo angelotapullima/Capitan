@@ -52,8 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT )
-        {
+
           this.getWindow().getDecorView().setSystemUiVisibility( //View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     //| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                      View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -61,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
           );
-        }
+
 
         initViews();
         setAdapter();
@@ -121,7 +120,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         GridLayoutManager linearLayoutManager = new GridLayoutManager(this, 1);
-        linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recycler_equipos.setLayoutManager(linearLayoutManager);
         recycler_equipos.setAdapter(adaptadorMiEquipo);
     }

@@ -59,7 +59,7 @@
                     android:layout_weight="1"
                     android:layout_alignParentEnd="true"
                     android:textColor="@color/colorPrimary"
-                    android:src="@drawable/football"
+                    android:src="@drawable/ranking"
                     android:id="@+id/estadisticas"
 
                     android:layout_marginRight="15dp"

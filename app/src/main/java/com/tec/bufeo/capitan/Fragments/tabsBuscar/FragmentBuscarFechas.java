@@ -347,6 +347,9 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                     i.putExtra("h_reserva",empresas.getHora_reserva());
                     i.putExtra("empresa_id",empresas.getEmpresas_id());
                     i.putExtra("precio",empresas.getPrecio());
+                    i.putExtra("telefono1",empresas.getEmpresas_telefono_1());
+                    i.putExtra("telefono2",empresas.getEmpresas_telefono_2());
+                    i.putExtra("direccion",empresas.getEmpresas_direccion());
                     startActivity(i);
                 }else if( tipo.equals("imb_llamar")){
 
@@ -484,7 +487,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         public TextView txt_buscar_direccionEmpresa;
         public TextView txt_buscar_telefonoEmpresa;
         public TextView txt_buscar_telefonoEmpresa2;
-        public ImageButton imb_llamar;
+        public LinearLayout imb_llamar;
         public ImageView imagen_cancha;
         public LinearLayout layout_reserva_busqueda;
 
@@ -536,7 +539,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                 holder.txt_buscar_telefonoEmpresa = (TextView) convertView.findViewById(R.id.txt_buscar_telefonoEmpresa);
                 holder.txt_buscar_telefonoEmpresa2 = (TextView) convertView.findViewById(R.id.txt_buscar_telefonoEmpresa2);
                 holder.imagen_cancha = (ImageView) convertView.findViewById(R.id.imagen_cancha);
-                holder.imb_llamar = (ImageButton) convertView.findViewById(R.id.imb_llamar);
+                holder.imb_llamar = (LinearLayout) convertView.findViewById(R.id.imb_llamar);
                 holder.layout_reserva_busqueda =  convertView.findViewById(R.id.layout_reserva_busqueda);
 
 
@@ -562,6 +565,9 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                     i.putExtra("precio",item.txt_buscar_precioCancha);
                     i.putExtra("h_reserva",item.h_reserva);
                     i.putExtra("empresa_id",item.empresa_id);
+                    i.putExtra("telefono1",item.txt_llamar1);
+                    i.putExtra("telefono2",item.txt_llamar2);
+                    i.putExtra("direccion",item.txt_buscar_direccionEmpresa);
                     context.startActivity(i);
                 }
             });

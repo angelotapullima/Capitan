@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.cardview.widget.CardView;
@@ -19,10 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.tec.bufeo.capitan.Activity.RegistroReserva.RegistroReserva;
 import com.tec.bufeo.capitan.Activity.RegistroReserva.ReservaEnBusqueda;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
-import com.tec.bufeo.capitan.Modelo.HoraFecha;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.AnimatedExpandableListView;
 import com.tec.bufeo.capitan.WebService.DataConnection;
@@ -155,7 +155,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         public String img_cancha;
         public String h_reserva;
         public String empresa_id;
-        public String txt_llamar;
+        public String txt_llamar1;
+        public String txt_llamar2;
         //String hint;
 
     }
@@ -167,7 +168,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         public TextView txt_buscar_precioCancha;
         public TextView txt_buscar_direccionEmpresa;
         public TextView txt_buscar_telefonoEmpresa;
-        public ImageButton imb_llamar;
+        public TextView txt_buscar_telefonoEmpresa2;
+        public LinearLayout imb_llamar;
         public ImageView imagen_cancha;
         public LinearLayout layout_reserva_busqueda;
         public TextView txt_llamar;
@@ -218,8 +220,9 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
                  holder.txt_buscar_direccionEmpresa = (TextView) convertView.findViewById(R.id.txt_buscar_direccionEmpresa);
                  holder.txt_buscar_precioCancha = (TextView) convertView.findViewById(R.id.txt_buscar_precioCancha);
                  holder.txt_buscar_telefonoEmpresa = (TextView) convertView.findViewById(R.id.txt_buscar_telefonoEmpresa);
+                 holder.txt_buscar_telefonoEmpresa2 = (TextView) convertView.findViewById(R.id.txt_buscar_telefonoEmpresa2);
                  holder.imagen_cancha = (ImageView) convertView.findViewById(R.id.imagen_cancha);
-                 holder.imb_llamar = (ImageButton) convertView.findViewById(R.id.imb_llamar);
+                 holder.imb_llamar = (LinearLayout) convertView.findViewById(R.id.imb_llamar);
                  holder.layout_reserva_busqueda = (LinearLayout) convertView.findViewById(R.id.layout_reserva_busqueda);
 
 
@@ -235,7 +238,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
             holder.txt_buscar_nombreEmpresa.setText(item.txt_buscar_nombreEmpresa);
             holder.txt_buscar_precioCancha.setText(item.txt_buscar_precioCancha);
             holder.txt_buscar_direccionEmpresa.setText(item.txt_buscar_direccionEmpresa);
-            holder.txt_buscar_telefonoEmpresa.setText(item.txt_llamar);
+            holder.txt_buscar_telefonoEmpresa.setText(item.txt_llamar1);
+            holder.txt_buscar_telefonoEmpresa2.setText(item.txt_llamar2);
             holder.layout_reserva_busqueda.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -244,6 +248,9 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
                     i.putExtra("precio",item.txt_buscar_precioCancha);
                     i.putExtra("h_reserva",item.h_reserva);
                     i.putExtra("empresa_id",item.empresa_id);
+                    i.putExtra("telefono1",item.txt_llamar1);
+                    i.putExtra("telefono2",item.txt_llamar2);
+                    i.putExtra("direccion",item.txt_buscar_direccionEmpresa);
                     context.startActivity(i);
                 }
             });
@@ -251,8 +258,15 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+  holder.txt_buscar_telefonoEmpresa.getText().toString()));
-                    startActivity(intent);
+                    String telefono1 = item.txt_llamar1.toString();
+                    String telefono2 = item.txt_llamar2.toString();
+
+                    if (telefono2.equals("")){
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+  telefono1));
+                        startActivity(intent);
+                    }else{
+                        dialogoTelefonos(telefono1,telefono2);
+                    }
                 }
             });
             //holder.imb_llamar.set(item.hint);
@@ -310,5 +324,42 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
 
     }
 
+
+    AlertDialog dialog_eliminar;
+    public void dialogoTelefonos(final String fono1, final String fono2){
+
+        AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View vista = inflater.inflate(R.layout.dialogo_telefonos,null);
+        builder.setView(vista);
+
+        dialog_eliminar = builder.create();
+        dialog_eliminar.show();
+
+        TextView fonito1 = vista.findViewById(R.id.fono1);
+        TextView fonito2 = vista.findViewById(R.id.fono2);
+
+        fonito1.setText(fono1);
+        fonito2.setText(fono2);
+
+
+        fonito1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+  fono1));
+                startActivity(intent);
+            }
+        });
+        fonito2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+  fono2));
+                startActivity(intent);
+            }
+        });
+
+
+
+    }
 
 }

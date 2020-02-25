@@ -65,6 +65,7 @@ public class DataConnection extends AppCompatActivity {
     boolean mensajeprogres, mensaje;
     public static final String IP = "https://www.guabba.com/capitan";
     public static final String IP2 = "https://www.guabba.com/capitan2";
+    public static final String NombreCapeta ="/.Capitan";
     Activity context;
     JSONObject json_data;
     Usuario usuario;
@@ -894,7 +895,8 @@ public class DataConnection extends AppCompatActivity {
                             child.txt_buscar_direccionEmpresa = jsonNodehora.optString("empresa_direccion");
                             child.txt_buscar_precioCancha = jsonNodehora.optString("cancha_precioD");
                             // child.imb_llamar = jsonNodehora.optString("cancha_telefono");;
-                            child.txt_llamar = jsonNodehora.optString("empresa_telefono");;
+                            child.txt_llamar1 = jsonNodehora.optString("empresa_telefono1");
+                            child.txt_llamar2 = jsonNodehora.optString("empresa_telefono2");
 
                             item.items.add(child);
                         }
@@ -994,7 +996,8 @@ public class DataConnection extends AppCompatActivity {
 
 
                                 // child.imb_llamar = jsonNodehora.optString("cancha_telefono");;
-                                child.txt_llamar = jsonNodehora.optString("empresa_telefono_1");;
+                                child.txt_llamar1 = jsonNodehora.optString("empresa_telefono_1");
+                                child.txt_llamar2 = jsonNodehora.optString("empresa_telefono_2");
 
                                 item.items.add(child);
                             }
@@ -1620,13 +1623,14 @@ public class DataConnection extends AppCompatActivity {
                     @Override
                     public void run() {
                         if(Integer.toString(code).equalsIgnoreCase("2")){
-                            Toast.makeText(context, "Datos incorrectos", Toast.LENGTH_SHORT).show();
+                            preferences.codeAdvertencia("Datos incorrectos");
                         }
                         else if(Integer.toString(code).equalsIgnoreCase("3")){
-                            Toast.makeText(context, "Cuenta desactivada", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(context, "No tiene permisos", Toast.LENGTH_SHORT).show();
+                            preferences.codeAdvertencia( "Cuenta desactivada");
+                        } if (Integer.toString(code).equalsIgnoreCase("4")){
+                          preferences.codeAdvertencia("El email Ya esta en uso");
+                        } else{
+                            preferences.codeAdvertencia("No tiene permisos");
                         }
 
                     }

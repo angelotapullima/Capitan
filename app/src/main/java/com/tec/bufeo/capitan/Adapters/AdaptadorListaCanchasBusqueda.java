@@ -43,7 +43,7 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
 
     public class canchaBusquedaViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageButton imb_llamar;
+        private LinearLayout imb_llamar;
         private TextView txt_buscar_nombreEmpresa, txt_buscar_precioCancha, txt_buscar_telefonoEmpresa, txt_buscar_direccionEmpresa;
         private LinearLayout layout_reserva_busqueda;
         //private CardView cdv_canchas_horario_reserva;
@@ -58,7 +58,7 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
             txt_buscar_telefonoEmpresa = (TextView) itemView.findViewById(R.id.txt_buscar_telefonoEmpresa);
             txt_buscar_direccionEmpresa = (TextView) itemView.findViewById(R.id.txt_buscar_direccionEmpresa);
             imagen_cancha = (ImageView) itemView.findViewById(R.id.imagen_cancha);
-            imb_llamar =(ImageButton)itemView.findViewById(R.id.imb_llamar);
+            imb_llamar =(LinearLayout)itemView.findViewById(R.id.imb_llamar);
             layout_reserva_busqueda =(LinearLayout) itemView.findViewById(R.id.layout_reserva_busqueda);
 
 

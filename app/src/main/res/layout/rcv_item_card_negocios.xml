@@ -40,14 +40,38 @@
                     android:text="Amazon Cares"
                     android:textStyle="bold"
                     android:textSize="30sp" />
-                <TextView
-                    android:id="@+id/txt_direccionEmpresa"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/lny_precioAbonado"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#fff"
-                    android:text="Jr. Putumayo 240"
-                    android:textSize="20sp" />
+                    android:orientation="horizontal">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animacion_mapa"
+                        android:layout_width="40dp"
+                        android:layout_gravity="center"
+                        android:layout_height="40dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_fileName="map_rojo.json"
+                        app:lottie_imageAssetsFolder="assets"
+                        app:lottie_loop="true">
+
+                    </com.airbnb.lottie.LottieAnimationView>
+                    <TextView
+                        android:id="@+id/txt_direccionEmpresa"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="#FFF"
+                        android:layout_marginLeft="10dp"
+                        android:text="Jr Putumayo y la csmare "
+                        android:textStyle="bold"
+                        android:textSize="17sp" />
+
+
+                </LinearLayout>
+
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

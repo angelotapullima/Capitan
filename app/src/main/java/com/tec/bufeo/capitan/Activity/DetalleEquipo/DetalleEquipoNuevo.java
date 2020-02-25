@@ -2,11 +2,15 @@ package com.tec.bufeo.capitan.Activity.DetalleEquipo;
 import android.content.Intent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,7 +38,6 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
     String equipo_id,equipo_nombre,equipo_foto,capitan_nombre,capitan_id;
     UniversalImageLoader universalImageLoader;
     Preferences preferences;
-    ImageButton finishDetalleEquipo;
     FloatingActionButton fab_agregarParticipantesEquipo;
 
     private   String[] tituloIds = {
@@ -68,7 +71,6 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         imagen_Dequipo =  findViewById(R.id.imagen_Dequipo);
         btn_retarDequipo =  findViewById(R.id.btn_retarDequipo);
         name_Equipex =  findViewById(R.id.name_Equipex);
-        finishDetalleEquipo =  findViewById(R.id.finishDetalleEquipo);
         fab_agregarParticipantesEquipo = findViewById(R.id.fab_agregarParticipantesEquipo);
 
 
@@ -142,14 +144,24 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
             }
         });
 
-        finishDetalleEquipo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        showToolbar("",true);
+    }
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);  //y habilitamos la flacha hacia atras
+
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
     public class SectionsDetalleEquipoAdapter extends FragmentPagerAdapter {
 
         public SectionsDetalleEquipoAdapter(FragmentManager fm) {

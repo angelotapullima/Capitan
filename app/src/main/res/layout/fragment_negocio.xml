@@ -9,7 +9,7 @@
 
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/tlb_negocios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,34 +19,24 @@
         android:background="@color/colorPrimary">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Negocios"
+            android:layout_toLeftOf="@+id/mis_negocios"
             android:textColor="#FFF"
             android:layout_marginLeft="10dp"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_height="match_parent">
-
-
-
-
+            android:textStyle="bold"/>
             <ImageView
                 android:id="@+id/mis_negocios"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:tint="#fff"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentEnd="true"
-                app:srcCompat="@drawable/ic_home_black_24dp"/>
+                app:srcCompat="@drawable/negocios"/>
 
-        </RelativeLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/SwipeRefreshLayout"
@@ -102,12 +92,17 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical">
-        <ProgressBar
-            android:layout_width="wrap_content"
-            style="@style/CircularProgress"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animacion_carga"
+            android:layout_width="100dp"
             android:layout_gravity="center"
-            android:indeterminateDrawable="@drawable/style_progress"
-            android:layout_height="wrap_content"/>
+            android:layout_height="100dp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="balon_futbol.json"
+            app:lottie_imageAssetsFolder="assets"
+            app:lottie_loop="true">
+
+        </com.airbnb.lottie.LottieAnimationView>
         <LinearLayout
             android:layout_width="110dp"
             android:layout_height="wrap_content"

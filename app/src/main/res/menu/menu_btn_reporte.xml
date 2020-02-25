@@ -5,7 +5,8 @@
 
     <item android:id="@+id/action_btn_reporte"
         android:title="Reporte"
-        android:icon="@drawable/reporte_2"
+        android:iconTint="#FFF"
+        android:icon="@drawable/estadisticas"
         app:showAsAction="ifRoom"
         android:orderInCategory="1" />
 </menu>

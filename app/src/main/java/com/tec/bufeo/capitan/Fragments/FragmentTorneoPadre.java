@@ -60,17 +60,17 @@ public class FragmentTorneoPadre extends Fragment  {
     public ViewPager mViewPager;
 
     private  int[] imgIds = {
-            R.drawable.soccer,
-            R.drawable.soccer,
-            R.drawable.soccer,
-            R.drawable.soccer
+            R.drawable.equipos,
+            R.drawable.torneos,
+            R.drawable.retos,
+            R.drawable.chats
     };
 
     private  int[] imgBordeIds = {
-            R.drawable.soccer,
-            R.drawable.soccer_field,
-            R.drawable.soccer_field,
-            R.drawable.soccer_field
+            R.drawable.equipos,
+            R.drawable.torneos,
+            R.drawable.retos,
+            R.drawable.chats
     };
 
     private   String[] tituloIds = {

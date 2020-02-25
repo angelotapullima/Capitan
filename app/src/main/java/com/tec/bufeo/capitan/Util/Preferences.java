@@ -20,6 +20,7 @@ public class Preferences {
     Context context;
     SharedPreferences pref;
 
+
     public Preferences(Context context){
         this.context = context;
     }

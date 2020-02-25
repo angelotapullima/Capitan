@@ -20,7 +20,7 @@
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_imageAssetsFolder="assets"
-                app:lottie_fileName="loading-animation.json"
+                app:lottie_fileName="balon_futbol.json"
                 android:layout_centerInParent="true">
             </com.airbnb.lottie.LottieAnimationView>
         </RelativeLayout>

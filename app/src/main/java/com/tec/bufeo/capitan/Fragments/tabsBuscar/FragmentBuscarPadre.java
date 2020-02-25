@@ -23,13 +23,13 @@ public class FragmentBuscarPadre extends Fragment {
     private SectionsAdapter sectionsAdapter;
 
     private  int[] imgIds = {
-            R.drawable.soccer,
-            R.drawable.soccer_field
+            R.drawable.buqueda_disponible_hoy,
+            R.drawable.buqueda_avanzada
     };
 
     private  int[] imgBordeIds = {
-            R.drawable.soccer_field,
-            R.drawable.soccer
+            R.drawable.buqueda_disponible_hoy,
+            R.drawable.buqueda_avanzada
     };
 
     private  String[] tituloIds = {
@@ -89,18 +89,7 @@ public class FragmentBuscarPadre extends Fragment {
         tabLayoutT.getSelectedTabPosition();
 
 
-        /*Picasso.with(getContext()).load("http://"+IP+"/"+usuario_foto).error(R.drawable.error).fit().into(civ_fotoperfil,new Callback() {
 
-            @Override
-            public void onSuccess() {
-                prog_imagenloading.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError() {
-                prog_imagenloading.setVisibility(View.GONE);
-            }
-        });*/
 
 
         activity = getActivity();

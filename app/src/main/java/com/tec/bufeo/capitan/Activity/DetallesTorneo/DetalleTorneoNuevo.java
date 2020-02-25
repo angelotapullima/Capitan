@@ -3,11 +3,15 @@ package com.tec.bufeo.capitan.Activity.DetallesTorneo;
 import android.content.Intent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +39,6 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
     public ViewPager container_Dtorneo;
     private SectionsDetalleTorneoAdapter sectionsDetalleTorneoAdapter;
     String id_torneo,nombre,descripcion,lugar,fecha,hora,organizador, id_usuario,foto;
-    ImageButton finishDetalleTorneo;
     Preferences preferences;
     UniversalImageLoader universalImageLoader;
 
@@ -81,7 +84,6 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
         imagen_Dtorneo =  findViewById(R.id.imagen_Dtorneo);
         nombre_torneo_Detalle =  findViewById(R.id.nombre_torneo_Detalle);
         unirse_Dtorneo =  findViewById(R.id.unirse_Dtorneo);
-        finishDetalleTorneo =  findViewById(R.id.finishDetalleTorneo);
 
 
         if (id_usuario.equals(preferences.getIdUsuarioPref())){
@@ -122,15 +124,27 @@ public class DetalleTorneoNuevo extends AppCompatActivity {
         UniversalImageLoader.setImage(IP2+"/"+ foto,imagen_Dtorneo,null);
         nombre_torneo_Detalle.setText(nombre);
 
-        finishDetalleTorneo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        showToolbar("",true);
+
     }
 
 
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);  //y habilitamos la flacha hacia atras
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
     public class SectionsDetalleTorneoAdapter extends FragmentPagerAdapter {
 
 
