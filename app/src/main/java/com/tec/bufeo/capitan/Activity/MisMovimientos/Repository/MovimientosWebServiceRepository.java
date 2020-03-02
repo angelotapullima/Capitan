@@ -46,7 +46,6 @@ public class MovimientosWebServiceRepository {
 
      final MutableLiveData<List<Movimientos>> data = new MutableLiveData<>();
 
-     String token33 = "pOO+4LTcy7vf172x7MTVqo+52bK16M/N7d3T4ZnUzKiv68/gwq/SuYyx3rvUwc2dwZjV5dnk2NWS4Mzcw5XX4K7N3JLY39e23NjZzaTT4ry+tw==}";
      try {
          Retrofit retrofit = new Retrofit.Builder()
                  .baseUrl(APIUrl.BASE_URL)
@@ -57,7 +56,7 @@ public class MovimientosWebServiceRepository {
 
          MovimientosAPIService service = retrofit.create(MovimientosAPIService.class);
          //response = service.getEquipo(id,"true",token).execute().body();
-         service.getEquipo(id_user,"true",token33).enqueue(new Callback<String>() {
+         service.getEquipo(id_user,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.e("Repository movimientos","Response::::"+response.body());

@@ -41,7 +41,7 @@ public class MisEquiposWebServiceRepository {
 
     List<Mequipos> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Mequipos>> providesWebService(String id_usuario, final String tipo_equipo,final String token) {
+ public LiveData<List<Mequipos>> providesWebService(String id_usuario, final String tipo_equipo,final String token,String dato) {
 
      final MutableLiveData<List<Mequipos>> data = new MutableLiveData<>();
 
@@ -73,7 +73,7 @@ public class MisEquiposWebServiceRepository {
                      Log.d("Repository","Failed:::");
                  }
              });
-         }else{
+         }else if (tipo_equipo.equals("otro_equipo")){
              OtrosEquiposAPIService service = retrofit.create(OtrosEquiposAPIService.class);
              service.getEquipo(id_usuario,"true",token).enqueue(new Callback<String>() {
                  @Override
@@ -91,6 +91,26 @@ public class MisEquiposWebServiceRepository {
                      //Log.d("Repository","Failed:::");
                  }
              });
+         }else{
+             BusquedaEquiposAPIService service = retrofit.create(BusquedaEquiposAPIService.class);
+             //  response = service.makeRequest().execute().body();
+             service.getEquipo(dato,"true",token).enqueue(new Callback<String>() {
+                 @Override
+                 public void onResponse(Call<String> call, Response<String> response) {
+                     Log.e("buscar torneos","Response::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo_equipo);
+                     MisEquiposRoomDBRepository menuRoomDBRepository = new MisEquiposRoomDBRepository(application);
+                     menuRoomDBRepository.insertEquipos(webserviceResponseList);
+                     data.setValue(webserviceResponseList);
+
+                 }
+
+                 @Override
+                 public void onFailure(Call<String> call, Throwable t) {
+                     Log.d("Repository","Failed:::");
+                 }
+             });
+
          }
          //Defining retrofit api service
 
@@ -117,6 +137,8 @@ public class MisEquiposWebServiceRepository {
             jsonObject = new JSONObject(response);
             JSONArray resultJSON = jsonObject.getJSONArray("results");
 
+            /*MisEquiposRoomDBRepository misEquiposRoomDBRepository = new MisEquiposRoomDBRepository(application);
+            misEquiposRoomDBRepository.deleteAllEquipos();*/
             int count = resultJSON.length();
 
 

@@ -4,12 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -20,11 +17,9 @@ public class AdapterColaboracionesSubItem extends RecyclerView.Adapter<AdapterCo
 
     private List<DetalleColaboraciones> tablaTorneoSubItems;
     Context ctx;
-    UniversalImageLoader universalImageLoader;
 
     public AdapterColaboracionesSubItem(Context context, List<DetalleColaboraciones> tablaTorneoSubItems) {
         this.ctx=context;
-        universalImageLoader = new UniversalImageLoader(context);
         this.tablaTorneoSubItems=tablaTorneoSubItems;
     }
 

@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,9 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.DiskCacheUtils;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Repository.ChatsWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.ViewModels.ChatsListViewModel;
@@ -36,10 +40,14 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.ViewModels.Otros
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Views.FragmentTorneoRoque;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views.FragmentEquipo;
+import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
@@ -88,7 +96,7 @@ public class FragmentTorneoPadre extends Fragment  {
 
     }
     Application application;
-
+    UniversalImageLoader universalImageLoader;
     MisEquiposWebServiceRepository misEquiposWebServiceRepository;
     RetosWebServiceRepository retosWebServiceRepository;
     ChatsWebServiceRepository chatsWebServiceRepository;
@@ -177,20 +185,15 @@ public class FragmentTorneoPadre extends Fragment  {
 
         tabLayoutT.getSelectedTabPosition();
 
+        universalImageLoader = new UniversalImageLoader(context);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-        Picasso.with(getContext()).load(IP2+"/"+preferences.getFotoUsuario()).error(R.drawable.error).fit().into(civ_fotoperfil,new Callback() {
 
-            @Override
-            public void onSuccess() {
-                //prog_imagenloading.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError() {
-                //prog_imagenloading.setVisibility(View.GONE);
-            }
-        });
-
+        Glide.with(getContext())
+                .load(IP2+"/"+ preferences.getFotoUsuario())
+                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
+                .apply(LOGO_OPTION)
+                .into(civ_fotoperfil);
 
 
 
@@ -200,6 +203,7 @@ public class FragmentTorneoPadre extends Fragment  {
             public void onClick(View v) {
                 //selectImage("Perfil");
                 Intent i =  new Intent(context, ProfileActivity.class);
+                i.putExtra("id_usuario",preferences.getIdUsuarioPref());
                 startActivity(i);
 
 
@@ -213,6 +217,18 @@ public class FragmentTorneoPadre extends Fragment  {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
     }
 
     private void showEstadisticasDialog() {

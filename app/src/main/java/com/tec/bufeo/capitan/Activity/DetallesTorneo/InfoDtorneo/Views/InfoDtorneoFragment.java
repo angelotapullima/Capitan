@@ -12,22 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.FeedTorneo;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Repository.FeedTorneoWebServiceRepository;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.FeedTorneoListViewModel;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.AdaptadorForo;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.DetalleTorneo;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.PublicacionesTorneo;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Repository.Publicaciones.PublicacionesTorneoWebServiceRepository;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.DetalleTorneoViewModel;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.PublicacionesTorneoViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
-
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 
 
 public class InfoDtorneoFragment extends Fragment {
@@ -36,11 +31,13 @@ public class InfoDtorneoFragment extends Fragment {
     TextView titulo_infotorneo,fecha_infotorneo,hora_infotorneo,organizador_infotorneo,lugar_infotorneo,costo_infotorneo;
 
     RecyclerView rcv_infotorneo;
-    String id_torneo,organizador,lugar,fecha,hora,titulo;
+    String id_torneo;
     Application application;
     Preferences preferences;
-    FeedTorneoListViewModel feedTorneoListViewModel;
-    AdaptadorFeedTorneo adaptadorFeedTorneo;
+    PublicacionesTorneoViewModel feedTorneoListViewModel;
+    String titulo,fecha,hora,organizador,lugar,costo;
+    AdaptadorPublicacionesTorneo adaptadorPublicacionesTorneo;
+    DetalleTorneoViewModel detalleTorneoViewModel;
 
     public InfoDtorneoFragment() {
         // Required empty public constructor
@@ -53,7 +50,9 @@ public class InfoDtorneoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        feedTorneoListViewModel = ViewModelProviders.of(this).get(FeedTorneoListViewModel.class);
+        feedTorneoListViewModel = ViewModelProviders.of(this).get(PublicacionesTorneoViewModel.class);
+        detalleTorneoViewModel = ViewModelProviders.of(this).get(DetalleTorneoViewModel.class);
+
 
     }
 
@@ -69,11 +68,6 @@ public class InfoDtorneoFragment extends Fragment {
 
 
         id_torneo = bdl.getString("id_torneo");
-        organizador = bdl.getString("organizador");
-        lugar = bdl.getString("lugar");
-        fecha = bdl.getString("fecha");
-        hora = bdl.getString("hora");
-        titulo = bdl.getString("titulo");
 
 
         initViews(view);
@@ -82,6 +76,10 @@ public class InfoDtorneoFragment extends Fragment {
 
 
         feed();
+
+
+
+
         return  view;
 
     }
@@ -96,22 +94,18 @@ public class InfoDtorneoFragment extends Fragment {
         rcv_infotorneo = view.findViewById(R.id.rcv_infotorneo);
 
 
-        titulo_infotorneo.setText(titulo);
-        fecha_infotorneo.setText(fecha);
-        hora_infotorneo.setText(hora);
-        organizador_infotorneo.setText(organizador);
-        lugar_infotorneo.setText(lugar);
+
     }
     private void setAdapter() {
 
-        adaptadorFeedTorneo = new AdaptadorFeedTorneo(getContext(), new AdaptadorFeedTorneo.OnItemClickListener() {
+        adaptadorPublicacionesTorneo = new AdaptadorPublicacionesTorneo(getContext(), new AdaptadorPublicacionesTorneo.OnItemClickListener() {
             @Override
-            public void onItemClick(String dato, FeedTorneo feedTorneo, int position) {
+            public void onItemClick(String dato, PublicacionesTorneo feedTorneo, int position) {
 
             }
         });
 
-        rcv_infotorneo.setAdapter(adaptadorFeedTorneo);
+        rcv_infotorneo.setAdapter(adaptadorPublicacionesTorneo);
         rcv_infotorneo.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
@@ -120,15 +114,32 @@ public class InfoDtorneoFragment extends Fragment {
     }
 
     private void cargarvista() {
-        feedTorneoListViewModel.getIdTorneo(id_torneo).observe(this, new Observer<List<FeedTorneo>>() {
+        feedTorneoListViewModel.getIdTorneo(id_torneo).observe(this, new Observer<List<PublicacionesTorneo>>() {
             @Override
-            public void onChanged(@Nullable List<FeedTorneo> feedTorneos) {
-                adaptadorFeedTorneo.setWords(feedTorneos);
-                /*if(progressDialog!=null && progressDialog.isShowing()){
-                    progressDialog.dismiss();
-                }*/
-                //a.setVisibility(ProgressBar.INVISIBLE);
-                //cdv_mensaje.setVisibility(View.INVISIBLE);
+            public void onChanged(@Nullable List<PublicacionesTorneo> feedTorneos) {
+                adaptadorPublicacionesTorneo.setWords(feedTorneos);
+
+            }
+        });
+
+        detalleTorneoViewModel.getIdTorneo(id_torneo,preferences.getToken()).observe(this, new Observer<List<DetalleTorneo>>() {
+            @Override
+            public void onChanged(List<DetalleTorneo> detalleTorneos) {
+                if (detalleTorneos.size()>0){
+
+
+
+
+
+                    titulo_infotorneo.setText(detalleTorneos.get(0).getNombre_torneo());
+                    fecha_infotorneo.setText(detalleTorneos.get(0).getFecha_torneo());
+                    hora_infotorneo.setText(detalleTorneos.get(0).getHora_torneo());
+                    organizador_infotorneo.setText(detalleTorneos.get(0).getOrganizador_torneo());
+                    lugar_infotorneo.setText(detalleTorneos.get(0).getLugar_torneo());
+                    String costoso = detalleTorneos.get(0).getCosto_torneo() + " por Equipo Inscrito";
+                    costo_infotorneo.setText(costoso);
+                    //costo_infotorneo= costoso;
+                }
             }
         });
 
@@ -137,7 +148,7 @@ public class InfoDtorneoFragment extends Fragment {
     }
 
     public void feed(){
-        FeedTorneoWebServiceRepository feedTorneoWebServiceRepository = new FeedTorneoWebServiceRepository(application);
+        PublicacionesTorneoWebServiceRepository feedTorneoWebServiceRepository = new PublicacionesTorneoWebServiceRepository(application);
         feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),id_torneo,"0","0","datos",preferences.getToken());
     }
 

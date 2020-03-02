@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -20,13 +19,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +43,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.DiskCacheUtils;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
+import com.tec.bufeo.capitan.Activity.DetalleFotoUsuario;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
+import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
 import com.tec.bufeo.capitan.Activity.RegistroForo;
 import com.tec.bufeo.capitan.MVVM.Foro.Versus.Views.FragmentVersus;
@@ -52,14 +56,17 @@ import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
@@ -71,7 +78,6 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressBar progressBar;
     ImageView partidos;
-    CardView cdv_mensaje;
     AdaptadorForo adapter = null;
     FeedListViewModel feedListViewModel;
     Activity activity;
@@ -80,12 +86,13 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     ImageView fotoPerfil;
     EditText floating_search_view;
     FrameLayout FrameNuevosDatos;
-
+    LinearLayout layout_nuevosDatos;
     View bottomShet;
     BottomSheetBehavior mBottomSheetBehavior;
     LinearLayout tap_de_accion,bottomDelete;
     ImageView btnClose;
     TextView titulotap;
+    UniversalImageLoader universalImageLoader;
     String idpublicacion;
 
 
@@ -120,27 +127,10 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         view = inflater.inflate(R.layout.fragment_foro, container, false);
         context = getContext();
         activity = getActivity();
-
         preferences = new Preferences(context);
 
-        feedListViewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<ModelFeed>>() {
-            @Override
-            public void onChanged(List<ModelFeed> modelFeeds) {
-                if (modelFeeds.size()>0){
 
-                    limite_sup = modelFeeds.get(modelFeeds.size()-1).getLimite_sup();
-                    limite_inf = modelFeeds.get(modelFeeds.size()-1).getLimite_inf();
 
-                    //Toast.makeText(getContext(), "sup: " + limite_sup + " inf: " + limite_inf, Toast.LENGTH_SHORT).show();
-                }else{
-                    limite_sup= "0";
-                    limite_inf= "0";
-                }
-
-                preferences.saveValuePORT("lim_sup",limite_sup);
-                preferences.saveValuePORT("lim_inf",limite_inf);
-            }
-        });
 
         initViews(view);
         setAdapter();
@@ -156,8 +146,9 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onResume() {
+
         super.onResume();
-        onRefresh();
+        //onRefresh();
 
     }
 
@@ -177,8 +168,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
         FrameNuevosDatos =  view.findViewById(R.id.FrameNuevosDatos);
         floating_search_view =  view.findViewById(R.id.floating_search_view);
-        cdv_mensaje = (CardView) view.findViewById(R.id.cdv_mensaje);
         swipeRefreshLayout =  view.findViewById(R.id.SwipeRefreshLayout);
+        layout_nuevosDatos =  view.findViewById(R.id.layout_nuevosDatos);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -188,12 +179,14 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), RegistroForo.class);
+                i.putExtra("concepto","publicacion");
                 startActivity(i);
             }
         });
 
         btnClose.setOnClickListener(this);
         bottomDelete.setOnClickListener(this);
+        FrameNuevosDatos.setOnClickListener(this);
         partidos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,9 +194,17 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        //tlb_foro.setTitle("Foro..");
 
-        Picasso.with(context).load(IP2+"/"+preferences.getFotoUsuario()).into(fotoPerfil);
+        Glide.with(context)
+                .load(IP2+"/"+ preferences.getFotoUsuario())
+                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
+                .apply(LOGO_OPTION)
+                .into(fotoPerfil);
+
+
+
+
+
 
         floating_search_view.addTextChangedListener(new TextWatcher() {
             @Override
@@ -229,26 +230,14 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View v) {
                 Intent i =  new Intent(context, ProfileActivity.class);
+
+                i.putExtra("id_usuario",preferences.getIdUsuarioPref());
                 startActivity(i);
             }
         });
 
 
-        rcv_foro.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0 && fab_registrarForo.isShown())
-                    fab_registrarForo.hide();
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    fab_registrarForo.show();
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
         //feed();
 
 
@@ -273,7 +262,14 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
             }
         });
+
+        layout_nuevosDatos.setOnClickListener(this);
     }
+
+
+
+
+
 
 
 
@@ -299,11 +295,13 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     String valorNuevo;
     public void cargarvista(){
+
         feedListViewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<ModelFeed>>() {
             @Override
             public void onChanged(List<ModelFeed> modelFeeds) {
-                adapter.setWords(modelFeeds);
                 if (modelFeeds.size()>0){
+
+                    adapter.setWords(modelFeeds);
                     valorNuevo = modelFeeds.get(0).getNuevos_datos();
                     if (valorNuevo!=null){
                         if (valorNuevo.equals("1")){
@@ -313,9 +311,18 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         }
                     }
 
+                    limite_sup = modelFeeds.get(modelFeeds.size()-1).getLimite_sup();
+                    limite_inf = modelFeeds.get(modelFeeds.size()-1).getLimite_inf();
+
+                    progressBar.setVisibility(ProgressBar.INVISIBLE);
+                    //Toast.makeText(getContext(), "sup: " + limite_sup + " inf: " + limite_inf, Toast.LENGTH_SHORT).show();
+                }else{
+                    limite_sup= "0";
+                    limite_inf= "0";
                 }
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
-                cdv_mensaje.setVisibility(View.INVISIBLE);
+
+                preferences.saveValuePORT("lim_sup",limite_sup);
+                preferences.saveValuePORT("lim_inf",limite_inf);
             }
         });
 
@@ -328,10 +335,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         adapter= new AdaptadorForo(getActivity(), new AdaptadorForo.OnItemClickListener() {
             @Override
             public void onItemClick(String dato, ModelFeed feedTorneo, int position) {
-                if (dato.equals("masContenido")){
-                    Log.e("Mas contenido", "onItemClick: " );
-                    feed();
-                }if (dato.equals("btnAccion")){
+               if (dato.equals("btnAccion")){
 
                     idpublicacion=feedTorneo.getPublicacion_id();
                     fab_registrarForo.hide();
@@ -339,13 +343,86 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     }
                 }
+               if (dato.equals("foto_perfil_publicacion")){
+                   if (feedTorneo.getId_torneo().equals("0")){
+                       if(feedTorneo.getUsuario_id().equals(preferences.getIdUsuarioPref())){
+                           Intent i = new Intent(getContext(), ProfileActivity.class);
+                           startActivity(i);
+                       }else{
+                           Intent i = new Intent(getContext(), PerfilUsuarios.class);
+                           i.putExtra("id_user",feedTorneo.getUsuario_id());
+                       startActivity(i);
+                   }
+                   }else{
+                       Intent i = new Intent(getContext(), DetalleTorneoNuevo.class);
+                       i.putExtra("id_torneo",feedTorneo.getId_torneo());
+                       i.putExtra("foto",feedTorneo.getTorneo_foto());
+                       i.putExtra("nombre",feedTorneo.getPublicacion_torneo());
+                       i.putExtra("id_usuario",feedTorneo.getUsuario_id());
+                       startActivity(i);
+                   }
+
+                }if (dato.equals("txt_usuarioForo")){
+                    if (feedTorneo.getId_torneo().equals("0")){
+                        if(feedTorneo.getUsuario_id().equals(preferences.getIdUsuarioPref())){
+                            Intent i = new Intent(getContext(), ProfileActivity.class);
+                            startActivity(i);
+                        }else{
+                            Intent i = new Intent(getContext(), PerfilUsuarios.class);
+                            i.putExtra("id_user",feedTorneo.getUsuario_id());
+                            startActivity(i);
+                        }
+                    }else{
+                        Intent i = new Intent(getContext(), DetalleTorneoNuevo.class);
+                        i.putExtra("id_torneo",feedTorneo.getId_torneo());
+                        i.putExtra("foto",feedTorneo.getTorneo_foto());
+                        i.putExtra("nombre",feedTorneo.getPublicacion_torneo());
+                        i.putExtra("id_usuario",feedTorneo.getUsuario_id());
+                        startActivity(i);
+                    }
+
+
+                }if (dato.equals("img_fotoForo")){
+                    Intent i = new Intent(getContext(), DetalleFotoUsuario.class);
+                    i.putExtra("foto",feedTorneo.getForo_foto());
+                    i.putExtra("descripcion",feedTorneo.getForo_descripcion());
+                    i.putExtra("cantidad_comentarios",feedTorneo.getCant_Comentarios());
+                    i.putExtra("id_publicacion",feedTorneo.getPublicacion_id());
+                    startActivity(i);
+                }if(dato.equals("pedir")){
+                   //feed();
+                   preferences.codeAdvertencia(String.valueOf(position));
+                }
             }
         });
 
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         rcv_foro.setAdapter(adapter);
-        rcv_foro.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rcv_foro.setLayoutManager(layoutManager);
+
+
+        rcv_foro.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && fab_registrarForo.isShown()){
+                    fab_registrarForo.hide();
+                }
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    fab_registrarForo.show();
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+
+
+        });
     }
     Application application;
     @Override
@@ -353,9 +430,9 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         //feedListViewModel.deleteAllFeed();
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0","refresh",preferences.getToken());
-        setAdapter();
-        cargarvista();
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0",preferences.getToken());
+        /*setAdapter();
+        cargarvista();*/
         Log.e("prueba", "onRefresh: funciona" );
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -370,9 +447,10 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             superior_envio = preferences.getLimite_sup();
             inferior_envio = preferences.getLimite_inf();
         }
+        preferences.toasVerde("ok");
 
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),superior_envio,inferior_envio,"datos",preferences.getToken());
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),superior_envio,inferior_envio,preferences.getToken());
     }
 
 
@@ -385,6 +463,11 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         }else if(v.equals(bottomDelete)){
             dialogoEliminarPublicacion();
+        }else if (v.equals(FrameNuevosDatos)){
+            onRefresh();
+            FrameNuevosDatos.setVisibility(View.GONE);
+        }else if (v.equals(layout_nuevosDatos)){
+            feed();
         }
     }
 

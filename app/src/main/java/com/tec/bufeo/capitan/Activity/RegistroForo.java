@@ -28,11 +28,14 @@ import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -77,6 +80,9 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
     BroadcastReceiver BR;
     public static final String registro= "registro";
 
+    String concepto,id_torneo;
+    String concepto_publicacion,id_torneo_publicacion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +93,9 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);
         preferences = new Preferences(context);
+
+        concepto = getIntent().getExtras().getString("concepto");
+        id_torneo = getIntent().getExtras().getString("id_torneo");
 
         edt_tituloForo = (EditText) findViewById(R.id.edt_tituloForo);
         edt_descripcionForo = (EditText) findViewById(R.id.edt_descripcionForo);
@@ -122,7 +131,6 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
                 feedTorneo.setForo_titulo("x2");
                 feedTorneo.setForo_descripcion("x3");
                 feedTorneo.setForo_feccha("Hace 0 min");
-                feedTorneo.setForo_conteo("vamonos");
                 feedTorneo.setForo_tipo("1");
                 feedTorneo.setCant_likes("0");
                 feedTorneo.setCant_Comentarios("0");
@@ -154,7 +162,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
 
             case R.id.btn_Camara:
-                selectImage();
+                dialogoFotos();
                 break;
 
             case R.id.btn_registrarForo:
@@ -269,65 +277,93 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-    private void selectImage() {
-        final CharSequence[] items = { "Camara", "Galería","Cancelar" };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(RegistroForo.this);
-        builder.setTitle("Seleccione :");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+    public void camarex(){
+        userChoosenTask ="Camara";
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/","Foro");
+        carpetas.mkdirs();
+
+        String aleatorio = preferences.getIdUsuarioPref()+"_"+ edt_tituloForo.getText().toString();
+        String nombre = aleatorio +".jpg";
+
+        File imagen = new File(carpetas,nombre);
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
+        {
+
+            String authorities=getApplicationContext().getPackageName()+".provider";
+            Uri imageUri = FileProvider.getUriForFile(getApplicationContext(),authorities,imagen);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        }else
+        {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
+
+        }
+        output = Uri.fromFile(imagen);
+        startActivityForResult(intent,REQUEST_CAMERA);
+        dialog_fotos.dismiss();
+    }
+    public void galeria(){
+        userChoosenTask ="Galería";
+
+
+        Intent intentgaleria = new Intent(Intent.ACTION_PICK);
+        intentgaleria.setType("image/*");
+        if (intentgaleria.resolveActivity(getPackageManager())!=null){
+
+            startActivityForResult(intentgaleria,SELET_GALERRY);
+        }
+
+        dialog_fotos.dismiss();
+    }
+    AlertDialog dialog_fotos;
+    public void dialogoFotos(){
+
+        AlertDialog.Builder builder =  new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View vista = inflater.inflate(R.layout.dialogo_camara_galeria,null);
+        builder.setView(vista);
+
+        dialog_fotos = builder.create();
+        dialog_fotos.show();
+
+        LinearLayout Tomarfoto= vista.findViewById(R.id.Tomarfoto);
+        LinearLayout seleccionGaleria= vista.findViewById(R.id.seleccionGaleria);
+
+
+        Tomarfoto.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (items[item].equals("Camara")) {
-                    userChoosenTask ="Camara";
-
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                    File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/","Foro");
-                    carpetas.mkdirs();
-
-                    String aleatorio = preferences.getIdUsuarioPref()+"_"+ edt_tituloForo.getText().toString();
-                    String nombre = aleatorio +".jpg";
-
-                    File imagen = new File(carpetas,nombre);
-
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
-                    {
-
-                        String authorities=getApplicationContext().getPackageName()+".provider";
-                        Uri imageUri = FileProvider.getUriForFile(getApplicationContext(),authorities,imagen);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    }else
-                    {
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
-
-                    }
-                    output = Uri.fromFile(imagen);
-                    startActivityForResult(intent,REQUEST_CAMERA);
-
-                }else if (items[item].equals("Galería")){
-                    userChoosenTask ="Galería";
-
-
-                    Intent intentgaleria = new Intent(Intent.ACTION_PICK);
-                    intentgaleria.setType("image/*");
-                    if (intentgaleria.resolveActivity(getPackageManager())!=null){
-
-                        startActivityForResult(intentgaleria,SELET_GALERRY);
-                    }
-                } else if (items[item].equals("Cancelar")) {
-                    dialog.dismiss();
-                }
+            public void onClick(View v) {
+                camarex();
             }
         });
-        builder.show();
-    }
+        seleccionGaleria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                galeria();
+            }
+        });
 
+
+
+
+
+    }
     String url = IP2+"/api/Foro/registrar";
     String path;
+
     public void uploadMultipart() {
         path = resultUriRecortada.getPath();
 
+        if (concepto.equals("publicacion")){
+            id_torneo_publicacion = "0";
+        }else{
+            id_torneo_publicacion = id_torneo;
+        }
         //Uploading code
         try {
             String uploadId = UUID.randomUUID().toString();
@@ -343,7 +379,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
                     .addParameter("titulo", titulex) //Adding text parameter to the request
                     .addParameter("descripcion", descripcionex) //Adding text parameter to the request
                     .addParameter("concepto", "publicacion") //Adding text parameter to the request
-                    .addParameter("id_torneo", "0") //Adding text parameter to the request
+                    .addParameter("id_torneo", id_torneo_publicacion) //Adding text parameter to the request
                     .addParameter("app", "true") //Adding text parameter to the request
                     .addParameter("token", preferences.getToken()) //Adding text parameter to the request
 

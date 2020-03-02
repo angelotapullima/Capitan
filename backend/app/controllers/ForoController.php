@@ -136,7 +136,7 @@ class ForoController{
         $limite_sup = $_POST['limite_sup'];
         $limite_inf = $_POST['limite_inf'];
         if($limite_sup==0){
-            $model = $this->foro->listar_publicaciones();
+            $model = $this->foro->listar_publicaciones_all();
             $ultima_noticia=$this->foro->listar_ultima_publicacion();
             $limite_sup=$ultima_noticia->publicaciones_id;
             $new = "0";
@@ -166,7 +166,7 @@ class ForoController{
             $likes = $this->foro->conteo_likes($model[$i]->publicaciones_id);
             $comentarios = $this->foro->conteo_comentarios($model[$i]->publicaciones_id);
             $dio_like = $this->foro->dio_like($model[$i]->publicaciones_id,$id_usuario);
-            ($dio_like->id_like_pueblo==null)? $dio_like_ = 0:$dio_like_ = 1;
+            ($dio_like->id_likePublicacion==null)? $dio_like_ = 0:$dio_like_ = 1;
             if($model[$i]->publicaciones_id_torneo != 0){
                 $torneo_ = $this->torneo->listar_torneo_por_id($model[$i]->publicaciones_id_torneo);
                 $torneo =$torneo_->torneo_nombre;
@@ -175,11 +175,78 @@ class ForoController{
             }
             $resources[$i] = array(
                 "id_publicacion" => $model[$i]->publicaciones_id,
+                "id_usuario" => $model[$i]->id_user,
                 "usuario_nombre" => $model[$i]->user_nickname,
                 "usuario_foto" => $model[$i]->user_image,
                 "titulo" => $model[$i]->publicaciones_titulo,
                 "descripcion" => $model[$i]->publicaciones_descripcion,
                 "concepto" => $model[$i]->publicaciones_concepto,
+                "estado" => $model[$i]->publicaciones_estado,
+                "id_torneo" => $model[$i]->publicaciones_id_torneo,
+                "torneo" => $torneo,
+                "foto" => $model[$i]->publicaciones_foto,
+                "fecha" => $time,
+                "tipo" => $model[$i]->publicaciones_tipo,
+                "cant_likes" => $likes->conteo,
+                "cant_comentarios" => $comentarios->conteo,
+                "dio_like" => $dio_like_
+            );
+            $limite_inf = $model[$i]->publicaciones_id;
+        }
+        $data = array("results" => $resources,"limite_sup" => $limite_sup,"limite_inf" => $limite_inf,"nuevos"=>$new);
+        echo json_encode($data);
+    }
+    public function listar_publicaciones_por_id_usuario(){
+        $id_usuario = $_POST['id_usuario'];
+        $limite_sup = $_POST['limite_sup'];
+        $limite_inf = $_POST['limite_inf'];
+        if($limite_sup==0){
+            $model = $this->foro->listar_publicaciones_all_id_user($id_usuario);
+            $ultima_noticia=$this->foro->listar_ultima_publicacion_id_user($id_usuario);
+            $limite_sup=$ultima_noticia->publicaciones_id;
+            $new = "0";
+        }else{
+            $model = $this->foro->listar_publicaciones_limite_id_user($limite_inf,$id_usuario);
+            $nuevos = $this->foro->listar_publicaciones_limite_sup_id_user($limite_sup,$id_usuario);
+            (count($nuevos)>0)?$new = "1":$new="0";
+        }
+        $resources = array();
+        for ($i=0;$i<count($model);$i++) {
+            $date1 = new DateTime($model[$i]->publicaciones_fecha);
+            $date2 = new DateTime("now");
+            $diff = $date1->diff($date2);
+            if($diff->y !==0){
+                $time=($diff->y > 1) ? $diff->y . ' años ' : $diff->y . ' año ';
+            }elseif ($diff->m !==0){
+                $time=($diff->m > 1) ? $diff->m . ' meses ' : $diff->m . ' mes ';
+            }elseif ($diff->d !==0){
+                $time=($diff->d > 1) ? $diff->d . ' días ' : $diff->d . ' día ';
+            }elseif ($diff->h !==0){
+                $time=($diff->h > 1) ? $diff->h . ' horas ' : $diff->h . ' hora ';
+            }elseif ($diff->i!==0){
+                $time = ( ($diff->days * 24 ) * 60 ) + ( $diff->i ) . ' minutos';
+            }else{
+                $time = "0 min";
+            }
+            $likes = $this->foro->conteo_likes($model[$i]->publicaciones_id);
+            $comentarios = $this->foro->conteo_comentarios($model[$i]->publicaciones_id);
+            $dio_like = $this->foro->dio_like($model[$i]->publicaciones_id,$id_usuario);
+            ($dio_like->id_likePublicacion==null)? $dio_like_ = 0:$dio_like_ = 1;
+            if($model[$i]->publicaciones_id_torneo != 0){
+                $torneo_ = $this->torneo->listar_torneo_por_id($model[$i]->publicaciones_id_torneo);
+                $torneo =$torneo_->torneo_nombre;
+            }else{
+                $torneo=" ";
+            }
+            $resources[$i] = array(
+                "id_publicacion" => $model[$i]->publicaciones_id,
+                "id_usuario" => $model[$i]->id_user,
+                "usuario_nombre" => $model[$i]->user_nickname,
+                "usuario_foto" => $model[$i]->user_image,
+                "titulo" => $model[$i]->publicaciones_titulo,
+                "descripcion" => $model[$i]->publicaciones_descripcion,
+                "concepto" => $model[$i]->publicaciones_concepto,
+                "estado" => $model[$i]->publicaciones_estado,
                 "id_torneo" => $model[$i]->publicaciones_id_torneo,
                 "torneo" => $torneo,
                 "foto" => $model[$i]->publicaciones_foto,
@@ -258,7 +325,7 @@ class ForoController{
             }
             if($ok_data){
                 $publicacion_id = $_POST['publicacion_id'];
-                $result = $this->foro->eliminar_comentarios_por_id_publicacion($publicacion_id);
+                /*$result = $this->foro->eliminar_comentarios_por_id_publicacion($publicacion_id);
                 $pub = $this->foro->listar_publicacion($publicacion_id);
                 $img = $pub->publicaciones_foto;
                 if($result ==1){
@@ -269,7 +336,8 @@ class ForoController{
                             unlink(_SERVER_.$img);
                         }
                     }
-                }
+                }*/
+                $result=$this->foro->desactivar_publicacion($publicacion_id);
             }else{
                 $result = 6;
             }

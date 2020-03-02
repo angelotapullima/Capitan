@@ -96,7 +96,7 @@ public class MasMisEquipos extends AppCompatActivity implements SwipeRefreshLayo
 
 
         MisEquiposWebServiceRepository misEquiposWebServiceRepository= new MisEquiposWebServiceRepository(application);
-        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken());
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken(),"");
         swipeMisEquipos.setRefreshing(false);
 
     }

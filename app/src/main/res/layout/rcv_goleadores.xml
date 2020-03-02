@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="10"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:id="@+id/user_image"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@drawable/logo"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:id="@+id/user_nickname"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="Angelo Tapullima Del Aguila" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="0dp"
+            android:id="@+id/equipo_foto"
+            android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="50dp"
+            android:src="@drawable/logo"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:id="@+id/equipo_nombre"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:layout_height="wrap_content"
+            android:paddingRight="2dp"
+            android:paddingLeft="2dp"
+            android:text="Angelo Tapullima Del Aguila"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingRight="2dp"
+            android:id="@+id/goles"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="2dp"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:text="6"/>
+    </LinearLayout>
+
+</LinearLayout>

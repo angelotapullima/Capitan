@@ -11,13 +11,11 @@ import android.widget.TextView;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
 public class AdaptadorOtrosTorneos extends RecyclerView.Adapter<AdaptadorOtrosTorneos.OtrosTorneoViewHolder> {
 
-    UniversalImageLoader universalImageLoader;
     Torneo current;
     Context ctx;
     private OnItemClickListener listener;
@@ -66,7 +64,6 @@ public class AdaptadorOtrosTorneos extends RecyclerView.Adapter<AdaptadorOtrosTo
     public AdaptadorOtrosTorneos(Context context, OnItemClickListener listener) {
         this.ctx = context;
         mInflater = LayoutInflater.from(context);
-        universalImageLoader = new UniversalImageLoader(context);
         preferencesUser = new Preferences(context);
         this.listener = listener;
     }

@@ -55,15 +55,13 @@
                                 android:text="PUBLICAR"
                                 android:textStyle="bold"
                                 android:textSize="20sp"
-                                android:id="@+id/nombre_negocio"
-                                android:layout_alignParentEnd="true"/>
+                                android:id="@+id/nombre_negocio"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Califica está negocio"
                                 android:ellipsize="end"
-                                android:maxLines="1"
-                                android:layout_alignParentEnd="true"/>
+                                android:maxLines="1"/>
                         </LinearLayout>
 
                     </LinearLayout>

@@ -139,12 +139,12 @@ public class Splash extends AppCompatActivity {
     public void cargarFeed(){
         Log.e("feed", "cargarFeed: " +limite_inf + " - " + limite_sup );
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),limite_sup,limite_inf,"0",preferences.getToken());
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),limite_sup,limite_inf,preferences.getToken());
     }
     public void cargarEquipos(){
         MisEquiposWebServiceRepository misEquiposWebServiceRepository =  new MisEquiposWebServiceRepository(application);
-        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken());
-        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken());
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken(),"");
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken(),"");
     }
 
 }

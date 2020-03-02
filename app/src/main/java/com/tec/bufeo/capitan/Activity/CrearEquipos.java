@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -199,65 +200,89 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-    private void selectImage() {
-        final CharSequence[] items = { "Camara", "Galería","Cancelar" };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(CrearEquipos.this);
-        builder.setTitle("Seleccione :");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+    AlertDialog dialog_fotos;
+    public void dialogoFotos(){
+
+        AlertDialog.Builder builder =  new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View vista = inflater.inflate(R.layout.dialogo_camara_galeria,null);
+        builder.setView(vista);
+
+        dialog_fotos = builder.create();
+        dialog_fotos.show();
+
+        LinearLayout Tomarfoto= vista.findViewById(R.id.Tomarfoto);
+        LinearLayout seleccionGaleria= vista.findViewById(R.id.seleccionGaleria);
+
+
+        Tomarfoto.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (items[item].equals("Camara")) {
-                    userChoosenTask ="Camara";
-
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                    File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/","Equipo");
-                    carpetas.mkdirs();
-
-                    String aleatorio = preferences.getIdUsuarioPref()+"_"+ edt_nombreEquipo.getText().toString();
-                    String nombre = aleatorio +".jpg";
-
-                    File imagen = new File(carpetas,nombre);
-
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
-                    {
-
-                        String authorities=getApplicationContext().getPackageName()+".provider";
-                        Uri imageUri = FileProvider.getUriForFile(getApplicationContext(),authorities,imagen);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    }else
-                    {
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
-
-                    }
-                    output = Uri.fromFile(imagen);
-                    startActivityForResult(intent,REQUEST_CAMERA);
-
-                }else if (items[item].equals("Galería")){
-                    userChoosenTask ="Galería";
-
-
-                    Intent intentgaleria = new Intent(Intent.ACTION_PICK);
-                    intentgaleria.setType("image/*");
-                    if (intentgaleria.resolveActivity(getPackageManager())!=null){
-
-
-                        startActivityForResult(intentgaleria,SELET_GALERRY);
-                    }
-                } else if (items[item].equals("Cancelar")) {
-                    dialog.dismiss();
-                }
+            public void onClick(View v) {
+                camarex();
             }
         });
-        builder.show();
+        seleccionGaleria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                galeria();
+            }
+        });
+
+
+
+
+
+    }
+
+    private void camarex() {
+        userChoosenTask ="Camara";
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/","Equipo");
+        carpetas.mkdirs();
+
+        String aleatorio = preferences.getIdUsuarioPref()+"_"+ edt_nombreEquipo.getText().toString();
+        String nombre = aleatorio +".jpg";
+
+        File imagen = new File(carpetas,nombre);
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
+        {
+
+            String authorities=getApplicationContext().getPackageName()+".provider";
+            Uri imageUri = FileProvider.getUriForFile(getApplicationContext(),authorities,imagen);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        }else
+        {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
+
+        }
+        output = Uri.fromFile(imagen);
+        startActivityForResult(intent,REQUEST_CAMERA);
+        dialog_fotos.dismiss();
+    }
+
+    private void galeria() {
+        userChoosenTask ="Galería";
+
+
+        Intent intentgaleria = new Intent(Intent.ACTION_PICK);
+        intentgaleria.setType("image/*");
+        if (intentgaleria.resolveActivity(getPackageManager())!=null){
+
+
+            startActivityForResult(intentgaleria,SELET_GALERRY);
+        }
+        dialog_fotos.dismiss();
     }
 
     @Override
     public void onClick(View view) {
         if (view.equals(btn_Camara)){
-            selectImage();
+            dialogoFotos();
         } if (view.equals(btn_registrarEquipo)){
             if (img_equipoFoto.getDrawable() == null){
                 publicar_sin_foto();

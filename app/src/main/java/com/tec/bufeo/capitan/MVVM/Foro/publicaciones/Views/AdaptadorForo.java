@@ -9,13 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -23,8 +21,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.button.MaterialButton;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.DiskCacheUtils;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Views.ComentariosActivity;
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
@@ -63,11 +62,8 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
     class foroViewHolder extends RecyclerView.ViewHolder {
         private ImageView img_fotoForo,foto_perfil_publicacion;
         private TextView txt_tituloForo, txt_usuarioForo, txt_descripcionForo, txt_fechaHora,txt_totallike,txt_totalcoment;
-        private ProgressBar prog_like;
         private ImageButton imgbt_like,btnAccion;
         private LinearLayout layout_comentar,layout_like;
-        FrameLayout frame_mas_contenido,progress_mas_contenido;
-        MaterialButton btn_mas_contenido;
         CardView materialCardView;
 
         private foroViewHolder(View itemView) {
@@ -77,35 +73,44 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             txt_usuarioForo=  itemView.findViewById(R.id.txt_usuarioForo);
             txt_descripcionForo=  itemView.findViewById(R.id.txt_descripcionForo);
             txt_fechaHora = itemView.findViewById(R.id.txt_fechaHora);
-            prog_like = itemView.findViewById(R.id.prog_like);
             imgbt_like = itemView.findViewById(R.id.imgbt_like);
             layout_comentar = itemView.findViewById(R.id.layout_comentar);
             layout_like = itemView.findViewById(R.id.layout_like);
             txt_totallike = itemView.findViewById(R.id.txt_totallike);
             btnAccion=itemView.findViewById(R.id.btnAccion);
             txt_totalcoment=itemView.findViewById(R.id.txt_totalcoment);
-            frame_mas_contenido=itemView.findViewById(R.id.frame_mas_contenido);
-            progress_mas_contenido=itemView.findViewById(R.id.progress_mas_contenido);
             foto_perfil_publicacion=itemView.findViewById(R.id.foto_perfil_publicacion);
-            btn_mas_contenido=itemView.findViewById(R.id.btn_mas_contenido);
             materialCardView=itemView.findViewById(R.id.materialCardView);
         }
 
         public void bid(final ModelFeed feedTorneo, final OnItemClickListener listener){
-            btn_mas_contenido.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick("masContenido", feedTorneo, getAdapterPosition());
-                    frame_mas_contenido.setVisibility(View.GONE);
-                    progress_mas_contenido.setVisibility(View.VISIBLE);
 
-                }
-            });
 
             btnAccion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick("btnAccion",feedTorneo,getAdapterPosition());
+                }
+            });
+
+            foto_perfil_publicacion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick("foto_perfil_publicacion",feedTorneo,getAdapterPosition());
+                }
+            });
+
+            txt_usuarioForo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick("txt_usuarioForo",feedTorneo,getAdapterPosition());
+                }
+            });
+
+            img_fotoForo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick("img_fotoForo",feedTorneo,getAdapterPosition());
                 }
             });
 
@@ -136,20 +141,35 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
     }
 
 
+
     @Override
     public void onBindViewHolder(@NonNull final foroViewHolder holder, int position) {
         if (mUsers != null) {
             current = mUsers.get(position);
 
-            if(position == mUsers.size()-1){
-                holder.materialCardView.setVisibility(View.GONE);
-            }
+
             holder.layout_like.setId(position);
             holder.layout_comentar.setId(position);
 
+            if (!current.getUsuario_id().equals(preferencesUser.getIdUsuarioPref())){
+                holder.btnAccion.setVisibility(View.GONE);
+            }
+
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
+
+            if(current.getId_torneo().equals("0")){
+                holder.txt_usuarioForo.setText(current.getUsuario_nombre());
+                UniversalImageLoader.setImage(IP2+"/"+ current.getUsuario_foto(),holder.foto_perfil_publicacion,null);
+            }else{
+
+                holder.txt_usuarioForo.setText(current.getPublicacion_torneo());
+                UniversalImageLoader.setImage(IP2+"/"+ current.getTorneo_foto(),holder.foto_perfil_publicacion,null);
+
+            }
+
+
             holder.txt_tituloForo.setText(current.getForo_titulo());
-            holder.txt_usuarioForo.setText(current.getUsuario_nombre());
             holder.txt_descripcionForo.setText(current.getForo_descripcion());
             holder.txt_fechaHora.setText("Hace: "+current.getForo_feccha());
             holder.txt_totalcoment.setText(current.getCant_Comentarios());
@@ -161,11 +181,8 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             }else {
                 holder.imgbt_like.setImageResource(R.drawable.thumb_up);
             }
+
             UniversalImageLoader.setImage(IP2+"/"+ current.getForo_foto(),holder.img_fotoForo,null);
-            UniversalImageLoader.setImage(IP2+"/"+ current.getUsuario_foto(),holder.foto_perfil_publicacion,null);
-            //Picasso.with(ctx).load("http://"+IP+"/"+ current.getForo_foto()).into(holder.img_fotoForo);
-
-
 
             //holder.imgbt_comment.setOnClickListener(this);
             holder.layout_comentar.setOnClickListener(new View.OnClickListener() {

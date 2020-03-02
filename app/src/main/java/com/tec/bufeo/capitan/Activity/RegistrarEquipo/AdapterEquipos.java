@@ -9,11 +9,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdapterEquipos extends RecyclerView.Adapter<AdapterEquipos.EquiposSeleccionarViewHolder>  {
 
-    UniversalImageLoader universalImageLoader;
+
     Mequipos current;
     Context ctx;
     private  OnItemClickListener listener;
@@ -80,7 +80,6 @@ public class AdapterEquipos extends RecyclerView.Adapter<AdapterEquipos.EquiposS
     public AdapterEquipos(Context context,OnItemClickListener listener) {
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
-        universalImageLoader = new UniversalImageLoader(context);
         preferencesUser = new Preferences(context);
         this.listener = listener;}
 
@@ -97,9 +96,8 @@ public class AdapterEquipos extends RecyclerView.Adapter<AdapterEquipos.EquiposS
         if (mUsers != null) {
             current = mUsers.get(position);
 
-            ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-            UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipo,null);
+            Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.civ_fotoEquipo);
 
             holder.nombreEquipo.setText(current.getEquipo_nombre());
             holder.capitanEquipo.setText(current.getCapitan_nombre());

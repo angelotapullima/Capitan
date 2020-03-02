@@ -1,7 +1,7 @@
 package com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views;
 
 import android.content.Context;
-import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,12 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tec.bufeo.capitan.Activity.RegistroReto;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorEquipos extends RecyclerView.Adapter<AdaptadorEquipos.EquiposViewHolder>  {
 
-    UniversalImageLoader universalImageLoader;
+
     Mequipos current;
     Context ctx;
     private  OnItemClickListener listener;
@@ -88,7 +86,6 @@ public class AdaptadorEquipos extends RecyclerView.Adapter<AdaptadorEquipos.Equi
     public AdaptadorEquipos(Context context, OnItemClickListener listener) {
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
-        universalImageLoader = new UniversalImageLoader(context);
         preferencesUser = new Preferences(context);
         this.listener = listener;}
 
@@ -105,9 +102,7 @@ public class AdaptadorEquipos extends RecyclerView.Adapter<AdaptadorEquipos.Equi
         if (mUsers != null) {
             current = mUsers.get(position);
 
-            ImageLoader.getInstance().init(universalImageLoader.getConfig());
-
-            UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipoRetar,null);
+            Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.civ_fotoEquipoRetar);
 
             holder.txt_nombreEquipoRetar.setText(current.getEquipo_nombre());
             holder.txt_capitanReto.setText(current.getCapitan_nombre());

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,7 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.squareup.picasso.Picasso;
 import com.tec.bufeo.capitan.Activity.EstadisticasEmpresas.EstadisticasEmpresas;
 import com.tec.bufeo.capitan.Activity.ratings.BarLabels;
 import com.tec.bufeo.capitan.Activity.ratings.RatingReviews;
@@ -333,7 +333,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
 
             if (arrayempresa.size() > 0) {
-                Picasso.with(context).load(IP2 + "/" + arrayempresa.get(0).getEmpresas_foto()).into(img_fotoEmpresa);
+                Glide.with(context).load(IP2 + "/" + arrayempresa.get(0).getEmpresas_foto()).into(img_fotoEmpresa);
 
                 txt_nombreEmpresa.setText(arrayempresa.get(0).getEmpresas_nombre());
                 txt_descripcionEmpresa.setText(arrayempresa.get(0).getEmpresas_descripcion());

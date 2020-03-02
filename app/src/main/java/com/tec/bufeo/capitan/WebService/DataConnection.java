@@ -606,6 +606,7 @@ public class DataConnection extends AppCompatActivity {
                             editor.putString("token",usuario.getToken());
                             editor.putString("token_firebase",usuario.getToken_firebase());
                             editor.putString("tiene_negocio",usuario.getTiene_negocio());
+                            editor.putInt("cantida_foto_perfil",0);
                             editor.apply();
 
 

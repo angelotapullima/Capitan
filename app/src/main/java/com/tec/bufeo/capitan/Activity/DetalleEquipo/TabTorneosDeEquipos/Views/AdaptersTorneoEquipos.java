@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Models.TorneosDeEquipos;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class AdaptersTorneoEquipos extends RecyclerView.Adapter<AdaptersTorneoEquipos.TorneoEquiposViewHolder> {
 
-    UniversalImageLoader universalImageLoader;
+
     TorneosDeEquipos current;
     Context ctx;
     private OnItemClickListener listener;
@@ -67,7 +66,6 @@ public class AdaptersTorneoEquipos extends RecyclerView.Adapter<AdaptersTorneoEq
     public AdaptersTorneoEquipos(Context context, OnItemClickListener listener) {
         this.ctx = context;
         mInflater = LayoutInflater.from(context);
-        universalImageLoader = new UniversalImageLoader(context);
         preferencesUser = new Preferences(context);
         this.listener = listener;
     }

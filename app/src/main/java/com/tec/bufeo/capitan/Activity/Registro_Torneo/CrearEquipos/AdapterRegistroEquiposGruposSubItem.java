@@ -7,29 +7,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoSubItem;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdapterRegistroEquiposGruposSubItem extends RecyclerView.Adapter<AdapterRegistroEquiposGruposSubItem.SubItemViewHolder>  {
 
     private List<TablaTorneoSubItem> tablaTorneoSubItems;
     Context ctx;
-    UniversalImageLoader universalImageLoader;
 
     public AdapterRegistroEquiposGruposSubItem(Context context, List<TablaTorneoSubItem> tablaTorneoSubItems) {
         this.ctx=context;
         this.tablaTorneoSubItems=tablaTorneoSubItems;
-        universalImageLoader = new UniversalImageLoader(context);
     }
 
     class SubItemViewHolder extends RecyclerView.ViewHolder {
@@ -67,9 +63,7 @@ public class AdapterRegistroEquiposGruposSubItem extends RecyclerView.Adapter<Ad
 
 
 
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
-
-        UniversalImageLoader.setImage(IP2+"/"+ torneoSubItem.getEquipo_foto(),holder.imagenEquipo,null);
+        Glide.with(ctx).load(IP2+"/"+ torneoSubItem.getEquipo_foto()).into(holder.imagenEquipo);
         //holder.imagenEquipo.setText(torneoSubItem.getPosicion_lista());
         holder.nombre_equipo_lista.setText(torneoSubItem.getEquipo_nombre());
 

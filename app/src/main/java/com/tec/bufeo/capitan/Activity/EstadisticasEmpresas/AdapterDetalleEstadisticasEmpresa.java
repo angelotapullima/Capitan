@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tec.bufeo.capitan.Activity.EstadisticasEmpresas.Models.DetalleEstadisticasEmpresa;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -19,11 +18,9 @@ public class AdapterDetalleEstadisticasEmpresa extends RecyclerView.Adapter<Adap
 
     private List<DetalleEstadisticasEmpresa> tablaTorneoSubItems;
     Context ctx;
-    UniversalImageLoader universalImageLoader;
 
     public AdapterDetalleEstadisticasEmpresa(Context context, List<DetalleEstadisticasEmpresa> tablaTorneoSubItems) {
         this.ctx=context;
-        universalImageLoader = new UniversalImageLoader(context);
         this.tablaTorneoSubItems=tablaTorneoSubItems;
     }
 

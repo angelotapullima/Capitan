@@ -7,10 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoSubItem;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -24,11 +23,9 @@ public class AdapterSubItemTablaTorneo extends RecyclerView.Adapter<AdapterSubIt
 
     private List<TablaTorneoSubItem> tablaTorneoSubItems;
     Context ctx;
-    UniversalImageLoader universalImageLoader;
 
     public AdapterSubItemTablaTorneo(Context context, List<TablaTorneoSubItem> tablaTorneoSubItems) {
         this.ctx=context;
-        universalImageLoader = new UniversalImageLoader(context);
         this.tablaTorneoSubItems=tablaTorneoSubItems;
     }
 
@@ -73,7 +70,6 @@ public class AdapterSubItemTablaTorneo extends RecyclerView.Adapter<AdapterSubIt
             TablaTorneoSubItem torneoSubItem = tablaTorneoSubItems.get(position);
 
 
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
             holder.nombre_equipo.setText(torneoSubItem.getEquipo_nombre());
             holder.PJ.setText(torneoSubItem.getPart_j());
@@ -83,7 +79,9 @@ public class AdapterSubItemTablaTorneo extends RecyclerView.Adapter<AdapterSubIt
             holder.GF.setText(torneoSubItem.getGf());
             holder.GC.setText(torneoSubItem.getGc());
             holder.puntos.setText(torneoSubItem.getPuntos());
-            UniversalImageLoader.setImage(IP2+"/"+torneoSubItem.getEquipo_foto(),holder.logoEquipo,null);
+
+
+        Glide.with(ctx).load(IP2+"/"+ torneoSubItem.getEquipo_foto()).into(holder.logoEquipo);
 
 
     }

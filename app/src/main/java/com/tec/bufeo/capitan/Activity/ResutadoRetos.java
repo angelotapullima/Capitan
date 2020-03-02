@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
@@ -42,7 +43,6 @@ public class ResutadoRetos extends AppCompatActivity {
     ArrayList<RetosVersus> listaRetos;
     ArrayList<String> listaSpinnerRetos = new ArrayList<String>();
     Preferences preferences;
-
     String retado,retador,retado_id,retador_id, retado_foto,retador_foto,id_reto;
     ImageView foto_retado_resultado,foto_retador_resultado;
     TextView nombre_retado_resultado,nombre_retador_resultado;
@@ -76,8 +76,8 @@ public class ResutadoRetos extends AppCompatActivity {
         nombre_retado_resultado.setText(retado);
         nombre_retador_resultado.setText(retador);
 
-        Picasso.with(this).load(IP+"/"+retado_foto).error(R.drawable.error).fit().into(foto_retado_resultado);
-        Picasso.with(this).load(IP+"/"+retador_foto).error(R.drawable.error).fit().into(foto_retador_resultado);
+        Glide.with(this).load(IP+"/"+retado_foto).error(R.drawable.error).into(foto_retado_resultado);
+        Glide.with(this).load(IP+"/"+retador_foto).error(R.drawable.error).into(foto_retador_resultado);
 
         llenarSpinner();
 

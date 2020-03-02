@@ -142,12 +142,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
                 intent.putExtra("id_torneo", torneo.getTorneo_id());
                 intent.putExtra("id_usuario", torneo.getUsuario_id());
                 intent.putExtra("nombre", torneo.getTorneo_nombre());
-                intent.putExtra("descripcion", torneo.getTorneo_descripcion());
-                intent.putExtra("lugar", torneo.getTorneo_lugar());
-                intent.putExtra("fecha", torneo.getTorneo_fecha());
-                intent.putExtra("hora", torneo.getTorneo_hora());
                 intent.putExtra("foto", torneo.getFoto_torneo());
-                intent.putExtra("organizador", torneo.getTorneo_organizador());
                 startActivity(intent);
 
             }
@@ -169,12 +164,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
                 intent.putExtra("id_torneo", torneo.getTorneo_id());
                 intent.putExtra("id_usuario", torneo.getUsuario_id());
                 intent.putExtra("nombre", torneo.getTorneo_nombre());
-                intent.putExtra("descripcion", torneo.getTorneo_descripcion());
-                intent.putExtra("lugar", torneo.getTorneo_lugar());
-                intent.putExtra("fecha", torneo.getTorneo_fecha());
-                intent.putExtra("hora", torneo.getTorneo_hora());
                 intent.putExtra("foto", torneo.getFoto_torneo());
-                intent.putExtra("organizador", torneo.getTorneo_organizador());
                 startActivity(intent);
 
             }

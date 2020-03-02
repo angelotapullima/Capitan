@@ -78,7 +78,7 @@ public class FeedRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             feedDao.deleteAll();
-            Log.i("eliminado", "doInBackground: eliminado");
+            Log.e("feed eliminado", "doInBackground: eliminado");
             return null;
         }
     }

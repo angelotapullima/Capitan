@@ -1,9 +1,20 @@
 package com.tec.bufeo.capitan.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,12 +23,27 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.DiskCacheUtils;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipoNuevo;
+import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.AdapterPublicacionesUsuario;
+import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.Models.PublicacionesUsuario;
+import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.ViewModels.PublicacionesUsuarioViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.AdaptadorForo;
@@ -25,31 +51,88 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views.AdaptadorMiEquipo;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.ServerResponse;
+import net.gotev.uploadservice.UploadInfo;
+import net.gotev.uploadservice.UploadNotificationAction;
+import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadStatusDelegate;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
+import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
+import static net.gotev.uploadservice.Placeholders.PROGRESS;
+import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
+import static net.gotev.uploadservice.Placeholders.UPLOADED_FILES;
+import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     RecyclerView recyler_publish,recycler_equipos;
-    FeedListViewModel feedListViewModel;
-    AdaptadorForo adaptadorForo ;
     MisEquiposViewModel misEquiposViewModel;
     AdaptadorMiEquipo adaptadorMiEquipo;
     Preferences preferences;
     ImageView fotodeperfil;
-    TextView nombre_perfil;
+    TextView nombre_perfil,posicion_juegador,Ncamiseta,habilidadjuegador,EmailJuegador;
+    LinearLayout editarPerfil;
+    ImageButton buttonEditarPerfil;
+
+    View bottomOpcionesFoto;
+    BottomSheetBehavior mBottomSheetBehavior;
+    LinearLayout tap_de_accion_profile,verFoto,cambiarFoto,tap_foto,accionGaleria,accionTomarFoto;
+    ImageView btnClose_profile;
+    TextView titulotap;
+
+    AdapterPublicacionesUsuario adapterPublicacionesUsuario;
+    PublicacionesUsuarioViewModel publicacionesUsuarioViewModel;
+    Activity activity;
+    Context context;
+    String userChoosenTask;
+    public Uri output,resultUriRecortada;
+    private int REQUEST_CAMERA = 0,  SELET_GALERRY = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
+
+
+        publicacionesUsuarioViewModel = ViewModelProviders.of(this).get(PublicacionesUsuarioViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
         preferences =  new Preferences(this);
+        activity = ProfileActivity.this;
+        context = getApplicationContext();
 
+
+
+
+        initViews();
+
+        Glide.with(context)
+                .load(IP2+"/"+ preferences.getFotoUsuario())
+                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
+                .apply(LOGO_OPTION)
+                .into(fotodeperfil);
+
+
+            nombre_perfil.setText(preferences.getPersonName()+" "+preferences.getPersonSurname());
+            posicion_juegador.setText(preferences.getPosicionJugador());
+            Ncamiseta.setText(preferences.getNumeroCamiseta());
+            habilidadjuegador.setText(preferences.getHabilidadJuegador());
+            EmailJuegador.setText(preferences.getEmailJuegador());
 
 
 
@@ -57,27 +140,54 @@ public class ProfileActivity extends AppCompatActivity {
                     //| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                      View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     //| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    //| View.SYSTEM_UI_FLAG_FULLSCREEN
+                    //| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
           );
 
 
-        initViews();
+
         setAdapter();
         cargarvista();
         showToolbar("",true);
 
+        mBottomSheetBehavior= BottomSheetBehavior.from(bottomOpcionesFoto);
+        mBottomSheetBehavior.setPeekHeight(0);
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    tap_de_accion_profile.setVisibility(View.GONE);
+                }
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    tap_de_accion_profile.setVisibility(View.VISIBLE);
+                }
+                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                    tap_de_accion_profile.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+        });
 
 
+        fotodeperfil.setOnClickListener(this);
+        verFoto.setOnClickListener(this);
+        cambiarFoto.setOnClickListener(this);
+        btnClose_profile.setOnClickListener(this);
+        accionGaleria.setOnClickListener(this);
+        accionTomarFoto.setOnClickListener(this);
+        editarPerfil.setOnClickListener(this);
+        buttonEditarPerfil.setOnClickListener(this);
     }
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        onBackPressed();
+        finish();//definimos que al dar click a la flecha, nos lleva a la pantalla anterior
         return false;
     }
-
-
-
 
     public void showToolbar(String tittle, boolean upButton){
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
@@ -92,14 +202,14 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setAdapter() {
 
-        adaptadorForo = new AdaptadorForo(this, new AdaptadorForo.OnItemClickListener() {
+        adapterPublicacionesUsuario = new AdapterPublicacionesUsuario(this, new AdapterPublicacionesUsuario.OnItemClickListener() {
             @Override
-            public void onItemClick(String dato, ModelFeed feedTorneo, int position) {
+            public void onItemClick(String dato, PublicacionesUsuario feedTorneo, int position) {
 
             }
         });
 
-        recyler_publish.setAdapter(adaptadorForo);
+        recyler_publish.setAdapter(adapterPublicacionesUsuario);
         recyler_publish.setLayoutManager(new LinearLayoutManager(this));
 
 
@@ -127,12 +237,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void cargarvista() {
 
-        feedListViewModel.getAllIdPosts().observe(this, new Observer<List<ModelFeed>>() {
+        publicacionesUsuarioViewModel.getAllPosts(preferences.getIdUsuarioPref(),"0","0",preferences.getToken()).observe(this, new Observer<List<PublicacionesUsuario>>() {
             @Override
-            public void onChanged(List<ModelFeed> modelFeeds) {
-
+            public void onChanged(List<PublicacionesUsuario> publicacionesUsuarios) {
+                adapterPublicacionesUsuario.setWords(publicacionesUsuarios);
             }
         });
+
 
 
         misEquiposViewModel.getAllEquipo("si").observe(this, new Observer<List<Mequipos>>() {
@@ -149,10 +260,305 @@ public class ProfileActivity extends AppCompatActivity {
         recycler_equipos = findViewById(R.id.recycler_equipos);
         fotodeperfil = findViewById(R.id.fotodeperfil);
         nombre_perfil = findViewById(R.id.nombre_perfil);
+        posicion_juegador = findViewById(R.id.posicion_juegador);
+        Ncamiseta = findViewById(R.id.Ncamiseta);
+        habilidadjuegador = findViewById(R.id.habilidadjuegador);
+        EmailJuegador = findViewById(R.id.EmailJuegador);
+        editarPerfil = findViewById(R.id.editarPerfil);
+        buttonEditarPerfil = findViewById(R.id.buttonEditarPerfil);
 
 
 
-        Picasso.with(this).load(IP2+"/"+preferences.getFotoUsuario()).into(fotodeperfil);
-        nombre_perfil.setText(preferences.getPersonName()+" "+preferences.getPersonSurname());
+        bottomOpcionesFoto = findViewById(R.id.bottomOpcionesFoto);
+        tap_de_accion_profile = findViewById(R.id.tap_de_accion_profile);
+        accionGaleria = findViewById(R.id.accionGaleria);
+        accionTomarFoto = findViewById(R.id.accionTomarFoto);
+        tap_foto = findViewById(R.id.tap_foto);
+        titulotap = findViewById(R.id.titulotap);
+        verFoto = findViewById(R.id.verFoto);
+        cambiarFoto = findViewById(R.id.cambiarFoto);
+        btnClose_profile = findViewById(R.id.btnClose_profile);
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(fotodeperfil)){
+            tap_de_accion_profile.setVisibility(View.VISIBLE);
+            tap_foto.setVisibility(View.GONE);
+            if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }else{
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }else if (v.equals(verFoto)){
+            preferences.toasVerde("aca veremos la foto");
+            if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+
+        }else if (v.equals(cambiarFoto)){
+            preferences.toasVerde("aca Cambiaremos la foto");
+            //selectImage("Perfil");
+            tap_de_accion_profile.setVisibility(View.GONE);
+            tap_foto.setVisibility(View.VISIBLE);
+            /*if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }*/
+        }else if (v.equals(btnClose_profile)){
+            if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }else if (v.equals(accionGaleria)){
+            acciongaleria();
+        }else if (v.equals(accionTomarFoto)){
+            accionCamara();
+        }else if (v.equals(editarPerfil)){
+            Intent i = new Intent(ProfileActivity.this, InformacionGeneral.class);
+            startActivity(i);
+        }else if (v.equals(buttonEditarPerfil)){
+            Intent i = new Intent(ProfileActivity.this, InformacionGeneral.class);
+            startActivity(i);
+        }
+
+    }
+
+
+
+    public void accionCamara(){
+        userChoosenTask ="Camara";
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File carpetas = new File(Environment.getExternalStorageDirectory() + "/Capitan/","perfiles");
+        carpetas.mkdirs();
+
+        String aleatorio = preferences.getIdUsuarioPref()+"_"+new Double(Math.random() * 100).intValue();
+
+        String nombre = aleatorio +".jpg";
+
+        File imagen = new File(carpetas,nombre);
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
+        {
+            String authorities=activity.getPackageName()+".provider";
+            Uri imageUri = FileProvider.getUriForFile(activity,authorities,imagen);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        }else
+        {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
+        }
+        output = Uri.fromFile(imagen);
+        startActivityForResult(intent,REQUEST_CAMERA);
+    }
+
+    public void acciongaleria(){
+        userChoosenTask ="Galería";
+
+
+        Intent intentgaleria = new Intent(Intent.ACTION_PICK);
+        intentgaleria.setType("image/*");
+        if (intentgaleria.resolveActivity(activity.getPackageManager())!=null){
+
+
+            startActivityForResult(intentgaleria,SELET_GALERRY);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent result) {
+        super.onActivityResult(requestCode, resultCode, result);
+
+        if (resultCode == RESULT_OK) {
+
+            if (requestCode == REQUEST_CAMERA){
+
+
+                CropImage.activity(output).start(this);
+            }else if (requestCode == SELET_GALERRY) {
+
+                Uri uri = result.getData();
+
+                File f1,f2;
+                f1 = new File(getRealPathFromUri(activity,uri));
+                String fname = f1.getName();
+
+
+                f2= new File(Environment.getExternalStorageDirectory() + "/Capitan/","perfiles");
+                f2.mkdirs();
+
+
+                try {
+                    FileUtils.copyFileToDirectory(f1,f2);
+                    ContentValues values =new ContentValues();
+                    values.put(MediaStore.Images.Media.DATE_TAKEN,System.currentTimeMillis());
+                    values.put(MediaStore.Images.Media.MIME_TYPE,"image/*");
+                    values.put(MediaStore.MediaColumns.DATA,f2.toString()+"/"+fname);
+                    activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                    Log.e("cortado", "onActivityResult: "+ e.getMessage() );
+                }  finally {
+                    //Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_LONG).show();
+                }
+
+
+                CropImage.activity(uri).start(activity);
+
+            }
+        }if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult resultado = CropImage.getActivityResult(result);
+            if (resultCode == RESULT_OK) {
+
+                resultUriRecortada = resultado.getUri();
+
+                fotodeperfil.setImageBitmap(BitmapFactory.decodeFile(resultUriRecortada.getPath()));
+                uploadMultipart();
+
+
+
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = resultado.getError();
+                Log.e("cortado", "onActivityResult: "+ error );
+                Toast.makeText(context,"Error: Intente de nuevo", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+    }
+    public static String getRealPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    String url = IP2+"/api/User/actualizar_perfil";
+    String path;
+
+    public void uploadMultipart() {
+        path = resultUriRecortada.getPath();
+
+        //Uploading code
+        try {
+            String uploadId = UUID.randomUUID().toString();
+
+            PendingIntent clickIntent = PendingIntent.getActivity(
+                    context, 1, new Intent(context, DetalleFotoUsuario.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            //Creating a multi part request
+            new MultipartUploadRequest(context, uploadId, url)
+                    .addFileToUpload(path, "imagen") //Adding file
+                    .addParameter("app", "true") //Adding file
+                    .addParameter("token", preferences.getToken()) //Adding file
+                    .addParameter("usuario_id", preferences.getIdUsuarioPref()) //Adding text parameter to the request
+
+                    .setNotificationConfig(getNotificationConfig(uploadId,R.string.cargando))
+                    .setMaxRetries(2)
+                    .setDelegate(new UploadStatusDelegate() {
+                        @Override
+                        public void onProgress(Context context, UploadInfo uploadInfo) {
+
+
+                        }
+
+                        @Override
+                        public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
+
+                        }
+
+                        @Override
+                        public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
+
+                            String ruta = IP2+"/";
+
+                            final String str = serverResponse.getBodyAsString();
+                            ruta = ruta+str.substring(1,str.length()-1);
+                            Log.e("subirImagen", "onCompleted: " + ruta );
+                            Toast.makeText(context,"Actualizado correctamente"+"-"+ruta, Toast.LENGTH_LONG).show();
+
+
+                            int VersionFinalFoto ;
+                            int VersionFoto = preferences.getCantidadFotoPerfil();
+                            VersionFinalFoto = VersionFoto +1;
+
+                            preferences.saveValuePORTInteger("cantida_foto_perfil",VersionFinalFoto);
+                            Log.e("foto version", "onCompleted: " + VersionFinalFoto );
+
+                            if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            }
+
+                            //UniversalImageLoader.setImage(IP2+"/"+ preferences.getFotoUsuario(),fotodeperfil,null);
+                        }
+
+                        @Override
+                        public void onCancelled(Context context, UploadInfo uploadInfo) {
+
+                        }
+                    })
+
+                    .startUpload(); //Starting the upload
+                            /*getNotificationConfig().setTitleForAllStatuses("Cargando Imagen")
+                            .setRingToneEnabled(false)
+                            .setClickIntentForAllStatuses(clickIntent)
+                            .setClearOnActionForAllStatuses(true))*/
+
+
+
+        } catch (Exception exc) {
+            Log.e("cortado", "onActivityResult: "+ exc.getMessage() );
+            Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected UploadNotificationConfig getNotificationConfig(final String uploadId, @StringRes int title) {
+        UploadNotificationConfig config = new UploadNotificationConfig();
+
+
+
+
+        PendingIntent clickIntent = PendingIntent.getActivity(
+                context, 1, new Intent(context, RegistroForo.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        config.setTitleForAllStatuses(getString(title))
+                .setRingToneEnabled(false)
+                .setClickIntentForAllStatuses(clickIntent);
+
+
+
+        config.getProgress().message = "Subiendo " + UPLOADED_FILES + " de " + TOTAL_FILES
+                + " a " + UPLOAD_RATE + " - " + PROGRESS;
+        config.getProgress().iconResourceID = R.drawable.logo;
+        config.getProgress().iconColorResourceID = Color.BLUE;
+        config.getProgress().actions.add(new UploadNotificationAction(R.drawable.logo,"Ver progreso",clickIntent));
+
+
+
+        config.getCompleted().message = "Subida completada exitosamente en " + ELAPSED_TIME;
+        config.getCompleted().iconResourceID = R.drawable.logo;
+        config.getCompleted().iconColorResourceID = Color.GREEN;
+        config.getCompleted().actions.add(new UploadNotificationAction(R.drawable.logo,"Imagen Cargada Exitosamente",clickIntent));
+
+        config.getError().message = "Error al Cargar Imagen";
+        config.getError().iconResourceID = R.drawable.logo;
+        config.getError().iconColorResourceID = Color.RED;
+
+        config.getCancelled().message = "\n" +
+                "La carga ha sido cancelada";
+        config.getCancelled().iconResourceID = R.drawable.logo;
+        config.getCancelled().iconColorResourceID = Color.YELLOW;
+
+        return config;
+    }
+
 }

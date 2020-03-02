@@ -47,14 +47,56 @@ public class Preferences {
         editor.commit();
     }
 
+    public void saveValuePORTInteger(String llave, int valor) {
+        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        editor = settings.edit();
+        editor.putInt(llave, valor);
+        editor.commit();
+    }
+
 
 /*aca estan los nuevos datos que vienen con el nuevo Login*/
 
+    public int getCantidadFotoPerfil(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getInt("cantida_foto_perfil",0);
+    }
     public String getIdUsuarioPref(){
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getString("id_user","");
     }
+    public String getNickname(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("user_nickname","");
+    }
+    public String getDireccion(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("person_address","");
+    }
 
+    public String getDni(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("person_dni","");
+    }
+
+    public String getEmailJuegador(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("user_email","");
+    }
+    public String getHabilidadJuegador(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("user_habilidad","");
+    }
+
+    public String getNumeroCamiseta(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("user_num","");
+    }
+    public String getPosicionJugador(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("user_posicion","");
+    }
     public String getFotoUsuario(){
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getString("user_image","");

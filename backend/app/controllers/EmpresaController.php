@@ -429,6 +429,17 @@ class EmpresaController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+    public function listar_reservas_por_usuario(){
+        try{
+            $id_usuario = $_POST['id_usuario'];
+            $model = $this->empresa->listar_reservas_por_usuario($id_usuario);
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $model = 2;
+        }
+        $data = array("results" => $model);
+        echo json_encode($data);
+    }
     public function listar_canchas_por_id_empresa(){
         $id_empresa = $_POST['id_empresa'];
         $model = $this->empresa->listar_canchas_por_id_empresa($id_empresa);

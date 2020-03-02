@@ -170,4 +170,8 @@ public class VersusListAdapter extends RecyclerView.Adapter<VersusListAdapter.Ve
         void onItemClick(Versus comments, int position);
     }
 
+
+
+
+
 }

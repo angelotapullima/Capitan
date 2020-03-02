@@ -4,14 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.Jugadores;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -24,7 +23,6 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdapterJugadores extends RecyclerView.Adapter<AdapterJugadores.JugadoresViewHolder>  {
 
-    UniversalImageLoader universalImageLoader;
     Jugadores current;
     Context ctx;
     private  OnItemClickListener listener;
@@ -71,7 +69,6 @@ public class AdapterJugadores extends RecyclerView.Adapter<AdapterJugadores.Juga
     public AdapterJugadores(Context context, OnItemClickListener listener) {
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
-        universalImageLoader = new UniversalImageLoader(context);
         preferencesUser = new Preferences(context);
         this.listener = listener;}
 
@@ -88,9 +85,8 @@ public class AdapterJugadores extends RecyclerView.Adapter<AdapterJugadores.Juga
         if (mUsers != null) {
             current = mUsers.get(position);
 
-            ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-            UniversalImageLoader.setImage(IP2+"/"+ current.getJugador_foto(),holder.civ_fotoUsuario,null);
+            Glide.with(ctx).load(IP2+"/"+ current.getJugador_foto()).into(holder.civ_fotoUsuario);
 
             holder.txt_nombreUsuario.setText(current.getJugador_nombre());
             holder.txt_habilidadUsuario.setText(current.getJugador_habilidad());

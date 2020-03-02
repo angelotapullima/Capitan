@@ -12,8 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-import com.tec.bufeo.capitan.Activity.RegistroReserva.ReservaEnBusqueda;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
 
@@ -99,7 +98,8 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
 
         obj = array.get(position);
 
-        Picasso.with(context).load(IP+"/"+ obj.getEmpresas_foto()).into(holder.imagen_cancha);
+
+        Glide.with(context).load(IP+"/"+ obj.getEmpresas_foto()).into(holder.imagen_cancha);
         holder.txt_buscar_nombreEmpresa.setText(obj.getEmpresas_nombre());
         holder.txt_buscar_direccionEmpresa.setText(obj.getEmpresas_direccion());
         holder.txt_buscar_precioCancha.setText(obj.getPrecio());

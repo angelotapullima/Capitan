@@ -372,7 +372,7 @@ class TorneoController{
     public function registrar_torneo() {
         try{
             $ok_data = true;
-            if(isset($_POST['usuario_id']) && isset($_POST['nombre']) &&isset($_POST['descripcion']) &&isset($_POST['organizador']) &&isset($_POST['tipo']) &&isset($_POST['costo']) &&isset($_POST['fecha']) &&isset($_POST['hora'])&&isset($_POST['lugar'])&&isset($_FILES['imagen']['tmp_name']) ){
+            if(isset($_POST['usuario_id']) && isset($_POST['nombre']) &&isset($_POST['descripcion']) &&isset($_POST['organizador']) &&isset($_POST['tipo']) &&isset($_POST['costo']) &&isset($_POST['fecha']) &&isset($_POST['hora'])&&isset($_POST['lugar']) ){
                 $_POST['usuario_id'] = $this->clean->clean_post_int($_POST['usuario_id']);
                 $_POST['nombre'] = $this->clean->clean_post_str($_POST['nombre']);
                 $_POST['descripcion'] = $this->clean->clean_post_str($_POST['descripcion']);
@@ -405,12 +405,13 @@ class TorneoController{
                 $fecha = $_POST['fecha'];
                 $hora = $_POST['hora'];
                 $lugar = $_POST['lugar'];
-                if($_FILES['imagen']['tmp_name']!=null){
+            /*    if($_FILES['imagen']['tmp_name']!=null){
                     $file_path = "media/torneo/".$usuario_id."_".$nombre.".jpg";
                     move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
                 }else{
                     $file_path = "media/torneo/default.png";
-                }
+                }*/
+                $file_path = "media/torneo/default.png";
                 $result = $this->torneo->registrar_torneo($usuario_id,$nombre,$descripcion,$fecha,$hora,$lugar,$organizador,$costo,$tipo,$file_path);
                 if($result==1){
                     $last_id = $this->torneo->listar_ultimo_torneo();
@@ -477,7 +478,12 @@ class TorneoController{
                 $id_torneo = $_POST['id_torneo'];
                 $instancia_nombre = $_POST['instancia_nombre'];
                 $instancia_tipo = $_POST['instancia_tipo'];
-                $result = $this->torneo->registrar_instancia($id_torneo,$instancia_nombre,$instancia_tipo);
+                $exists_instancia = $this->torneo->existe_instancia($id_torneo,$instancia_nombre);
+                if(isset($exists_instancia->id_torneo_instancia) && $exists_instancia->id_torneo_instancia!=""){
+                    $result=3;
+                }else{
+                    $result = $this->torneo->registrar_instancia($id_torneo,$instancia_nombre,$instancia_tipo);
+                }
             }else{
                 $result = 6;
             }
@@ -792,11 +798,47 @@ class TorneoController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+    public function buscar_equipos_nombre(){
+        try{
+            $dato = $_POST['dato'];
+            $id_torneo = $_POST['id_torneo'];
+            $model = $this->torneo->buscar_equipos_nombre($id_torneo,$dato);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "equipo_id" => $model[$i]->equipo_id,
+                    "nombre" => $model[$i]->equipo_nombre,
+                    "foto" => $model[$i]->equipo_foto,
+                    "capitan" => $model[$i]->user_nickname,
+                    "capitan_id" => $model[$i]->id_user
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
     public function registrar_equipo_usuario() {
         try{
             $equipo_id = $_POST['id_equipo'];
             $usuario_id = $_POST['id_usuario'];
             $result = $this->torneo->registrar_equipo_usuario($equipo_id,$usuario_id);
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = "Code 2: General error";
+        }
+        $resources = array();
+        $resources[0] = array("valor"=>$result);
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function eliminar_equipo_usuario() {
+        try{
+            $equipo_id = $_POST['id_equipo'];
+            $usuario_id = $_POST['id_usuario'];
+            $result = $this->torneo->eliminar_equipo_usuario($equipo_id,$usuario_id);
         }catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
             $result = "Code 2: General error";
@@ -1128,8 +1170,8 @@ class TorneoController{
                     "fecha" => $model[$i]->torneo_fecha,
                     "hora" => $model[$i]->torneo_hora,
                     "lugar" => $model[$i]->torneo_lugar,
-                    "id_organizador" => $model[$i]->usuario_id,
-                    "organizador" => $model[$i]->usuario_nombre,
+                    "id_organizador" => $model[$i]->id_user,
+                    "organizador" => $model[$i]->user_nickname,
                     "equipos" => count($equipos_por_torneo)
                 );
                 $cont++;
@@ -1410,6 +1452,8 @@ class TorneoController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+
+
     public function listar_goleadores_por_id_torneo(){
         try{
             $id_torneo = $_POST['id_torneo'];

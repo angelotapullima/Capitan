@@ -42,7 +42,7 @@ public class FeedWebServiceRepository {
 
     List<ModelFeed> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<ModelFeed>> providesWebService(String id_usuario, String limite_sup, String limite_inf, final String carga,final String token) {
+ public LiveData<List<ModelFeed>> providesWebService(String id_usuario, String limite_sup, String limite_inf,final String token) {
 
      final MutableLiveData<List<ModelFeed>> data = new MutableLiveData<>();
 
@@ -61,8 +61,8 @@ public class FeedWebServiceRepository {
          service.savePost(id_usuario,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 //Log.e("Repository","feed::::"+response.body());
-                 webserviceResponseList = parseJson(response.body(),carga);
+                 Log.e("Repository","feed::::"+response.body());
+                 webserviceResponseList = parseJson(response.body());
                  FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
                  feedRoomDBRepository.insertPosts(webserviceResponseList);
                  data.setValue(webserviceResponseList);
@@ -88,7 +88,7 @@ public class FeedWebServiceRepository {
 
 
     String datosNuevos;
-    private List<ModelFeed> parseJson(String response, String carga) {
+    private List<ModelFeed> parseJson(String response) {
 
         List<ModelFeed> apiResults = new ArrayList<>();
 
@@ -106,6 +106,9 @@ public class FeedWebServiceRepository {
 
             JSONArray resultJSON = jsonObject.getJSONArray("results");
 
+
+            FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
+            feedRoomDBRepository.deleteAllFeed();
             int count = resultJSON.length();
 
 
@@ -118,6 +121,7 @@ public class FeedWebServiceRepository {
                 foro.setUsuario_nombre(jsonNode.optString("usuario_nombre"));
                 foro.setUsuario_foto(jsonNode.optString("usuario_foto"));
                 foro.setForo_titulo(jsonNode.optString("titulo"));
+                foro.setUsuario_id(jsonNode.optString("id_usuario"));
                 foro.setForo_descripcion(jsonNode.optString("descripcion"));
                 foro.setPublicacion_concepto(jsonNode.optString("concepto"));
                 foro.setId_torneo(jsonNode.optString("id_torneo"));
@@ -129,6 +133,7 @@ public class FeedWebServiceRepository {
                 foro.setDio_like(jsonNode.optString("dio_like"));
                 foro.setEstado(jsonNode.optString("estado"));
                 foro.setCant_Comentarios(jsonNode.optString("cant_comentarios"));
+                foro.setTorneo_foto(jsonNode.optString("torneo_imagen"));
                 foro.setOrden("0");
                 foro.setLimite_sup(limite_sup2);
                 foro.setLimite_inf(limite_inf2);
@@ -137,14 +142,14 @@ public class FeedWebServiceRepository {
                 apiResults.add(foro);
             }
             datosNuevos= String.valueOf( nuevos);
-            FeedRoomDBRepository feedTorneoRoomDBRepository = new FeedRoomDBRepository(application);
+            /*FeedRoomDBRepository feedTorneoRoomDBRepository = new FeedRoomDBRepository(application);
             feedTorneoRoomDBRepository.actualizarSup(limite_sup2);
             if (carga.equals("datos")){
 
                 feedTorneoRoomDBRepository.ActualizarInf(limite_inf2);
                 Log.e("datos","se hizo la luz");
-            }
-            feedTorneoRoomDBRepository.NuevosDatos(datosNuevos);
+            }*/
+            feedRoomDBRepository.NuevosDatos(datosNuevos);
 
         } catch (JSONException e) {
             e.printStackTrace();

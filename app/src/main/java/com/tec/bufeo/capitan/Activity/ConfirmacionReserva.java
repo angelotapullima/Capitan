@@ -52,7 +52,7 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
         preferences = new Preferences(this);
 
 
-        /*cancha = getIntent().getExtras().getString("cancha");
+        cancha = getIntent().getExtras().getString("cancha");
         lugar = getIntent().getExtras().getString("lugar");
         hora = getIntent().getExtras().getString("hora");
         fecha = getIntent().getExtras().getString("fecha");
@@ -60,7 +60,7 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
         direccion = getIntent().getExtras().getString("direccion");
         telefono = getIntent().getExtras().getString("telefono");
         telefono2 = getIntent().getExtras().getString("telefono2");
-        precio = getIntent().getExtras().getString("precio");*/
+        precio = getIntent().getExtras().getString("precio");
 
 
 
@@ -79,7 +79,7 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
         guardar= findViewById(R.id.guardar);
         logoBufeoxD= findViewById(R.id.logoBufeoxD);
 
-        /*nombreEmprex.setText(lugar);
+        nombreEmprex.setText(lugar);
         precioReserva.setText(precio);
         canchaReserva.setText(cancha);
         nameReserva.setText(nombre);
@@ -87,7 +87,7 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
         horaReserva.setText(hora);
         direccionReserva.setText(direccion);
         telefonoReserva.setText(telefono);
-        telefono2Reserva.setText(telefono2);*/
+        telefono2Reserva.setText(telefono2);
 
 
         activity = ConfirmacionReserva.this;

@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".Activity.EditarDatosDePerfil">
+
+    <!--Contraseña-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/password_change"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contraseña Antigua"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:id="@+id/passAntigua"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:background="@drawable/bgnoseleccionado"
+
+            android:layout_marginBottom="10dp"
+            android:hint="Contraseña Antigua"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nueva Contraseña"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:id="@+id/passNueva"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:hint="Nueva Contraseña"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repetir Contraseña nueva"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:id="@+id/passRepetida"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:hint="Repetir Contraseña nueva"/>
+
+
+    </LinearLayout>
+
+    <!--Dni-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dni_change"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DNI Antiguo"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:background="@drawable/bgnoseleccionado"
+            android:id="@+id/dniAntiguo"
+            android:layout_marginBottom="10dp"
+            android:hint="DNI Antiguo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nuevo DNI"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:id="@+id/dniNuevo"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:hint="Nuevo DNI"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repetir DNI nuevo"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:id="@+id/dniRepetido"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:hint="Repetir DNI nuevo"/>
+
+
+    </LinearLayout>
+
+    <!--Direccion-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addres_change"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dirección Antigua"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:background="@drawable/bgnoseleccionado"
+            android:id="@+id/addressAntiguo"
+            android:layout_marginBottom="10dp"
+            android:hint="Dirección Antigua"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nueva Dirección"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:id="@+id/addresNuevo"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:hint="Nueva Dirección"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repetir DNI nuevo"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:id="@+id/addresRepetido"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:hint="Repetir Dirección nueva"/>
+
+
+    </LinearLayout>
+
+    <!--numeroCamiseta-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/camiseta_change"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Número de Camiseta Antigua"
+            android:textSize="15sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:background="@drawable/bgnoseleccionado"
+            android:id="@+id/camisetaAntigua"
+            android:layout_marginBottom="10dp"
+            android:hint="Número de Camiseta Antigua"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Número de Camiseta"
+            android:textSize="15sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:id="@+id/camisetaNuevo"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:hint="Nuevo Número de Camiseta"/>
+
+
+
+
+    </LinearLayout>
+
+
+    <!--Posicion-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/posicion_change"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Posición Antigua"
+            android:textSize="15sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:id="@+id/posicionAntiguo"
+            android:textColor="#000"
+            android:background="@drawable/bgnoseleccionado"
+            android:layout_marginBottom="10dp"
+            android:hint="Posicin Antigua"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nueva posición"
+            android:textSize="15sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:padding="5dp"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/spn_posicion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:entries="@array/posicion"
+                android:popupBackground="@color/colorCeniza" />
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    <!--habilidad-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/habilidad_change"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Habilidad Antigua"
+            android:textSize="15sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:background="@drawable/bgnoseleccionado"
+            android:id="@+id/habilidadAntiguo"
+            android:layout_marginBottom="10dp"
+            android:hint="Habilidad Antigua"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nueva Habilidad"
+            android:textSize="15sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:padding="5dp"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/spn_habilidad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:entries="@array/habilidad"
+                android:popupBackground="@color/colorCeniza" />
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    <!--nickname-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nickname_change"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Usuario Antiguo"
+            android:textSize="15sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:background="@drawable/bgnoseleccionado"
+            android:id="@+id/nicknameAntiguo"
+            android:layout_marginBottom="10dp"
+            android:hint="Usuario Antiguo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Usuario"
+            android:textSize="15sp"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:id="@+id/nicknameNuevo"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bgnoseleccionado"
+            android:hint="Nuevo Usuario"/>
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_change_nickname"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/shape_azul"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Finalizar "
+            android:textColor="#fff"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="#fff"
+            app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_change_password"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:visibility="gone"
+        android:layout_gravity="end"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/shape_azul"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Finalizar "
+            android:textColor="#fff"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="#fff"
+            app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_change"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/shape_azul"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Finalizar "
+            android:textColor="#fff"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="#fff"
+            app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+    </LinearLayout>
+</LinearLayout>

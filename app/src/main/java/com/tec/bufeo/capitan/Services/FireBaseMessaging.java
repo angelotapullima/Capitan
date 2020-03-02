@@ -91,6 +91,7 @@ public class FireBaseMessaging extends FirebaseMessagingService {
     public void alarma (String tokena ){
         Intent i = new Intent(RegistroForo.registro);
         i.putExtra("tipo",tokena);
+        i.putExtra("concepto","publicacion");
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
 
     }

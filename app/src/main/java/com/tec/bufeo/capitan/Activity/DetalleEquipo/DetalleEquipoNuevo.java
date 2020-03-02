@@ -1,5 +1,7 @@
 package com.tec.bufeo.capitan.Activity.DetalleEquipo;
 import android.content.Intent;
+
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -14,17 +16,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Views.EstadisticasDeEquiposFragment;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Views.TorneoDequiposFragment;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
+
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class DetalleEquipoNuevo extends AppCompatActivity {
@@ -36,7 +35,6 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
     public ViewPager container_Dequipo;
     private SectionsDetalleEquipoAdapter sectionsDetalleEquipoAdapter;
     String equipo_id,equipo_nombre,equipo_foto,capitan_nombre,capitan_id;
-    UniversalImageLoader universalImageLoader;
     Preferences preferences;
     FloatingActionButton fab_agregarParticipantesEquipo;
 
@@ -59,9 +57,6 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
 
 
         preferences = new Preferences(this);
-        universalImageLoader = new UniversalImageLoader(getApplicationContext());
-
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
         sectionsDetalleEquipoAdapter = new SectionsDetalleEquipoAdapter(getSupportFragmentManager());
 
         container_Dequipo = findViewById(R.id.container_Dequipo);
@@ -131,8 +126,7 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         tabs_Dequipo.getSelectedTabPosition();
 
 
-
-        UniversalImageLoader.setImage(IP2+"/"+ equipo_foto,imagen_Dequipo,null);
+        Glide.with(this).load(IP2+"/"+ equipo_foto).into(imagen_Dequipo);
 
         fab_agregarParticipantesEquipo.setOnClickListener(new View.OnClickListener() {
             @Override

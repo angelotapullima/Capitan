@@ -60,7 +60,7 @@ public class TequiposWebServiceRepository {
             service.getRetos(id_equipo,"true",token).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.d("Repository torneoEquipo","Response::::"+response.body());
+                    Log.e("Repository torneoEquipo","Response::::"+response.body());
                     webserviceResponseList = parseJson(response.body());
                     TequiposRoomDbRepository tequiposRoomDbRepository = new TequiposRoomDbRepository(application);
                     tequiposRoomDbRepository.insertTorneosEquipos(webserviceResponseList);

@@ -48,6 +48,11 @@ public class ModelFeed {
     @SerializedName("id_torneo")
     private String id_torneo;
 
+    @ColumnInfo(name = "torneo_foto")
+    @SerializedName("torneo_foto")
+    private String torneo_foto;
+
+
     @ColumnInfo(name = "publicacion_torneo")
     @SerializedName("publicacion_torneo")
     private String publicacion_torneo;
@@ -62,9 +67,6 @@ public class ModelFeed {
     @SerializedName("foro_feccha")
     private String foro_feccha;
 
-    @ColumnInfo(name = "foro_conteo")
-    @SerializedName("foro_conteo")
-    private String foro_conteo;
 
 
     @ColumnInfo(name = "foro_tipo")
@@ -173,13 +175,7 @@ public class ModelFeed {
         this.foro_feccha = foro_feccha;
     }
 
-    public String getForo_conteo() {
-        return foro_conteo;
-    }
 
-    public void setForo_conteo(String foro_conteo) {
-        this.foro_conteo = foro_conteo;
-    }
 
     public String getForo_tipo() {
         return foro_tipo;
@@ -283,5 +279,13 @@ public class ModelFeed {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getTorneo_foto() {
+        return torneo_foto;
+    }
+
+    public void setTorneo_foto(String torneo_foto) {
+        this.torneo_foto = torneo_foto;
     }
 }

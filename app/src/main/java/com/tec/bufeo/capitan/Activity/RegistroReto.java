@@ -30,7 +30,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -109,7 +109,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
 
         txt_equipoRetado.setText(nombre_retado);
-        Picasso.with(context).load(IP2+"/"+ foto_retado).into(civ_fotoEquipoRetado);
+        Glide.with(context).load(IP2+"/"+ foto_retado).into(civ_fotoEquipoRetado);
         Log.e("registroReto", "foto " + foto_retado );
 
 
@@ -127,7 +127,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                     //falta imagen
                 }else {
                     txt_equipoRetador.setText(arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_nombre());
-                    Picasso.with(context).load(IP2+"/"+ arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_foto()).into(civ_fotoEquipoRetador);
+                    Glide.with(context).load(IP2+"/"+ arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_foto()).into(civ_fotoEquipoRetador);
 
                 }
             }

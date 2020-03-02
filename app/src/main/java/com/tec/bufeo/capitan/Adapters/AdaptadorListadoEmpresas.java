@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
 
@@ -74,7 +74,7 @@ public class AdaptadorListadoEmpresas extends RecyclerView.Adapter<AdaptadorList
 
         obj = array.get(position);
 
-        Picasso.with(context).load(IP2+"/"+ obj.getEmpresas_foto()).into(holder.img_fotoEmpresa);
+        Glide.with(context).load(IP2+"/"+ obj.getEmpresas_foto()).into(holder.img_fotoEmpresa);
         holder.txt_nombreEmpresa.setText(obj.getEmpresas_nombre());
         holder.txt_direccionEmpresa.setText(obj.getEmpresas_direccion());
         holder.bid(obj,listener);

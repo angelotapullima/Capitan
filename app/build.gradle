@@ -9,8 +9,8 @@ android {
         applicationId "com.tec.bufeo.capitan"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 5
-        versionName "0.51"
+        versionCode 6
+        versionName "0.52"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -39,7 +39,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.zoonref:simple-view-behavior:1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
@@ -47,7 +46,7 @@ dependencies {
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'commons-io:commons-io:2.4'
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'com.commit451:PhotoView:1.2.4'
+    implementation 'com.github.chrisbanes.photoview:library:1.2.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
@@ -83,5 +82,9 @@ dependencies {
 
 
     implementation 'androidx.multidex:multidex:2.0.1'
+
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 }
 apply plugin: 'com.google.gms.google-services'

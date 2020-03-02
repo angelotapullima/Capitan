@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tec.bufeo.capitan.Activity.CrearEquipos;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipoNuevo;
-import com.tec.bufeo.capitan.Activity.MasEquipos;
+import com.tec.bufeo.capitan.Activity.BusquedaEquipos.Views.MasEquipos;
 import com.tec.bufeo.capitan.Activity.MasMisEquipos;
 import com.tec.bufeo.capitan.Activity.RegistroReto;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposWebServiceRepository;
@@ -225,8 +225,8 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
     public void onRefresh() {
 
         MisEquiposWebServiceRepository misEquiposWebServiceRepository= new MisEquiposWebServiceRepository(application);
-        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken());
-        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken());
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken(),"");
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken(),"");
 
         swipeEquipos.setRefreshing(false);
 

@@ -54,25 +54,28 @@ public class OtrosTorneosWebServiceRepository {
                  .client(providesOkHttpClientBuilder())
                  .build();
 
-         //Defining retrofit api service
-         OtrosTorneosAPIService service = retrofit.create(OtrosTorneosAPIService.class);
-        //  response = service.makeRequest().execute().body();
-         service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
-             @Override
-             public void onResponse(Call<String> call, Response<String> response) {
-                 Log.e("Repository otros t","Response::::"+response.body());
-                 webserviceResponseList = parseJson(response.body());
-                 OtrosTorneosRoomDBRepository otrosTorneosRoomDBRepository = new OtrosTorneosRoomDBRepository(application);
-                 otrosTorneosRoomDBRepository.insertRetos(webserviceResponseList);
-                 data.setValue(webserviceResponseList);
 
-             }
+             //Defining retrofit api service
+             OtrosTorneosAPIService service = retrofit.create(OtrosTorneosAPIService.class);
+             //  response = service.makeRequest().execute().body();
+             service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
+                 @Override
+                 public void onResponse(Call<String> call, Response<String> response) {
+                     Log.e("Repository otros t","Response::::"+response.body());
+                     webserviceResponseList = parseJson(response.body());
+                     OtrosTorneosRoomDBRepository otrosTorneosRoomDBRepository = new OtrosTorneosRoomDBRepository(application);
+                     otrosTorneosRoomDBRepository.insertRetos(webserviceResponseList);
+                     data.setValue(webserviceResponseList);
 
-             @Override
-             public void onFailure(Call<String> call, Throwable t) {
-                 Log.d("Repository","Failed:::");
-             }
-         });
+                 }
+
+                 @Override
+                 public void onFailure(Call<String> call, Throwable t) {
+                     Log.d("Repository","Failed:::");
+                 }
+             });
+
+
      }catch (Exception e){
          e.printStackTrace();
      }

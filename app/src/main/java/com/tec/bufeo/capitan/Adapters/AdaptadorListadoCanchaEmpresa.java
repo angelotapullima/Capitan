@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.R;
 
@@ -77,7 +77,7 @@ public class AdaptadorListadoCanchaEmpresa extends RecyclerView.Adapter<Adaptado
 
         obj = array.get(position);
 
-        Picasso.with(context).load(IP2+"/"+ obj.getCancha_foto()).into(holder.img_fotoCancha);
+        Glide.with(context).load(IP2+"/"+ obj.getCancha_foto()).into(holder.img_fotoCancha);
         holder.txt_nombreCancha.setText(obj.getCancha_nombre());
         holder.txt_dimensones.setText(obj.getCancha_dimenciones());
         holder.txt_precio_d.setText(obj.getCancha_precioD());

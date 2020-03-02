@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.Activity.RegistroReserva.ReservaEnBusqueda;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 import com.tec.bufeo.capitan.R;
@@ -234,7 +234,9 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
 
            // holder.title.setText(item.title);
            // holder.hint.setText(item.hint);
-            Picasso.with(context).load(IP2+"/"+ item.img_cancha).into(holder.imagen_cancha);
+            Glide.with(context)
+                    .load(IP2+"/"+ item.img_cancha)
+                    .into(holder.imagen_cancha);
             holder.txt_buscar_nombreEmpresa.setText(item.txt_buscar_nombreEmpresa);
             holder.txt_buscar_precioCancha.setText(item.txt_buscar_precioCancha);
             holder.txt_buscar_direccionEmpresa.setText(item.txt_buscar_direccionEmpresa);

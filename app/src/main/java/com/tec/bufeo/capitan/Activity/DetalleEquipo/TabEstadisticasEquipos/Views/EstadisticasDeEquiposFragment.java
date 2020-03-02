@@ -1,14 +1,11 @@
 package com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Views;
 
 import android.app.Application;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
@@ -18,13 +15,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Models.EstadisticasDeEquipos;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Repository.EequiposWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.ViewModels.EequiposViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -38,7 +35,6 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
     String id_equipo;
     SwipeRefreshLayout swipeEstadisticaEquipos;
     EequiposViewModel eequiposViewModel;
-    UniversalImageLoader universalImageLoader;
     TextView  temporada,semana,puntaje_acumulado,puntaje_semanal,
     retos_enviados,retos_recibidos,retos_ganados,retos_empatados,retos_perdidos,torneos_estadisticas_equipos;
     ImageView foto_estadisticas_equipo;
@@ -64,7 +60,7 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
         View view= inflater.inflate(R.layout.fragment_estadisticas_de_equipos, container, false);
         preferences = new Preferences(getActivity());
 
-        universalImageLoader = new UniversalImageLoader(getActivity());
+
         final Bundle bdl = getArguments();
 
 
@@ -104,9 +100,9 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
             public void onChanged(List<EstadisticasDeEquipos> estadisticasDeEquipos) {
 
                 if (estadisticasDeEquipos.size()>0){
-                    ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-                    UniversalImageLoader.setImage(IP2+"/"+ estadisticasDeEquipos.get(0).getFoto(),foto_estadisticas_equipo,null);
+
+                    Glide.with(getContext()).load(IP2+"/"+ estadisticasDeEquipos.get(0).getFoto()).into(foto_estadisticas_equipo);
                     temporada.setText(estadisticasDeEquipos.get(0).getTemporada());
                     semana.setText(estadisticasDeEquipos.get(0).getSemana());
                     puntaje_acumulado.setText(estadisticasDeEquipos.get(0).getPuntaje_acumulado());

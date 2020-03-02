@@ -48,7 +48,7 @@
     <string-array name="posicion">
         <item>Seleccionar</item>
         <item>Portero</item>
-        <item>Delatero</item>
+        <item>Delantero</item>
         <item>Defensa</item>
         <item>Volante</item>
     </string-array>

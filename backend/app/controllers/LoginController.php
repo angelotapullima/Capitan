@@ -48,7 +48,6 @@ class LoginController{
         }else{
             require _VIEW_PATH_ . 'login/recuperar_clave.php';
         }
-
     }
 
     public function validar_usuario(){
@@ -594,7 +593,9 @@ class LoginController{
             } else {
                 if($this->userg->validateUser($_POST['user_nickname'])){
                     $result = 3;
-                } else {
+                } elseif($this->userg->validateEmail($_POST['user_email'])){
+                    $result = 4;
+                } else{
                     $microtime = microtime(true);
                     $modelp->microtime=$microtime;
                     $modelp->person_name= $_POST['person_name'];
@@ -617,10 +618,23 @@ class LoginController{
                         $model->ubigeo_id = $_POST['ubigeo_id'];
                         $model->id_role = $_POST['id_role'];
                         $model->id_person = $this->person->listByMicrotime($microtime);
+                        $longitud = 6;
+                        $token = '';
+                        $pattern = '1234567890';
+                        $max = strlen($pattern)-1;
+                        for($i=0;$i < $longitud;$i++) $token .= $pattern{mt_rand(0,$max)};
+                        $model->user_email_validate_code = $token;
                         $result = $this->user->save($model);
                         if($result != 1){
                             $this->person->deletemicrotime($microtime);
                             $result = 2;
+                        }else{
+                            $headers = "From: Bufeo Tec Team <bufeotec@gmail.com>\n";
+                            $headers .= "MIME-Version: 1.0\n";
+                            $headers .= "Content-type: text/html; charset=utf-8\r\n";
+                            $mensajeF = "<h1>Bienvenido a Bufeo Tec</h1><p>Ingrese el siguiente código para validar su email:</p><h2 style='color: red; font-weight: bold;'>$token</h2>";
+                            $destino=$_POST['user_email'];
+                            mail($destino,"Bienvenido a Bufeo Tec",$mensajeF,$headers);
                         }
                     } else {
                         $this->person->deletemicrotime($microtime);

@@ -131,5 +131,8 @@ public class FragmentVersus extends DialogFragment {
 
         rcv_partidos.setAdapter(versusListAdapter);
         rcv_partidos.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+
     }
 }

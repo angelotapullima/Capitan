@@ -18,17 +18,27 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name,android:allowBackup">
-        <activity android:name=".Activity.ConfirmacionReserva"
-            android:theme="@style/AppTheme.NoActionBar" >
+        <activity android:name=".Activity.EditarDatosDePerfil"></activity>
+        <activity android:name=".Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Activity.InformacionGeneral"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.ConfirmacionReserva"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".Activity.MasTorneos"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.EstadisticasEmpresas.EstadisticasEmpresas" />
         <activity
             android:name=".Activity.RegistroUsuario.RegistroPaso1"
@@ -47,7 +57,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.CrearEquipos" />
         <activity android:name=".Activity.MasMisEquipos" />
-        <activity android:name=".Activity.MasEquipos" />
+        <activity android:name=".Activity.BusquedaEquipos.Views.MasEquipos"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Activity.Registro_Torneo.RegistroTorneoFinalizado" />
         <activity android:name=".Activity.RegistrarEquipo.RegistroEquiposInstancias.Views.RegistrarPartidos" />
         <activity android:name=".Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.ListarInstancias" />
@@ -84,11 +95,11 @@
         <activity
             android:name=".Activity.Splash"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".Activity.Login"
@@ -108,7 +119,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.DetalleNegocio"
-            android:theme="@style/AppTheme.NoActionBarTransparent"/>
+            android:theme="@style/AppTheme.NoActionBarTransparent" />
         <activity
             android:name=".Activity.DetalleCanchas"
             android:configChanges="orientation|screenSize"
@@ -130,8 +141,9 @@
             android:name=".Activity.Registro_Torneo.RegistroTorneo"
             android:label="Registro Torneo" />
         <activity android:name=".Activity.RegistroForo" />
-        <activity android:name=".Activity.PerfilEdit" />
-        <activity android:name=".Activity.DetalleFotoUsuario" />
+        <activity
+            android:name=".Activity.DetalleFotoUsuario"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
