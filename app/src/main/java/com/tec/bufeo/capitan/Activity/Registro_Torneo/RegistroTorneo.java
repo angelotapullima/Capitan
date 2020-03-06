@@ -3,6 +3,7 @@ package com.tec.bufeo.capitan.Activity.Registro_Torneo;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
@@ -29,6 +30,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -87,15 +89,12 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
    EditText edt_nombreTorneo, edt_descripcionTorneo, edt_lugarTorneo,edt_organizador,edt_costo;
    Button  btn_crearTorneo;
    ArrayList<String> arrayDatos;
-    Spinner spn_rutas;
+   Spinner spn_rutas;
    DataConnection dc;
    TextView btn_fechaTorneo ,btn_horaTorneo;
    int valor;
-    String id_torneo,valor_tipo,valor_spinner;
-    Preferences preferences;
-
-
-
+   String id_torneo,valor_tipo,valor_spinner;
+   Preferences preferences;
 
 
     @Override
@@ -217,16 +216,17 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                             if (valor_tipo.equals("2")){
                                 Intent x = new Intent(RegistroTorneo.this, CrearGrupoRelampago.class);
                                 x.putExtra("id_torneo",id_torneo);
+                                x.putExtra("nombre_torneo",edt_nombreTorneo.getText().toString());
+                                x.putExtra("tipo_campeonato","campeonato");
                                 startActivity(x);
                             }else{
                                 Intent x = new Intent(RegistroTorneo.this, CrearGrupoRelampago.class);
                                 x.putExtra("id_torneo",id_torneo);
+                                x.putExtra("nombre_torneo",edt_nombreTorneo.getText().toString());
+                                x.putExtra("tipo_campeonato","relampago");
                                 startActivity(x);
                             }
-
                         }
-
-
                     }
                     dialog_carga.dismiss();
 
@@ -302,7 +302,6 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
 
     }
 
-
     int year,month,day; String dia,mes;
     private void showDateDailog(final TextView textView) {
 
@@ -339,21 +338,17 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
 
 
 
-    android.app.AlertDialog dialog_carga;
+    Dialog dialog_carga;
 
     public void dialogoCargando(){
 
-        android.app.AlertDialog.Builder builder =  new android.app.AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View vista = inflater.inflate(R.layout.dialogo_cargando_logobufeo,null);
-        builder.setView(vista);
+        dialog_carga =  new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_carga.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_carga.setCancelable(true);
+        dialog_carga.setContentView(R.layout.dialogo_cargando_logobufeo);
 
-
-        dialog_carga = builder.create();
         dialog_carga.show();
-
-
-
-
     }
+
+
 }

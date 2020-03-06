@@ -53,7 +53,7 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
         id_torneo= getIntent().getExtras().getString("id_torneo");
         //id_torneo ="1";
 
-        //pedir_tabla(id_torneo);
+        pedir_tabla(id_torneo);
         btnNext_a_instancias.setOnClickListener(this);
     }
 

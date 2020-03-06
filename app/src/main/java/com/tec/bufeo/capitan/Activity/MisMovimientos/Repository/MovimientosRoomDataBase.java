@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Models.Movimientos;
 
 
-@Database(entities = {Movimientos.class}, version = 1)
+@Database(entities = {Movimientos.class}, version = 1,exportSchema = false)
 public abstract class MovimientosRoomDataBase extends RoomDatabase {
     public abstract MovimientosDao postInfoDao();
 

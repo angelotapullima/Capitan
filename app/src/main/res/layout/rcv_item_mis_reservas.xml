@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/bgnoseleccionado"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/nombre_reserva_reserva"
+            android:layout_marginLeft="5dp"
+            android:textSize="22dp"
+            android:textColor="#000"
+            android:layout_toLeftOf="@+id/layout_monto_final_reserva"
+            android:text=" Angelo"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:id="@+id/layout_monto_final_reserva"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/bufeo_coin"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:textSize="22dp"
+                android:id="@+id/monto_final_reserva"
+                android:textColor="#E53935"
+                android:layout_height="wrap_content"
+                android:text="25"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/empresa_reserva"
+            android:layout_height="wrap_content"
+            android:text=" LAVADERO"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_height="wrap_content"
+            android:text=" -"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/nombre_cancha_reserva"
+            android:layout_height="wrap_content"
+            android:text="Cancha 1"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/hora_layout"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/calendar"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fechaReserva"
+                android:text="24 de febrero"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/hora_layout"
+            android:layout_marginRight="15dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_clock"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/horaReserva"
+                android:layout_height="wrap_content"
+                android:text="11:00 am"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:text="Ver Más"
+            android:id="@+id/verMas"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:rippleColor="@color/blue_A400"
+            android:textSize="12sp"
+            android:textColor="@color/colorVerde"
+            app:strokeColor="@color/colorVerde"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+</LinearLayout>

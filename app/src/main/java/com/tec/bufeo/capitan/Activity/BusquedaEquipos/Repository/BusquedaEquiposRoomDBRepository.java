@@ -25,27 +25,28 @@ public class BusquedaEquiposRoomDBRepository {
 
 
 
-    public LiveData<List<BusquedaEquipos>> getmAll() {
-         mAllMiEquipos=equiposDao.getAll();
+    public LiveData<List<BusquedaEquipos>> getmAllVacio() {
+         mAllMiEquipos=equiposDao.getmAllVacio();
          return mAllMiEquipos;
     }
 
     public LiveData<List<BusquedaEquipos>> getAllEquipo(  ) {
-        boolean online = ForoFragment.isOnLine();
 
-        /*if (online){
-            deleteAllEquipos();
-        }*/
         mAllMiEquipos = equiposDao.getAllEquipo();
         return mAllMiEquipos;
     }
 
+    public LiveData<List<BusquedaEquipos>> getmAllSeleccionado(  ) {
 
+        mAllMiEquipos = equiposDao.getmAllSeleccionado();
+        return mAllMiEquipos;
+    }
 
+    public LiveData<List<BusquedaEquipos>> getSearch(String query){
+        mAllMiEquipos = equiposDao.searchFeeds(query);
+        return mAllMiEquipos;
 
-
-
-
+    }
 
     public void deleteAllEquipos() {
         new DeleteAllEquiposyncTask(equiposDao).execute();

@@ -59,7 +59,7 @@ public class MisReservasWebServiceRepository {
          service.getEquipo(id_user,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.e("Repository movimientos","Response::::"+response.body());
+                 Log.e("Repository mis reservas","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  MisReservasRoomDBRepository movimientosRoomDBRepository = new MisReservasRoomDBRepository(application);
                  movimientosRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -99,24 +99,26 @@ public class MisReservasWebServiceRepository {
 
             int count = resultJSON.length();
 
-            MisReservasRoomDBRepository movimientosRoomDBRepository = new MisReservasRoomDBRepository(application);
-            movimientosRoomDBRepository.deleteAllEquipos();
+            /*MisReservasRoomDBRepository movimientosRoomDBRepository = new MisReservasRoomDBRepository(application);
+            movimientosRoomDBRepository.deleteAllEquipos();*/
 
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
-                MisReservas movimientos = new MisReservas();
+                MisReservas misReservas = new MisReservas();
 
-              /*  //movimientos.setMovimiento_id(jsonNode.optString("pago_id"));
-                movimientos.setMovimiento_id(String.valueOf(i));
-                movimientos.setMovimiento_nombre(jsonNode.optString("concepto"));
-                movimientos.setMovimiento_monto(jsonNode.optString("monto"));
-                //movimientos.setMovimiento_estado(jsonNode.optString("1"));
-                movimientos.setMovimiento_estado("1");
-                movimientos.setMovimiento_fecha(jsonNode.optString("fecha"));*/
+                misReservas.setId_reserva(jsonNode.optString("reserva_id"));
+                misReservas.setNombre_empresa(jsonNode.optString("empresa_nombre"));
+                misReservas.setCancha_nombre(jsonNode.optString("cancha_nombre"));
+                misReservas.setMonto_final(jsonNode.optString("pago_total"));
+                misReservas.setFecha_reserva(jsonNode.optString("reserva_fecha"));
+                misReservas.setHora_reserva(jsonNode.optString("reserva_hora"));
+                misReservas.setTelefono1_reserva(jsonNode.optString("empresa_telefono_1"));
+                misReservas.setTelefono2_reserva(jsonNode.optString("empresa_telefono_2"));
+                misReservas.setDireccion_reserva(jsonNode.optString("empresa_direccion"));
+                misReservas.setNombre_reserva(jsonNode.optString("reserva_nombre"));
 
 
-
-                apiResults.add(movimientos);
+                apiResults.add(misReservas);
             }
 
 

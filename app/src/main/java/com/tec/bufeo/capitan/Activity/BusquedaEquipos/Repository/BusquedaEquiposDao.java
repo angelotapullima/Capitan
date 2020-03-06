@@ -18,22 +18,23 @@ public interface BusquedaEquiposDao {
     /*@Query("SELECT * from equipos WHERE mi_equipo = :mi_equipo")
     LiveData<List<RegistroEquiposTorneo>> getAllEquipos(String mi_equipo);*/
 
-    @Query("SELECT * from equipos")
+    @Query("SELECT * from busqueda_equipos")
     LiveData<List<BusquedaEquipos>> getAllEquipo();
 
-    @Query("SELECT * from equipos ")
-    LiveData<List<BusquedaEquipos>> getAll();
+    @Query("SELECT * from busqueda_equipos where estado_seleccion = 'vacio' ")
+    LiveData<List<BusquedaEquipos>> getmAllVacio();
 
 
-    @Query("Update equipos set estado_seleccion = '1' where equipo_id =:id")
-    void actualizarEstado1(String id);
+    @Query("SELECT * from busqueda_equipos where estado_seleccion = 'seleccionado' ")
+    LiveData<List<BusquedaEquipos>> getmAllSeleccionado();
 
-    @Query("Update equipos set estado_seleccion = '0' where equipo_id =:id")
-    void actualizarEstado0(String id);
+    @Query("SELECT * FROM busqueda_equipos WHERE equipo_nombre LIKE '%' || :query || '%'  " )
+    LiveData<List<BusquedaEquipos>> searchFeeds(String query);
 
 
-    @Query("DELETE FROM equipos")
+    @Query("DELETE FROM busqueda_equipos")
     void deleteAll();
+
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -13,41 +13,36 @@ import java.util.List;
 
 public class MisReservasRoomDBRepository {
 
-    private MisReservasDao movimientosDao;
-    LiveData<List<MisReservas>> mAllMiEquipos;
+    private MisReservasDao misReservasDao;
+    LiveData<List<MisReservas>> mAllMisReservas;
 
     public MisReservasRoomDBRepository(Application application){
         MisReservasRoomDataBase db = MisReservasRoomDataBase.getDatabase(application);
-        movimientosDao = db.postInfoDao();
+        misReservasDao = db.postInfoDao();
 
      }
 
     public LiveData<List<MisReservas>> getmAll() {
-         mAllMiEquipos=movimientosDao.getAll();
-         return mAllMiEquipos;
+        mAllMisReservas=misReservasDao.getAll();
+         return mAllMisReservas;
     }
 
-    public LiveData<List<MisReservas>> getAllEquipo(  ) {
 
-        mAllMiEquipos = movimientosDao.getAll();
-        return mAllMiEquipos;
+    public void deleteAllMisReservas() {
+        new DeleteAllReservasyncTask(misReservasDao).execute();
     }
 
-    public void deleteAllEquipos() {
-        new DeleteAllEquiposyncTask(movimientosDao).execute();
-    }
+    private static class DeleteAllReservasyncTask extends AsyncTask<Void, Void, Void> {
+        private MisReservasDao misReservasDao;
 
-    private static class DeleteAllEquiposyncTask extends AsyncTask<Void, Void, Void> {
-        private MisReservasDao movimientosDao;
-
-        private DeleteAllEquiposyncTask(MisReservasDao movimientosDao) {
-            this.movimientosDao = movimientosDao;
+        private DeleteAllReservasyncTask(MisReservasDao misReservasDao) {
+            this.misReservasDao = misReservasDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            movimientosDao.deleteAll();
-            Log.i("eliminado equipos", "doInBackground: eliminado");
+            misReservasDao.deleteAll();
+            Log.i("eliminado mis reservas", "doInBackground: eliminado");
             return null;
         }
     }
@@ -55,7 +50,7 @@ public class MisReservasRoomDBRepository {
 
 
     public void insertEquipos(List<MisReservas> menuModel) {
-        new insertAsyncTask(movimientosDao).execute(menuModel);
+        new insertAsyncTask(misReservasDao).execute(menuModel);
     }
 
     private static class insertAsyncTask extends AsyncTask<List<MisReservas>, Void, Void> {

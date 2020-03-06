@@ -44,4 +44,9 @@ public class JugadoresViewModel extends AndroidViewModel {
         mAllJugadores=jugadoresRoomDBRepository.getAll();
         return mAllJugadores;
     }
+
+    public LiveData<List<Jugadores>> searchFeeds(String id) {
+        mAllJugadores=jugadoresRoomDBRepository.searchFeeds(id);
+        return mAllJugadores;
+    }
 }

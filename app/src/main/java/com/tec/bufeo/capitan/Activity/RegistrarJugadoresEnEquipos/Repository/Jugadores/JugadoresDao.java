@@ -22,7 +22,8 @@ public interface JugadoresDao {
     @Query("SELECT * from jugadores WHERE jugador_estado =:estado  ")
     LiveData<List<Jugadores>> getAllJugadores(String estado);
 
-
+    @Query("SELECT * FROM jugadores WHERE jugador_nombre LIKE '%' || :query || '%'  " )
+    LiveData<List<Jugadores>> searchFeeds(String query);
 
     @Query("SELECT * from jugadores WHERE jugador_mi_equipo =:mio  ")
     LiveData<List<Jugadores>> getAllMisJugadores(String mio);

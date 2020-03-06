@@ -19,6 +19,10 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name,android:allowBackup">
         <activity android:name=".Activity.EditarDatosDePerfil"></activity>
+        <activity android:name=".Activity.MisReservas.Views.MisReservasActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <activity android:name=".Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
@@ -28,16 +32,10 @@
             android:name=".Activity.ConfirmacionReserva"
             android:theme="@style/AppTheme.NoActionBar">
 
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
         </activity>
         <activity
-            android:name=".Activity.MasTorneos"
+            android:name=".Activity.BusquedaDeTorneos.Views.MasTorneosActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.EstadisticasEmpresas.EstadisticasEmpresas" />
         <activity
@@ -63,17 +61,21 @@
         <activity android:name=".Activity.RegistrarEquipo.RegistroEquiposInstancias.Views.RegistrarPartidos" />
         <activity android:name=".Activity.Registro_Torneo.CrearInstancias.LIstaInstancias.ListarInstancias" />
         <activity android:name=".Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Views.CrearInstancias" />
-        <activity android:name=".Activity.RegistrarEquipo.RegistroEquipo" />
-        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo" />
-        <activity android:name=".Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago">
+        <activity android:name=".Activity.RegistrarEquipo.RegistroEquipoEnGrupo.RegistroEquipoEnGrupo"
+            android:theme="@style/AppTheme.NoActionBar">
 
-            <!--
-            <intent-filter>
+
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
+            </intent-filter>-->
+
+
+        </activity>
+        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo" />
+        <activity android:name=".Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago">
+
         </activity>
         <activity
             android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo"
@@ -95,11 +97,15 @@
         <activity
             android:name=".Activity.Splash"
             android:theme="@style/AppTheme.NoActionBar">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
         <activity
             android:name=".Activity.Login"
@@ -136,11 +142,13 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".Activity.RegistroReto"
-            android:label="Retar a un Equipo" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activity.Registro_Torneo.RegistroTorneo"
             android:label="Registro Torneo" />
-        <activity android:name=".Activity.RegistroForo" />
+        <activity android:name=".Activity.RegistroForo"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".Activity.DetalleFotoUsuario"
             android:theme="@style/AppTheme.NoActionBar" />

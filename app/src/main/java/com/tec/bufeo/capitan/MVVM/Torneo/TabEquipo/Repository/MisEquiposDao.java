@@ -18,7 +18,7 @@ public interface MisEquiposDao {
     /*@Query("SELECT * from equipos WHERE mi_equipo = :mi_equipo")
     LiveData<List<RegistroEquiposTorneo>> getAllEquipos(String mi_equipo);*/
 
-    @Query("SELECT * from equipos WHERE mi_equipo =:mio ")
+    @Query("SELECT * from equipos WHERE mis_equipos =:mio ")
     LiveData<List<Mequipos>> getAllEquipo(String mio);
 
     @Query("SELECT * from equipos ")

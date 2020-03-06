@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.DatosUsuarios.Models.DatosUsuario;
 
 
-@Database(entities = {DatosUsuario.class}, version = 1)
+@Database(entities = {DatosUsuario.class}, version = 1,exportSchema = false)
 public abstract class DatosUsuarioRoomDataBase extends RoomDatabase {
     public abstract DatosUsuarioDao postInfoDao();
 

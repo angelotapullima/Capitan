@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Models.Estadisticas;
 
-@Database(entities = {Estadisticas.class}, version = 1)
+@Database(entities = {Estadisticas.class}, version = 1,exportSchema = false)
 public abstract class EstadisticasRoomDataBase extends RoomDatabase {
     public abstract EstadisticasDao postInfoDao();
 

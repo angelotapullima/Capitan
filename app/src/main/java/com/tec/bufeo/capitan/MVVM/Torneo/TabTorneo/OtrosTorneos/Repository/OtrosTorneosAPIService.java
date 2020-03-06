@@ -9,7 +9,7 @@ public interface OtrosTorneosAPIService {
 
     @FormUrlEncoded
     @POST("api/Torneo/listar_torneos")
-    Call<String> getRetos(@Field("id_usuario") String id,
+    Call<String> getRetos(@Field("id_usuario") String id_usuario,
                           @Field("app") String app,
                           @Field("token") String token);
 }

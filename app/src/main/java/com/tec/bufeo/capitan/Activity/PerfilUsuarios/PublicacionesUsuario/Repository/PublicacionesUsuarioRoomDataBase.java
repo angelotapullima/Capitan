@@ -13,7 +13,7 @@ import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.Reposi
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.Models.PublicacionesUsuario;
 
 
-@Database(entities = {PublicacionesUsuario.class}, version = 2)
+@Database(entities = {PublicacionesUsuario.class}, version = 2,exportSchema = false)
 public abstract class PublicacionesUsuarioRoomDataBase extends RoomDatabase {
     public abstract PublicacionesUsuarioDao postInfoDao();
 

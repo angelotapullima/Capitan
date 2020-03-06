@@ -1,6 +1,7 @@
 package com.tec.bufeo.capitan.Activity.MisReservas.Views;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
 import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 import com.tec.bufeo.capitan.Activity.MisReservas.Repository.MisReservasRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.MisReservas.ViewModels.MisReservasViewModel;
@@ -21,19 +23,19 @@ import java.util.List;
 
 public class MisReservasActivity extends AppCompatActivity {
 
-    MisReservasViewModel movimientosViewModel;
+    MisReservasViewModel misReservasViewModel;
     AdaptadorMisReservas adaptadorMisReservas;
-    RecyclerView rcv_ver_recargas;
+    RecyclerView rcv_mis_reservas;
     Preferences preferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mis_movimientos);
+        setContentView(R.layout.activity_mis_reservas);
 
 
-        movimientosViewModel = ViewModelProviders.of(this).get(MisReservasViewModel.class);
+        misReservasViewModel = ViewModelProviders.of(this).get(MisReservasViewModel.class);
         preferences= new Preferences(this);
 
         initViews();
@@ -43,19 +45,18 @@ public class MisReservasActivity extends AppCompatActivity {
 
     private void initViews(){
 
-        rcv_ver_recargas= findViewById(R.id.rcv_ver_recargas);
+        rcv_mis_reservas= findViewById(R.id.rcv_mis_reservas);
     }
     public void cargarvista(){
 
 
-        MisReservasRoomDBRepository movimientosRoomDBRepository = new MisReservasRoomDBRepository(application);
-        movimientosRoomDBRepository.deleteAllEquipos();
 
-        movimientosViewModel.getAll(preferences.getIdUsuarioPref(),preferences.getToken()).observe(this, new Observer<List<MisReservas>>() {
+
+        misReservasViewModel.getAll(preferences.getIdUsuarioPref(),preferences.getToken()).observe(this, new Observer<List<MisReservas>>() {
             @Override
             public void onChanged(@Nullable List<MisReservas> mequipos) {
                 adaptadorMisReservas.setWords(mequipos);
-                Log.e("mis Equipos", "onChanged: "+mequipos.size() );
+
             }
         });
 
@@ -67,15 +68,28 @@ public class MisReservasActivity extends AppCompatActivity {
 
         adaptadorMisReservas = new AdaptadorMisReservas(this, new AdaptadorMisReservas.OnItemClickListener() {
             @Override
-            public void onItemClick(MisReservas mequipos, String tipo, int position) {
+            public void onItemClick(MisReservas misReservas, String tipo, int position) {
 
+                if (tipo.equals("verMas")){
+                    Intent i =  new Intent(getApplicationContext(), ConfirmacionReserva.class);
+                    i.putExtra("cancha",misReservas.getCancha_nombre());
+                    i.putExtra("lugar",misReservas.getNombre_empresa());
+                    i.putExtra("hora",misReservas.getHora_reserva());
+                    i.putExtra("fecha",misReservas.getFecha_reserva());
+                    i.putExtra("nombre",misReservas.getNombre_reserva());
+                    i.putExtra("direccion",misReservas.getDireccion_reserva());
+                    i.putExtra("telefono",misReservas.getTelefono1_reserva());
+                    i.putExtra("telefono2",misReservas.getTelefono2_reserva());
+                    i.putExtra("precio",misReservas.getMonto_final());
+                    startActivity(i);
+                }
             }
         });
 
         GridLayoutManager linearLayoutManager = new GridLayoutManager(this, 1);
         linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
-        rcv_ver_recargas.setLayoutManager(linearLayoutManager);
-        rcv_ver_recargas.setAdapter(adaptadorMisReservas);
+        rcv_mis_reservas.setLayoutManager(linearLayoutManager);
+        rcv_mis_reservas.setAdapter(adaptadorMisReservas);
 
     }
 }

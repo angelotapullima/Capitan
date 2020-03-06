@@ -22,7 +22,7 @@ public abstract class BusquedaEquiposRoomDataBase extends RoomDatabase {
             synchronized (BusquedaEquiposRoomDataBase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            BusquedaEquiposRoomDataBase.class, "equipos_database")
+                            BusquedaEquiposRoomDataBase.class, "busqueda_equipos_database")
                             .addCallback(sRoomDatabaseCallback)
                             .fallbackToDestructiveMigration ()
                             .build();

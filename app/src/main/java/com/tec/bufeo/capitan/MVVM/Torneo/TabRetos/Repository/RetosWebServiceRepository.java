@@ -58,6 +58,7 @@ public class RetosWebServiceRepository {
          //Defining retrofit api service
          RetosAPIService service = retrofit.create(RetosAPIService.class);
         //  response = service.makeRequest().execute().body();
+         Log.e("params retos", "providesWebService: " + id_usuario );
          service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {

@@ -1624,14 +1624,10 @@ public class DataConnection extends AppCompatActivity {
                     @Override
                     public void run() {
                         if(Integer.toString(code).equalsIgnoreCase("2")){
-                            preferences.codeAdvertencia("Datos incorrectos");
+                            preferences.codeAdvertencia("ocurrio un error");
                         }
                         else if(Integer.toString(code).equalsIgnoreCase("3")){
-                            preferences.codeAdvertencia( "Cuenta desactivada");
-                        } if (Integer.toString(code).equalsIgnoreCase("4")){
-                          preferences.codeAdvertencia("El email Ya esta en uso");
-                        } else{
-                            preferences.codeAdvertencia("No tiene permisos");
+                            preferences.codeAdvertencia( "datos incorrectos");
                         }
 
                     }

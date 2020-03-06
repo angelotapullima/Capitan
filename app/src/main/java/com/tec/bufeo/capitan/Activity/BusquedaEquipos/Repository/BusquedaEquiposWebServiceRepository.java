@@ -43,7 +43,7 @@ public class BusquedaEquiposWebServiceRepository {
 
     List<BusquedaEquipos> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<BusquedaEquipos>> providesWebService( String tipo,String id_usuario, String dato,final String token) {
+ public LiveData<List<BusquedaEquipos>> providesWebService(final String tipo, String limite_sup, String limite_inf, String dato, final String token) {
 
      final MutableLiveData<List<BusquedaEquipos>> data = new MutableLiveData<>();
 
@@ -59,11 +59,11 @@ public class BusquedaEquiposWebServiceRepository {
          if (tipo.equals("carga")){
              EquiposEnBAPIService service = retrofit.create(EquiposEnBAPIService.class);
              //  response = service.makeRequest().execute().body();
-             service.getEquipo(id_usuario,"true",token).enqueue(new Callback<String>() {
+             service.getEquipo(limite_sup,limite_inf,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("buscar torneos","Response::::"+response.body());
-                     webserviceResponseList = parseJson(response.body());
+                     Log.e("buscar equipos","Response::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo);
                      BusquedaEquiposRoomDBRepository menuRoomDBRepository = new BusquedaEquiposRoomDBRepository(application);
                      menuRoomDBRepository.insertEquipos(webserviceResponseList);
                      data.setValue(webserviceResponseList);
@@ -81,10 +81,10 @@ public class BusquedaEquiposWebServiceRepository {
              service.getEquipo(dato,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("buscar torneos","Response::::"+response.body());
-                     webserviceResponseList = parseJson(response.body());
-                     BusquedaEquiposRoomDBRepository menuRoomDBRepository = new BusquedaEquiposRoomDBRepository(application);
-                     menuRoomDBRepository.insertEquipos(webserviceResponseList);
+                     Log.e("buscar equipos","Response::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo);
+                     BusquedaEquiposRoomDBRepository busquedaEquiposRoomDBRepository = new BusquedaEquiposRoomDBRepository(application);
+                     busquedaEquiposRoomDBRepository.insertEquipos(webserviceResponseList);
                      data.setValue(webserviceResponseList);
 
                  }
@@ -110,7 +110,7 @@ public class BusquedaEquiposWebServiceRepository {
     }
 
 
-    private List<BusquedaEquipos> parseJson(String response ) {
+    private List<BusquedaEquipos> parseJson(String response,String tipo ) {
 
         List<BusquedaEquipos> apiResults = new ArrayList<>();
 
@@ -122,8 +122,14 @@ public class BusquedaEquiposWebServiceRepository {
             jsonObject = new JSONObject(response);
             JSONArray resultJSON = jsonObject.getJSONArray("results");
 
-            BusquedaEquiposRoomDBRepository busquedaEquiposRoomDBRepository = new BusquedaEquiposRoomDBRepository(application);
-            busquedaEquiposRoomDBRepository.deleteAllEquipos();
+            if (tipo.equals("carga")){
+                BusquedaEquiposRoomDBRepository busquedaEquiposRoomDBRepository = new BusquedaEquiposRoomDBRepository(application);
+                busquedaEquiposRoomDBRepository.deleteAllEquipos();
+            }else{
+                /*BusquedaEquiposRoomDBRepository busquedaEquiposRoomDBRepository = new BusquedaEquiposRoomDBRepository(application);
+                busquedaEquiposRoomDBRepository.deleteAllVacio();*/
+            }
+
             int count = resultJSON.length();
 
 
@@ -135,7 +141,7 @@ public class BusquedaEquiposWebServiceRepository {
                 misequipos.setEquipo_foto(jsonNode.optString("foto"));
                 misequipos.setCapitan_nombre(jsonNode.optString("capitan"));
                 misequipos.setCapitan_id(jsonNode.optString("capitan_id"));
-                misequipos.setEstado_seleccion("0");
+                misequipos.setEstado_seleccion("vacio");
 
 
 

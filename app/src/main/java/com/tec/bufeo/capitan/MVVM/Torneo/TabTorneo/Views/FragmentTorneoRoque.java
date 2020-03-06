@@ -21,8 +21,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.tec.bufeo.capitan.Activity.BusquedaDeTorneos.Views.MasTorneosActivity;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
-import com.tec.bufeo.capitan.Activity.MasTorneos;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Repository.MisTorneoWebServiceRepository;
@@ -48,6 +48,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
     FloatingActionButton reg_torneo;
     SwipeRefreshLayout swipeTorneos;
     LinearLayout masTorneos;
+    ImageButton imb_mas_Torneos;
 
     AdaptadorOtrosTorneos adaptadorOtrosTorneos;
 
@@ -84,6 +85,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
         rcv_mis_torneos = (RecyclerView) view.findViewById(R.id.rcv_mis_torneos);
         rcv_torneos = (RecyclerView) view.findViewById(R.id.rcv_torneos);
         reg_torneo = (FloatingActionButton) view.findViewById(R.id.reg_torneo);
+        imb_mas_Torneos = (ImageButton) view.findViewById(R.id.imb_mas_Torneos);
         masTorneos = (LinearLayout) view.findViewById(R.id.masTorneos);
         swipeTorneos = (SwipeRefreshLayout) view.findViewById(R.id.swipeTorneos);
         swipeTorneos.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
@@ -101,7 +103,14 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
         masTorneos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, MasTorneos.class);
+                Intent i = new Intent(context, MasTorneosActivity.class);
+                startActivity(i);
+            }
+        });
+        imb_mas_Torneos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, MasTorneosActivity.class);
                 startActivity(i);
             }
         });

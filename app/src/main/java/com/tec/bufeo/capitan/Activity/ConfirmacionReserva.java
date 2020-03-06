@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -103,8 +105,7 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
         setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
 
         getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
-        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);  //y habilitamos la flacha hacia atras
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
     }
 
     public static Bitmap loadBitmapFromView(View v, int width, int height) {

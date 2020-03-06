@@ -136,7 +136,7 @@ public class InfoDtorneoFragment extends Fragment {
                     hora_infotorneo.setText(detalleTorneos.get(0).getHora_torneo());
                     organizador_infotorneo.setText(detalleTorneos.get(0).getOrganizador_torneo());
                     lugar_infotorneo.setText(detalleTorneos.get(0).getLugar_torneo());
-                    String costoso = detalleTorneos.get(0).getCosto_torneo() + " por Equipo Inscrito";
+                    String costoso = detalleTorneos.get(0).getCosto_torneo();
                     costo_infotorneo.setText(costoso);
                     //costo_infotorneo= costoso;
                 }

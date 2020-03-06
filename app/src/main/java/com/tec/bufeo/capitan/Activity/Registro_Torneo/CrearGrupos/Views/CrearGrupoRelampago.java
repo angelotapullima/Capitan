@@ -48,6 +48,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
     String id_torneo,nombre_torneo;
     Preferences preferences;
     int cantidad;
+    String tipo_campeonato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,19 +62,21 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
 
 
         initViews();
+
+
+
         setAdapter();
         cargarvista();
     }
 
     private void initViews() {
-        /*if(getIntent().getExtras()!=null){
+        if(getIntent().getExtras()!=null){
             id_torneo = getIntent().getExtras().getString("id_torneo");
-
+            tipo_campeonato = getIntent().getExtras().getString("tipo_campeonato");
             nombre_torneo = getIntent().getExtras().getString("nombre_torneo");
-        }*/
+        }
 
-        id_torneo = "1";
-        nombre_torneo = "nombre_torne";
+
 
 
         rcv_grupos =  findViewById(R.id.rcv_grupos);
@@ -84,6 +87,12 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
 
         nombre_torneo_grupo.setText(nombre_torneo);
 
+
+        if (tipo_campeonato.equals("relampago")){
+
+            agregar_grupo_a_bd(nombre_torneo);
+            crear_grupo(nombre_torneo);
+        }
         btn_agregar_grupos.setOnClickListener(this);
         btnNext.setOnClickListener(this);
     }
@@ -128,7 +137,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
     String url = IP2+"/api/Torneo/registrar_grupo";
     StringRequest stringRequest;
     int valor;
-    private void crear_grupo() {
+    private void crear_grupo(final String name_grupo) {
 
 
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -147,6 +156,11 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
                     if (valor==1){
                         gruposListViewModel.getIdTorneo(id_torneo,preferences.getToken());
                         nombre_grupo_grupos.setText("");
+                        if (tipo_campeonato.equals("relampago")){
+                            Intent i = new Intent(getApplicationContext(), RegistrarEquipoEnGrupo.class);
+                            i.putExtra("id_torneo",id_torneo);
+                            startActivity(i);
+                        }
                     }
 
 
@@ -175,7 +189,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
                 Map<String,String> parametros=new HashMap<>();
 
                 parametros.put("id_torneo", id_torneo);
-                parametros.put("grupo_nombre", nombre_grupo_grupos.getText().toString());
+                parametros.put("grupo_nombre", name_grupo);
                 parametros.put("app", "true");
                 parametros.put("token", preferences.getToken());
                 Log.e("torneo", "getParams: "+parametros.toString() );
@@ -188,10 +202,10 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
         VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
     }
 
-    public void agregar_grupo_a_bd(){
+    public void agregar_grupo_a_bd(String nombre_grupo){
         Grupos grupos =  new Grupos();
         grupos.setId_grupo(String.valueOf(cantidad));
-        grupos.setNombre_grupo(nombre_grupo_grupos.getText().toString());
+        grupos.setNombre_grupo(nombre_grupo);
         grupos.setId_torneo(id_torneo);
         grupos.setEstado("1");
         gruposListViewModel.insert(grupos);
@@ -203,9 +217,9 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
 
             if (!nombre_grupo_grupos.getText().equals("")){
 
-                agregar_grupo_a_bd();
+                agregar_grupo_a_bd(nombre_grupo_grupos.getText().toString());
             }
-            crear_grupo();
+            crear_grupo(nombre_grupo_grupos.getText().toString());
 
         }if (view.equals(btnNext)) {
 

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -16,6 +17,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,8 +42,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
+import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.WebService.DataConnection;
@@ -59,6 +64,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
@@ -69,8 +75,9 @@ import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 public class RegistroForo extends AppCompatActivity implements View.OnClickListener{
     EditText edt_tituloForo, edt_descripcionForo;
     Button btn_registrarForo;
-    ImageView img_foroFoto,btn_Camara;
-    DataConnection dc;
+    TextView nombre_para_publicar;
+    ImageView img_foroFoto,publicar_foto_camara,publicar_foto_galeria;
+    ImageView foto_perfil_para_publicacion;
     Preferences preferences;
     public Context context;
     private int REQUEST_CAMERA = 0,  SELET_GALERRY = 9;
@@ -81,7 +88,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
     public static final String registro= "registro";
 
     String concepto,id_torneo;
-    String concepto_publicacion,id_torneo_publicacion;
+    String id_torneo_publicacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +107,12 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
         edt_tituloForo = (EditText) findViewById(R.id.edt_tituloForo);
         edt_descripcionForo = (EditText) findViewById(R.id.edt_descripcionForo);
         btn_registrarForo = (Button) findViewById(R.id.btn_registrarForo);
-        btn_Camara = findViewById(R.id.btn_Camara);
         img_foroFoto = findViewById(R.id.img_foroFoto);
+        publicar_foto_galeria = findViewById(R.id.publicar_foto_galeria);
+        publicar_foto_camara = findViewById(R.id.publicar_foto_camara);
+        nombre_para_publicar = findViewById(R.id.nombre_para_publicar);
+        foto_perfil_para_publicacion = findViewById(R.id.foto_perfil_para_publicacion);
         btn_registrarForo.setOnClickListener(this);
-        btn_Camara.setOnClickListener(this);
 
 
         if((ContextCompat.checkSelfPermission(RegistroForo.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
@@ -141,9 +150,37 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
                 RegistroForope(feedTorneo);
             }
         };
+        showToolbar("Registrar un foro",true);
 
+        Glide.with(context)
+                .load(IP2+"/"+ preferences.getFotoUsuario())
+                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
+                .apply(LOGO_OPTION)
+                .into(foto_perfil_para_publicacion);
+        nombre_para_publicar.setText(preferences.getPersonName() + " " + preferences.getPersonSurname());
+        publicar_foto_camara.setOnClickListener(this);
+        publicar_foto_galeria.setOnClickListener(this);
+        img_foroFoto.setOnClickListener(this);
     }
 
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -159,26 +196,26 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()) {
-
-            case R.id.btn_Camara:
-                dialogoFotos();
-                break;
-
-            case R.id.btn_registrarForo:
-                if (!(edt_descripcionForo.getText().toString().isEmpty())&!(edt_tituloForo.getText().toString().isEmpty())) {
+        if (v.equals(publicar_foto_galeria)){
+            galeria("");
+        }else  if (v.equals(publicar_foto_camara)){
+            camarex("");
+        }else if (v.equals(btn_registrarForo)){
+            if (!(edt_descripcionForo.getText().toString().isEmpty())&!(edt_tituloForo.getText().toString().isEmpty())) {
 
 
-                    Toast.makeText(context, "" + path, Toast.LENGTH_SHORT).show();
-                    uploadMultipart();
+                Toast.makeText(context, "" + path, Toast.LENGTH_SHORT).show();
+                uploadMultipart();
 
-                    finish();
-                }else {
-                    Toast.makeText(getApplicationContext(), "Llene los campos", Toast.LENGTH_LONG).show();
-                }
-                break;
-
+                finish();
+            }else {
+                Toast.makeText(getApplicationContext(), "Llene los campos", Toast.LENGTH_LONG).show();
+            }
+        }else if (v.equals(img_foroFoto)){
+            dialogoFotos();
         }
+
+
 
 
     }
@@ -279,7 +316,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void camarex(){
+    public void camarex(String dialogo){
         userChoosenTask ="Camara";
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -305,9 +342,13 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
         }
         output = Uri.fromFile(imagen);
         startActivityForResult(intent,REQUEST_CAMERA);
-        dialog_fotos.dismiss();
+
+        if (dialogo.equals("dialogo")){
+            dialog_fotos.dismiss();
+        }
+
     }
-    public void galeria(){
+    public void galeria(String dialogo){
         userChoosenTask ="Galería";
 
 
@@ -318,8 +359,11 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
             startActivityForResult(intentgaleria,SELET_GALERRY);
         }
 
-        dialog_fotos.dismiss();
+        if (dialogo.equals("dialogo")){
+            dialog_fotos.dismiss();
+        }
     }
+
     AlertDialog dialog_fotos;
     public void dialogoFotos(){
 
@@ -338,13 +382,13 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
         Tomarfoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                camarex();
+                camarex("dialogo");
             }
         });
         seleccionGaleria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                galeria();
+                galeria("dialogo");
             }
         });
 

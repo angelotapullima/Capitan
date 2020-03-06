@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="10dp"
+    android:id="@+id/cardEquipos_vacio"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_margin="10dp">
@@ -60,34 +61,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:id="@+id/btn_seleccionar"
-            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_centerInParent="true"
-                android:layout_height="50dp"
-                android:id="@+id/seleccionado"
-                android:visibility="gone"
-                android:src="@drawable/check_circle"/>
-            <ProgressBar
-                android:layout_width="50dp"
-                android:visibility="gone"
-                android:layout_centerInParent="true"
-                android:id="@+id/carga_seleccionado"
-                android:layout_height="50dp"/>
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/sin_seleccionar"
-                android:layout_centerInParent="true"
-                android:src="@drawable/check_circle_outline"/>
-        </RelativeLayout>
 
 
     </LinearLayout>

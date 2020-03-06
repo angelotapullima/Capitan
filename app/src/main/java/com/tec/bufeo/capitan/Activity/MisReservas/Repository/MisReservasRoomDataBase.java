@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 
 
-@Database(entities = {MisReservas.class}, version = 1)
+@Database(entities = {MisReservas.class}, version = 1,exportSchema = false)
 public abstract class MisReservasRoomDataBase extends RoomDatabase {
     public abstract MisReservasDao postInfoDao();
 

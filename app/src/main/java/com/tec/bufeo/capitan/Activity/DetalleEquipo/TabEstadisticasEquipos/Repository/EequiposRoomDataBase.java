@@ -10,7 +10,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {EstadisticasDeEquipos.class}, version = 1)
+@Database(entities = {EstadisticasDeEquipos.class}, version = 1,exportSchema = false)
 public abstract class EequiposRoomDataBase extends RoomDatabase {
     public abstract EequiposDao postInfoDao();
 

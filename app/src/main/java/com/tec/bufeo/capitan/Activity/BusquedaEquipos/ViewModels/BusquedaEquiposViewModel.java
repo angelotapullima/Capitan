@@ -32,15 +32,32 @@ public class BusquedaEquiposViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<List<BusquedaEquipos>> getAllEquipo(String id_usuario,String token ) {
+    /*public LiveData<List<BusquedaEquipos>> getAllEquipo(String id_usuario,String token ) {
 
         misEquiposWebServiceRepository.providesWebService("busqueda",id_usuario,"",token);
         mAllMiEquipos = misEquiposRoomDBRepository.getAllEquipo();
         return mAllMiEquipos;
+    }*/
+
+    public LiveData<List<BusquedaEquipos>> getSearh(String query) {
+
+        mAllMiEquipos = misEquiposRoomDBRepository.getSearch(query);
+        return mAllMiEquipos;
+    }
+    public LiveData<List<BusquedaEquipos>> getAll(String sup,String inf,String token) {
+        misEquiposWebServiceRepository.providesWebService("carga",sup,inf,"",token);
+        mAllMiEquipos=misEquiposRoomDBRepository.getAllEquipo();
+        return mAllMiEquipos;
     }
 
-    public LiveData<List<BusquedaEquipos>> getAll() {
-        mAllMiEquipos=misEquiposRoomDBRepository.getmAll();
+    public LiveData<List<BusquedaEquipos>> getmAllVacio(String sup,String inf,String token) {
+        misEquiposWebServiceRepository.providesWebService("carga",sup,inf,"",token);
+        mAllMiEquipos=misEquiposRoomDBRepository.getmAllVacio();
+        return mAllMiEquipos;
+    }
+
+    public LiveData<List<BusquedaEquipos>> getmAllSeleccionado() {
+        mAllMiEquipos=misEquiposRoomDBRepository.getmAllSeleccionado();
         return mAllMiEquipos;
     }
 

@@ -327,7 +327,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
 
-    AlertDialog dialog_eliminar;
+    AlertDialog dialog_telefono;
     public void dialogoTelefonos(final String fono1, final String fono2){
 
         AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
@@ -335,8 +335,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         View vista = inflater.inflate(R.layout.dialogo_telefonos,null);
         builder.setView(vista);
 
-        dialog_eliminar = builder.create();
-        dialog_eliminar.show();
+        dialog_telefono = builder.create();
+        dialog_telefono.show();
 
         TextView fonito1 = vista.findViewById(R.id.fono1);
         TextView fonito2 = vista.findViewById(R.id.fono2);

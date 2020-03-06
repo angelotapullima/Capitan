@@ -8,7 +8,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 
-@Database(entities = {Mequipos.class}, version = 1)
+@Database(entities = {Mequipos.class}, version = 1,exportSchema = false)
 public abstract class MisEquiposRoomDataBase extends RoomDatabase {
     public abstract MisEquiposDao postInfoDao();
 

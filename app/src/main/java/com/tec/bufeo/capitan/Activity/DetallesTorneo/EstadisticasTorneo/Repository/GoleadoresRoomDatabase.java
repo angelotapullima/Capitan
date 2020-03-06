@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.EstadisticasTorneo.Models.Goleadores;
 
-@Database(entities = {Goleadores.class}, version = 1)
+@Database(entities = {Goleadores.class}, version = 1,exportSchema = false)
 public abstract class GoleadoresRoomDatabase extends RoomDatabase {
 
     public abstract GoleadoresDao postInfoDao();

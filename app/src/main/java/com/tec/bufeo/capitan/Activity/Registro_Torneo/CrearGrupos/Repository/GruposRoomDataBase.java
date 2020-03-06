@@ -11,7 +11,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 
-@Database(entities = {Grupos.class}, version = 1)
+@Database(entities = {Grupos.class}, version = 1,exportSchema = false)
 public abstract class GruposRoomDataBase extends RoomDatabase {
     public abstract GruposTorneoDao postInfoDao();
 

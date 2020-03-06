@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 
-@Database(entities = {Retos.class}, version = 2)
+@Database(entities = {Retos.class}, version = 2,exportSchema = false)
 public abstract class RetosRoomDataBase extends RoomDatabase {
     public abstract RetosDao postInfoDao();
 

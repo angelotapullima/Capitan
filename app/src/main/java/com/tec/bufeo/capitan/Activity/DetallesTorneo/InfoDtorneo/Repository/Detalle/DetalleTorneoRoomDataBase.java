@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.DetalleTorneo;
 
-@Database(entities = {DetalleTorneo.class}, version = 2,exportSchema = false)
+@Database(entities = {DetalleTorneo.class}, version = 1,exportSchema = false)
 public abstract class DetalleTorneoRoomDataBase extends RoomDatabase {
     public abstract DetalleTorneoDao postInfoDao();
 
@@ -23,7 +23,7 @@ public abstract class DetalleTorneoRoomDataBase extends RoomDatabase {
             synchronized (DetalleTorneoRoomDataBase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            DetalleTorneoRoomDataBase.class, "PublicacionesTorneo_database")
+                            DetalleTorneoRoomDataBase.class, "detalle_Torneo_database")
                             .addCallback(sRoomDatabaseCallback)
                             .fallbackToDestructiveMigration()
                             .build();

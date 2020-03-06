@@ -136,7 +136,7 @@ public class DetalleTorneoNuevo extends AppCompatActivity implements View.OnClic
 
             }
         });
-        Glide.with(this).load(IP2+"/"+ foto).into(imagen_Dtorneo);
+        //Glide.with(this).load(IP2+"/"+ foto).into(imagen_Dtorneo);
         nombre_torneo_Detalle.setText(nombre);
 
 

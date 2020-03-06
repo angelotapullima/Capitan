@@ -153,9 +153,9 @@ public class MisEquiposWebServiceRepository {
                 misequipos.setEstado_seleccion("0");
 
                 if (tipo.equals("mi_equipo")) {
-                    misequipos.setMi_equipo("si");
+                    misequipos.setMis_equipos("si");
                 } else {
-                    misequipos.setMi_equipo("no");
+                    misequipos.setMis_equipos("no");
                 }
 
 

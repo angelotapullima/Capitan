@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
 
-@Database(entities = {Torneo.class}, version = 1)
+@Database(entities = {Torneo.class}, version = 1,exportSchema = false)
 public abstract class MisTorneoRoomDataBase extends RoomDatabase {
     public abstract MisTorneoDao postInfoDao();
 

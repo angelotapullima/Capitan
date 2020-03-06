@@ -7,8 +7,8 @@ import retrofit2.http.POST;
 
 public interface MisReservasAPIService {
     @FormUrlEncoded
-    @POST("api/User/listar_pagos_por_id_usuario")
-    Call<String> getEquipo(@Field("id_user") String id_user,
+    @POST("api/Empresa/listar_reservas_por_usuario")
+    Call<String> getEquipo(@Field("id_usuario") String id_usuario,
                            @Field("app") String app,
                            @Field("token") String token);
 }

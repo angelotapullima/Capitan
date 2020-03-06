@@ -30,6 +30,7 @@ import com.tec.bufeo.capitan.Activity.Login;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Repository.MovimientosRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.ViewModels.MovimientosViewModel;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Views.MisMovimientos;
+import com.tec.bufeo.capitan.Activity.MisReservas.Views.MisReservasActivity;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Repository.RegistroEquiposTorneoRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.ViewModels.RegistroEquiposTorneoViewModel;
@@ -77,7 +78,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
   TextView txt_tituloPerfil;
   SharedPreferences preferencesUser;
 
-  LinearLayout misMovimientos,logout,realizarRecarga,bufis,mensajes;
+  LinearLayout misMovimientos,logout,realizarRecarga,bufis,mensajes,misReservas;
 
 
   EequiposViewModel eequiposViewModel;
@@ -146,6 +147,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         misMovimientos = view.findViewById(R.id.misMovimientos);
         mensajes = view.findViewById(R.id.mensajes);
         realizarRecarga = view.findViewById(R.id.realizarRecarga);
+        misReservas = view.findViewById(R.id.misReservas);
         logout = view.findViewById(R.id.logout);
         bufis = view.findViewById(R.id.bufis);
 
@@ -175,46 +177,54 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         logout.setOnClickListener(this);
         bufis.setOnClickListener(this);
         mensajes.setOnClickListener(this);
+        misReservas.setOnClickListener(this);
         return view;
     }
 
     Application application;
 
+    Dialog dialog_logout;
+    public void dialogLogout(){
+
+        dialog_logout= new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_logout.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_logout.setCancelable(true);
+        dialog_logout.setContentView(R.layout.dialogo_mensaje);
+
+        LinearLayout btn_cancela = dialog_logout.findViewById(R.id.btn_cancelar);
+        LinearLayout btn_acepta =  dialog_logout.findViewById(R.id.btn_aceptar);
+        TextView txtMensaje = dialog_logout.findViewById(R.id.txtMensaje);
+        txtMensaje.setText("¿Desea cerrar Sesión?");
+
+        btn_cancela.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_logout.dismiss();
+            }
+        });
+
+        btn_acepta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Eliminamos los datos de la SharedPreferences
+                preferencesUser.edit().clear().apply();
+                dialog_logout.dismiss();
+                EliminarDBs();
+                ImageLoader.getInstance().clearMemoryCache();
+                ImageLoader.getInstance().clearDiskCache();
+
+                Intent intent = new Intent(getActivity(),Login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+            }
+        });
+        dialog_logout.show();
+
+    }
   public void logout(){
-      final Dialog dialogr = new Dialog(getActivity());
-      dialogr.requestWindowFeature(Window.FEATURE_NO_TITLE);
-      dialogr.setContentView(R.layout.dialogo_mensaje);
-
-      Button btn_cancela = dialogr.findViewById(R.id.btn_cancelar);
-      Button btn_acepta =  dialogr.findViewById(R.id.btn_aceptar);
-      TextView txtMensaje = dialogr.findViewById(R.id.txtMensaje);
-      txtMensaje.setText("¿Desea cerrar Sesión?");
-
-      btn_cancela.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              dialogr.dismiss();
-          }
-      });
-
-      btn_acepta.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-
-              //Eliminamos los datos de la SharedPreferences
-              preferencesUser.edit().clear().apply();
-              dialogr.dismiss();
-              EliminarDBs();
-              ImageLoader.getInstance().clearMemoryCache();
-              ImageLoader.getInstance().clearDiskCache();
-
-              Intent intent = new Intent(getActivity(),Login.class);
-              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-              startActivity(intent);
-
-          }
-      });
-      dialogr.show();
+      dialogLogout();
   }
     private void EliminarDBs() {
 
@@ -285,8 +295,9 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         }else if (v.equals(realizarRecarga)){
             Intent i = new Intent(getContext(), RealizarRecarga.class);
             startActivity(i);
-        }else if (v.equals(mensajes)){
-
+        }else if (v.equals(misReservas)){
+            Intent i = new Intent(getContext(), MisReservasActivity.class);
+            startActivity(i);
         }
     }
 }

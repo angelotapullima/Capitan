@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 
 
 
-@Database(entities = {PublicacionesTorneo.class}, version = 1)
+@Database(entities = {PublicacionesTorneo.class}, version = 1,exportSchema = false)
 public abstract class PublicacionesTorneoRoomDataBase extends RoomDatabase {
     public abstract PublicacionesTorneoDao postInfoDao();
 

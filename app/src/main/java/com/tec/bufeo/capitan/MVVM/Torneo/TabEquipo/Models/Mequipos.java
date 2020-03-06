@@ -40,9 +40,9 @@ public class Mequipos
     private String capitan_id;
 
 
-    @ColumnInfo(name = "mi_equipo")
-    @SerializedName("mi_equipo")
-    private String mi_equipo;
+    @ColumnInfo(name = "mis_equipos")
+    @SerializedName("mis_equipos")
+    private String mis_equipos;
 
     @ColumnInfo(name = "estado_seleccion")
     @SerializedName("estado_seleccion")
@@ -90,12 +90,12 @@ public class Mequipos
         this.capitan_id = capitan_id;
     }
 
-    public String getMi_equipo() {
-        return mi_equipo;
+    public String getMis_equipos() {
+        return mis_equipos;
     }
 
-    public void setMi_equipo(String mi_equipo) {
-        this.mi_equipo = mi_equipo;
+    public void setMis_equipos(String mis_equipos) {
+        this.mis_equipos = mis_equipos;
     }
 
     public String getEstado_seleccion() {

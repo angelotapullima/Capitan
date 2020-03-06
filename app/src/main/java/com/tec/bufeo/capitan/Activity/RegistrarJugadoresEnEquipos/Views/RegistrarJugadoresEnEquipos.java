@@ -133,6 +133,13 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
     private void buscar(String v) {
         JugadoresWebServiceRepository jugadoresWebServiceRepository = new JugadoresWebServiceRepository(application);
         jugadoresWebServiceRepository.providesWebService(id_equipo,preferences.getToken(),v);
+
+        jugadoresViewModel.searchFeeds(v).observe(this, new Observer<List<Jugadores>>() {
+            @Override
+            public void onChanged(List<Jugadores> jugadores) {
+                adapterJugadores.setWords(jugadores);
+            }
+        });
     }
 
     public void cargarvista() {

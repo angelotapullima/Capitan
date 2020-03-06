@@ -12,7 +12,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {JugadoresSeleccionados.class}, version = 1)
+@Database(entities = {JugadoresSeleccionados.class}, version = 1,exportSchema = false)
 public abstract class SeleccionadosRoomDatabase extends RoomDatabase {
     public abstract SeleccionadosDao postInfoDao();
 

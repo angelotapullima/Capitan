@@ -4,9 +4,14 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +36,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -64,13 +71,12 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
    TextView txt_equipoRetador, txt_equipoRetado,btn_fechaReto,btn_horaReto;
    Button  btn_registrarReto;
    EditText edt_lugarReto;
-   DataConnection dc,d1;
+    MisEquiposViewModel misEquiposViewModel;
    Retos retos;
-   public static ArrayList<Equipo> arrayEquipo;
-   ArrayList<String> arrayequipo;
+   public  ArrayList<Mequipos> arrayEquipos = new ArrayList<>();
+   ArrayList<String> arrayequipo = new ArrayList<>();
    Context context;
     public String nombre_retado,foto_retado,id_retado, fecha;
-    private Date date;
     Preferences preferences;
     RetosViewModel retosViewModel;
     String capitan_id;
@@ -81,11 +87,10 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_reto);
         retosViewModel = ViewModelProviders.of(this).get(RetosViewModel.class);
+        misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
 
         preferences= new Preferences(this);
-        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);
-        preferences = new Preferences(this);*/
+
 
         spn_misEquipos = findViewById(R.id.spn_misEquipos);
         civ_fotoEquipoRetador = findViewById(R.id.civ_fotoEquipoRetador);
@@ -114,9 +119,9 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
 
 
-        dc = new DataConnection(RegistroReto.this,"listarEquipo",new Equipo(preferences.getIdUsuarioPref()),false);
+        /*dc = new DataConnection(RegistroReto.this,"listarEquipo",new Equipo(preferences.getIdUsuarioPref()),false);
         new RegistroReto.GetEquipo().execute();
-
+*/
         spn_misEquipos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -126,8 +131,8 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                     civ_fotoEquipoRetador.setImageResource(R.drawable.error);
                     //falta imagen
                 }else {
-                    txt_equipoRetador.setText(arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_nombre());
-                    Glide.with(context).load(IP2+"/"+ arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_foto()).into(civ_fotoEquipoRetador);
+                    txt_equipoRetador.setText(arrayEquipos.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_nombre());
+                    Glide.with(context).load(IP2+"/"+ arrayEquipos.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_foto()).into(civ_fotoEquipoRetador);
 
                 }
             }
@@ -148,40 +153,50 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-    }
+        misEquiposViewModel.getAllEquipo("si").observe(this, new Observer<List<Mequipos>>() {
+            @Override
+            public void onChanged(@Nullable List<Mequipos> mequipos) {
+                //adaptadorMiEquipo.setWords(mequipos);
+                if(mequipos.size()>0){
+                    arrayEquipos.addAll(mequipos);
+                    Log.e("mis Equipos", "onChanged: "+mequipos.size() );
 
-    public class GetEquipo extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            arrayequipo =  new ArrayList<String>();
-            arrayEquipo = dc.getListadoEquipos();
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            Toast.makeText(context,"size"+arrayEquipo.size(),Toast.LENGTH_LONG).show();
-
-            for (Equipo obj :arrayEquipo){
-                arrayequipo.add(obj.getEquipo_nombre());
-            }
-            //progressBar.setVisibility(ProgressBar.INVISIBLE);
-            arrayequipo.add(0,"Seleccione");
-            ArrayAdapter<String> adapEquipos = new ArrayAdapter<String>(context,R.layout.spiner_item,arrayequipo);
-            adapEquipos.setDropDownViewResource(R.layout.spiner_dropdown_item);
-            spn_misEquipos.setAdapter(adapEquipos);
+                    for (Mequipos obj :arrayEquipos){
+                        arrayequipo.add(obj.getEquipo_nombre());
+                    }
+                    //progressBar.setVisibility(ProgressBar.INVISIBLE);
+                    arrayequipo.add(0,"Seleccione");
+                    ArrayAdapter<String> adapEquipos = new ArrayAdapter<String>(context,R.layout.spiner_item,arrayequipo);
+                    adapEquipos.setDropDownViewResource(R.layout.spiner_dropdown_item);
+                    spn_misEquipos.setAdapter(adapEquipos);
+                }
 
             }
+        });
+        showToolbar("Retar a un equipo",true);
+
     }
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -303,7 +318,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
                     retos = new Retos();
                     retos.setRetos_id(String.valueOf(cantidad_de_retos+1));
-                    retos.setRetador_id(arrayEquipo.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_id());
+                    retos.setRetador_id(arrayEquipos.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_id());
                     retos.setRetado_id(id_retado);
                     retos.setRetos_fecha(btn_fechaReto.getText().toString());
                     retos.setRetos_hora(btn_horaReto.getText().toString());

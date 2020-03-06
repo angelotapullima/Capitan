@@ -24,6 +24,10 @@ public class JugadoresRoomDBRepository {
         return mAllJugadores;
     }
 
+    public LiveData<List<Jugadores>> searchFeeds(String id) {
+        mAllJugadores=jugadoresDao.searchFeeds(id);
+        return mAllJugadores;
+    }
     public LiveData<List<Jugadores>> getAllMisJugadores(String mio) {
         mAllJugadores=jugadoresDao.getAllMisJugadores(mio);
         return mAllJugadores;

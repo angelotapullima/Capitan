@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 import com.tec.bufeo.capitan.R;
 
@@ -27,29 +28,33 @@ public class AdaptadorMisReservas extends RecyclerView.Adapter<AdaptadorMisReser
 
     class EquiposViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mov_monto,mov_nombre,mov_fecha;
-        private ImageView ic_add,ic_remove;
+        private TextView nombre_reserva_reserva,monto_final_reserva,empresa_reserva,nombre_cancha_reserva,horaReserva,fechaReserva;
+        private MaterialButton verMas;
 
         private EquiposViewHolder(View itemView) {
             super(itemView);
 
-            mov_monto=  itemView.findViewById(R.id.mov_monto);
-            mov_nombre = itemView.findViewById(R.id.mov_nombre);
-            mov_fecha = itemView.findViewById(R.id.mov_fecha);
-            ic_add = itemView.findViewById(R.id.ic_add);
-            ic_remove = itemView.findViewById(R.id.ic_remove);
-
+            nombre_reserva_reserva=  itemView.findViewById(R.id.nombre_reserva_reserva);
+            monto_final_reserva = itemView.findViewById(R.id.monto_final_reserva);
+            empresa_reserva = itemView.findViewById(R.id.empresa_reserva);
+            nombre_cancha_reserva = itemView.findViewById(R.id.nombre_cancha_reserva);
+            horaReserva = itemView.findViewById(R.id.horaReserva);
+            fechaReserva = itemView.findViewById(R.id.fechaReserva);
+            verMas = itemView.findViewById(R.id.verMas);
         }
 
-        public void bid(final MisReservas mequipos, final OnItemClickListener listener){
+        public void bid(final MisReservas misReservas, final OnItemClickListener listener){
 
-
-
+            verMas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(misReservas,"verMas",getAdapterPosition());
+                }
+            });
         }
     }
 
     private final LayoutInflater mInflater;
-
 
     private List<MisReservas> mUsers; // Cached copy of users
 
@@ -64,7 +69,7 @@ public class AdaptadorMisReservas extends RecyclerView.Adapter<AdaptadorMisReser
     @NonNull
     @Override
     public EquiposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.rcv_item_movimientos, parent, false);
+        View itemView = mInflater.inflate(R.layout.rcv_item_mis_reservas, parent, false);
         return new EquiposViewHolder(itemView);
     }
 
@@ -76,17 +81,14 @@ public class AdaptadorMisReservas extends RecyclerView.Adapter<AdaptadorMisReser
 
 
 
-            /*holder.mov_fecha.setText(current.getMovimiento_fecha());
-            holder.mov_monto.setText(current.getMovimiento_monto());
-            holder.mov_nombre.setText(current.getMovimiento_nombre());
+            holder.nombre_reserva_reserva.setText(current.getNombre_reserva());
+            holder.monto_final_reserva.setText(current.getMonto_final());
+            holder.empresa_reserva.setText(current.getNombre_empresa());
+            holder.nombre_cancha_reserva.setText(current.getCancha_nombre());
+            holder.horaReserva.setText(current.getHora_reserva());
+            holder.fechaReserva.setText(current.getFecha_reserva());
 
-            if (current.getMovimiento_estado().equals("2")){
-                holder.ic_add.setVisibility(View.GONE);
-                holder.mov_monto.setTextColor(Color.RED);
-            }else{
-                holder.ic_remove.setVisibility(View.GONE);
-                holder.mov_monto.setTextColor(Color.rgb(76,175,80));
-            }*/
+
             holder.bid(current,listener);
         }
     }

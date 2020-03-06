@@ -7,8 +7,9 @@ import retrofit2.http.POST;
 
 public interface EquiposEnBAPIService {
     @FormUrlEncoded
-    @POST("api/Torneo/listar_equipos_por_id_usuario_not")
-    Call<String> getEquipo(@Field("id_usuario") String id,
+    @POST("api/Torneo/listar_equipos")
+    Call<String> getEquipo(@Field("limite_sup") String limite_sup,
+                           @Field("limite_inf") String limite_inf,
                            @Field("app") String app,
                            @Field("token") String token);
 }

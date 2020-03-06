@@ -144,8 +144,8 @@ public class JugadoresWebServiceRepository {
             int count = resultJSON.length();
 
 
-            JugadoresRoomDBRepository jugadoresRoomDBRepository =  new JugadoresRoomDBRepository(application);
-            jugadoresRoomDBRepository.deleteAllJugadores();
+            /*JugadoresRoomDBRepository jugadoresRoomDBRepository =  new JugadoresRoomDBRepository(application);
+            jugadoresRoomDBRepository.deleteAllJugadores();*/
 
 
             for (int i = 0; i < count; i++) {

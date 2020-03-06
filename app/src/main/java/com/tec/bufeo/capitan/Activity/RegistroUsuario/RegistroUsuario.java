@@ -115,7 +115,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
     String valorcodigo,respuesta;
     private void CrarUsuario() {
         dialogCarga();
-        String url =IP2+"/api/Registrar/new";
+        String url =IP2+"/api/Login/new";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -138,11 +138,15 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
 
                     }else if(valorcodigo.equalsIgnoreCase("2")) {
                         respuesta = "2";
-                        Toast.makeText(RegistroUsuario.this, "DNI ya existe", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistroUsuario.this, "Ocurrio un error", Toast.LENGTH_SHORT).show();
                         dialog_cargando.dismiss();
-                    }else {
+                    }else if(valorcodigo.equalsIgnoreCase("3")){
                         respuesta = "3";
-                        Toast.makeText(RegistroUsuario.this, "Vuelva a intentarlo", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistroUsuario.this, "El nickname ya existe", Toast.LENGTH_SHORT).show();
+                        dialog_cargando.dismiss();
+                    }else if(valorcodigo.equalsIgnoreCase("4")){
+                        respuesta = "3";
+                        Toast.makeText(RegistroUsuario.this, "El email ya existe", Toast.LENGTH_SHORT).show();
                         dialog_cargando.dismiss();
                     }
 
@@ -170,7 +174,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
                 parametros.put("person_name",nombre);
                 parametros.put("person_surname",apellido);
                 parametros.put("person_birth","");
-                parametros.put("user_image","perfil.png");
+                parametros.put("user_image","");
                 parametros.put("person_genre",sexo);
                 parametros.put("user_nickname",edt_Usuario.getText().toString());
                 parametros.put("user_password",edt_clave.getText().toString());

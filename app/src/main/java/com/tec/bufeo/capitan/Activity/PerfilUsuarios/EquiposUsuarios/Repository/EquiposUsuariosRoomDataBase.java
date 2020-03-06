@@ -12,7 +12,7 @@ import com.tec.bufeo.capitan.Activity.PerfilUsuarios.DatosUsuarios.Models.DatosU
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.EquiposUsuarios.Models.EquiposUsuarios;
 
 
-@Database(entities = {EquiposUsuarios.class}, version = 1)
+@Database(entities = {EquiposUsuarios.class}, version = 1,exportSchema = false)
 public abstract class EquiposUsuariosRoomDataBase extends RoomDatabase {
     public abstract EquiposUsuariosDao postInfoDao();
 

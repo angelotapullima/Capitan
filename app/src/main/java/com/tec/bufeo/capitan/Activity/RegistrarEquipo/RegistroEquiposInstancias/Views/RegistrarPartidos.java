@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Application;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -357,21 +359,15 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
     }
 
 
-    android.app.AlertDialog dialog_carga;
-
+    Dialog dialog_carga;
     public void dialogoCargando(){
 
-        android.app.AlertDialog.Builder builder =  new android.app.AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View vista = inflater.inflate(R.layout.dialogo_cargando_logobufeo,null);
-        builder.setView(vista);
+        dialog_carga =  new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_carga.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_carga.setCancelable(true);
+        dialog_carga.setContentView(R.layout.dialogo_cargando_logobufeo);
 
-
-        dialog_carga = builder.create();
         dialog_carga.show();
-
-
-
-
     }
+
 }
