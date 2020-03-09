@@ -62,6 +62,61 @@ public class FeedRoomDBRepository {
 
     }
 
+    public void cantidadLikes(String cantidad) {
+        new cantidadLikes(feedDao).execute(cantidad);
+    }
+
+    private static class cantidadLikes extends AsyncTask<String, Void, Void> {
+        private FeedDao feedDao;
+
+        private cantidadLikes(FeedDao feedDao) {
+            this.feedDao = feedDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... modelFeeds) {
+            feedDao.cantidadLikes(modelFeeds[0]);
+
+            return null;
+        }
+    }
+    public void dislike(String like) {
+        new dislike(feedDao).execute(like);
+    }
+
+    private static class dislike extends AsyncTask<String, Void, Void> {
+        private FeedDao feedDao;
+
+        private dislike(FeedDao feedDao) {
+            this.feedDao = feedDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... modelFeeds) {
+            feedDao.disLike(modelFeeds[0]);
+
+            return null;
+        }
+    }
+
+    public void darlike(String like) {
+        new darlike(feedDao).execute(like);
+    }
+
+    private static class darlike extends AsyncTask<String, Void, Void> {
+        private FeedDao feedDao;
+
+        private darlike(FeedDao feedDao) {
+            this.feedDao = feedDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... modelFeeds) {
+            feedDao.darLike(modelFeeds[0]);
+
+            return null;
+        }
+    }
 
 
     public void deleteAllFeed() {

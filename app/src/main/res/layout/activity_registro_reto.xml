@@ -7,6 +7,58 @@
     android:orientation="vertical"
     android:background="@color/colorCeniza"
     tools:context=".Activity.RegistroReto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/no_hay_equipos"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:id="@+id/tshirt"
+            android:layout_centerInParent="true"
+            android:layout_height="150dp"
+            android:src="@drawable/tshirt_crew"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="80dp"
+            android:src="@drawable/logobufeopng"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_nocreaste"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textStyle="bold|italic"
+            android:layout_below="@id/tshirt"
+            android:layout_marginLeft="16dp"
+            android:text="Aun no creaste ningun equipo, por favor cree uno"/>
+        <LinearLayout
+            android:id="@+id/btn_Registro_equipo"
+            android:layout_width="150dp"
+            android:layout_marginTop="16dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/text_nocreaste"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_azul"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:text="Finalizar "
+                android:textColor="#fff"
+                android:textSize="13sp" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"

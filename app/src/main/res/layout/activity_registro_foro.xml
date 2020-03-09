@@ -72,11 +72,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:hint="Titulo vrvgrbgrbgrbgrb bgffnhnghnhhnhnhnhnhnhnfhnfhnfhnfhnfnnfhnn"
+                android:hint="Título"
 
                 android:layout_marginLeft="18dp"
                 android:layout_marginRight="16dp"
-                android:textColorHint="@color/colorPrimary"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:inputType="textMultiLine" />
@@ -91,9 +90,8 @@
                 android:layout_marginRight="16dp"
                 android:background="@color/transparent"
                 android:layout_marginTop="5dp"
-                android:textColorHint="@color/colorPrimary"
                 android:textColor="@color/colorPrimary"
-                android:hint="vgbhmjmdftygbuhnjimdrftgyhujidfgyhu ftgybhunjimftgyhunjdfgybhn ffgbyhunfghn"
+                android:hint="¿Que paso Capitán?"
                 android:inputType="textMultiLine" />
 
             <FrameLayout

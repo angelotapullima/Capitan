@@ -361,7 +361,7 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
                             if (i == Integer.parseInt(neo_hora.substring(0, 1))) {
                                 reservado_am = true;
 
-                                Toast.makeText(context,"c1",Toast.LENGTH_LONG);
+                                /*Toast  .makeText(context,"c1",Toast.LENGTH_LONG);*/
                                 double pago = Double.parseDouble(obj.getPago1() ) + Double.parseDouble(obj.getPago2() );
                                 if (obj.getReserva_estado().equals("1")){
                                     arrayreservados.add(new Reserva(obj.getReserva_id(), cancha_id, obj.getReserva_nombre(), fecha_actual_mas_uno_insert, horaFinal,  String.valueOf(pago), "rojo" , "Reservado", precio_dia, h_reserva));
@@ -373,8 +373,8 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
 
                             }
                         }else{
-                            if (i == Integer.parseInt(neo_hora.substring(0, 2))) {
-                                Toast.makeText(context,"c2",Toast.LENGTH_LONG);
+                            if (i == Integer.parseInt(neo_hora.substring(0, 2))) {/*
+                                Toast.makeText(context,"c2",Toast.LENGTH_LONG);*/
                                 reservado_am = true;
 
                                 double pago = Double.parseDouble(obj.getPago1() ) + Double.parseDouble(obj.getPago2() );
@@ -504,7 +504,8 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
                 monto = Double.parseDouble(monto_pagado.getText().toString());
                 String estado_pago;
                 if ( monto >  Double.parseDouble(precio_cancha_dialog.getText().toString())){
-                    Toast.makeText(context, "el monto supero el precio de la cancha", Toast.LENGTH_SHORT).show();
+                    preferences.codeAdvertencia("el monto supero el precio de la cancha");
+                   /* Toast.makeText(context, "el monto supero el precio de la cancha", Toast.LENGTH_SHORT).show();*/
                 }else{
                     if (monto == Double.parseDouble(precio_cancha_dialog.getText().toString())){
                         estado_pago ="1";
@@ -568,7 +569,8 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
 
 
                 if ( monto >  Double.parseDouble(precio_cancha_dialog.getText().toString())){
-                    Toast.makeText(context, "el monto supero el precio de la cancha", Toast.LENGTH_SHORT).show();
+                    preferences.codeAdvertencia("el monto supero el precio de la cancha");
+                    /*Toast.makeText(context,"el monto supero el precio de la cancha" , Toast.LENGTH_SHORT).show();*/
                 }else{
 
                     registrarReservaNaranjaAdmin(monto_restante,id);
@@ -617,11 +619,13 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
                 Log.e("registrar_reserva", "onResponse: "+response );
 
                 if (response.equals("1")){
-                    Toast.makeText(activity, "Registro Completo", Toast.LENGTH_SHORT).show();
+                    preferences.toasVerde("Registro Completo");
+                    /*Toast.makeText(activity, "Registro Completo", Toast.LENGTH_SHORT).show();*/
                     onRefresh();
                     dialog_carga.dismiss();
                 }else{
-                    Toast.makeText(activity, "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();
+                    preferences.toasRojo("Fallo al registrar la reserva","intentelo más tarde");
+                   /* Toast.makeText(activity, "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();*/
                     dialog_carga.dismiss();
                 }
 
@@ -679,11 +683,13 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
                 Log.e("registrar_reserva", "onResponse: "+response );
 
                 if (response.equals("1")){
-                    Toast.makeText(activity, "Registro Completo", Toast.LENGTH_SHORT).show();
+                    preferences.toasVerde("Registro Completo");
+                    /*Toast.makeText(activity, "Registro Completo", Toast.LENGTH_SHORT).show();*/
                     onRefresh();
                     dialog_carga.dismiss();
                 }else{
-                    Toast.makeText(activity, "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();
+                    preferences.toasRojo("Fallo al registrar la reserva","intentelo más tarde");/*
+                    Toast.makeText(activity, "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();*/
                     dialog_carga.dismiss();
                 }
 

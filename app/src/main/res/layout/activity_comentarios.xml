@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:background="#FFF"
                 android:paddingLeft="20dp"
+                android:paddingBottom="10dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
                 android:id="@+id/app"
@@ -48,21 +49,24 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Comentarios "
+                        android:textColor="#000"
+                        android:gravity="center_vertical"
+                        android:text="Comentarios"
+                        android:layout_marginLeft="10dp"
                         android:textSize="18dp" />
 
 
 
                 </LinearLayout>
-                <!---->
+
 
             </com.google.android.material.appbar.AppBarLayout>
             <View
                 android:layout_width="match_parent"
                 android:id="@+id/vista"
                 android:layout_below="@+id/app"
-                android:layout_height="1dp"
-                android:background="#f6f6f6" />
+                android:layout_height="2dp"
+                android:background="#E4DDDD" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/news_rv"
@@ -77,34 +81,48 @@
                 android:layout_alignParentBottom="true"
                 android:layout_height="wrap_content"
                 android:id="@+id/down"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:weightSum="10"
-                android:layout_marginTop="5dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-
-
-                <EditText
-                    android:id="@+id/mensaje"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="9"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:id="@+id/ffffffff"
+                    android:layout_below="@+id/app"
+                    android:layout_height="2dp"
+                    android:background="#E4DDDD" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="@drawable/search_input_style"
-                    android:hint="Comentarios"
-                    android:textColor="#999da4"
-                     />
+                    android:paddingTop="5dp"
+                    android:paddingRight="10dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:weightSum="10"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/mensaje"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="9"
+                        android:paddingLeft="10dp"
 
-                <ImageView
-                    android:id="@+id/enviar"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_chat" />
+                        android:layout_marginBottom="7dp"
+                        android:background="@drawable/search_input_style"
+                        android:hint="Escribe un comentario"
+                        android:textColor="#3E3F40"
+                        />
+
+                    <ImageView
+                        android:id="@+id/enviar"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="20dp"
+                        android:tint="@color/colorPrimary"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_send_black_24dp" />
+                </LinearLayout>
+
+
+
 
 
 

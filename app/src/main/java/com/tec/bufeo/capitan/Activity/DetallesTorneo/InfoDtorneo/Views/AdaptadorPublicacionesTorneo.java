@@ -58,7 +58,7 @@ public class AdaptadorPublicacionesTorneo extends RecyclerView.Adapter<Adaptador
     class foroTorneoViewHolder extends RecyclerView.ViewHolder {
         private ImageView img_fotoForo,foto_perfil_publicacion;
         private TextView txt_tituloForo, txt_usuarioForo, txt_descripcionForo, txt_fechaHora,txt_totallike,txt_totalcoment;
-        private ProgressBar prog_like;
+
         private ImageButton imgbt_like,imgbt_comment;
         CardView materialCardView;
 
@@ -69,7 +69,6 @@ public class AdaptadorPublicacionesTorneo extends RecyclerView.Adapter<Adaptador
             txt_usuarioForo=  itemView.findViewById(R.id.txt_usuarioForo);
             txt_descripcionForo=  itemView.findViewById(R.id.txt_descripcionForo);
             txt_fechaHora = itemView.findViewById(R.id.txt_fechaHora);
-            prog_like = itemView.findViewById(R.id.prog_like);
             imgbt_like = itemView.findViewById(R.id.imgbt_like);
             txt_totallike = itemView.findViewById(R.id.txt_totallike);
             imgbt_comment=itemView.findViewById(R.id.imgbt_comment);

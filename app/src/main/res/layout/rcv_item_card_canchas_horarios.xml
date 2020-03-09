@@ -46,11 +46,12 @@
                     android:layout_weight="2"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="10dp"
-                        android:textColor="#262525"
+                        android:textColor="#fff"
+                        android:src="@drawable/bufeo_coin"
                         android:text="S/"
                         android:textSize="20sp" />
                     <TextView
@@ -58,9 +59,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:textColor="#262525"
+                        android:textColor="#fff"
                         android:text="40"
-                        android:textSize="20sp" />
+                        android:textSize="21sp" />
 
 
                 </LinearLayout>

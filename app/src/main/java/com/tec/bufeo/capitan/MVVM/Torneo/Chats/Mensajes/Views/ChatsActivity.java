@@ -164,7 +164,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
                 mensajes.setMensaje_contenido(mens);
                 mensajes.setMensajes_id_usuario(preferences.getIdUsuarioPref());
                 mensajes.setMensaje_estado("1");
-                EnviarComentarios(mens);
+                EnviarMes(mens);
 
                 mensajesViewModel.insertOne(mensajes);
                 mensaje_chat.setText("");
@@ -177,7 +177,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     }
 
     StringRequest stringRequest;
-    private void EnviarComentarios(final String mensaje) {
+    private void EnviarMes(final String mensaje) {
         String url =IP2+"/api/Usuario/enviar_mensaje";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

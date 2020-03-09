@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +36,9 @@ public class CalificarNegocios extends AppCompatActivity {
     String id_empresa,nombre_empresa;
     Float valor_rating;
     EditText reseña;
-    TextView publicar,nombre_negocio;
+    TextView publicar,nombre_negocio,entendido;
     Preferences preferences;
+    LinearLayout layoutEntendido;
 
     CoordinatorLayout cordinator;
     @Override
@@ -51,6 +53,8 @@ public class CalificarNegocios extends AppCompatActivity {
         reseña=findViewById(R.id.reseña);
         nombre_negocio=findViewById(R.id.nombre_negocio);
         publicar=findViewById(R.id.publicar);
+        entendido=findViewById(R.id.entendido);
+        layoutEntendido=findViewById(R.id.layoutEntendido);
 
         valor_rating = Float.parseFloat(getIntent().getExtras().getString("valor_rating"));
         id_empresa = getIntent().getExtras().getString("id_empresa");
@@ -63,6 +67,12 @@ public class CalificarNegocios extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 enviarCalificacion();
+            }
+        });
+        entendido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutEntendido.setVisibility(View.GONE);
             }
         });
     }

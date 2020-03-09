@@ -62,6 +62,10 @@ public class Preferences {
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getInt("cantida_foto_perfil",0);
     }
+    public String getCantidadIngreso(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("cantidad_ingreso","");
+    }
     public String getIdUsuarioPref(){
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getString("id_user","");

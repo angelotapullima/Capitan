@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,10 +45,7 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHolder>  {
 
     UniversalImageLoader universalImageLoader;
-    StringRequest stringRequest;
-    LinearLayout imgbt_like_g,imgbt_comment_g;
-    TextView nlike_g;
-    int totalLikes;
+    LinearLayout imgbt_comment_g;
     JSONObject json_data;
     String resultado;
     int posicionlocalc;
@@ -64,6 +62,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
         private TextView txt_tituloForo, txt_usuarioForo, txt_descripcionForo, txt_fechaHora,txt_totallike,txt_totalcoment;
         private ImageButton imgbt_like,btnAccion;
         private LinearLayout layout_comentar,layout_like;
+        private Button verMasTorneo;
         CardView materialCardView;
 
         private foroViewHolder(View itemView) {
@@ -81,6 +80,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             txt_totalcoment=itemView.findViewById(R.id.txt_totalcoment);
             foto_perfil_publicacion=itemView.findViewById(R.id.foto_perfil_publicacion);
             materialCardView=itemView.findViewById(R.id.materialCardView);
+            verMasTorneo=itemView.findViewById(R.id.verMasTorneo);
         }
 
         public void bid(final ModelFeed feedTorneo, final OnItemClickListener listener){
@@ -90,6 +90,12 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick("btnAccion",feedTorneo,getAdapterPosition());
+                }
+            });
+            verMasTorneo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick("verMasTorneo",feedTorneo,getAdapterPosition());
                 }
             });
 
@@ -114,6 +120,21 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
                 }
             });
 
+            imgbt_like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (feedTorneo.getDio_like().equals("0")){
+                        imgbt_like.setBackgroundResource(R.drawable.thumb_up);
+
+                    }else{
+
+                        imgbt_like.setBackgroundResource(R.drawable.thumb_up_outline);
+                    }
+                    listener.onItemClick("imgbt_like",feedTorneo,getAdapterPosition());
+                }
+            });
+
 
         }
     }
@@ -126,7 +147,6 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
 
 
     public AdaptadorForo(Context context, OnItemClickListener listener) {
-        requestQueue = Volley.newRequestQueue(context);
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
         universalImageLoader = new UniversalImageLoader(context);
@@ -151,9 +171,21 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
             holder.layout_like.setId(position);
             holder.layout_comentar.setId(position);
 
-            if (!current.getUsuario_id().equals(preferencesUser.getIdUsuarioPref())){
+            if (current.getUsuario_id().equals(preferencesUser.getIdUsuarioPref())){
+                holder.btnAccion.setVisibility(View.VISIBLE);
+                holder.verMasTorneo.setVisibility(View.GONE);
+
+            }else{
                 holder.btnAccion.setVisibility(View.GONE);
+
+                if(current.getId_torneo().equals("0")){
+                    holder.verMasTorneo.setVisibility(View.GONE);
+                }else{
+                    holder.verMasTorneo.setVisibility(View.VISIBLE);
+                }
             }
+
+
 
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
@@ -202,24 +234,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
                 }
             });
 
-            holder.layout_like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    posicionlocalc = v.getId();
-                    imgbt_like_g = (LinearLayout) v;
-                    nlike_g = holder.txt_totallike;
 
-
-                    if (mUsers.get(posicionlocalc).getDio_like().equals("0")){
-                        darlike(mUsers.get(posicionlocalc).getPublicacion_id());
-                        holder.imgbt_like.setBackgroundResource(R.drawable.thumb_up);
-
-                    }else{
-                        dislike(mUsers.get(posicionlocalc).getPublicacion_id());
-                        holder.imgbt_like.setBackgroundResource(R.drawable.thumb_up_outline);
-                    }
-                }
-            });
 
             holder.bid(current,listener);
         } else {
@@ -243,132 +258,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
 
     }
 
-    private void darlike(final String idlike) {
-        String url =IP2+"/api/Foro/dar_like";
-        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("darlike: ",""+response);
 
-                try {
-                    json_data = new JSONObject(response);
-                    JSONArray resultJSON = json_data.getJSONArray("results");
-                    JSONObject jsonNodev = resultJSON.getJSONObject(0);
-                    resultado = jsonNodev.optString("resultado");
-                    totalLikes = Integer.parseInt(jsonNodev.optString("likes"));
-
-                    if (resultado.equals("1")){
-
-                        nlike_g.setText(String.valueOf(totalLikes));
-                        mUsers.get(posicionlocalc).setDio_like("1");
-                    }
-
-
-
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-
-                //Toast.makeText(ChoferDatosDeCarrera.this,"No se ha registrado ",Toast.LENGTH_SHORT).show();
-
-
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
-
-            }
-        })  {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //String imagen=convertirImgString(bitmap);
-
-
-                Map<String,String> parametros=new HashMap<>();
-                parametros.put("usuario_id",preferencesUser.getIdUsuarioPref());
-                parametros.put("publicacion_id",idlike);
-                parametros.put("app","true");
-                parametros.put("token",preferencesUser.getToken());
-
-                return parametros;
-
-            }
-        };
-        requestQueue.add(stringRequest);
-        /*stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getIntanciaVolley(ctx).addToRequestQueue(stringRequest);*/
-    }
-
-    RequestQueue requestQueue;
-    private void dislike(final String iddislike) {
-        String url =IP2+"/api/Foro/quitar_like";
-        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("dislike: ",""+response);
-
-                try {
-                    json_data = new JSONObject(response);
-                    JSONArray resultJSON = json_data.getJSONArray("results");
-                    JSONObject jsonNodev = resultJSON.getJSONObject(0);
-                    resultado = jsonNodev.optString("resultado");
-                    totalLikes = Integer.parseInt(jsonNodev.optString("likes"));
-
-                    if (resultado.equals("1")){
-
-                        nlike_g.setText(String.valueOf(totalLikes));
-                        mUsers.get(posicionlocalc).setDio_like("0");
-                    }
-
-
-
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
-
-            }
-        })  {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //String imagen=convertirImgString(bitmap);
-
-
-                Map<String,String> parametros=new HashMap<>();
-                parametros.put("usuario_id",preferencesUser.getIdUsuarioPref());
-                parametros.put("publicacion_id",iddislike);
-                parametros.put("app","true");
-                parametros.put("token",preferencesUser.getToken());
-
-                return parametros;
-
-            }
-        };
-        requestQueue.add(stringRequest);
-        /*stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getIntanciaVolley(ctx).addToRequestQueue(stringRequest);*/
-    }
 
 
     public interface  OnItemClickListener{

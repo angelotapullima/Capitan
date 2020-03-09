@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.MisNegocios">
+    tools:context=".Activity.Negocios.Views.MisNegociosActivity">
 
 
     <androidx.appcompat.widget.Toolbar

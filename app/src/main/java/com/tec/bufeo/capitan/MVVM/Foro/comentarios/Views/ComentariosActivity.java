@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -52,7 +51,7 @@ public class ComentariosActivity extends AppCompatActivity implements View.OnCli
 
         id_publicacion= getIntent().getExtras().getString("id_publicacion");
 
-        Toast.makeText(this, ""+ id_publicacion, Toast.LENGTH_SHORT).show();
+
         initViews();
         setAdapter();
         //progressDialog= ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);

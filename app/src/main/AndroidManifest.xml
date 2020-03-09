@@ -13,7 +13,7 @@
     <application
         android:name=".Util.InitializerGotev"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme"
@@ -46,14 +46,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.RealizarRecarga" />
         <activity android:name=".Activity.MisMovimientos.Views.MisMovimientos" />
-        <activity android:name=".Activity.RegistroReserva.ReservaEnBusqueda" />
+        <activity android:name=".Activity.RegistroReserva.ReservaEnBusqueda"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".Activity.MisNegocios"
+            android:name=".Activity.Negocios.Views.MisNegociosActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.CrearEquipos" />
+        <activity android:name=".Activity.CrearEquipos"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"/>
+
         <activity android:name=".Activity.MasMisEquipos" />
         <activity android:name=".Activity.BusquedaEquipos.Views.MasEquipos"
             android:theme="@style/AppTheme.NoActionBar"/>

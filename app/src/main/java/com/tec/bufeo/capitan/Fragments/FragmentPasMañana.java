@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -164,8 +163,8 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
         hapertura = Integer.parseInt(string_apertura);
         hcierre = Integer.parseInt(h_cierre);
 
-        Toast.makeText(getContext(), "parte 1 : " + hapertura + "  parte 2  :" + hcierre, Toast.LENGTH_LONG).show();
-        //Toast.makeText(getContext(),"parte 1 : " +h_apertura.toString()+ "  parte 2  :"+h_cierre.toString(),Toast.LENGTH_LONG).show();
+       /* Toast.makeText(getContext(), "parte 1 : " + hapertura + "  parte 2  :" + hcierre, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(),"parte 1 : " +h_apertura.toString()+ "  parte 2  :"+h_cierre.toString(),Toast.LENGTH_LONG).show();*/
         rcv_reservados = (RecyclerView) view.findViewById(R.id.rcv_reservas);
         progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
         cdv_mensaje = (CardView) view.findViewById(R.id.cdv_mensaje);
@@ -357,8 +356,8 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
 
                             if (i == Integer.parseInt(neo_hora.substring(0, 1))) {
                                 reservado_am = true;
-
-                                Toast.makeText(context,"c1",Toast.LENGTH_LONG);
+/*
+                                Toast.makeText(context,"c1",Toast.LENGTH_LONG);*/
                                 double pago = Double.parseDouble(obj.getPago1() ) + Double.parseDouble(obj.getPago2() );
                                 if (obj.getReserva_estado().equals("1")){
                                     arrayreservados.add(new Reserva(obj.getReserva_id(), cancha_id, obj.getReserva_nombre(), fecha_actual_mas_dos_insert, horaFinal,  String.valueOf(pago), "rojo" , "Reservado", precio_dia, h_reserva));
@@ -371,7 +370,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
                             }
                         }else{
                             if (i == Integer.parseInt(neo_hora.substring(0, 2))) {
-                                Toast.makeText(context,"c2",Toast.LENGTH_LONG);
+                                /*Toast.makeText(context,"c2",Toast.LENGTH_LONG);*/
                                 reservado_am = true;
 
                                 double pago = Double.parseDouble(obj.getPago1() ) + Double.parseDouble(obj.getPago2() );
@@ -497,7 +496,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
                 monto = Double.parseDouble(monto_pagado.getText().toString());
                 String estado_pago;
                 if ( monto >  Double.parseDouble(precio_cancha_dialog.getText().toString())){
-                    Toast.makeText(context, "el monto supero el precio de la cancha", Toast.LENGTH_SHORT).show();
+                    preferences.codeAdvertencia("el monto supero el precio de la cancha");
                 }else{
                     if (monto == Double.parseDouble(precio_cancha_dialog.getText().toString())){
                         estado_pago ="1";
@@ -561,7 +560,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
 
 
                 if ( monto >  Double.parseDouble(precio_cancha_dialog.getText().toString())){
-                    Toast.makeText(context, "el monto supero el precio de la cancha", Toast.LENGTH_SHORT).show();
+                    preferences.codeAdvertencia("el monto supero el precio de la cancha");
                 }else{
 
                     registrarReservaNaranjaAdmin(monto_restante,id);
@@ -610,11 +609,11 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
                 Log.e("registrar_reserva", "onResponse: "+response );
 
                 if (response.equals("1")){
-                    Toast.makeText(activity, "Registro Completo", Toast.LENGTH_SHORT).show();
+                    preferences.toasVerde("Registro Completo");
                     onRefresh();
                     dialog_carga.dismiss();
                 }else{
-                    Toast.makeText(activity, "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();
+                    preferences.toasRojo("Fallo al registrar la reserva","intentelo más tarde");
                     dialog_carga.dismiss();
                 }
 
@@ -672,11 +671,11 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
                 Log.e("registrar_reserva", "onResponse: "+response );
 
                 if (response.equals("1")){
-                    Toast.makeText(activity, "Registro Completo", Toast.LENGTH_SHORT).show();
+                    preferences.toasVerde("Registro Completo");
                     onRefresh();
                     dialog_carga.dismiss();
                 }else{
-                    Toast.makeText(activity, "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();
+                    preferences.toasRojo("Fallo al registrar la reserva","intentelo más tarde");
                     dialog_carga.dismiss();
                 }
 

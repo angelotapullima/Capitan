@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,7 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
     EquiposGrupo equiposGrupo;
     String id_grupo;
     Preferences preferences;
+    ImageView finishRegistroEquipo;
     BusquedaEquiposRoomDBRepository busquedaEquiposRoomDBRepository;
     EquiposGrupoRoomDBRepository equiposGrupoRoomDBRepository;
     ArrayList<BusquedaEquipos> arrayListEquipos = new ArrayList<>();
@@ -108,6 +110,7 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
         rcv_busqueda_requipos = findViewById(R.id.rcv_busqueda_requipos);
         rcv_equipos_elegidos = findViewById(R.id.rcv_equipos_elegidos);
         cant_Elegidos = findViewById(R.id.cant_Elegidos);
+        finishRegistroEquipo = findViewById(R.id.finishRegistroEquipo);
         cant_disponibles = findViewById(R.id.cant_disponibles);
         txt_busqueda_equipos = findViewById(R.id.txt_busqueda_equipos);
         fab_terminar_equipos_grupo = findViewById(R.id.fab_terminar_equipos_grupo);
@@ -132,6 +135,7 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
             }
         });
         fab_terminar_equipos_grupo.setOnClickListener(this);
+        finishRegistroEquipo.setOnClickListener(this);
     }
 
     private void buscar(String v) {
@@ -322,8 +326,13 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
                 dialogoCompletado();
             }
 
+        }else if(v.equals(finishRegistroEquipo)){
+            onBackPressed();
         }
     }
+
+
+
 
     Dialog dialog_completado;
     public void dialogoCompletado( ){

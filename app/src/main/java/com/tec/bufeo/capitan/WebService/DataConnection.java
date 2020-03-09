@@ -55,8 +55,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.regex.Pattern;
 
-import static com.tec.bufeo.capitan.Activity.DetalleCanchas.tabLayout;
-import static com.tec.bufeo.capitan.Activity.DetalleNegocio.rtb_valorar;
+/*import static com.tec.bufeo.capitan.Activity.DetalleCanchas.tabLayout;
+import static com.tec.bufeo.capitan.Activity.DetalleNegocio.rtb_valorar;*/
 
 public class DataConnection extends AppCompatActivity {
 
@@ -254,7 +254,7 @@ public class DataConnection extends AppCompatActivity {
                 url = new URL(IP2+"/api/Login/new");
 
 
-            }if(funcion.equals("registrarEmpresas")){
+            }/*if(funcion.equals("registrarEmpresas")){
                 parametros = "usuario_id=" + URLEncoder.encode(empresas.getUsuario_id(),"UTF-8")
                         + "&ubigeo_id=" + URLEncoder.encode(empresas.getUbigeo_id(),"UTF-8")
                         + "&nombre=" + URLEncoder.encode(empresas.getEmpresas_nombre(),"UTF-8")
@@ -266,8 +266,8 @@ public class DataConnection extends AppCompatActivity {
 
                 url = new URL(IP+"/index.php?c=Empresa&a=registrar&key_mobile=123456asdfgh");
 
-            }
-            if(funcion.equals("valorarEmpresa")){
+            }*/
+            /*if(funcion.equals("valorarEmpresa")){
                 parametros = "id_usuario=" + URLEncoder.encode(empresas.getUsuario_id(),"UTF-8")
                         + "&id_empresa=" + URLEncoder.encode(empresas.getEmpresas_id(),"UTF-8")
                         + "&app=" + URLEncoder.encode("true","UTF-8")
@@ -276,7 +276,7 @@ public class DataConnection extends AppCompatActivity {
 
                 url = new URL(IP2+"/api/Empresa/valorar_empresa");
 
-            }
+            }*/
             if(funcion.equals("listarUsuarioGeneral")){
                 parametros = "id_equipo=" + URLEncoder.encode(usuario.getEquipo_id(),"UTF-8");
 
@@ -372,7 +372,7 @@ public class DataConnection extends AppCompatActivity {
 
             }
 
-            if(funcion.equals("registrarCancha")){
+            /*if(funcion.equals("registrarCancha")){
                 parametros = "empresa_id=" + URLEncoder.encode(cancha.getEmpresas_id(),"UTF-8")
                         + "&foto=" + URLEncoder.encode(cancha.getCancha_foto(),"UTF-8")
                         + "&nombre=" + URLEncoder.encode(cancha.getCancha_nombre(),"UTF-8")
@@ -382,7 +382,7 @@ public class DataConnection extends AppCompatActivity {
 
                 url = new URL(IP+"/index.php?c=Empresa&a=registrar_cancha&key_mobile=123456asdfgh");
 
-            }
+            }*/
             if(funcion.equals("registrarReto")){
                 parametros = "retador=" + URLEncoder.encode(retos.getRetador_id(),"UTF-8")
                         + "&retado=" + URLEncoder.encode(retos.getRetado_id(),"UTF-8")
@@ -401,7 +401,7 @@ public class DataConnection extends AppCompatActivity {
             url = new URL(IP2+"/api/Empresa/listar_canchas_por_id_empresa");
            }
 
-            if(funcion.equals("registrarReserva")){
+            /*if(funcion.equals("registrarReserva")){
                 parametros = "id_cancha=" + URLEncoder.encode(reserva.getCancha_id(),"UTF-8")
                         + "&nombre=" + URLEncoder.encode(reserva.getReserva_nombre(),"UTF-8")
                         + "&fecha=" + URLEncoder.encode(reserva.getReserva_fecha(),"UTF-8")
@@ -412,7 +412,7 @@ public class DataConnection extends AppCompatActivity {
 
                 url = new URL(IP2+"/api/Empresa/registrar_reserva");
 
-            }
+            }*/
 
             if(funcion.equals("listarcanchasReservas")){
                 parametros = "id_cancha=" + URLEncoder.encode(reserva.getCancha_id(),"UTF-8")
@@ -607,6 +607,7 @@ public class DataConnection extends AppCompatActivity {
                             editor.putString("token_firebase",usuario.getToken_firebase());
                             editor.putString("tiene_negocio",usuario.getTiene_negocio());
                             editor.putInt("cantida_foto_perfil",0);
+                            editor.putString("cantidad_ingreso","1");
                             editor.apply();
 
 
@@ -639,7 +640,7 @@ public class DataConnection extends AppCompatActivity {
                         respuesta = "3";
                     }
 
-                }if(funcion.equals("registrarEmpresas")){
+                }/*if(funcion.equals("registrarEmpresas")){
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
                     JSONObject jsonNodev = resultJSON.getJSONObject(0);
@@ -651,7 +652,7 @@ public class DataConnection extends AppCompatActivity {
                         respuesta = "2";
                     }
 
-                }if(funcion.equals("ObtenerSaldo")){
+                }*/if(funcion.equals("ObtenerSaldo")){
 
                     //JSONArray resultJSON = json_data.getJSONArray("");
                     //JSONObject jsonNodev = json_data.getJSONObject("");
@@ -684,7 +685,7 @@ public class DataConnection extends AppCompatActivity {
                     }
                 }
 
-                if(funcion.equals("valorarEmpresa")){
+                /*if(funcion.equals("valorarEmpresa")){
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
                     JSONObject jsonNodev = resultJSON.getJSONObject(0);
@@ -696,7 +697,7 @@ public class DataConnection extends AppCompatActivity {
                         respuesta = "2";
                     }
 
-                }
+                }*/
 
                 if(funcion.equals("registrarUsuarioEquipo")){
 
@@ -740,7 +741,7 @@ public class DataConnection extends AppCompatActivity {
 
 
 
-                if(funcion.equals("registrarCancha")){
+                /*if(funcion.equals("registrarCancha")){
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
                     JSONObject jsonNodev = resultJSON.getJSONObject(0);
@@ -752,7 +753,7 @@ public class DataConnection extends AppCompatActivity {
                         respuesta = "2";
                     }
 
-                }
+                }*/
 
                 //registrarReto
 
@@ -769,7 +770,7 @@ public class DataConnection extends AppCompatActivity {
                     }
 
                 }
-                if(funcion.equals("registrarReserva")) {
+                /*if(funcion.equals("registrarReserva")) {
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
                     JSONObject jsonNodev = resultJSON.getJSONObject(0);
@@ -780,7 +781,7 @@ public class DataConnection extends AppCompatActivity {
                     } else {
                         respuesta = "2";
                     }
-                }
+                }*/
                 if(funcion.equals("registrarEquipo")) {
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
@@ -1447,19 +1448,23 @@ public class DataConnection extends AppCompatActivity {
                         obj = new Empresas();
                         obj.setEmpresas_nombre(jsonNode.optString("nombre"));
                         obj.setEmpresas_direccion(jsonNode.optString("direccion"));
+                        obj.setEmpresas_telefono_1(jsonNode.optString("telefono_1"));
+                        obj.setEmpresas_telefono_2(jsonNode.optString("telefono_2"));
                         obj.setEmpresas_descripcion(jsonNode.optString("descripcion"));
-                        obj.setEmpresas_horario(jsonNode.optString("horario_ls"));
                         obj.setEmpresas_valoracion(jsonNode.optString("valoracion"));
-                        obj.setEmpresas_promedio(jsonNode.optString("promedio"));
-                        obj.setEmpresas_conteo(jsonNode.optString("conteo"));
                         obj.setEmpresas_foto(jsonNode.optString("foto"));
                         obj.setEmpresas_estado(jsonNode.optString("estado"));
                         obj.setUsuario_id(jsonNode.optString("usuario"));
                         obj.setUbigeo_id(jsonNode.optString("distrito"));
+                        obj.setHorario_ls(jsonNode.optString("horario_ls"));
+                        obj.setHorario_d(jsonNode.optString("horario_d"));
                         obj.setEmpresa_cancha_fecha(jsonNode.optString("fecha_actual"));
                         obj.setEmpresa_cancha_hora(jsonNode.optString("hora_actual"));
-                        obj.setEmpresas_telefono_1(jsonNode.optString("telefono_1"));
-                        obj.setEmpresas_telefono_2(jsonNode.optString("telefono_2"));
+                        obj.setDia_de_la_semana(jsonNode.optString("dia"));
+                        obj.setEmpresas_promedio(jsonNode.optString("promedio"));
+                        obj.setEmpresas_conteo(jsonNode.optString("conteo"));
+                        obj.setLatitud(jsonNode.optString("latitud"));
+                        obj.setLongitud(jsonNode.optString("longitud"));
 
                         JSONArray jsonArray = jsonNode.getJSONArray("rating");
 
@@ -1624,10 +1629,10 @@ public class DataConnection extends AppCompatActivity {
                     @Override
                     public void run() {
                         if(Integer.toString(code).equalsIgnoreCase("2")){
-                            preferences.codeAdvertencia("ocurrio un error");
+                            preferences.codeAdvertencia("Ocurrio un error");
                         }
                         else if(Integer.toString(code).equalsIgnoreCase("3")){
-                            preferences.codeAdvertencia( "datos incorrectos");
+                            preferences.codeAdvertencia( "Datos incorrectos");
                         }
 
                     }
@@ -1669,7 +1674,7 @@ public class DataConnection extends AppCompatActivity {
 
             }
         }
-        if(funcion.equals("registrarEmpresas")){
+        /*if(funcion.equals("registrarEmpresas")){
 
             if(respuesta.equals("1")){
 
@@ -1679,8 +1684,8 @@ public class DataConnection extends AppCompatActivity {
                     public void run() {
                         context.finish();
                         Toast.makeText(context, "Guardado correctamente", Toast.LENGTH_SHORT).show();
-                       /* Intent intent = new Intent(context, FragmentNegocio.class);
-                        intent.putExtra("empresas_id",empresas.getEmpresas_id());*/
+                       *//* Intent intent = new Intent(context, FragmentNegocio.class);
+                        intent.putExtra("empresas_id",empresas.getEmpresas_id());*//*
                         FragmentNegocio.ActualizarEmpresas();
                     }
                 });
@@ -1696,9 +1701,9 @@ public class DataConnection extends AppCompatActivity {
             }
 
 
-        }
+        }*/
 
-        if(funcion.equals("valorarEmpresa")){
+        /*if(funcion.equals("valorarEmpresa")){
 
             if(respuesta.equals("1")){
 
@@ -1710,15 +1715,15 @@ public class DataConnection extends AppCompatActivity {
                         Toast.makeText(context, "Valoracion enviada correctamente", Toast.LENGTH_SHORT).show();
                       //  btn_enviarV.setVisibility(View.GONE);
                         //btn_cancelarV.setVisibility(View.GONE);
-                       /* btn_enviarV.setVisibility(View.GONE);
+                       *//* btn_enviarV.setVisibility(View.GONE);
                         btn_cancelarV.setVisibility(View.GONE);
-                        btn_editVal.setVisibility(View.VISIBLE);*/
+                        btn_editVal.setVisibility(View.VISIBLE);*//*
                         rtb_valorar.setEnabled(false);
                         //actualizarDetalle();
 
 
-                       /* Intent intent = new Intent(context, FragmentNegocio.class);
-                        intent.putExtra("empresas_id",empresas.getEmpresas_id());*/
+                       *//* Intent intent = new Intent(context, FragmentNegocio.class);
+                        intent.putExtra("empresas_id",empresas.getEmpresas_id());*//*
                         //FragmentNegocio.ActualizarEmpresas();
                     }
                 });
@@ -1734,7 +1739,7 @@ public class DataConnection extends AppCompatActivity {
             }
 
 
-        }
+        }*/
         if(funcion.equals("registrarUsuarioEquipo")){
 
             if(respuesta.equals("1")){
@@ -1820,7 +1825,7 @@ public class DataConnection extends AppCompatActivity {
 
 
         }
-        if(funcion.equals("registrarReserva")){
+        /*if(funcion.equals("registrarReserva")){
 
             if(respuesta.equals("1")){
 
@@ -1831,8 +1836,8 @@ public class DataConnection extends AppCompatActivity {
                         context.finish();
                         Toast.makeText(context, "Guardado correctamente", Toast.LENGTH_SHORT).show();
                        // DetalleEquipo.ActualizarEquipo();
-                       /* Intent intent = new Intent(context, FragmentNegocio.class);
-                        intent.putExtra("empresas_id",empresas.getEmpresas_id());*/
+                       *//* Intent intent = new Intent(context, FragmentNegocio.class);
+                        intent.putExtra("empresas_id",empresas.getEmpresas_id());*//*
 
                         if (tabLayout.getSelectedTabPosition()==0){
                             //FragmentHoy.actualizarReserva();
@@ -1858,7 +1863,7 @@ public class DataConnection extends AppCompatActivity {
             }
 
 
-        }
+        }*/
 
         if(funcion.equals("registrarEquipo")){
 
@@ -1889,7 +1894,7 @@ public class DataConnection extends AppCompatActivity {
 
         }
 
-        if(funcion.equals("registrarCancha")){
+        /*if(funcion.equals("registrarCancha")){
 
             if(respuesta.equals("1")){
 
@@ -1915,7 +1920,7 @@ public class DataConnection extends AppCompatActivity {
             }
 
 
-        }
+        }*/
         //registrarReto
         if(funcion.equals("registrarReto")) {
 

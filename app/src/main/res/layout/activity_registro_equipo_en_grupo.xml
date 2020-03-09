@@ -25,13 +25,13 @@
                 android:layout_height="?actionBarSize">
 
                 <ImageView
+                    android:id="@+id/finishRegistroEquipo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:tint="#FFF"
-                    android:layout_gravity="center"
-                    android:id="@+id/finishRegistroEquipo"
-                    app:srcCompat="@drawable/ic_arrow_back"/>
+                    app:srcCompat="@drawable/ic_arrow_back" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

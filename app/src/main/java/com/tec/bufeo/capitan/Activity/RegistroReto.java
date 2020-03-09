@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -24,6 +25,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -71,7 +74,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
    TextView txt_equipoRetador, txt_equipoRetado,btn_fechaReto,btn_horaReto;
    Button  btn_registrarReto;
    EditText edt_lugarReto;
-    MisEquiposViewModel misEquiposViewModel;
+   MisEquiposViewModel misEquiposViewModel;
    Retos retos;
    public  ArrayList<Mequipos> arrayEquipos = new ArrayList<>();
    ArrayList<String> arrayequipo = new ArrayList<>();
@@ -81,6 +84,8 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
     RetosViewModel retosViewModel;
     String capitan_id;
     int cantidad_de_retos;
+    RelativeLayout no_hay_equipos;
+    LinearLayout btn_Registro_equipo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +106,8 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
         btn_horaReto = findViewById(R.id.btn_horaReto);
         edt_lugarReto = findViewById(R.id.edt_lugarReto);
         btn_registrarReto = findViewById(R.id.btn_registrarReto);
+        no_hay_equipos = findViewById(R.id.no_hay_equipos);
+        btn_Registro_equipo = findViewById(R.id.btn_Registro_equipo);
         context = getApplicationContext();
 
         btn_fechaReto.setOnClickListener(this);
@@ -158,6 +165,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
             public void onChanged(@Nullable List<Mequipos> mequipos) {
                 //adaptadorMiEquipo.setWords(mequipos);
                 if(mequipos.size()>0){
+                    no_hay_equipos.setVisibility(View.GONE);
                     arrayEquipos.addAll(mequipos);
                     Log.e("mis Equipos", "onChanged: "+mequipos.size() );
 
@@ -169,11 +177,22 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                     ArrayAdapter<String> adapEquipos = new ArrayAdapter<String>(context,R.layout.spiner_item,arrayequipo);
                     adapEquipos.setDropDownViewResource(R.layout.spiner_dropdown_item);
                     spn_misEquipos.setAdapter(adapEquipos);
+                }else{
+
                 }
 
             }
         });
         showToolbar("Retar a un equipo",true);
+
+        btn_Registro_equipo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(RegistroReto.this,CrearEquipos.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
     }
     public void showToolbar(String tittle, boolean upButton){

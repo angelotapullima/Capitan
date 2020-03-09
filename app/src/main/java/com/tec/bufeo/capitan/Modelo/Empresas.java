@@ -25,7 +25,10 @@ public class Empresas {
     private String cancha_precioN;
     private String horario_ls;
     private String horario_d;
+    private String dia_de_la_semana;
     private String precio;
+    private String latitud;
+    private String longitud;
     private String Hora_reserva;
     private List<ArrayRating> arrayRatingList;
 
@@ -289,6 +292,29 @@ public class Empresas {
         }
     }
 
+    public String getDia_de_la_semana() {
+        return dia_de_la_semana;
+    }
+
+    public void setDia_de_la_semana(String dia_de_la_semana) {
+        this.dia_de_la_semana = dia_de_la_semana;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
+    }
 }
 
 

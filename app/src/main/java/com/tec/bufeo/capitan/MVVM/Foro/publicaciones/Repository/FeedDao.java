@@ -47,6 +47,16 @@ public interface FeedDao {
     @Query("Update feed set nuevos_datos = :nuevos")
     void NuevosDatos(String nuevos);
 
+
+    @Query("Update feed set dio_like = :like")
+    void disLike(String like);
+
+    @Query("Update feed set dio_like = :like")
+    void darLike(String like);
+
+    @Query("Update feed set cant_likes = :cantidad")
+    void cantidadLikes(String cantidad);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertPosts(List<ModelFeed> feedTorneo);
 

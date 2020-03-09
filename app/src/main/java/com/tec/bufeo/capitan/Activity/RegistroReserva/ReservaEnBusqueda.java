@@ -18,7 +18,9 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +58,7 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClickListener {
 
 
+    ImageView backReserva;
     //yo pago todo
     LinearLayout l_todo;
     Spinner spn_equipex_busqueda;
@@ -77,7 +80,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     MisEquiposViewModel misEquiposViewModel;
     DataConnection dc4,dc2;
     Preferences preferences;
-
+    RelativeLayout relaitveCarga;
     String nombre_empresa_dato,empresa_id,h_reserva,fecha,hora,precio,telefono1,telefono2,direccion;
     LinearLayout btn_reservar_busqueda;
     TextView nombre_reserva_busqueda,saldo_bufis_busqueda;
@@ -146,6 +149,8 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         spn_equipex_busqueda = findViewById(R.id.spn_equipex_busqueda);
         spn_cancha_busqueda = findViewById(R.id.spn_cancha_busqueda);
         nombre_reserva_busqueda  = findViewById(R.id.nombre_reserva_busqueda);
+        relaitveCarga  = findViewById(R.id.relaitveCarga);
+        backReserva  = findViewById(R.id.backReserva);
 
 
 
@@ -206,6 +211,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         });
 
         btn_reservar_busqueda.setOnClickListener(this);
+        backReserva.setOnClickListener(this);
 
 
     }
@@ -257,6 +263,8 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 }
 
 
+        }else if (v.equals(backReserva)){
+            finish();
         }
     }
 
@@ -621,6 +629,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
 
             if(arraycancha.size()>0){
+                relaitveCarga.setVisibility(View.GONE);
                 for (Cancha obj : arraycancha) {
                     arrayCanchaBusqueda.add(obj.getCancha_nombre());
                 }

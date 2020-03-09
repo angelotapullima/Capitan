@@ -11,11 +11,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -47,20 +49,28 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.tec.bufeo.capitan.Activity.DetalleFotoUsuario;
+import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
 import com.tec.bufeo.capitan.Activity.RegistroForo;
 import com.tec.bufeo.capitan.MVVM.Foro.Versus.Views.FragmentVersus;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
+import com.tec.bufeo.capitan.WebService.DataConnection;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,9 +101,10 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     BottomSheetBehavior mBottomSheetBehavior;
     LinearLayout tap_de_accion,bottomDelete;
     ImageView btnClose;
-    TextView titulotap;
+    TextView titulotap,saldo_contable;
     UniversalImageLoader universalImageLoader;
     String idpublicacion;
+    DataConnection dc;
 
 
     public ForoFragment() {
@@ -120,6 +131,39 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //commentsListViewModel =  ViewModelProviders.of(getActivity()).get(VersusListViewModel.class);
     }
 
+    public void obtenerSaldo(){
+        dc = new DataConnection(activity, "ObtenerSaldo", false);
+        new GetSaldo().execute();
+    }
+    ArrayList<String> saldo = new ArrayList<>();
+    public class GetSaldo extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            saldo = new ArrayList<>();
+            saldo = dc.getSaldo();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+
+            if (saldo.size() > 0) {
+                saldo_contable.setText(saldo.get(0));
+            } else {
+                saldo_contable.setText("vacio");
+            }
+
+
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -133,10 +177,14 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
         initViews(view);
+        obtenerSaldo();
         setAdapter();
         cargarvista();
 
 
+        if (preferences.getCantidadIngreso().equals("1")){
+            feed();
+        }
         return view;
     }
 
@@ -160,6 +208,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         titulotap = view.findViewById(R.id.titulotap);
         bottomDelete = view.findViewById(R.id.bottomDelete);
         btnClose = view.findViewById(R.id.btnClose);
+        saldo_contable = view.findViewById(R.id.saldo_contable);
 
 
         fotoPerfil = view.findViewById(R.id.fotoPerfil);
@@ -236,7 +285,21 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
+        rcv_foro.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && fab_registrarForo.isShown())
+                    fab_registrarForo.hide();
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    fab_registrarForo.show();
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
 
         //feed();
 
@@ -264,6 +327,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         layout_nuevosDatos.setOnClickListener(this);
+
+
     }
 
 
@@ -392,6 +457,19 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }if(dato.equals("pedir")){
                    //feed();
                    preferences.codeAdvertencia(String.valueOf(position));
+                }else if(dato.equals("verMasTorneo")){
+                    Intent i = new Intent(getContext(), DetalleTorneoNuevo.class);
+                    i.putExtra("id_torneo",feedTorneo.getId_torneo());
+                    i.putExtra("foto",feedTorneo.getTorneo_foto());
+                    i.putExtra("nombre",feedTorneo.getPublicacion_torneo());
+                    i.putExtra("id_usuario",feedTorneo.getUsuario_id());
+                    startActivity(i);
+                }else if (dato.equals("imgbt_like")){
+                    if (feedTorneo.getDio_like().equals("0")){
+                        darlike(feedTorneo.getPublicacion_id());
+                    }else{
+                        dislike(feedTorneo.getPublicacion_id());
+                    }
                 }
             }
         });
@@ -403,26 +481,139 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         rcv_foro.setLayoutManager(layoutManager);
 
 
-        rcv_foro.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
+    }
+
+    JSONObject json_data;
+    String resultado;
+    int totalLikes;
+    private void darlike(final String idlike) {
+        String url =IP2+"/api/Foro/dar_like";
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0 && fab_registrarForo.isShown()){
-                    fab_registrarForo.hide();
+            public void onResponse(String response) {
+                Log.d("darlike: ",""+response);
+
+                try {
+                    json_data = new JSONObject(response);
+                    JSONArray resultJSON = json_data.getJSONArray("results");
+                    JSONObject jsonNodev = resultJSON.getJSONObject(0);
+                    resultado = jsonNodev.optString("resultado");
+                    totalLikes = Integer.parseInt(jsonNodev.optString("likes"));
+
+                    if (resultado.equals("1")){
+
+                        FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
+                        feedRoomDBRepository.darlike("1");
+                        feedRoomDBRepository.cantidadLikes(String.valueOf(totalLikes));
+                    }
+
+
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
+
+
+
+
+                //Toast.makeText(ChoferDatosDeCarrera.this,"No se ha registrado ",Toast.LENGTH_SHORT).show();
+
+
             }
 
+        }, new Response.ErrorListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    fab_registrarForo.show();
-                super.onScrollStateChanged(recyclerView, newState);
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
+                Log.i("RESPUESTA: ",""+error.toString());
+
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //String imagen=convertirImgString(bitmap);
+
+
+                Map<String,String> parametros=new HashMap<>();
+                parametros.put("usuario_id",preferences.getIdUsuarioPref());
+                parametros.put("publicacion_id",idlike);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
+
+                return parametros;
+
+            }
+        };
+        /*requestQueue.add(stringRequest);*/
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
+    }
+
+
+    private void dislike(final String iddislike) {
+        String url =IP2+"/api/Foro/quitar_like";
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("dislike: ",""+response);
+
+                try {
+                    json_data = new JSONObject(response);
+                    JSONArray resultJSON = json_data.getJSONArray("results");
+                    JSONObject jsonNodev = resultJSON.getJSONObject(0);
+                    resultado = jsonNodev.optString("resultado");
+                    totalLikes = Integer.parseInt(jsonNodev.optString("likes"));
+
+                    if (resultado.equals("1")){
+
+                        FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
+                        feedRoomDBRepository.dislike("0");
+                        feedRoomDBRepository.cantidadLikes(String.valueOf(totalLikes));
+                    }
+
+
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
+                Log.i("RESPUESTA: ",""+error.toString());
+
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //String imagen=convertirImgString(bitmap);
 
 
-        });
+                Map<String,String> parametros=new HashMap<>();
+                parametros.put("usuario_id",preferences.getIdUsuarioPref());
+                parametros.put("publicacion_id",iddislike);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
+
+                return parametros;
+
+            }
+        };
+        //requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
     Application application;
     @Override
@@ -447,7 +638,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             superior_envio = preferences.getLimite_sup();
             inferior_envio = preferences.getLimite_inf();
         }
-        preferences.toasVerde("ok");
+        //preferences.toasVerde("ok");
 
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
         feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),superior_envio,inferior_envio,preferences.getToken());

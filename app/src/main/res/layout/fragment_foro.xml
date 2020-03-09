@@ -81,9 +81,9 @@
                 </RelativeLayout>
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
@@ -93,13 +93,39 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
                         android:textColor="#999da4"
+                        android:layout_toLeftOf="@+id/bufeoCoins"
                         android:textColorHint="#999da4"
                         android:layout_marginBottom="5dp"
                         android:drawableLeft="@drawable/ic_search"
                         android:layout_height="45dp"
                         android:background="@drawable/search_input_style"
                         android:hint="Buscar"/>
-                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:id="@+id/bufeoCoins"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/bufeo_coin"/>
+
+                        <TextView
+                            android:id="@+id/saldo_contable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="10dp"
+                            android:textColor="#000"
+                            android:textSize="19sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
 
 
             </LinearLayout>
@@ -242,7 +268,7 @@
         android:layout_gravity="bottom|right|end"
         style="@style/Widget.Design.FloatingActionButton"
         app:tint="#fff"
-        app:srcCompat="@drawable/home_plus"
+        app:srcCompat="@drawable/ic_create_black_24dp"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:clickable="true" />
 

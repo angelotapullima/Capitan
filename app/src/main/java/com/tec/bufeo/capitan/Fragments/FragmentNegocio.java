@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.tec.bufeo.capitan.Activity.DetalleNegocio;
-import com.tec.bufeo.capitan.Activity.MisNegocios;
+import com.tec.bufeo.capitan.Activity.Negocios.Views.MisNegociosActivity;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoEmpresas;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
@@ -32,20 +32,19 @@ import java.util.ArrayList;
 
 public class FragmentNegocio extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    public static String empresa_id;
-    static AdaptadorListadoEmpresas adaptadorEmpresas;
+    public  String empresa_id;
+    AdaptadorListadoEmpresas adaptadorEmpresas;
     public ArrayList<Empresas> arrayempresas;
-    public static ArrayList<Empresas> arrayempresaactual;
     DataConnection dc;
-    static DataConnection dc1;
-    static RecyclerView rcv_empresas;
-    static LinearLayout layout_carga;
-    static CardView cdv_mensaje;
+    DataConnection dc1;
+    RecyclerView rcv_empresas;
+    LinearLayout layout_carga;
+    CardView cdv_mensaje;
     Toolbar tlb_negocios;
     SwipeRefreshLayout swipeRefreshLayout;
-    static Activity activity;
-    static Context context;
-    static Preferences preferences;
+    Activity activity;
+    Context context;
+    Preferences preferences;
     ImageView mis_negocios;
 
     public FragmentNegocio() {
@@ -150,64 +149,15 @@ public class FragmentNegocio extends Fragment implements View.OnClickListener, S
         }
     }
 
-    public static class ActualizarEmpresas extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            layout_carga.setVisibility(View.GONE);
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            arrayempresaactual = dc1.getListadoEmpresas();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
 
 
 
-            GridLayoutManager linearLayoutManager = new GridLayoutManager(activity, 1);
-            rcv_empresas.setLayoutManager(linearLayoutManager);
-
-            adaptadorEmpresas = new AdaptadorListadoEmpresas(activity, arrayempresaactual, R.layout.rcv_item_card_negocios, new AdaptadorListadoEmpresas.OnItemClickListener() {
-                @Override
-                public void onItemClick(Empresas empresas, final int position) {
-
-                    Intent intent = new Intent(context,DetalleNegocio.class);
-                    intent.putExtra("id_empresa",empresas.getEmpresas_id());
-                    intent.putExtra("tipo_usuario","usuario");
-                    context.startActivity(intent);
-                }
-            });
-
-            layout_carga.setVisibility(View.GONE);
-
-            rcv_empresas.setAdapter(adaptadorEmpresas);
-
-
-            if( arrayempresaactual.size()>0){
-                cdv_mensaje.setVisibility(View.INVISIBLE);
-            }else{
-                cdv_mensaje.setVisibility(View.VISIBLE);
-            }
-
-        }
-    }
-
-    public static void ActualizarEmpresas(){
-        dc1 = new DataConnection(activity,"listarEmpresas",preferences.getUbigeoId(),false);
-        new ActualizarEmpresas().execute();
-    }
 
     @Override
     public void onClick(View v) {
 
         if (v.equals(mis_negocios)){
-            Intent i = new Intent(context, MisNegocios.class);
+            Intent i = new Intent(context, MisNegociosActivity.class);
             i.putExtra("empresa_id",empresa_id);
             context.startActivity(i);
         }

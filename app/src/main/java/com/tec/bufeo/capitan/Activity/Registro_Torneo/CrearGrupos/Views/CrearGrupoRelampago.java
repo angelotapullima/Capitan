@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -48,6 +49,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
     String id_torneo,nombre_torneo;
     Preferences preferences;
     int cantidad;
+    LinearLayout cargando_layout_relampago;
     String tipo_campeonato;
 
     @Override
@@ -82,6 +84,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
         rcv_grupos =  findViewById(R.id.rcv_grupos);
         nombre_torneo_grupo =  findViewById(R.id.nombre_torneo_grupo);
         btn_agregar_grupos =  findViewById(R.id.btn_agregar_grupos);
+        cargando_layout_relampago =  findViewById(R.id.cargando_layout_relampago);
         nombre_grupo_grupos =  findViewById(R.id.nombre_grupo_grupos);
         btnNext =  findViewById(R.id.btnNext);
 
@@ -92,6 +95,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
 
             agregar_grupo_a_bd(nombre_torneo);
             crear_grupo(nombre_torneo);
+            cargando_layout_relampago.setVisibility(View.VISIBLE);
         }
         btn_agregar_grupos.setOnClickListener(this);
         btnNext.setOnClickListener(this);

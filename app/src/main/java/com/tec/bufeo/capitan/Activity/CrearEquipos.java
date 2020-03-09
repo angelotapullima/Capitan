@@ -3,12 +3,14 @@ package com.tec.bufeo.capitan.Activity;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,6 +20,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,10 +31,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -39,9 +45,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneo;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 import com.tec.bufeo.capitan.others.Equipo;
@@ -65,6 +73,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
@@ -76,13 +85,14 @@ import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 public class CrearEquipos extends AppCompatActivity implements View.OnClickListener {
 
     EditText edt_nombreEquipo;
-    Button btn_registrarEquipo,btn_Camara;
-    ImageView img_equipoFoto;
+    Button btn_registrarEquipo;
+    ImageView img_equipoFoto,publicar_foto_camara,publicar_foto_galeria,foto_perfil_para_publicacion;
     public Equipo equipo;
     public Context context;
     private int REQUEST_CAMERA = 0,  SELET_GALERRY = 9;
     public Uri output,resultUriRecortada;
     String userChoosenTask;
+    TextView nombre_para_publicar;
 
     Preferences preferences;
     String url = IP2+"/api/Torneo/registrar_equipo";
@@ -94,10 +104,15 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
         preferences = new Preferences(getApplicationContext());
         edt_nombreEquipo = (EditText) findViewById(R.id.edt_nombreEquipo);
         btn_registrarEquipo = (Button) findViewById(R.id.btn_registrarEquipo);
-        btn_Camara = findViewById(R.id.btn_Camara);
         img_equipoFoto = findViewById(R.id.img_equipoFoto);
+        foto_perfil_para_publicacion = findViewById(R.id.foto_perfil_para_publicacion);
+        publicar_foto_camara = findViewById(R.id.publicar_foto_camara);
+        publicar_foto_galeria = findViewById(R.id.publicar_foto_galeria);
+        nombre_para_publicar = findViewById(R.id.nombre_para_publicar);
         btn_registrarEquipo.setOnClickListener(this);
-        btn_Camara.setOnClickListener(this);
+        img_equipoFoto.setOnClickListener(this);
+        publicar_foto_camara.setOnClickListener(this);
+        publicar_foto_galeria.setOnClickListener(this);
         context = getApplicationContext();
 
         if((ContextCompat.checkSelfPermission(CrearEquipos.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
@@ -108,24 +123,36 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
             },1);
         }
+
+        Glide.with(context)
+                .load(IP2+"/"+ preferences.getFotoUsuario())
+                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
+                .apply(LOGO_OPTION)
+                .into(foto_perfil_para_publicacion);
+        nombre_para_publicar.setText(preferences.getPersonName() + " " + preferences.getPersonSurname());
+        showToolbar("Crear un Equipo",true);
     }
 
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
+
+    }
     @Override
-    public boolean onOptionsItemSelected (MenuItem item){
-        switch (item.getItemId()) {
-
-            case android.R.id.home:
-
-                finish();
-                return true;
-        }
-        return true;
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
     }
 
-    @Override
-    public void onBackPressed () {
-        finish();
-    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent result) {
@@ -281,14 +308,23 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view.equals(btn_Camara)){
+        if (view.equals(img_equipoFoto)){
             dialogoFotos();
-        } if (view.equals(btn_registrarEquipo)){
+        }else if (view.equals(btn_registrarEquipo)){
             if (img_equipoFoto.getDrawable() == null){
-                publicar_sin_foto();
+                preferences.codeAdvertencia("Debe seleccionar una imagen para el equipo");
             }else{
-                uploadMultipart();
+                if (edt_nombreEquipo.getText().toString().equals("")){
+                    preferences.codeAdvertencia("Debe elegir un nombre  para el equipo");
+                }else {
+
+                    uploadMultipart();
+                }
             }
+        }else if (view.equals(publicar_foto_camara)){
+            camarex();
+        }else if (view.equals(publicar_foto_galeria)){
+            galeria();
         }
     }
 
@@ -446,74 +482,18 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    StringRequest stringRequest;
-    private void publicar_sin_foto() {
-        dialogoCargando();
-
-
-        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("Torneo","publicar sin foto"+response);
-
-
-                if(response.equals("1")){
-                    finish();
-                    Toast.makeText(context, "Guardado correctamente", Toast.LENGTH_SHORT).show();
-                    //FragmentEquiposHijo.ActualizarEquipo();
-
-                }else{
-                    Toast.makeText(context, "Vuelva a intentarlo", Toast.LENGTH_SHORT).show();
-                }
-
-            }
 
 
 
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                dialog_carga.dismiss();
-
-
-            }
-        })  {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //String imagen=convertirImgString(bitmap);
-
-
-                Map<String,String> parametros=new HashMap<>();
-
-                Log.e("torneo", "getParams: "+parametros.toString() );
-                parametros.put("usuario_id", preferences.getIdUsuarioPref());
-                parametros.put("nombre", edt_nombreEquipo.getText().toString());
-                return parametros;
-
-
-            }
-        };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
-    }
-
-    android.app.AlertDialog dialog_carga;
-
+    Dialog dialog_carga;
     public void dialogoCargando(){
 
-        android.app.AlertDialog.Builder builder =  new android.app.AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View vista = inflater.inflate(R.layout.dialogo_cargando_logobufeo,null);
-        builder.setView(vista);
+        dialog_carga= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_carga.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_carga.setCancelable(true);
+        dialog_carga.setContentView(R.layout.dialogo_cargando_logobufeo);
 
-
-        dialog_carga = builder.create();
         dialog_carga.show();
-
-
-
 
     }
 }

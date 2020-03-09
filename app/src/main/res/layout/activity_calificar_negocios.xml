@@ -36,7 +36,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
                             app:srcCompat="@drawable/barra_cerrar_gris"/>
-                        <ImageView
+                        <de.hdodenhof.circleimageview.CircleImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center_vertical"
@@ -55,6 +55,8 @@
                                 android:text="PUBLICAR"
                                 android:textStyle="bold"
                                 android:textSize="20sp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
                                 android:id="@+id/nombre_negocio"/>
                             <TextView
                                 android:layout_width="wrap_content"
@@ -104,6 +106,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
+                            android:id="@+id/layoutEntendido"
                             android:background="#fff">
                             <TextView
                                 android:layout_width="wrap_content"
@@ -122,6 +125,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="10dp"
+                                android:id="@+id/entendido"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:text="Entendido"
                                 android:textSize="15sp"/>
@@ -154,7 +158,7 @@
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:background="@drawable/inputtext"
-                        android:hint="Comentarios"
+                        android:hint="Escribe un comentario"
                         android:layout_marginBottom="10dp"/>
 
                 </LinearLayout>

@@ -17,7 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/mascotafondo" />
+                android:src="@drawable/pasto2" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,13 +52,13 @@
                         android:orientation="vertical">
 
 
-                        <ImageView
+                        <de.hdodenhof.circleimageview.CircleImageView
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="15dp"
                             android:visibility="visible"
-                            android:src="@drawable/logo"/>
+                            android:src="@drawable/logo_sin_borde"/>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -177,16 +177,33 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:padding="8dp"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:background="@drawable/card_bordes">
 
                         <TextView
                             android:id="@+id/txt_resgistrate"
-                            android:text="Registrarte"
+                            android:text="Crear Cuenta"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="italic|bold"
-                            android:layout_weight="1"
+                            android:textColor="@color/colorTextIcons"
+                            android:textSize="18dp" />
+                        <TextView
+                            android:text="|"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"
+                            android:textColor="@color/colorTextIcons"
+                            android:textSize="18dp" />
+                        <TextView
+                            android:id="@+id/dfggg"
+                            android:text="Olvide Mi contraseña"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="italic|bold"
                             android:textColor="@color/colorTextIcons"
                             android:textSize="18dp" />
 

@@ -1,76 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".Activity.CrearEquipos">
 
-
-    <ScrollView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetStartWithNavigation="0dp"
+        android:background="@color/colorPrimary">
+        <Button
+            android:id="@+id/btn_registrarEquipo"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorTextIcons"
+            android:textStyle="bold"
+            android:text="Publicar " />
+
+    </androidx.appcompat.widget.Toolbar>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/toolbar"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_toLeftOf="@id/btnAccion"
+                android:orientation="horizontal">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="35dp"
+                    android:id="@+id/foto_perfil_para_publicacion"
+                    android:layout_height="35dp"
+                    app:srcCompat="@drawable/account" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:layout_toRightOf="@+id/foto_perfil_publicacion"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/nombre_para_publicar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#212121"
+                        android:textSize="12dp"
+                        android:layout_marginLeft="2dp"
+                        android:text="Angelo Tapullima Del Aguila"
+                        android:textStyle="bold|italic" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <EditText
+                android:id="@+id/edt_nombreEquipo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre de Equipo"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:inputType="textMultiLine"
+                android:layout_marginBottom="10dp"
+                android:background="#000B0B0B"
+                />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
-                android:background="@drawable/bgnoseleccionado"
+
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="3dp">
+                android:orientation="horizontal">
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <Button
-                        android:id="@+id/btn_Camara"
-                        android:layout_width="45dp"
-                        android:layout_gravity="right"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorTextIcons"
-                        android:drawableRight="@drawable/ic_camera_24dp"/>
+
 
                     <ImageView
                         android:id="@+id/img_equipoFoto"
                         android:layout_width="match_parent"
                         android:layout_height="220dp"
-                        android:src="@drawable/imagen"
                         android:scaleType="centerCrop"
                         android:visibility="visible"
                         android:layout_gravity="center_horizontal" />
                 </FrameLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_marginBottom="18dp"
-                style="@style/cajaDeTexto">
-
-                <EditText
-                    android:id="@+id/edt_nombreEquipo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Nombre "
-                    android:inputType="textPersonName"
-                    style="@style/InputTexto"/>
-            </LinearLayout>
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_registrarEquipo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_azul"
-                android:textColor="@color/colorTextIcons"
-                android:textStyle="bold"
-                android:text="Crear " />
 
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="60dp"
+        android:background="#FFF"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height=".5dp"
+            android:background="#E3DBDB"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textColor="#000"
+            android:layout_toLeftOf="@id/layout_fotones"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:text="Selecciona una foto"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/layout_fotones"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/publicar_foto_camara"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_fotex"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/publicar_foto_galeria"
+                android:src="@drawable/ic_galeria"/>
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</RelativeLayout>

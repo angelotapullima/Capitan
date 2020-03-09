@@ -35,7 +35,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/btnAccion"
+                        android:layout_toLeftOf="@id/rel_accion"
                         android:orientation="horizontal">
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:layout_width="35dp"
@@ -82,15 +82,28 @@
                     </LinearLayout>
 
 
-
-                    <ImageButton
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:background="#FFF"
-                        android:id="@+id/btnAccion"
+                        android:id="@+id/rel_accion"
                         android:layout_alignParentEnd="true"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_more_horiz"/>
+                        android:layout_height="wrap_content">
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="#FFF"
+                            android:id="@+id/btnAccion"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_more_horiz"/>
+
+                        <Button
+                            android:layout_width="70dp"
+                            android:id="@+id/verMasTorneo"
+                            android:layout_height="40dp"
+                            android:textSize="8sp"
+                            android:text="ver más"/>
+                    </LinearLayout>
+
+
 
 
                 </RelativeLayout>
@@ -175,17 +188,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="2dp"
-                            android:backgroundTint="#ccffc32a"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             app:srcCompat="@drawable/thumb_up_outline" />
 
-                        <ProgressBar
-                            android:id="@+id/prog_like"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:visibility="gone"
-                            android:layout_gravity="center"
-                            android:theme="@style/CircularProgress" />
+
                     </FrameLayout>
                     <TextView
                         android:layout_width="wrap_content"

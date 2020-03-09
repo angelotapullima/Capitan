@@ -41,8 +41,24 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:contentInsetStartWithNavigation="0dp"
-                android:background="#33000000"/>
+                android:background="#70000000">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_gravity="end"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/Misnegocios"
+                        android:src="@drawable/estadisticas_blanco"
+                        android:layout_centerVertical="true"/>
+                </LinearLayout>
+
+
+
+            </androidx.appcompat.widget.Toolbar>
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -168,8 +184,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="25dp"
                             android:textStyle="bold|italic"
-                            android:textColor="@color/colorPrimaryText"
-                            android:text="Amazon Cares" />
+                            android:textColor="@color/colorPrimaryText"/>
                     </LinearLayout>
 
 
@@ -183,7 +198,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            app:srcCompat="@drawable/account" />
+                            app:srcCompat="@drawable/playlist_edit" />
                         <TextView
                             android:id="@+id/txt_descripcionEmpresa"
                             android:layout_width="match_parent"
@@ -191,36 +206,11 @@
                             android:layout_weight="1"
                             android:textSize="18dp"
                             android:textStyle="normal|italic"
-                            android:textColor="#f11d1c1c"
-                            android:text="jjfdjfjd jfdnjffdnjf jfnjdfndjf  jfnjdndj  jfnjdfndjfdnjd jfndjdnfdjdnjdndjndjnfdjnfj fdjndjnjfddfnjdfnjdfnjfnfdjdfnjdfn fdjdfnjdfndfj fjdndfjdfndfj fjdndfjfdndfj" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            app:srcCompat="@drawable/map_marker" />
-                        <TextView
-                            android:id="@+id/txt_direccionEmpresa"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="18dp"
-                            android:textStyle="normal|italic"
-                            android:textColor="#f11d1c1c"
-                            android:text="Jr Putumayo 240" />
+                            android:textColor="#f11d1c1c" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
                         android:layout_marginBottom="20dp"
                         android:orientation="horizontal">
                         <ImageView
@@ -230,20 +220,28 @@
                             app:srcCompat="@drawable/alarm_check" />
                         <TextView
                             android:id="@+id/txt_horario"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="18dp"
                             android:textStyle="normal|italic"
-                            android:textColor="#f11d1c1c"
-                            android:text="09:30-18:30" />
+                            android:textColor="#f11d1c1c"/>
+                        <TextView
+                            android:id="@+id/estadoNegocio"
+                            android:layout_width="wrap_content"
+                            android:padding="5dp"
+
+                            android:background="@color/colorPrimary"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:layout_marginLeft="16dp"
+                            android:textStyle="bold|italic"
+                            android:textColor="#fff"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/lny_telefono"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
                         android:layout_marginBottom="20dp"
                         android:orientation="horizontal">
                         <ImageView
@@ -253,35 +251,59 @@
                             app:srcCompat="@drawable/phone" />
                         <TextView
                             android:id="@+id/txt_telefonoEmpresa"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="18dp"
                             android:textStyle="normal|italic"
+                            android:textColor="#f11d1c1c" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:id="@+id/separadorTelefonos"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:textStyle="normal|italic"
                             android:textColor="#f11d1c1c"
-                            android:text="12365478" />
+                            android:text="  -  " />
+                        <TextView
+                            android:id="@+id/txt_telefonoEmpresa2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:textStyle="normal|italic"
+                            android:textColor="#f11d1c1c"/>
+
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/lny_telefono_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
                         android:layout_marginBottom="20dp"
                         android:orientation="horizontal">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            app:srcCompat="@drawable/phone" />
+                            app:srcCompat="@drawable/map_marker" />
                         <TextView
-                            android:id="@+id/txt_telefonoEmpresa_2"
-                            android:layout_width="match_parent"
+                            android:id="@+id/txt_direccionEmpresa"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="18dp"
                             android:textStyle="normal|italic"
+                            android:textColor="#f11d1c1c"/>
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:id="@+id/vistaMapa"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:layout_marginLeft="16dp"
+                            android:textStyle="normal|italic"
                             android:textColor="#f11d1c1c"
-                            android:text="12365478" />
+                            android:text="Ver en el Mapa" />
                     </LinearLayout>
+
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"

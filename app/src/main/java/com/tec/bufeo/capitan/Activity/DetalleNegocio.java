@@ -47,41 +47,44 @@ import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class DetalleNegocio extends AppCompatActivity implements View.OnClickListener {
 
-    static ImageView img_fotoEmpresa;
-    static RecyclerView rcv_canchas;
-    static AppBarLayout abl_detalleEmpresa;
-    public static TextView txt_nombreEmpresa, txt_descripcionEmpresa, txt_direccionEmpresa,
-            txt_telefonoEmpresa, txt_horario,rating_float,conteo,txt_telefonoEmpresa_2;
+    ImageView img_fotoEmpresa,Misnegocios;
+    RecyclerView rcv_canchas;
+    AppBarLayout abl_detalleEmpresa;
+    public TextView txt_nombreEmpresa, txt_descripcionEmpresa, txt_direccionEmpresa,separadorTelefonos,
+            txt_telefonoEmpresa,txt_telefonoEmpresa2, txt_horario,rating_float,conteo,estadoNegocio,vistaMapa;
 
     /*TextView txt_promedio,txt_conteo;
     RatingBar rtb_valoracion;*/
-    public static RatingBar  rtb_valorar,ratingBar_promedio;
-    static CardView cdv_detalleEmpresa;
-    static LinearLayout lny_telefono,lny_telefono_2;
-    static AdaptadorListadoCanchaEmpresa adaptadorListadoCanchaEmpresa;
-    static CardView cdv_mensaje;
-    public static Context context;
-    public static Activity activity;
+
+    public RatingBar  rtb_valorar,ratingBar_promedio;
+    CardView cdv_detalleEmpresa;
+    LinearLayout lny_telefono;
+    AdaptadorListadoCanchaEmpresa adaptadorListadoCanchaEmpresa;
+    CardView cdv_mensaje;
+    public Context context;
+    public Activity activity;
     CoordinatorLayout cordinator;
-    static ArrayList<Cancha> arraycanchaactual;
+    ArrayList<Cancha> arraycanchaactual;
     Preferences preferences;
-    static String id_empresa, tipo_usuario;
-    static FrameLayout frameCarga,frameCarga2;
-    static DataConnection dc, dc1, dc2, dc3;
-    static DataConnection dc4;
+    String id_empresa, tipo_usuario,latitud,longitud;
+    FrameLayout frameCarga,frameCarga2;
+    DataConnection  dc1, dc2,dc4;
     /*static ProgressBar progressbar, progressbarcanchas;*/
-    public static String fecha_actual, hora_actual, cancha_id, horario;
-    static String saldo_cargado;
-    public static ArrayList<Empresas> arrayempresa;
-    public static ArrayList<Cancha> arraycancha;
-    static ArrayList<String> saldo;
+    public String fecha_actual, hora_actual, cancha_id, horario;
+    String saldo_cargado;
+    public ArrayList<Empresas> arrayempresa;
+    public ArrayList<Cancha> arraycancha;
+    ArrayList<String> saldo;
 
     public void getReportes() {
         Intent intent = new Intent(this, EstadisticasEmpresas.class);
@@ -127,13 +130,13 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         rating_reviews.createRatingBars(100, BarLabels.STYPE3, colors, raters);
 
         txt_nombreEmpresa = (TextView) findViewById(R.id.txt_nombreEmpresa);
+        txt_telefonoEmpresa2 = (TextView) findViewById(R.id.txt_telefonoEmpresa2);
         rating_float = (TextView) findViewById(R.id.rating_float);
         ratingBar_promedio = (RatingBar) findViewById(R.id.ratingBar_promedio);
         conteo = (TextView) findViewById(R.id.conteo);
         /*txt_promedio = (TextView) findViewById(R.id.txt_promedio);
         txt_conteo = (TextView) findViewById(R.id.txt_conteo);*/
         txt_telefonoEmpresa = (TextView) findViewById(R.id.txt_telefonoEmpresa);
-        txt_telefonoEmpresa_2 = (TextView) findViewById(R.id.txt_telefonoEmpresa_2);
         txt_descripcionEmpresa = (TextView) findViewById(R.id.txt_descripcionEmpresa);
         txt_horario = (TextView) findViewById(R.id.txt_horario);
         txt_direccionEmpresa = (TextView) findViewById(R.id.txt_direccionEmpresa);
@@ -147,8 +150,11 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         rcv_canchas = (RecyclerView) findViewById(R.id.rcv_canchas);
         abl_detalleEmpresa = (AppBarLayout) findViewById(R.id.abl_detalleEmpresa);
         lny_telefono = (LinearLayout) findViewById(R.id.lny_telefono);
-        lny_telefono_2 = (LinearLayout) findViewById(R.id.lny_telefono_2);
+        separadorTelefonos = (TextView) findViewById(R.id.separadorTelefonos);
         cdv_mensaje = (CardView) findViewById(R.id.cdv_mensaje);
+        estadoNegocio = (TextView) findViewById(R.id.estadoNegocio);
+        vistaMapa = (TextView) findViewById(R.id.vistaMapa);
+        Misnegocios = (ImageView) findViewById(R.id.Misnegocios);
         context = this;
         activity = this;
         //rtb_valorar.setRating(4);
@@ -162,15 +168,23 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         tipo_usuario = getIntent().getStringExtra("tipo_usuario");
 
 
-        lny_telefono.setOnClickListener(this);
+        txt_telefonoEmpresa.setOnClickListener(this);
+        txt_telefonoEmpresa2.setOnClickListener(this);
+        vistaMapa.setOnClickListener(this);
 
+        if (tipo_usuario.equals("admin")){
+            Misnegocios.setVisibility(View.VISIBLE);
+        }else{
+            Misnegocios.setVisibility(View.GONE);
+        }
 
         obtenerSaldo();
 
 
+
         cargarEmpresa();
         dc2 = new DataConnection(DetalleNegocio.this, "listarcanchasEmpresas", new Cancha(id_empresa), false);
-        new GetListadoCanchas().execute();
+        new DetalleNegocio.GetListadoCanchas().execute();
 
 
         rtb_valorar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -193,6 +207,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         // rtb_valoracion.setRating();
 
         showToolbar("Detalle de Negocio",true);
+        Misnegocios.setOnClickListener(this);
     }
     public void showToolbar(String tittle, boolean upButton){
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
@@ -213,13 +228,13 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
         return false;
     }
-    public static void obtenerSaldo(){
+    public void obtenerSaldo(){
         dc4 = new DataConnection(activity, "ObtenerSaldo", false);
         new DetalleNegocio.GetSaldo().execute();
     }
     public void cargarEmpresa(){
         dc1 = new DataConnection(DetalleNegocio.this, "mostrarDetalleEmpresa", new Empresas(id_empresa, preferences.getIdUsuarioPref()), false);
-        new GetDetalleNegocio().execute();
+        new DetalleNegocio.GetDetalleNegocio().execute();
     }
     int LAUNCH_SECOND_ACTIVITY = 1;
 
@@ -268,7 +283,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    public static class GetSaldo extends AsyncTask<Void, Void, Void> {
+    public class GetSaldo extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -300,20 +315,24 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
 
+        if (v.equals(txt_telefonoEmpresa)){
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + txt_telefonoEmpresa.getText().toString()));
+            startActivity(intent);
+        }else if(v.equals(txt_telefonoEmpresa2)){
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + txt_telefonoEmpresa2.getText().toString()));
+            startActivity(intent);
+        }else if (v.equals(vistaMapa)){
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:"+latitud+","+longitud+"?z=16&q="+latitud+","+longitud+"("+txt_direccionEmpresa.getText().toString()+")"));
+            startActivity(intent);
 
-            case R.id.lny_telefono:
-
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + txt_telefonoEmpresa.getText().toString()));
-                startActivity(intent);
-                break;
-
-
+        }else  if(v.equals(Misnegocios)){
+            getReportes();
         }
+
     }
 
-    public static class GetDetalleNegocio extends AsyncTask<Void, Void, Void> {
+    public class GetDetalleNegocio extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -340,9 +359,54 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
             if (arrayempresa.size() > 0) {
                 Glide.with(context).load(IP2 + "/" + arrayempresa.get(0).getEmpresas_foto()).into(img_fotoEmpresa);
 
+                latitud = arrayempresa.get(0).getLatitud();
+                longitud = arrayempresa.get(0).getLongitud();
+
+
                 txt_nombreEmpresa.setText(arrayempresa.get(0).getEmpresas_nombre());
                 txt_descripcionEmpresa.setText(arrayempresa.get(0).getEmpresas_descripcion());
-                txt_horario.setText(arrayempresa.get(0).getEmpresas_horario());
+
+                Date date =new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH");
+                String hora = sdf.format(date);
+                int horaactual = Integer.parseInt(hora);
+
+
+                if (arrayempresa.get(0).getDia_de_la_semana().equals("7")){
+                    txt_horario.setText(arrayempresa.get(0).getHorario_ls());
+                    horario = arrayempresa.get(0).getHorario_ls();
+                }else{
+                    txt_horario.setText(arrayempresa.get(0).getHorario_d());
+                    horario = arrayempresa.get(0).getHorario_d();
+                }
+
+
+                String separador,part1,part2,separador_part1,horaApertura,separador_part2,horaCierre;
+                String[] resultado,resultado_part1 ,resultado_part2;
+
+                separador = Pattern.quote("-");
+                resultado = txt_horario.getText().toString().split(separador);
+                part1 = resultado[0];
+                part2 = resultado[1];
+
+                separador_part1 = Pattern.quote(":");
+                resultado_part1 = part1.split(separador_part1);
+                horaApertura = resultado_part1[0];
+
+
+                separador_part2 = Pattern.quote(":");
+                resultado_part2 = part2.split(separador_part2);
+                horaCierre = resultado_part2[0];
+                horaCierre = horaCierre.trim();
+
+                if (horaactual >= Integer.parseInt(horaApertura) && horaactual < Integer.parseInt(horaCierre)){
+                    estadoNegocio.setText("ABIERTO");
+                    estadoNegocio.setBackgroundColor(Color.rgb(56,142,60));
+                }else{
+                    estadoNegocio.setText("CERRADO");
+                    estadoNegocio.setBackgroundColor(Color.RED);
+                }
+
                 txt_direccionEmpresa.setText(arrayempresa.get(0).getEmpresas_direccion());
 
                 if (arrayempresa.get(0).getArrayRatingList().size() >0){
@@ -355,21 +419,29 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                     ratingBar_promedio.setRating(0);
                 }
 
-                if (arrayempresa.get(0).getEmpresas_telefono_1().equals("")){
-                    lny_telefono.setVisibility(View.GONE);
+                //latitud =  arrayempresa.get(0).get
+
+                if (arrayempresa.get(0).getEmpresas_telefono_1().isEmpty() && !arrayempresa.get(0).getEmpresas_telefono_2().isEmpty()){
+                    txt_telefonoEmpresa.setVisibility(View.GONE);
+                    separadorTelefonos.setVisibility(View.GONE);
+                    txt_telefonoEmpresa2.setText(arrayempresa.get(0).getEmpresas_telefono_2());
+                }else if (!arrayempresa.get(0).getEmpresas_telefono_1().isEmpty() && arrayempresa.get(0).getEmpresas_telefono_2().isEmpty()){
+                    txt_telefonoEmpresa2.setVisibility(View.GONE);
+                    separadorTelefonos.setVisibility(View.GONE);
+                    txt_telefonoEmpresa.setText(arrayempresa.get(0).getEmpresas_telefono_1());
                 }else{
                     txt_telefonoEmpresa.setText(arrayempresa.get(0).getEmpresas_telefono_1());
-                }
-
-                if (arrayempresa.get(0).getEmpresas_telefono_2().equals("")){
-                    lny_telefono_2.setVisibility(View.GONE);
-                }else{
-                    txt_telefonoEmpresa_2.setText(arrayempresa.get(0).getEmpresas_telefono_2());
+                    txt_telefonoEmpresa2.setText(arrayempresa.get(0).getEmpresas_telefono_2());
                 }
 
 
 
-                horario = arrayempresa.get(0).getEmpresas_horario();
+
+
+
+
+
+
                 fecha_actual = arrayempresa.get(0).getEmpresa_cancha_fecha();
                 hora_actual = arrayempresa.get(0).getEmpresa_cancha_hora();
                 frameCarga.setVisibility(View.GONE);
@@ -390,7 +462,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
 
 
-    public static class GetListadoCanchas extends AsyncTask<Void, Void, Void> {
+    public  class GetListadoCanchas extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -433,6 +505,8 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                             intent.putExtra("precio_noche", cancha.getCancha_precioN());
                             intent.putExtra("horario", horario);
                             intent.putExtra("tipo_usuario", tipo_usuario);
+                            intent.putExtra("hora_actual", hora_actual);
+                            intent.putExtra("fecha_actual", fecha_actual);
                             intent.putExtra("saldo", saldo_cargado);
                             context.startActivity(intent);
                         }else{
@@ -456,7 +530,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public static class ActualizarCanchass extends AsyncTask<Void, Void, Void> {
+    /*public class ActualizarCanchass extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -518,39 +592,13 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public static void ActualizarCanchas() {
+    public  void ActualizarCanchas() {
         dc3 = new DataConnection(activity, "listarcanchasEmpresas", new Cancha(id_empresa), false);
         new ActualizarCanchass().execute();
-    }
+    }*/
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (tipo_usuario.equals("admin")) {
-            getMenuInflater().inflate(R.menu.menu_btn_reporte, menu);
-            //menu.getItem(0).setVisible(false);
-        }
 
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_btn_reporte:
-                getReportes();
-                return true;
-        }
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 }
 
 

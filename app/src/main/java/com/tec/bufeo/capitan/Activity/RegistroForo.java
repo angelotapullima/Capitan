@@ -150,7 +150,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
                 RegistroForope(feedTorneo);
             }
         };
-        showToolbar("Registrar un foro",true);
+        showToolbar("Crear Publicación",true);
 
         Glide.with(context)
                 .load(IP2+"/"+ preferences.getFotoUsuario())
@@ -204,15 +204,20 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
             if (!(edt_descripcionForo.getText().toString().isEmpty())&!(edt_tituloForo.getText().toString().isEmpty())) {
 
 
-                Toast.makeText(context, "" + path, Toast.LENGTH_SHORT).show();
-                uploadMultipart();
+                if (img_foroFoto.getDrawable()== null){
+                    preferences.codeAdvertencia("Debe adjuntar una imágen");
+                }else{
 
-                finish();
+                    uploadMultipart();
+
+                    finish();
+                }
+
             }else {
-                Toast.makeText(getApplicationContext(), "Llene los campos", Toast.LENGTH_LONG).show();
+                preferences.codeAdvertencia("Llene los campos");
             }
         }else if (v.equals(img_foroFoto)){
-            dialogoFotos();
+            //dialogoFotos();
         }
 
 

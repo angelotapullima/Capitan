@@ -19,7 +19,9 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,13 +53,6 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class RegistroReserva extends AppCompatActivity implements View.OnClickListener {
 
-    Reserva reserva;
-
-    Activity activity;
-    DataConnection dc,dc1;
-
-
-
 
     String h_reserva,precio_cancha,fecha,nombre_empresa,cancha_nombre,saldo,cancha_id;
     TextView hora_reserva,nombre_empresa_Reserva,nombre_cancha_reserva,fecha_reserva,saldo_bufis,precioDeLaCancha,comisionCancha,precioAPagar,txt_costo_cancha;
@@ -73,6 +68,8 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
     EditText nombre_reserva;
     RecyclerView rcv_colaboraciones;
     EditText precioDeCanchaTodo;
+    ImageView finishReserva;
+    RelativeLayout relRes;
 
 
 
@@ -106,6 +103,8 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         precioDeCanchaTodo = findViewById(R.id.precioDeCanchaTodo);
         txt_costo_cancha = findViewById(R.id.txt_costo_cancha);
         layout_costo_cancha = findViewById(R.id.layout_costo_cancha);
+        finishReserva = findViewById(R.id.finishReserva);
+        relRes = findViewById(R.id.relRes);
 
 
         Colaboraciones();
@@ -181,6 +180,9 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
                     ListEquipos.clear();
                     ListEquipos.addAll(mequipos);
                     new RegistroReserva.GetEquipos().execute();
+                    relRes.setVisibility(View.GONE);
+                }else{
+                    relRes.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -204,6 +206,13 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        finishReserva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

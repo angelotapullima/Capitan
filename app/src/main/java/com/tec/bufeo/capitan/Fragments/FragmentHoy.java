@@ -38,7 +38,9 @@ import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -197,6 +199,9 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
 
 
 
+            Date date =new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH");
+            String horas = sdf.format(date);
 
 
             separador = Pattern.quote("-");
@@ -207,6 +212,19 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
             separador_part1 = Pattern.quote(":");
             resultado_part1 = part1.split(separador_part1);
             part1_res = resultado_part1[0];
+
+            if(tipo_usuario.equals("admin")){
+                part1_res = resultado_part1[0];
+            }else{
+                if (Integer.parseInt(horas) >= Integer.parseInt(part1_res)){
+
+                    part1_res = horas;
+                }else{
+                    part1_res = resultado_part1[0];
+                }
+
+            }
+
 
 
             if (part1_res.length()<2){
@@ -330,7 +348,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
                             if (i == Integer.parseInt(neo_hora.substring(0, 1))) {
                                 reservado_am = true;
 
-                                Toast.makeText(context,"c1",Toast.LENGTH_LONG);
+                                /*Toast.makeText(context,"c1",Toast.LENGTH_LONG);*/
                                 double pago = Double.parseDouble(obj.getPago1() ) + Double.parseDouble(obj.getPago2() );
                                 if (obj.getReserva_estado().equals("1")){
                                     arrayreservados.add(new Reserva(obj.getReserva_id(), cancha_id, obj.getReserva_nombre(), fecha_actual, horaFinal,  String.valueOf(pago), "rojo" , "Reservado", precio_dia, h_reserva));
@@ -343,7 +361,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
                             }
                         }else{
                             if (i == Integer.parseInt(neo_hora.substring(0, 2))) {
-                                Toast.makeText(context,"c2",Toast.LENGTH_LONG);
+                           /*     Toast.makeText(context,"c2",Toast.LENGTH_LONG);*/
                                 reservado_am = true;
 
                                     double pago = Double.parseDouble(obj.getPago1() ) + Double.parseDouble(obj.getPago2() );
@@ -464,7 +482,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
                 monto = Double.parseDouble(monto_pagado.getText().toString());
                 String estado_pago;
                 if ( monto >  Double.parseDouble(precio_cancha_dialog.getText().toString())){
-                    Toast.makeText(context, "el monto supero el precio de la cancha", Toast.LENGTH_SHORT).show();
+                    preferences.codeAdvertencia("el monto supero el precio de la cancha");
                 }else{
                     if (monto == Double.parseDouble(precio_cancha_dialog.getText().toString())){
                         estado_pago ="1";
@@ -528,7 +546,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
 
 
                 if ( monto >  Double.parseDouble(precio_cancha_dialog.getText().toString())){
-                    Toast.makeText(context, "el monto supero el precio de la cancha", Toast.LENGTH_SHORT).show();
+                    preferences.codeAdvertencia("el monto supero el precio de la cancha");
                 }else{
 
                     registrarReservaNaranjaAdmin(monto_restante,id);
@@ -577,11 +595,11 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
                 Log.e("registrar_reserva", "onResponse: "+response );
 
                 if (response.equals("1")){
-                    Toast.makeText(activity, "Registro Completo", Toast.LENGTH_SHORT).show();
+                    preferences.toasVerde("Registro Completo");
                     onRefresh();
                     dialog_carga.dismiss();
                 }else{
-                    Toast.makeText(activity, "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();
+                    preferences.toasRojo("Fallo al registrar la reserva","intentelo más tarde");
                     dialog_carga.dismiss();
                 }
 
@@ -639,11 +657,11 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
                 Log.e("registrar_reserva", "onResponse: "+response );
 
                 if (response.equals("1")){
-                    Toast.makeText(activity, "Registro Completo", Toast.LENGTH_SHORT).show();
+                    preferences.toasVerde("Registro Completo");
                     onRefresh();
                     dialog_carga.dismiss();
                 }else{
-                    Toast.makeText(activity, "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();
+                    preferences.toasRojo("Fallo al registrar la reserva","intentelo más tarde");
                     dialog_carga.dismiss();
                 }
 

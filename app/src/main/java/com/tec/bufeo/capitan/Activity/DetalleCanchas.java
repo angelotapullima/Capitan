@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tec.bufeo.capitan.Fragments.FragmentHoy;
 import com.tec.bufeo.capitan.Fragments.FragmentMañana;
@@ -27,37 +27,33 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.tec.bufeo.capitan.Activity.DetalleNegocio.context;
-import static com.tec.bufeo.capitan.Activity.DetalleNegocio.fecha_actual;
-import static com.tec.bufeo.capitan.Activity.DetalleNegocio.hora_actual;
-import static com.tec.bufeo.capitan.Activity.DetalleNegocio.horario;
 
 public class DetalleCanchas extends AppCompatActivity implements View.OnClickListener {
 
-    public static  TabLayout tabLayout;
+    public  TabLayout tabLayout;
     DataConnection dc;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
-    public static  String cancha_id, saldo,precio_dia,precio_noche,
-            cancha_nombre,horario,fecha_actual_mas_uno, fecha_actual_mas_dos ,nombre_empresa,tipo_usuario;
+    public  String cancha_id, saldo,precio_dia,precio_noche,
+            cancha_nombre,horario,fecha_actual_mas_uno, fecha_actual_mas_dos ,nombre_empresa,tipo_usuario,fecha_actual,hora_actual;
     public Date date;
-    private FloatingActionButton fab_verReportes;
     TextView saldo_contable;
     ImageView arrow_back;
+    LinearLayout lbufis;
 
 
-    public static boolean existeHoy = true;
-    public static boolean existeMñn = false;
-    public static boolean existePasMñn = false;
-    public  static String[] tituloIds = new String[3];
-    private  static int[] imgIds = {
+    public boolean existeHoy = true;
+    public boolean existeMñn = false;
+    public boolean existePasMñn = false;
+    public  String[] tituloIds = new String[3];
+    private   int[] imgIds = {
 
             R.drawable.calendar_blank,
             R.drawable.calendar,
             R.drawable.calendar_range
     };
 
-    private  static int[] imgBordeIds = {
+    private   int[] imgBordeIds = {
             R.drawable.calendar_blank_outline,
             R.drawable.calendar_outline,
             R.drawable.calendar_range_outline
@@ -65,7 +61,7 @@ public class DetalleCanchas extends AppCompatActivity implements View.OnClickLis
 
 
 
-    public static DetalleCanchas newInstance() {
+    public  DetalleCanchas newInstance() {
         return new DetalleCanchas();
     }
 
@@ -80,6 +76,7 @@ public class DetalleCanchas extends AppCompatActivity implements View.OnClickLis
 
         saldo_contable= findViewById(R.id.saldo_contable);
         arrow_back= findViewById(R.id.arrow_back);
+        lbufis= findViewById(R.id.lbufis);
         mViewPager = (ViewPager)findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         cancha_id = getIntent().getStringExtra("id_cancha");
@@ -90,8 +87,13 @@ public class DetalleCanchas extends AppCompatActivity implements View.OnClickLis
         horario = getIntent().getStringExtra("horario");
         tipo_usuario = getIntent().getStringExtra("tipo_usuario");
         saldo = getIntent().getStringExtra("saldo");
+        fecha_actual = getIntent().getStringExtra("fecha_actual");
+        hora_actual = getIntent().getStringExtra("hora_actual");
 
 
+        if (tipo_usuario.equals("admin")){
+            lbufis.setVisibility(View.GONE);
+        }
         saldo_contable.setText(saldo);
         String dtStart = fecha_actual;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -122,8 +124,8 @@ public class DetalleCanchas extends AppCompatActivity implements View.OnClickLis
         SimpleDateFormat format4 = new SimpleDateFormat("dd-MM-yyyy");
         fecha_actual_mas_dos = format4.format(calendar2.getTime());
 
-        Toast.makeText(context,"f"+ fecha_actual_mas_uno,Toast.LENGTH_LONG).show();
-        Toast.makeText(context,"f2"+ fecha_actual_mas_dos,Toast.LENGTH_LONG).show();
+        /*Toast.makeText(context,"f"+ fecha_actual_mas_uno,Toast.LENGTH_LONG).show();
+        Toast.makeText(context,"f2"+ fecha_actual_mas_dos,Toast.LENGTH_LONG).show();*/
 
         tituloIds[0] = "HOY";
         tituloIds[1] = fecha_actual_mas_uno;

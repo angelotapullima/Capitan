@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity;
+package com.tec.bufeo.capitan.Activity.Negocios.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,10 +16,10 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoEmpresas;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
@@ -28,7 +28,7 @@ import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.util.ArrayList;
 
-public class MisNegocios extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class MisNegociosActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     public  String empresa_id;
     AdaptadorListadoEmpresas adaptadorEmpresas;
@@ -47,7 +47,7 @@ public class MisNegocios extends AppCompatActivity implements SwipeRefreshLayout
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mis_negocios);
+        setContentView(R.layout.activity_mis_negocios_activity);
 
         preferences= new Preferences(this);
         rcv_mis_empresas = (RecyclerView) findViewById(R.id.rcv_mis_empresas);

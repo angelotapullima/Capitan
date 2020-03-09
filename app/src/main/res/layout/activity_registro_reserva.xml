@@ -1,18 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center"
     android:orientation="vertical"
     android:background="@color/colorCeniza"
     tools:context=".Activity.RegistroReserva.RegistroReserva">
 
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/tops"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/finishReserva"
+            android:src="@drawable/ic_arrow_back"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:tint="#fff"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Reservar Cancha"
+            android:textStyle="bold"
+            android:textSize="19sp"
+            android:textColor="#fff"/>
+
+
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_below="@+id/tops"
         android:layout_height="wrap_content">
 
 
@@ -27,22 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/colorPrimary"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Reservar Cancha"
-                        android:textStyle="bold"
-                        android:textSize="19sp"
-                        android:textColor="#fff"/>
 
-
-                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -64,14 +74,15 @@
                             android:layout_margin="2dp"
                             android:textStyle="bold"
                             android:textSize="21sp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" - "
-                            android:layout_gravity="center"
-                            android:layout_margin="2dp"
-                            android:textStyle="bold"
-                            android:textSize="21sp"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -501,5 +512,19 @@
     </ScrollView>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#FFF"
+        android:id="@+id/relRes"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Usted no cuenta con Equipos Registrados, debe crear o pertenecer al menos a un equipo para poder generar una reserva"
+            />
 
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
