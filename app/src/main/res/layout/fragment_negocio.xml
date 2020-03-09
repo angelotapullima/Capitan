@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".Fragments.FragmentNegocio">
+    tools:context=".Activity.Negocios.Views.FragmentNegocio">
 
 
 
@@ -54,37 +54,7 @@
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:layout_anchor="@id/rcv_empresas"
-        app:layout_anchorGravity="center_horizontal">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cdv_mensaje"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="65dp">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_margin="10dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="No hay empresas disponibles"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-    </FrameLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_gravity="center"

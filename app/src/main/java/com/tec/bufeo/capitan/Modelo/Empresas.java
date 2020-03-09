@@ -18,14 +18,11 @@ public class Empresas {
     private String empresas_horario;
     private String empresas_telefono_1;
     private String empresas_telefono_2;
-    private String empresa_cancha_hora;
-    private String empresa_cancha_fecha;
     private String empresa_cancha_fecha_reporte;
     private String cancha_precioD;
     private String cancha_precioN;
     private String horario_ls;
     private String horario_d;
-    private String dia_de_la_semana;
     private String precio;
     private String latitud;
     private String longitud;
@@ -56,23 +53,7 @@ public class Empresas {
         this.usuario_id = usuario_id;
     }
 
-    public Empresas(String empresas_id, String usuario_id, String empresas_nombre, String empresas_foto, String empresas_descripcion, String empresas_direccion, String empresas_valoracion, String empresas_estado, String ubigeo_id, String empresas_horario, String empresas_telefono_1,String empresas_telefono_2,  String empresa_cancha_hora, String empresa_cancha_fecha, String empresa_cancha_fecha_reporte) {
-        this.empresas_id = empresas_id;
-        this.usuario_id = usuario_id;
-        this.empresas_nombre = empresas_nombre;
-        this.empresas_foto = empresas_foto;
-        this.empresas_descripcion = empresas_descripcion;
-        this.empresas_direccion = empresas_direccion;
-        this.empresas_valoracion = empresas_valoracion;
-        this.empresas_estado = empresas_estado;
-        this.ubigeo_id = ubigeo_id;
-        this.empresas_horario = empresas_horario;
-        this.empresas_telefono_1 = empresas_telefono_1;
-        this.empresas_telefono_2 = empresas_telefono_2;
-        this.empresa_cancha_hora = empresa_cancha_hora;
-        this.empresa_cancha_fecha = empresa_cancha_fecha;
-        this.empresa_cancha_fecha_reporte = empresa_cancha_fecha_reporte;
-    }
+
 
     public List<ArrayRating> getArrayRatingList() {
         return arrayRatingList;
@@ -178,21 +159,7 @@ public class Empresas {
         this.empresas_telefono_2 = empresas_telefono_2;
     }
 
-    public String getEmpresa_cancha_hora() {
-        return empresa_cancha_hora;
-    }
 
-    public void setEmpresa_cancha_hora(String empresa_cancha_hora) {
-        this.empresa_cancha_hora = empresa_cancha_hora;
-    }
-
-    public String getEmpresa_cancha_fecha() {
-        return empresa_cancha_fecha;
-    }
-
-    public void setEmpresa_cancha_fecha(String empresa_cancha_fecha) {
-        this.empresa_cancha_fecha = empresa_cancha_fecha;
-    }
 
     public String getEmpresa_cancha_fecha_reporte() {
         return empresa_cancha_fecha_reporte;
@@ -292,13 +259,7 @@ public class Empresas {
         }
     }
 
-    public String getDia_de_la_semana() {
-        return dia_de_la_semana;
-    }
 
-    public void setDia_de_la_semana(String dia_de_la_semana) {
-        this.dia_de_la_semana = dia_de_la_semana;
-    }
 
     public String getLatitud() {
         return latitud;

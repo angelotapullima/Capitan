@@ -13,16 +13,10 @@ import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.Activity.MenuPrincipal;
 import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscar;
-import com.tec.bufeo.capitan.Fragments.FragmentHoy;
-import com.tec.bufeo.capitan.Fragments.FragmentMañana;
-import com.tec.bufeo.capitan.Fragments.FragmentNegocio;
-import com.tec.bufeo.capitan.Fragments.FragmentPasMañana;
 import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscarFechas;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
@@ -50,9 +44,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.regex.Pattern;
 
 /*import static com.tec.bufeo.capitan.Activity.DetalleCanchas.tabLayout;
@@ -962,10 +954,10 @@ public class DataConnection extends AppCompatActivity {
 
                             FragmentBuscar.ChildItem child = new FragmentBuscar.ChildItem();
 
-                            Calendar c = Calendar.getInstance();
-                            int dia=c.get(Calendar.DAY_OF_WEEK);
+                            SimpleDateFormat formatex = new SimpleDateFormat("E");
+                            String dia = formatex.format(date);
 
-                            if (dia ==0){
+                            if (dia.equals("dom.")){
                                 l_s = jsonNodehora.optString("empresa_horario_d") ;
                             }else{
                                 l_s = jsonNodehora.optString("empresa_horario_ls") ;
@@ -1023,6 +1015,7 @@ public class DataConnection extends AppCompatActivity {
                     String neo;
 
                     String fecha  = reserva.getReserva_fecha();
+
                     // Populate our list with groups and it's children
                     for(int i = 0; i < count-1;i++) {
 
@@ -1073,7 +1066,7 @@ public class DataConnection extends AppCompatActivity {
                             String dia = formatex.format(convertido);
 
 
-                            if (dia.equals("dom")){
+                            if (dia.equals("dom.")){
                                 l_s = jsonNodehora.optString("empresa_horario_d") ;
                             }else{
                                 l_s = jsonNodehora.optString("empresa_horario_ls") ;
@@ -1139,7 +1132,7 @@ public class DataConnection extends AppCompatActivity {
 
                         String dia = formatex.format(convertido);
 
-                        if (dia.equals("dom")){
+                        if (dia.equals("dom.")){
                             l_s = jsonNode.optString("empresa_horario_d") ;
                         }else{
                             l_s = jsonNode.optString("empresa_horario_ls") ;
@@ -1458,9 +1451,6 @@ public class DataConnection extends AppCompatActivity {
                         obj.setUbigeo_id(jsonNode.optString("distrito"));
                         obj.setHorario_ls(jsonNode.optString("horario_ls"));
                         obj.setHorario_d(jsonNode.optString("horario_d"));
-                        obj.setEmpresa_cancha_fecha(jsonNode.optString("fecha_actual"));
-                        obj.setEmpresa_cancha_hora(jsonNode.optString("hora_actual"));
-                        obj.setDia_de_la_semana(jsonNode.optString("dia"));
                         obj.setEmpresas_promedio(jsonNode.optString("promedio"));
                         obj.setEmpresas_conteo(jsonNode.optString("conteo"));
                         obj.setLatitud(jsonNode.optString("latitud"));

@@ -35,7 +35,7 @@ import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 import com.tec.bufeo.capitan.Fragments.FragmentTorneoPadre;
 import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscarPadre;
 import com.tec.bufeo.capitan.Fragments.FragmentInfo;
-import com.tec.bufeo.capitan.Fragments.FragmentNegocio;
+import com.tec.bufeo.capitan.Activity.Negocios.Views.FragmentNegocio;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;

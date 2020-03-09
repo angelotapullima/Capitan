@@ -49,7 +49,7 @@
         <activity android:name=".Activity.RegistroReserva.ReservaEnBusqueda"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".Activity.Negocios.Views.MisNegociosActivity"
+            android:name=".Activity.MisNegociosActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos"

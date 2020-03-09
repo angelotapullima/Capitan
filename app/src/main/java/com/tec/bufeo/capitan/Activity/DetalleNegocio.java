@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +40,10 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.tec.bufeo.capitan.Activity.EstadisticasEmpresas.EstadisticasEmpresas;
+import com.tec.bufeo.capitan.Activity.Negocios.Model.Canchas;
+import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
+import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.CanchasViewModel;
+import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.NegociosViewModel;
 import com.tec.bufeo.capitan.Activity.ratings.BarLabels;
 import com.tec.bufeo.capitan.Activity.ratings.RatingReviews;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoCanchaEmpresa;
@@ -49,7 +55,9 @@ import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -74,18 +82,19 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     public Context context;
     public Activity activity;
     CoordinatorLayout cordinator;
-    ArrayList<Cancha> arraycanchaactual;
     Preferences preferences;
-    String id_empresa, tipo_usuario,latitud,longitud;
+    String id_empresa, tipo_usuario,latitud ="",longitud="";
     FrameLayout frameCarga,frameCarga2;
     DataConnection  dc1, dc2,dc4;
     /*static ProgressBar progressbar, progressbarcanchas;*/
     public String fecha_actual, hora_actual, cancha_id, horario;
     String saldo_cargado;
-    public ArrayList<Empresas> arrayempresa;
     public ArrayList<Cancha> arraycancha;
     ArrayList<String> saldo;
 
+
+    NegociosViewModel negociosViewModel;
+    CanchasViewModel canchasViewModel;
     public void getReportes() {
         Intent intent = new Intent(this, EstadisticasEmpresas.class);
         intent.putExtra("id_empresa",id_empresa);
@@ -98,10 +107,20 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_negocio);
 
+        canchasViewModel = ViewModelProviders.of(this).get(CanchasViewModel.class);
+        negociosViewModel = ViewModelProviders.of(this).get(NegociosViewModel.class);
         preferences= new Preferences(this);
-        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);*/
 
+        id_empresa = getIntent().getExtras().getString("id_empresa");
+
+        initViews();
+        setAdapter();
+        cargarvista();
+
+
+    }
+
+    private void initViews() {
         img_fotoEmpresa = (ImageView) findViewById(R.id.img_fotoEmpresa);
 
         cordinator=(CoordinatorLayout)findViewById(R.id.cordinator);
@@ -134,19 +153,14 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         rating_float = (TextView) findViewById(R.id.rating_float);
         ratingBar_promedio = (RatingBar) findViewById(R.id.ratingBar_promedio);
         conteo = (TextView) findViewById(R.id.conteo);
-        /*txt_promedio = (TextView) findViewById(R.id.txt_promedio);
-        txt_conteo = (TextView) findViewById(R.id.txt_conteo);*/
         txt_telefonoEmpresa = (TextView) findViewById(R.id.txt_telefonoEmpresa);
         txt_descripcionEmpresa = (TextView) findViewById(R.id.txt_descripcionEmpresa);
         txt_horario = (TextView) findViewById(R.id.txt_horario);
         txt_direccionEmpresa = (TextView) findViewById(R.id.txt_direccionEmpresa);
-        /*rtb_valoracion = (RatingBar) findViewById(R.id.rtb_valoracion);*/
         rtb_valorar = (RatingBar) findViewById(R.id.rtb_valorar);
         cdv_detalleEmpresa = (CardView) findViewById(R.id.cdv_detalleEmpresa);
         frameCarga = (FrameLayout) findViewById(R.id.frameCarga);
         frameCarga2 = (FrameLayout) findViewById(R.id.frameCarga2);
-        //progressbar = (ProgressBar) findViewById(R.id.progressbar);
-        //progressbarcanchas = (ProgressBar) findViewById(R.id.progressbarCanchas);
         rcv_canchas = (RecyclerView) findViewById(R.id.rcv_canchas);
         abl_detalleEmpresa = (AppBarLayout) findViewById(R.id.abl_detalleEmpresa);
         lny_telefono = (LinearLayout) findViewById(R.id.lny_telefono);
@@ -182,9 +196,9 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
 
 
-        cargarEmpresa();
+       /* *//*cargarEmpresa();*//*
         dc2 = new DataConnection(DetalleNegocio.this, "listarcanchasEmpresas", new Cancha(id_empresa), false);
-        new DetalleNegocio.GetListadoCanchas().execute();
+        new DetalleNegocio.GetListadoCanchas().execute();*/
 
 
         rtb_valorar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -209,6 +223,172 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         showToolbar("Detalle de Negocio",true);
         Misnegocios.setOnClickListener(this);
     }
+
+    private void setAdapter() {
+
+        adaptadorListadoCanchaEmpresa = new AdaptadorListadoCanchaEmpresa(this, new AdaptadorListadoCanchaEmpresa.OnItemClickListener() {
+            @Override
+            public void onItemClick(Canchas cancha, String tipo, int position) {
+                if (tipo.equals("img_fotoCancha")){
+                    if (!saldo_cargado.equals("") && !saldo_cargado.equals(null) ) {
+
+                        if (!saldo_cargado.equals("vacio")){
+                            Intent intent = new Intent(context, DetalleCanchas.class);
+                            intent.putExtra("id_cancha", cancha.getCancha_id());
+                            intent.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
+                            intent.putExtra("nombre_cancha", cancha.getNombre_cancha());
+                            intent.putExtra("precio_dia", cancha.getPrecioD());
+                            intent.putExtra("precio_noche", cancha.getPrecioN());
+                            intent.putExtra("horario", horario);
+                            intent.putExtra("tipo_usuario", tipo_usuario);
+                            intent.putExtra("hora_actual", hora_actual);
+                            intent.putExtra("fecha_actual", fecha_actual);
+                            intent.putExtra("saldo", saldo_cargado);
+                            context.startActivity(intent);
+                        }else{
+                            obtenerSaldo();
+                        }
+
+                    }
+                }
+            }
+        });
+
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(context, 1);
+        linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
+        rcv_canchas.setLayoutManager(linearLayoutManager);
+        rcv_canchas.setAdapter(adaptadorListadoCanchaEmpresa);
+    }
+
+    private void cargarvista() {
+        negociosViewModel.getAllDetalle(id_empresa).observe(this, new Observer<List<Negocios>>() {
+            @Override
+            public void onChanged(List<Negocios> negocios) {
+                if (negocios.size()>0){
+                    Glide.with(context).load(IP2 + "/" + negocios.get(0).getFoto_empresa()).into(img_fotoEmpresa);
+
+                   /* latitud = negocios.get(0).getLatitud();
+                    longitud = arrayempresa.get(0).getLongitud();*/
+
+
+                    txt_nombreEmpresa.setText(negocios.get(0).getNombre_empresa());
+                    txt_descripcionEmpresa.setText(negocios.get(0).getDescripcion_empresa());
+
+                    Date date =new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH");
+                    String hora = sdf.format(date);
+                    int horaactual = Integer.parseInt(hora);
+
+                    SimpleDateFormat formatex = new SimpleDateFormat("E");
+                    String dia = formatex.format(date);
+
+                    //dia  = variable creada para identificar el día de la semana y ver que horario usar
+
+                    if (dia.equals("dom.")){
+                        txt_horario.setText(negocios.get(0).getHorario_d_empresa());
+                        horario = negocios.get(0).getHorario_d_empresa();
+                    }else{
+                        txt_horario.setText(negocios.get(0).getHorario_ls_empresa());
+                        horario = negocios.get(0).getHorario_ls_empresa();
+
+                    }
+
+
+                    String separador,part1,part2,separador_part1,horaApertura,separador_part2,horaCierre;
+                    String[] resultado,resultado_part1 ,resultado_part2;
+
+                    separador = Pattern.quote("-");
+                    resultado = txt_horario.getText().toString().split(separador);
+                    part1 = resultado[0];
+                    part2 = resultado[1];
+
+                    separador_part1 = Pattern.quote(":");
+                    resultado_part1 = part1.split(separador_part1);
+                    horaApertura = resultado_part1[0];
+
+
+                    separador_part2 = Pattern.quote(":");
+                    resultado_part2 = part2.split(separador_part2);
+                    horaCierre = resultado_part2[0];
+                    horaCierre = horaCierre.trim();
+
+                    if (horaactual >= Integer.parseInt(horaApertura) && horaactual < Integer.parseInt(horaCierre)){
+                        estadoNegocio.setText("ABIERTO");
+                        estadoNegocio.setBackgroundColor(Color.rgb(56,142,60));
+                    }else{
+                        estadoNegocio.setText("CERRADO");
+                        estadoNegocio.setBackgroundColor(Color.RED);
+                    }
+
+                    txt_direccionEmpresa.setText(negocios.get(0).getDireccion_empresa());
+
+                    /*if (negocios.get(0).getArrayRatingList().size() >0){
+                        rating_float.setText(arrayempresa.get(0).getArrayRatingList().get(0).getRatingfloat());
+                        conteo.setText(arrayempresa.get(0).getArrayRatingList().get(0).getConteo());
+                        ratingBar_promedio.setRating(Float.parseFloat(arrayempresa.get(0).getArrayRatingList().get(0).getRatingfloat()));
+                    }else{
+                        rating_float.setText("0");
+                        conteo.setText("0");
+                        ratingBar_promedio.setRating(0);
+                    }*/
+                    if (negocios.get(0).getRating_conteo().isEmpty()){
+                        rating_float.setText(negocios.get(0).getRating_empresa_valor());
+                        conteo.setText(negocios.get(0).getRating_conteo());
+                        ratingBar_promedio.setRating(Float.parseFloat(negocios.get(0).getRating_empresa_valor()));
+                    }else{
+                        rating_float.setText("0");
+                        conteo.setText("0");
+                        ratingBar_promedio.setRating(0);
+                    }
+
+                    //latitud =  arrayempresa.get(0).get
+
+                    if (negocios.get(0).getTelefono_1_empresa().isEmpty() && !negocios.get(0).getTelefono_2_empresa().isEmpty()){
+                        txt_telefonoEmpresa.setVisibility(View.GONE);
+                        separadorTelefonos.setVisibility(View.GONE);
+                        txt_telefonoEmpresa2.setText(negocios.get(0).getTelefono_2_empresa());
+                    }else if (!negocios.get(0).getTelefono_1_empresa().isEmpty() && negocios.get(0).getTelefono_2_empresa().isEmpty()){
+                        txt_telefonoEmpresa2.setVisibility(View.GONE);
+                        separadorTelefonos.setVisibility(View.GONE);
+                        txt_telefonoEmpresa.setText(negocios.get(0).getTelefono_1_empresa());
+                    }else{
+                        txt_telefonoEmpresa.setText(negocios.get(0).getTelefono_1_empresa());
+                        txt_telefonoEmpresa2.setText(negocios.get(0).getTelefono_2_empresa());
+                    }
+
+
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("HH:hh");
+                    String horaActual = sdf2.format(date);
+
+                    SimpleDateFormat fechex = new SimpleDateFormat("yyyy-MM-dd");
+                    String fechaActual = fechex.format(date);
+
+
+                    fecha_actual = fechaActual;
+                    hora_actual = horaActual;
+                    frameCarga.setVisibility(View.GONE);
+                    frameCarga2.setVisibility(View.GONE);
+                    //progressbar.setVisibility(ProgressBar.INVISIBLE);
+
+
+                    abl_detalleEmpresa.setVisibility(View.VISIBLE);
+                    cdv_detalleEmpresa.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        canchasViewModel.getCanchas(id_empresa,preferences.getToken()).observe(this, new Observer<List<Canchas>>() {
+            @Override
+            public void onChanged(List<Canchas> canchas) {
+                if (canchas.size()>0){
+                    adaptadorListadoCanchaEmpresa.setWords(canchas);
+                }
+
+                //adaptadorListadoCanchaEmpresa
+            }
+        });
+    }
+
     public void showToolbar(String tittle, boolean upButton){
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
         toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
@@ -232,10 +412,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         dc4 = new DataConnection(activity, "ObtenerSaldo", false);
         new DetalleNegocio.GetSaldo().execute();
     }
-    public void cargarEmpresa(){
-        dc1 = new DataConnection(DetalleNegocio.this, "mostrarDetalleEmpresa", new Empresas(id_empresa, preferences.getIdUsuarioPref()), false);
-        new DetalleNegocio.GetDetalleNegocio().execute();
-    }
+
     int LAUNCH_SECOND_ACTIVITY = 1;
 
 
@@ -332,270 +509,6 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    public class GetDetalleNegocio extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //abl_detalleEmpresa.setVisibility(View.INVISIBLE);
-            cdv_detalleEmpresa.setVisibility(View.INVISIBLE);
-
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            arrayempresa = dc1.getListadoEmpresas();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            //Toast.makeText(getApplicationContext(),"H:"+arrayempresa.get(0).getEmpresa_cancha_hora(),Toast.LENGTH_SHORT).show();
-
-
-            if (arrayempresa.size() > 0) {
-                Glide.with(context).load(IP2 + "/" + arrayempresa.get(0).getEmpresas_foto()).into(img_fotoEmpresa);
-
-                latitud = arrayempresa.get(0).getLatitud();
-                longitud = arrayempresa.get(0).getLongitud();
-
-
-                txt_nombreEmpresa.setText(arrayempresa.get(0).getEmpresas_nombre());
-                txt_descripcionEmpresa.setText(arrayempresa.get(0).getEmpresas_descripcion());
-
-                Date date =new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("HH");
-                String hora = sdf.format(date);
-                int horaactual = Integer.parseInt(hora);
-
-
-                if (arrayempresa.get(0).getDia_de_la_semana().equals("7")){
-                    txt_horario.setText(arrayempresa.get(0).getHorario_ls());
-                    horario = arrayempresa.get(0).getHorario_ls();
-                }else{
-                    txt_horario.setText(arrayempresa.get(0).getHorario_d());
-                    horario = arrayempresa.get(0).getHorario_d();
-                }
-
-
-                String separador,part1,part2,separador_part1,horaApertura,separador_part2,horaCierre;
-                String[] resultado,resultado_part1 ,resultado_part2;
-
-                separador = Pattern.quote("-");
-                resultado = txt_horario.getText().toString().split(separador);
-                part1 = resultado[0];
-                part2 = resultado[1];
-
-                separador_part1 = Pattern.quote(":");
-                resultado_part1 = part1.split(separador_part1);
-                horaApertura = resultado_part1[0];
-
-
-                separador_part2 = Pattern.quote(":");
-                resultado_part2 = part2.split(separador_part2);
-                horaCierre = resultado_part2[0];
-                horaCierre = horaCierre.trim();
-
-                if (horaactual >= Integer.parseInt(horaApertura) && horaactual < Integer.parseInt(horaCierre)){
-                    estadoNegocio.setText("ABIERTO");
-                    estadoNegocio.setBackgroundColor(Color.rgb(56,142,60));
-                }else{
-                    estadoNegocio.setText("CERRADO");
-                    estadoNegocio.setBackgroundColor(Color.RED);
-                }
-
-                txt_direccionEmpresa.setText(arrayempresa.get(0).getEmpresas_direccion());
-
-                if (arrayempresa.get(0).getArrayRatingList().size() >0){
-                    rating_float.setText(arrayempresa.get(0).getArrayRatingList().get(0).getRatingfloat());
-                    conteo.setText(arrayempresa.get(0).getArrayRatingList().get(0).getConteo());
-                    ratingBar_promedio.setRating(Float.parseFloat(arrayempresa.get(0).getArrayRatingList().get(0).getRatingfloat()));
-                }else{
-                    rating_float.setText("0");
-                    conteo.setText("0");
-                    ratingBar_promedio.setRating(0);
-                }
-
-                //latitud =  arrayempresa.get(0).get
-
-                if (arrayempresa.get(0).getEmpresas_telefono_1().isEmpty() && !arrayempresa.get(0).getEmpresas_telefono_2().isEmpty()){
-                    txt_telefonoEmpresa.setVisibility(View.GONE);
-                    separadorTelefonos.setVisibility(View.GONE);
-                    txt_telefonoEmpresa2.setText(arrayempresa.get(0).getEmpresas_telefono_2());
-                }else if (!arrayempresa.get(0).getEmpresas_telefono_1().isEmpty() && arrayempresa.get(0).getEmpresas_telefono_2().isEmpty()){
-                    txt_telefonoEmpresa2.setVisibility(View.GONE);
-                    separadorTelefonos.setVisibility(View.GONE);
-                    txt_telefonoEmpresa.setText(arrayempresa.get(0).getEmpresas_telefono_1());
-                }else{
-                    txt_telefonoEmpresa.setText(arrayempresa.get(0).getEmpresas_telefono_1());
-                    txt_telefonoEmpresa2.setText(arrayempresa.get(0).getEmpresas_telefono_2());
-                }
-
-
-
-
-
-
-
-
-
-                fecha_actual = arrayempresa.get(0).getEmpresa_cancha_fecha();
-                hora_actual = arrayempresa.get(0).getEmpresa_cancha_hora();
-                frameCarga.setVisibility(View.GONE);
-                frameCarga2.setVisibility(View.GONE);
-                //progressbar.setVisibility(ProgressBar.INVISIBLE);
-
-
-                abl_detalleEmpresa.setVisibility(View.VISIBLE);
-                cdv_detalleEmpresa.setVisibility(View.VISIBLE);
-
-
-            }
-
-
-        }
-    }
-
-
-
-
-    public  class GetListadoCanchas extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            arraycancha = dc2.getListadoCanchas();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-
-            //progressbarcanchas.setVisibility(ProgressBar.INVISIBLE);
-
-            GridLayoutManager linearLayoutManager = new GridLayoutManager(context, 1);
-            linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
-            rcv_canchas.setLayoutManager(linearLayoutManager);
-
-            adaptadorListadoCanchaEmpresa = new AdaptadorListadoCanchaEmpresa(context, arraycancha, R.layout.rcv_item_card_canchas, new AdaptadorListadoCanchaEmpresa.OnItemClickListener() {
-                @Override
-                public void onItemClick(Cancha cancha, final int position) {
-
-                    cancha_id = cancha.getCancha_id().toString();
-                    Toast.makeText(context, "ID cancha :" + cancha_id, Toast.LENGTH_SHORT).show();
-
-                    if (!saldo_cargado.equals("") && !saldo_cargado.equals(null) ) {
-
-                        if (!saldo_cargado.equals("vacio")){
-                            Intent intent = new Intent(context, DetalleCanchas.class);
-                            intent.putExtra("id_cancha", cancha.getCancha_id());
-                            intent.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
-                            intent.putExtra("nombre_cancha", cancha.getCancha_nombre());
-                            intent.putExtra("precio_dia", cancha.getCancha_precioD());
-                            intent.putExtra("precio_noche", cancha.getCancha_precioN());
-                            intent.putExtra("horario", horario);
-                            intent.putExtra("tipo_usuario", tipo_usuario);
-                            intent.putExtra("hora_actual", hora_actual);
-                            intent.putExtra("fecha_actual", fecha_actual);
-                            intent.putExtra("saldo", saldo_cargado);
-                            context.startActivity(intent);
-                        }else{
-                            obtenerSaldo();
-                        }
-
-                    }
-
-
-                }
-            });
-            rcv_canchas.setAdapter(adaptadorListadoCanchaEmpresa);
-
-
-            if (arraycancha.size() > 0) {
-                cdv_mensaje.setVisibility(View.INVISIBLE);
-            } else {
-                cdv_mensaje.setVisibility(View.VISIBLE);
-            }
-
-        }
-    }
-
-    /*public class ActualizarCanchass extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            frameCarga.setVisibility(ProgressBar.VISIBLE);
-            frameCarga2.setVisibility(ProgressBar.VISIBLE);
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            arraycanchaactual = dc3.getListadoCanchas();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-
-            GridLayoutManager linearLayoutManager = new GridLayoutManager(context, 1);
-            linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
-            rcv_canchas.setLayoutManager(linearLayoutManager);
-
-            adaptadorListadoCanchaEmpresa = new AdaptadorListadoCanchaEmpresa(context, arraycanchaactual, R.layout.rcv_item_card_canchas, new AdaptadorListadoCanchaEmpresa.OnItemClickListener() {
-                @Override
-                public void onItemClick(Cancha cancha, final int position) {
-
-                    if (!saldo_cargado.equals("") && !saldo_cargado.equals(null)) {
-                        Intent intent = new Intent(context, DetalleCanchas.class);
-                        intent.putExtra("id_cancha", cancha.getCancha_id());
-                        intent.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
-                        intent.putExtra("nombre_cancha", cancha.getCancha_nombre());
-                        intent.putExtra("precio_dia", cancha.getCancha_precioD());
-                        intent.putExtra("precio_noche", cancha.getCancha_precioN());
-                        intent.putExtra("horario", horario);
-                        intent.putExtra("tipo_usuario", tipo_usuario);
-                        intent.putExtra("saldo", saldo_cargado);
-                        context.startActivity(intent);
-                    }
-
-
-                }
-
-            });
-
-            frameCarga.setVisibility(View.GONE);
-            frameCarga2.setVisibility(View.GONE);
-            //progressbarcanchas.setVisibility(ProgressBar.INVISIBLE);
-
-            rcv_canchas.setAdapter(adaptadorListadoCanchaEmpresa);
-
-
-            if (arraycanchaactual.size() > 0) {
-                cdv_mensaje.setVisibility(View.INVISIBLE);
-            } else {
-                cdv_mensaje.setVisibility(View.VISIBLE);
-            }
-
-        }
-    }
-
-    public  void ActualizarCanchas() {
-        dc3 = new DataConnection(activity, "listarcanchasEmpresas", new Cancha(id_empresa), false);
-        new ActualizarCanchass().execute();
-    }*/
 
 
 

@@ -9,29 +9,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tec.bufeo.capitan.Activity.Negocios.Model.Canchas;
 import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorListadoCanchaEmpresa extends RecyclerView.Adapter<AdaptadorListadoCanchaEmpresa.canchaEmpresasViewHolder> {
 
-    private ArrayList<Cancha> array;
-    private int layoutpadre;
-    Context context;
-    Cancha obj;
+    UniversalImageLoader universalImageLoader;
+    Context ctx;
+    Canchas current;
     private  OnItemClickListener listener;
+    Preferences preferencesUser;
 
-    public AdaptadorListadoCanchaEmpresa() {
-    }
 
-    public AdaptadorListadoCanchaEmpresa(Context context, ArrayList<Cancha> array, int layoutpadre, OnItemClickListener listener) {
-        this.array = array;
-        this.layoutpadre = layoutpadre;
-        this.context = context;
+    public AdaptadorListadoCanchaEmpresa(Context context, OnItemClickListener listener) {
+
+        this.ctx = context;
         this.listener = listener;
+        mInflater = LayoutInflater.from(context);
+        universalImageLoader = new UniversalImageLoader(context);
+        preferencesUser = new Preferences(context);
     }
 
     public class canchaEmpresasViewHolder extends RecyclerView.ViewHolder{
@@ -53,46 +58,67 @@ public class AdaptadorListadoCanchaEmpresa extends RecyclerView.Adapter<Adaptado
 
         }
 
-        public void bid(final Cancha cancha,final OnItemClickListener listener){
+        public void bid(final Canchas canchas,final OnItemClickListener listener){
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            img_fotoCancha.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    listener.onItemClick(cancha,getAdapterPosition());
+                    listener.onItemClick(canchas,"img_fotoCancha",getAdapterPosition());
                 }
             });
         }
     }
 
+    private final LayoutInflater mInflater;
+
+
+    private List<Canchas> mUsers; // Cached copy of users
+    private List<Canchas> mDataFiltered; // Cached copy of users
     @Override
     public canchaEmpresasViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view= LayoutInflater.from(parent.getContext()).inflate(layoutpadre,parent,false);
+        View view= mInflater.inflate(R.layout.rcv_item_card_canchas,parent,false);
         return new canchaEmpresasViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final canchaEmpresasViewHolder holder, int position) {
+        if (mUsers != null) {
+            current = mUsers.get(position);
+            ImageLoader.getInstance().init(universalImageLoader.getConfig());
+            universalImageLoader.setImage(IP2+"/"+ current.getFoto(),holder.img_fotoCancha,null);
+            holder.txt_nombreCancha.setText(current.getNombre_cancha());
+            holder.txt_dimensones.setText(current.getDimensiones_cancha());
+            holder.txt_precio_d.setText(current.getPrecioD());
+            holder.txt_precio_n.setText(current.getPrecioN());
+            holder.bid(current,listener);
+        }else {
+            // Covers the case of data not being ready yet.
+            // holder.userNameView.setText("No Word");
+        }
 
-        obj = array.get(position);
 
-        Glide.with(context).load(IP2+"/"+ obj.getCancha_foto()).into(holder.img_fotoCancha);
-        holder.txt_nombreCancha.setText(obj.getCancha_nombre());
-        holder.txt_dimensones.setText(obj.getCancha_dimenciones());
-        holder.txt_precio_d.setText(obj.getCancha_precioD());
-        holder.txt_precio_n.setText(obj.getCancha_precioN());
-        holder.bid(obj,listener);
+
     }
 
+    public void setWords(List<Canchas> users){
+        mUsers = users;
+        mDataFiltered = users;
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
-        return array.size();
+        if (mUsers != null) {
+            return mUsers.size();
+        }else{
+            return  0;
+        }
     }
 
 
     public interface  OnItemClickListener{
-        void onItemClick(Cancha cancha, int position);
+        void onItemClick(Canchas cancha,String tipo, int position);
     }
 
 }
