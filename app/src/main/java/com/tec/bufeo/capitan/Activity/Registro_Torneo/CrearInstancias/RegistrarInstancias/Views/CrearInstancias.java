@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class CrearInstancias extends AppCompatActivity implements View.OnClickListener {

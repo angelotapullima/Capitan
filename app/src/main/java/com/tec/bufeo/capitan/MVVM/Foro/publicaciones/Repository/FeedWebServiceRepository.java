@@ -42,7 +42,7 @@ public class FeedWebServiceRepository {
 
     List<ModelFeed> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<ModelFeed>> providesWebService(String id_usuario, String limite_sup, String limite_inf,final String token) {
+ public LiveData<List<ModelFeed>> providesWebService(String id_usuario, String limite_sup, String limite_inf, final String token, String id_torneo, final String tipo) {
 
      final MutableLiveData<List<ModelFeed>> data = new MutableLiveData<>();
 
@@ -56,24 +56,65 @@ public class FeedWebServiceRepository {
                  .client(providesOkHttpClientBuilder())
                  .build();
 
-         APIServiceFeed service = retrofit.create(APIServiceFeed.class);
-         //  response = service.makeRequest().execute().body();
-         service.savePost(id_usuario,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
-             @Override
-             public void onResponse(Call<String> call, Response<String> response) {
-                 Log.e("Repository","feed::::"+response.body());
-                 webserviceResponseList = parseJson(response.body());
-                 FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
-                 feedRoomDBRepository.insertPosts(webserviceResponseList);
-                 data.setValue(webserviceResponseList);
+         if (tipo.equals("feed")){
+             APIServiceFeed service = retrofit.create(APIServiceFeed.class);
+             //  response = service.makeRequest().execute().body();
+             service.savePost(id_usuario,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
+                 @Override
+                 public void onResponse(Call<String> call, Response<String> response) {
+                     Log.e("Repository","feed::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo);
+                     FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
+                     feedRoomDBRepository.insertPosts(webserviceResponseList);
+                     data.setValue(webserviceResponseList);
 
-             }
+                 }
 
-             @Override
-             public void onFailure(Call<String> call, Throwable t) {
-                 Log.d("Repository","Failed:::");
-             }
-         });
+                 @Override
+                 public void onFailure(Call<String> call, Throwable t) {
+                     Log.d("Repository","Failed:::");
+                 }
+             });
+         }else if(tipo.equals("torneo")){
+             PublicacionesTorneoAPIService service = retrofit.create(PublicacionesTorneoAPIService.class);
+             //  response = service.makeRequest().execute().body();
+             service.savePost(id_usuario,id_torneo,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
+                 @Override
+                 public void onResponse(Call<String> call, Response<String> response) {
+                     Log.e("Repository","feed torneo::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo);
+                     FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
+                     feedRoomDBRepository.insertPosts(webserviceResponseList);
+                     data.setValue(webserviceResponseList);
+
+                 }
+
+                 @Override
+                 public void onFailure(Call<String> call, Throwable t) {
+                     Log.d("Repository","Failed:::");
+                 }
+             });
+         }else if(tipo.equals("usuario")){
+             PublicacionesUsuarioAPIService service = retrofit.create(PublicacionesUsuarioAPIService.class);
+             //  response = service.makeRequest().execute().body();
+             service.savePost(id_usuario,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
+                 @Override
+                 public void onResponse(Call<String> call, Response<String> response) {
+                     Log.e("Repository","feed usuario::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo);
+                     FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
+                     feedRoomDBRepository.insertPosts(webserviceResponseList);
+                     data.setValue(webserviceResponseList);
+
+                 }
+
+                 @Override
+                 public void onFailure(Call<String> call, Throwable t) {
+                     Log.d("Repository","Failed:::");
+                 }
+             });
+         }
+
          //Defining retrofit api service
 
      }catch (Exception e){
@@ -88,7 +129,7 @@ public class FeedWebServiceRepository {
 
 
     String datosNuevos;
-    private List<ModelFeed> parseJson(String response) {
+    private List<ModelFeed> parseJson(String response,String tipo) {
 
         List<ModelFeed> apiResults = new ArrayList<>();
 
@@ -104,11 +145,13 @@ public class FeedWebServiceRepository {
             int nuevos  = jsonObject.optInt("nuevos");
 
 
+
+
             JSONArray resultJSON = jsonObject.getJSONArray("results");
 
 
             FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
-            feedRoomDBRepository.deleteAllFeed();
+            //feedRoomDBRepository.deleteAllFeed();
             int count = resultJSON.length();
 
 
@@ -135,13 +178,19 @@ public class FeedWebServiceRepository {
                 foro.setCant_Comentarios(jsonNode.optString("cant_comentarios"));
                 foro.setTorneo_foto(jsonNode.optString("torneo_imagen"));
                 foro.setOrden("0");
-                foro.setLimite_sup(limite_sup2);
-                foro.setLimite_inf(limite_inf2);
+                if (tipo.equals("feed") || tipo.equals("usuario")){
+                    foro.setLimite_sup(limite_sup2);
+                    foro.setLimite_inf(limite_inf2);
+                }
+
 
 
                 apiResults.add(foro);
             }
-            datosNuevos= String.valueOf( nuevos);
+            if (tipo.equals("feed")||tipo.equals("usuario")){
+                datosNuevos= String.valueOf( nuevos);
+            }
+
             /*FeedRoomDBRepository feedTorneoRoomDBRepository = new FeedRoomDBRepository(application);
             feedTorneoRoomDBRepository.actualizarSup(limite_sup2);
             if (carga.equals("datos")){

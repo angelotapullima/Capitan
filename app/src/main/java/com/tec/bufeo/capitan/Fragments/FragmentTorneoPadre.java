@@ -18,25 +18,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.utils.DiskCacheUtils;
-import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Repository.ChatsWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.ViewModels.ChatsListViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Views.FragmentChats;
 import com.tec.bufeo.capitan.MVVM.Torneo.Estadisticas.Views.FragmentEstadisticas;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Views.FragmentRetos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Repository.MisTorneoWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.ViewModels.MisTorneoViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.Repository.OtrosTorneosWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.ViewModels.OtrosTorneosViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosWebServiceRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.MisTorneoViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Views.FragmentTorneoRoque;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views.FragmentEquipo;
@@ -62,7 +56,7 @@ public class FragmentTorneoPadre extends Fragment  {
     RetosViewModel retosViewModel;
     ChatsListViewModel chatsListViewModel;
     MisTorneoViewModel misTorneoViewModel;
-    OtrosTorneosViewModel otrosTorneosViewModel;
+    UniversalImageLoader universalImageLoader;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
@@ -96,12 +90,9 @@ public class FragmentTorneoPadre extends Fragment  {
 
     }
     Application application;
-    UniversalImageLoader universalImageLoader;
-    MisEquiposWebServiceRepository misEquiposWebServiceRepository;
     RetosWebServiceRepository retosWebServiceRepository;
     ChatsWebServiceRepository chatsWebServiceRepository;
-    MisTorneoWebServiceRepository misTorneoWebServiceRepository;
-    OtrosTorneosWebServiceRepository otrosTorneosWebServiceRepository;
+    TorneosWebServiceRepository torneosWebServiceRepository;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,7 +101,6 @@ public class FragmentTorneoPadre extends Fragment  {
         retosViewModel = ViewModelProviders.of(getActivity()).get(RetosViewModel.class);
         chatsListViewModel = ViewModelProviders.of(getActivity()).get(ChatsListViewModel.class);
         misTorneoViewModel = ViewModelProviders.of(getActivity()).get(MisTorneoViewModel.class);
-        otrosTorneosViewModel = ViewModelProviders.of(getActivity()).get(OtrosTorneosViewModel.class);
 
     }
 
@@ -123,23 +113,21 @@ public class FragmentTorneoPadre extends Fragment  {
         activity = getActivity();
         context = getContext();
 
+
+
         preferences = new Preferences(context);
-
-
-        //misEquiposWebServiceRepository =  new MisEquiposWebServiceRepository(application);
-        //misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken());
-        //misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken());
-
+        universalImageLoader = new UniversalImageLoader(context);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
 
         retosWebServiceRepository =  new RetosWebServiceRepository(application);
-        retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
+        retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"normal");
 
-        misTorneoWebServiceRepository =  new MisTorneoWebServiceRepository(application);
-        misTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
+        torneosWebServiceRepository =  new TorneosWebServiceRepository(application);
+        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"mis_torneos","");
+        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"otros_torneos","");
 
-        otrosTorneosWebServiceRepository =  new OtrosTorneosWebServiceRepository(application);
-        otrosTorneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
+
 
         chatsWebServiceRepository =  new ChatsWebServiceRepository(application);
         chatsWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
@@ -187,6 +175,8 @@ public class FragmentTorneoPadre extends Fragment  {
 
         universalImageLoader = new UniversalImageLoader(context);
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
+
 
 
         Glide.with(getContext())

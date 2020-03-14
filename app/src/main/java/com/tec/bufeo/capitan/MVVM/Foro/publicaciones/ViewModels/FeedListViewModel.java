@@ -44,12 +44,17 @@ public class FeedListViewModel extends AndroidViewModel {
         return mAllPosts;
     }
 
-    public LiveData<List<ModelFeed>> getIdTorneo(String id_torneo) {
-        //retroObservable = feedTorneoWebServiceRepository.providesWebService();
+    public LiveData<List<ModelFeed>> getIdTorneo(String id_usuario,String token,String id_torneo) {
+        retroObservable = feedTorneoWebServiceRepository.providesWebService(id_usuario,"0","0",token,id_torneo,"torneo");
         mAllPosts = feedTorneoRoomDBRepository.getIdTorneo(id_torneo);
         return mAllPosts;
     }
 
+    public LiveData<List<ModelFeed>> getIdUsuario(String id_usuario,String token,String id_torneo) {
+        retroObservable = feedTorneoWebServiceRepository.providesWebService(id_usuario,"0","0",token,id_torneo,"usuario");
+        mAllPosts = feedTorneoRoomDBRepository.getIdUsuario(id_usuario);
+        return mAllPosts;
+    }
     public LiveData<List<ModelFeed>> getSearh(String query) {
 
         mAllPosts = feedTorneoRoomDBRepository.getSearch(query);

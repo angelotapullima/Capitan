@@ -91,7 +91,7 @@ public class MisNegociosActivity extends AppCompatActivity implements SwipeRefre
                 if (tipo.equals("img_fotoEmpresa")){
                     Intent intent = new Intent(getApplicationContext(), DetalleNegocio.class);
                     intent.putExtra("id_empresa",negocios.getId_empresa());
-                    intent.putExtra("tipo_usuario","usuario");
+                    intent.putExtra("tipo_usuario","admin");
                     startActivity(intent);
                 }
 

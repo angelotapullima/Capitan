@@ -29,6 +29,12 @@ public class RetosViewModel extends AndroidViewModel {
         mAllRetos = retosRoomDBRepository.getAllRetos(respuesta_reto);
         return mAllRetos;
     }
+
+    public LiveData<List<Retos>> getAllRetoID(String id,String token,String tipo) {
+        retosWebServiceRepository.providesWebService(id,token,tipo);
+        mAllRetos = retosRoomDBRepository.getAllRetoID(id);
+        return mAllRetos;
+    }
     public LiveData<List<Retos>> getAll() {
 
         mAllRetos = retosRoomDBRepository.getAll();

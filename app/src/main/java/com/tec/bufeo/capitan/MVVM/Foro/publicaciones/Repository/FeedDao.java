@@ -24,6 +24,9 @@ public interface FeedDao {
     @Query("SELECT * from feed where id_torneo =:id_torneo ")
     LiveData<List<ModelFeed>> getIdTorneo(String id_torneo);
 
+    @Query("SELECT * from feed where usuario_id =:usuario_id ")
+    LiveData<List<ModelFeed>> getIdUsuario(String usuario_id);
+
     @Query("DELETE FROM feed")
     void deleteAll();
 
@@ -34,8 +37,7 @@ public interface FeedDao {
     LiveData<List<ModelFeed>> searchFeeds(String query);
 
 
-   /* @Query("SELECT publicacion_id,limite_inf,limite_sup from feed")
-    LiveData<List<ModelFeed>> getAllIdPosts();*/
+
 
     @Query("Update feed set limite_sup = :sup")
     void actualizarSup(String sup);
@@ -48,11 +50,11 @@ public interface FeedDao {
     void NuevosDatos(String nuevos);
 
 
-    @Query("Update feed set dio_like = :like")
-    void disLike(String like);
+    @Query("Update feed set dio_like = '0' where publicacion_id =:id")
+    void disLike(String id);
 
-    @Query("Update feed set dio_like = :like")
-    void darLike(String like);
+    @Query("Update feed set dio_like = '1' where publicacion_id =:id")
+    void darLike(String id);
 
     @Query("Update feed set cant_likes = :cantidad")
     void cantidadLikes(String cantidad);

@@ -552,9 +552,13 @@ class TorneoController{
                 $result = $this->torneo->registrar_equipo_en_torneo($id_torneo_grupo,$equipo_id);
                 if($result==1){
                     $estadisticas_1 = $this->torneo->listar_estadisticas_por_id_equipo($equipo_id);
+                    $datos_torneo = $this->torneo->listar_torneo_por_equipo_grupo($id_torneo_grupo,$equipo_id);
+                    $datos_equipo=$this->torneo->listar_equipo_por_id($equipo_id);
                     $valor_1 = $estadisticas_1->torneos;
                     $valor_1++;
                     $this->torneo->sumar_estadistica($equipo_id,"torneos",$valor_1);
+                    $this->user->guardar_notificacion($datos_equipo->id_user,"Torneo",$datos_torneo->id_torneo,"Tu equipo fue agregado a un torneo");
+                    $notificar = $this->notificar($datos_equipo->user_token,"Retaron a tu equipo ","Tu equipo fue agregado a un torneo","Torneo","Tu equipo fue agregado a un torneo");
                 }
             }else{
                 $result = 6;
@@ -673,14 +677,26 @@ class TorneoController{
     }
     public function listar_equipos(){
         try{
-            $model = $this->torneo->listar_equipos();
+            $limite_sup = $_POST['limite_sup'];
+            $limite_inf = $_POST['limite_inf'];
+            if($limite_sup==0){
+                $model = $this->torneo->listar_equipos_all();
+                $ultima_noticia=$this->torneo->listar_ultimo_equipo_all();
+                $limite_sup=$ultima_noticia->equipo_id;
+                $new = "0";
+            }else{
+                $model = $this->torneo->listar_equipos_limite($limite_inf);
+                $nuevos = $this->torneo->listar_equipos_limite_sup($limite_sup);
+                (count($nuevos)>0)?$new = "1":$new="0";
+            }
             $resources = array();
             for ($i=0;$i<count($model);$i++) {
                 $resources[$i] = array(
                     "equipo_id" => $model[$i]->equipo_id,
                     "nombre" => $model[$i]->equipo_nombre,
                     "foto" => $model[$i]->equipo_foto,
-                    "capitan" => $model[$i]->usuario_nombre
+                    "capitan" => $model[$i]->user_nickname,
+                    "capitan_id" => $model[$i]->id_user
                 );
             }
         }catch (Exception $e){
@@ -820,6 +836,27 @@ class TorneoController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+    public function buscar_equipos(){
+        try{
+            $dato = $_POST['dato'];
+            $model = $this->torneo->buscar_equipos($dato);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $resources[$i] = array(
+                    "equipo_id" => $model[$i]->equipo_id,
+                    "nombre" => $model[$i]->equipo_nombre,
+                    "foto" => $model[$i]->equipo_foto,
+                    "capitan" => $model[$i]->user_nickname,
+                    "capitan_id" => $model[$i]->id_user
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
     public function registrar_equipo_usuario() {
         try{
             $equipo_id = $_POST['id_equipo'];
@@ -886,14 +923,30 @@ class TorneoController{
                         $valor_2++;
                         $this->torneo->sumar_estadistica($retador_id,"retos_enviados",$valor_1);
                         $this->torneo->sumar_estadistica($retado_id,"retos_recibidos",$valor_2);
-                        $microtime = microtime(true);
-                        $fechahora=date('Y-m-d H:i:s');
-                        $this->user->crear_chat($datos2->id_user,$datos->id_user,$fechahora,$microtime);
-                        if($datos->user_token!=""){
-                            $detalle_Chat = $this->user->listar_chat_por_microtime($microtime);
-                            $this->user->enviar_mensaje($detalle_Chat->chat_id,$datos->id_user,"Hola! He retado a tu equipo",$fechahora);
-                            $notificar = $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
+                        //chat
+                        //ver si existe
+                        $reto_exists2 = $this->torneo->existe_reto_pendiente($retador_id,$retado_id);
+                        $datos_chat=$this->user->listar_chat_por_id_usuarios($datos2->id_user,$datos->id_user);
+                        if(isset($datos_chat->chat_id) && $datos_chat->chat_id!=null){
+                            $fechahora=date('Y-m-d H:i:s');
+                            if($datos->user_token!=""){
+                                $detalle_Chat = $this->user->listar_chat_por_id($datos_chat->chat_id);
+                                $this->user->enviar_mensaje($detalle_Chat->chat_id,$datos->id_user,"Hola! He retado a tu equipo",$fechahora);
+                                $this->user->guardar_notificacion($datos->id_user,"Reto",$reto_exists2->reto_id,"Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre);
+                                $notificar = $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
+                            }
+                        }else{
+                            $microtime = microtime(true);
+                            $fechahora=date('Y-m-d H:i:s');
+                            $this->user->crear_chat($datos2->id_user,$datos->id_user,$fechahora,$microtime);
+                            if($datos->user_token!=""){
+                                $detalle_Chat = $this->user->listar_chat_por_microtime($microtime);
+                                $this->user->enviar_mensaje($detalle_Chat->chat_id,$datos->id_user,"Hola! He retado a tu equipo",$fechahora);
+                                $this->user->guardar_notificacion($datos->id_user,"Reto",$reto_exists2->reto_id,"Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre);
+                                $notificar = $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
+                            }
                         }
+                        //fin chat
                     }
                 }else{
                     $result = 3;
@@ -1107,50 +1160,90 @@ class TorneoController{
         $usuario_id = $_POST['id_usuario'];
         $model = $this->torneo->listar_mis_retos($usuario_id);
         $resources = array();
+        $cont=0;
         for ($i=0;$i<count($model);$i++) {
-            if($model[$i]->equipo_id_1==null){
-                $equipo1 = $this->torneo->listar_equipo_por_id($model[$i]->retador_id);
-                $id_e1 = $equipo1->equipo_id;
-                $nombre_e1 = $equipo1->equipo_nombre;
-                $foto_e1 = $equipo1->equipo_foto;
-            }else{
-                $id_e1 = $model[$i]->equipo_id_1;
-                $nombre_e1 = $model[$i]->nombre_1;
-                $foto_e1 = $model[$i]->foto_1;
+            if($model[$i]->equipo_id_1!=null || $model[$i]->equipo_id_2!=null){
+                if($model[$i]->equipo_id_1==null){
+                    $equipo1 = $this->torneo->listar_equipo_por_id($model[$i]->retador_id);
+                    $id_e1 = $equipo1->equipo_id;
+                    $nombre_e1 = $equipo1->equipo_nombre;
+                    $foto_e1 = $equipo1->equipo_foto;
+                }else{
+                    $id_e1 = $model[$i]->equipo_id_1;
+                    $nombre_e1 = $model[$i]->nombre_1;
+                    $foto_e1 = $model[$i]->foto_1;
+                }if($model[$i]->equipo_id_2==null){
+                    $equipo2 = $this->torneo->listar_equipo_por_id($model[$i]->retado_id);
+                    $id_e2 = $equipo2->equipo_id;
+                    $nombre_e2 = $equipo2->equipo_nombre;
+                    $foto_e2 = $equipo2->equipo_foto;
+                    $user_respuesta = $equipo2->usuario_id;
+                }else{
+                    $id_e2 = $model[$i]->equipo_id_2;
+                    $nombre_e2 = $model[$i]->nombre_2;
+                    $foto_e2 = $model[$i]->foto_2;
+                }
+                $date1 = new DateTime(date('Y-m-d'));
+                $date2 = new DateTime($model[$i]->reto_fecha);
+                $diff = $date1->diff($date2);
+                ($diff->days<0)? $estado = 0:$estado = 1;
+                $resources[$cont] = array(
+                    "id_reto" => $model[$i]->reto_id,
+                    "equipo_id_1" => $id_e1,
+                    "equipo_id_2" => $id_e2,
+                    "user_respuesta" => $user_respuesta,
+                    "nombre_1" => $nombre_e1,
+                    "nombre_2" => $nombre_e2,
+                    "foto_1" => $foto_e1,
+                    "foto_2" => $foto_e2,
+                    "fecha" => $model[$i]->reto_fecha,
+                    "hora" => $model[$i]->reto_hora,
+                    "lugar" => $model[$i]->reto_lugar,
+                    "respuesta" => $model[$i]->reto_respuesta,
+                    "ganador_id" => $model[$i]->ganador_id,
+                    "ganador_estado" => $model[$i]->ganador_estado,
+                    "estado" => $estado
+                );
+                $cont++;
             }
-            if($model[$i]->equipo_id_2==null){
-                $equipo2 = $this->torneo->listar_equipo_por_id($model[$i]->retado_id);
-                $id_e2 = $equipo2->equipo_id;
-                $nombre_e2 = $equipo2->equipo_nombre;
-                $foto_e2 = $equipo2->equipo_foto;
-                $user_respuesta = $equipo2->usuario_id;
-            }else{
-                $id_e2 = $model[$i]->equipo_id_2;
-                $nombre_e2 = $model[$i]->nombre_2;
-                $foto_e2 = $model[$i]->foto_2;
-            }
-            $date1 = new DateTime(date('Y-m-d'));
-            $date2 = new DateTime($model[$i]->reto_fecha);
-            $diff = $date1->diff($date2);
-            ($diff->days<0)? $estado = 0:$estado = 1;
-            $resources[$i] = array(
-                "id_reto" => $model[$i]->reto_id,
-                "equipo_id_1" => $id_e1,
-                "equipo_id_2" => $id_e2,
-                "user_respuesta" => $user_respuesta,
-                "nombre_1" => $nombre_e1,
-                "nombre_2" => $nombre_e2,
-                "foto_1" => $foto_e1,
-                "foto_2" => $foto_e2,
-                "fecha" => $model[$i]->reto_fecha,
-                "hora" => $model[$i]->reto_hora,
-                "lugar" => $model[$i]->reto_lugar,
-                "respuesta" => $model[$i]->reto_respuesta,
-                "ganador_id" => $model[$i]->ganador_id,
-                "ganador_estado" => $model[$i]->ganador_estado,
-                "estado" => $estado
-            );
         }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function listar_reto_por_id() {
+        $usuario_id = $_POST['id_reto'];
+        $model = $this->torneo->listar_reto_por_id($usuario_id);
+        $resources = array();
+        $equipo1 = $this->torneo->listar_equipo_por_id($model->retador_id);
+        $id_e1 = $equipo1->equipo_id;
+        $nombre_e1 = $equipo1->equipo_nombre;
+        $foto_e1 = $equipo1->equipo_foto;
+        $equipo2 = $this->torneo->listar_equipo_por_id($model->retado_id);
+        $id_e2 = $equipo2->equipo_id;
+        $nombre_e2 = $equipo2->equipo_nombre;
+        $foto_e2 = $equipo2->equipo_foto;
+        $user_respuesta = $equipo2->usuario_id;
+        $date1 = new DateTime(date('Y-m-d'));
+        $date2 = new DateTime($model->reto_fecha);
+        $diff = $date1->diff($date2);
+        ($diff->days<0)? $estado = 0:$estado = 1;
+        $resources = array(
+            "id_reto" => $model->reto_id,
+            "equipo_id_1" => $id_e1,
+            "equipo_id_2" => $id_e2,
+            "user_respuesta" => $user_respuesta,
+            "nombre_1" => $nombre_e1,
+            "nombre_2" => $nombre_e2,
+            "foto_1" => $foto_e1,
+            "foto_2" => $foto_e2,
+            "fecha" => $model->reto_fecha,
+            "hora" => $model->reto_hora,
+            "lugar" => $model->reto_lugar,
+            "respuesta" => $model->reto_respuesta,
+            "ganador_id" => $model->ganador_id,
+            "ganador_estado" => $model->ganador_estado,
+            "estado" => $estado
+        );
         $data = array("results" => $resources);
         echo json_encode($data);
     }
@@ -1204,6 +1297,47 @@ class TorneoController{
     }
     public function listar_torneos() {
         $model = $this->torneo->listar_torneos();
+        $resources = array();
+        for ($i=0;$i<count($model);$i++) {
+            $equipos_por_torneo = $this->torneo->listar_equipos_por_torneo($model[$i]->torneo_id);
+            $resources[$i] = array(
+                "id_torneo" => $model[$i]->torneo_id,
+                "nombre" => $model[$i]->torneo_nombre,
+                "foto" => $model[$i]->torneo_imagen,
+                "descripcion" => $model[$i]->torneo_descripcion,
+                "fecha" => $model[$i]->torneo_fecha,
+                "hora" => $model[$i]->torneo_hora,
+                "lugar" => $model[$i]->torneo_lugar,
+                "id_organizador" => $model[$i]->usuario_id,
+                "organizador" => $model[$i]->torneo_organizador,
+                "costo" => $model[$i]->torneo_costo,
+                "equipos" => count($equipos_por_torneo)
+            );
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function listar_torneo_por_id() {
+        $model = $this->torneo->listar_torneo_por_id($_POST['id_torneo']);
+        $equipos_por_torneo = $this->torneo->listar_equipos_por_torneo($model->torneo_id);
+        $resources = array(
+            "id_torneo" => $model->torneo_id,
+            "nombre" => $model->torneo_nombre,
+            "foto" => $model->torneo_imagen,
+            "descripcion" => $model->torneo_descripcion,
+            "fecha" => $model->torneo_fecha,
+            "hora" => $model->torneo_hora,
+            "lugar" => $model->torneo_lugar,
+            "id_organizador" => $model->usuario_id,
+            "organizador" => $model->torneo_organizador,
+            "costo" => $model->torneo_costo,
+            "equipos" => count($equipos_por_torneo)
+        );
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function buscar_torneos() {
+        $model = $this->torneo->buscar_torneos($_POST['dato']);
         $resources = array();
         for ($i=0;$i<count($model);$i++) {
             $equipos_por_torneo = $this->torneo->listar_equipos_por_torneo($model[$i]->torneo_id);

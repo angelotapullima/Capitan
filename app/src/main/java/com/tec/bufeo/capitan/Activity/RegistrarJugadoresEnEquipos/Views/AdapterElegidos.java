@@ -7,10 +7,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.JugadoresSeleccionados;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
     Context ctx;
     private  OnItemClickListener listener;
     Preferences preferencesUser;
+    UniversalImageLoader universalImageLoader;
 
 
     class ElegidosViewHolder extends RecyclerView.ViewHolder {
@@ -65,6 +67,7 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
         preferencesUser = new Preferences(context);
+        universalImageLoader= new UniversalImageLoader(context);
         this.listener = listener;}
 
     @NonNull
@@ -81,7 +84,8 @@ public class AdapterElegidos extends RecyclerView.Adapter<AdapterElegidos.Elegid
             current = mUsers.get(position);
 
 
-            Glide.with(ctx).load(IP2+"/"+ current.getJugadors_foto()).into(holder.foto_jugador_elegido);
+            ImageLoader.getInstance().init(universalImageLoader.getConfig());
+            UniversalImageLoader.setImage(IP2+"/"+ current.getJugadors_foto(),holder.foto_jugador_elegido,null);
 
             holder.name_juegador.setText(current.getJugadors_nombre());
             /*holder.txt_nombreUsuario.setText(current.getJugador_nombre());

@@ -4,25 +4,49 @@ package com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Views;
 import android.app.Application;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.tec.bufeo.capitan.Activity.DetalleFotoUsuario;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.DetalleTorneo;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.PublicacionesTorneo;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Repository.Publicaciones.PublicacionesTorneoWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.DetalleTorneoViewModel;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.PublicacionesTorneoViewModel;
+import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios;
+import com.tec.bufeo.capitan.Activity.ProfileActivity;
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.AdaptadorForo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
 public class InfoDtorneoFragment extends Fragment {
@@ -34,9 +58,8 @@ public class InfoDtorneoFragment extends Fragment {
     String id_torneo;
     Application application;
     Preferences preferences;
-    PublicacionesTorneoViewModel feedTorneoListViewModel;
-    String titulo,fecha,hora,organizador,lugar,costo;
-    AdaptadorPublicacionesTorneo adaptadorPublicacionesTorneo;
+    FeedListViewModel feedListViewModel;
+    AdaptadorForo adaptadorForo;
     DetalleTorneoViewModel detalleTorneoViewModel;
 
     public InfoDtorneoFragment() {
@@ -50,7 +73,7 @@ public class InfoDtorneoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        feedTorneoListViewModel = ViewModelProviders.of(this).get(PublicacionesTorneoViewModel.class);
+        feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
         detalleTorneoViewModel = ViewModelProviders.of(this).get(DetalleTorneoViewModel.class);
 
 
@@ -75,10 +98,6 @@ public class InfoDtorneoFragment extends Fragment {
         cargarvista();
 
 
-        feed();
-
-
-
 
         return  view;
 
@@ -98,27 +117,93 @@ public class InfoDtorneoFragment extends Fragment {
     }
     private void setAdapter() {
 
-        adaptadorPublicacionesTorneo = new AdaptadorPublicacionesTorneo(getContext(), new AdaptadorPublicacionesTorneo.OnItemClickListener() {
+        adaptadorForo = new AdaptadorForo(getContext(), new AdaptadorForo.OnItemClickListener() {
             @Override
-            public void onItemClick(String dato, PublicacionesTorneo feedTorneo, int position) {
+            public void onItemClick(String dato, ModelFeed feedTorneo, int position) {
 
+                /*if (dato.equals("btnAccion")){
+
+                    idpublicacion=feedTorneo.getPublicacion_id();
+                    fab_registrarForo.hide();
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }*/
+                if (dato.equals("foto_perfil_publicacion")){
+                    if (feedTorneo.getId_torneo().equals("0")){
+                        if(feedTorneo.getUsuario_id().equals(preferences.getIdUsuarioPref())){
+                            Intent i = new Intent(getContext(), ProfileActivity.class);
+                            startActivity(i);
+                        }else{
+                            Intent i = new Intent(getContext(), PerfilUsuarios.class);
+                            i.putExtra("id_user",feedTorneo.getUsuario_id());
+                            startActivity(i);
+                        }
+                    }else{
+                        Intent i = new Intent(getContext(), DetalleTorneoNuevo.class);
+                        i.putExtra("id_torneo",feedTorneo.getId_torneo());
+                        i.putExtra("foto",feedTorneo.getTorneo_foto());
+                        i.putExtra("nombre",feedTorneo.getPublicacion_torneo());
+                        i.putExtra("id_usuario",feedTorneo.getUsuario_id());
+                        startActivity(i);
+                    }
+
+                }if (dato.equals("txt_usuarioForo")){
+                    if (feedTorneo.getId_torneo().equals("0")){
+                        if(feedTorneo.getUsuario_id().equals(preferences.getIdUsuarioPref())){
+                            Intent i = new Intent(getContext(), ProfileActivity.class);
+                            startActivity(i);
+                        }else{
+                            Intent i = new Intent(getContext(), PerfilUsuarios.class);
+                            i.putExtra("id_user",feedTorneo.getUsuario_id());
+                            startActivity(i);
+                        }
+                    }else{
+                        Intent i = new Intent(getContext(), DetalleTorneoNuevo.class);
+                        i.putExtra("id_torneo",feedTorneo.getId_torneo());
+                        i.putExtra("foto",feedTorneo.getTorneo_foto());
+                        i.putExtra("nombre",feedTorneo.getPublicacion_torneo());
+                        i.putExtra("id_usuario",feedTorneo.getUsuario_id());
+                        startActivity(i);
+                    }
+
+
+                }if (dato.equals("img_fotoForo")){
+                    Intent i = new Intent(getContext(), DetalleFotoUsuario.class);
+                    i.putExtra("foto",feedTorneo.getForo_foto());
+                    i.putExtra("descripcion",feedTorneo.getForo_descripcion());
+                    i.putExtra("cantidad_comentarios",feedTorneo.getCant_Comentarios());
+                    i.putExtra("id_publicacion",feedTorneo.getPublicacion_id());
+                    startActivity(i);
+                }if(dato.equals("pedir")){
+                    //feed();
+                    preferences.codeAdvertencia(String.valueOf(position));
+                }else if(dato.equals("verMasTorneo")){
+                    Intent i = new Intent(getContext(), DetalleTorneoNuevo.class);
+                    i.putExtra("id_torneo",feedTorneo.getId_torneo());
+                    i.putExtra("foto",feedTorneo.getTorneo_foto());
+                    i.putExtra("nombre",feedTorneo.getPublicacion_torneo());
+                    i.putExtra("id_usuario",feedTorneo.getUsuario_id());
+                    startActivity(i);
+                }else if (dato.equals("imgbt_like")){
+                    if (feedTorneo.getDio_like().equals("0")){
+                        darlike(feedTorneo.getPublicacion_id());
+                    }else{
+                        dislike(feedTorneo.getPublicacion_id());
+                    }
+                }
             }
         });
 
-        rcv_infotorneo.setAdapter(adaptadorPublicacionesTorneo);
+        rcv_infotorneo.setAdapter(adaptadorForo);
         rcv_infotorneo.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-
-
     }
 
     private void cargarvista() {
-        feedTorneoListViewModel.getIdTorneo(id_torneo).observe(this, new Observer<List<PublicacionesTorneo>>() {
+        feedListViewModel.getIdTorneo(preferences.getIdUsuarioPref(),preferences.getToken(),id_torneo).observe(this, new Observer<List<ModelFeed>>() {
             @Override
-            public void onChanged(@Nullable List<PublicacionesTorneo> feedTorneos) {
-                adaptadorPublicacionesTorneo.setWords(feedTorneos);
-
+            public void onChanged(List<ModelFeed> modelFeeds) {
+                adaptadorForo.setWords(modelFeeds);
             }
         });
 
@@ -147,10 +232,135 @@ public class InfoDtorneoFragment extends Fragment {
 
     }
 
-    public void feed(){
-        PublicacionesTorneoWebServiceRepository feedTorneoWebServiceRepository = new PublicacionesTorneoWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),id_torneo,"0","0","datos",preferences.getToken());
+
+
+    StringRequest stringRequest;
+    JSONObject json_data;
+    String resultado;
+    int totalLikes;
+    private void darlike(final String idlike) {
+        String url =IP2+"/api/Foro/dar_like";
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("darlike: ",""+response);
+
+                try {
+                    json_data = new JSONObject(response);
+                    JSONArray resultJSON = json_data.getJSONArray("results");
+                    JSONObject jsonNodev = resultJSON.getJSONObject(0);
+                    resultado = jsonNodev.optString("resultado");
+                    totalLikes = Integer.parseInt(jsonNodev.optString("likes"));
+
+                    if (resultado.equals("1")){
+
+                        FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
+                        feedRoomDBRepository.darlike(idlike);
+                        feedRoomDBRepository.cantidadLikes(String.valueOf(totalLikes));
+                    }
+
+
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
+                Log.i("RESPUESTA: ",""+error.toString());
+
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //String imagen=convertirImgString(bitmap);
+
+
+                Map<String,String> parametros=new HashMap<>();
+                parametros.put("usuario_id",preferences.getIdUsuarioPref());
+                parametros.put("publicacion_id",idlike);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
+
+                return parametros;
+
+            }
+        };
+        /*requestQueue.add(stringRequest);*/
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
     }
 
 
+    private void dislike(final String iddislike) {
+        String url =IP2+"/api/Foro/quitar_like";
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("dislike: ",""+response);
+
+                try {
+                    json_data = new JSONObject(response);
+                    JSONArray resultJSON = json_data.getJSONArray("results");
+                    JSONObject jsonNodev = resultJSON.getJSONObject(0);
+                    resultado = jsonNodev.optString("resultado");
+                    totalLikes = Integer.parseInt(jsonNodev.optString("likes"));
+
+                    if (resultado.equals("1")){
+
+                        FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
+                        feedRoomDBRepository.dislike(iddislike);
+                        feedRoomDBRepository.cantidadLikes(String.valueOf(totalLikes));
+                    }
+
+
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
+                Log.i("RESPUESTA: ",""+error.toString());
+
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //String imagen=convertirImgString(bitmap);
+
+
+                Map<String,String> parametros=new HashMap<>();
+                parametros.put("usuario_id",preferences.getIdUsuarioPref());
+                parametros.put("publicacion_id",iddislike);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
+
+                return parametros;
+
+            }
+        };
+        //requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
+    }
 }

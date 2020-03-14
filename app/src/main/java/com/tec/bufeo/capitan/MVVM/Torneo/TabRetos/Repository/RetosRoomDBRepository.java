@@ -30,10 +30,15 @@ public class RetosRoomDBRepository {
          mAllRetos = retosDao.getAll();
          return mAllRetos;
      }
-    public LiveData<List<Retos>> getAllRetos( String respuesta_reto) {
-        boolean online = ForoFragment.isOnLine();
 
-        /*if (online){
+    public LiveData<List<Retos>> getAllRetoID (String id){
+        mAllRetos = retosDao.getAllRetoID(id);
+        return mAllRetos;
+    }
+    public LiveData<List<Retos>> getAllRetos( String respuesta_reto) {
+        /*boolean online = ForoFragment.isOnLine();
+
+        if (online){
             deleteAllRetos();
         }*/
         mAllRetos = retosDao.getAllRetos(respuesta_reto);

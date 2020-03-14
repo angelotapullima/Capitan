@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Models.Chats;
 
-@Database(entities = {Chats.class}, version = 1,exportSchema = false)
+@Database(entities = {Chats.class}, version = 2,exportSchema = false)
 public abstract class ChatsRoomDataBase extends RoomDatabase {
     public abstract ChatsDao chatsDao();
 

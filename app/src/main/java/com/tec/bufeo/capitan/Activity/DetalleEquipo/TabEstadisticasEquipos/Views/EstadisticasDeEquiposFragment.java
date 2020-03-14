@@ -15,13 +15,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Models.EstadisticasDeEquipos;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Repository.EequiposWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.ViewModels.EequiposViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -53,6 +53,7 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
         eequiposViewModel = ViewModelProviders.of(getActivity()).get(EequiposViewModel.class);
     }
 
+    UniversalImageLoader universalImageLoader;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
         View view= inflater.inflate(R.layout.fragment_estadisticas_de_equipos, container, false);
         preferences = new Preferences(getActivity());
 
-
+        universalImageLoader = new UniversalImageLoader(getActivity());
         final Bundle bdl = getArguments();
 
 
@@ -102,7 +103,9 @@ public class EstadisticasDeEquiposFragment extends Fragment implements SwipeRefr
                 if (estadisticasDeEquipos.size()>0){
 
 
-                    Glide.with(getContext()).load(IP2+"/"+ estadisticasDeEquipos.get(0).getFoto()).into(foto_estadisticas_equipo);
+                    ImageLoader.getInstance().init(universalImageLoader.getConfig());
+                    UniversalImageLoader.setImage(IP2+"/"+ estadisticasDeEquipos.get(0).getFoto(),foto_estadisticas_equipo,null);
+
                     temporada.setText(estadisticasDeEquipos.get(0).getTemporada());
                     semana.setText(estadisticasDeEquipos.get(0).getSemana());
                     puntaje_acumulado.setText(estadisticasDeEquipos.get(0).getPuntaje_acumulado());

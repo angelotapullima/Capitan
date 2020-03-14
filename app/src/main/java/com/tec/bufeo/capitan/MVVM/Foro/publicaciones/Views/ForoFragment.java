@@ -54,7 +54,8 @@ import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
 import com.tec.bufeo.capitan.Activity.RegistroForo;
-import com.tec.bufeo.capitan.MVVM.Foro.Versus.Views.FragmentVersus;
+import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Models.Notificaciones;
+import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Views.NotificacionesList;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
@@ -102,9 +103,9 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     LinearLayout tap_de_accion,bottomDelete;
     ImageView btnClose;
     TextView titulotap,saldo_contable;
-    UniversalImageLoader universalImageLoader;
     String idpublicacion;
     DataConnection dc;
+    LinearLayout bufeoCoins;
 
 
     public ForoFragment() {
@@ -157,8 +158,10 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             if (saldo.size() > 0) {
                 saldo_contable.setText(saldo.get(0));
+
+                bufeoCoins.setVisibility(View.VISIBLE);
             } else {
-                saldo_contable.setText("vacio");
+                bufeoCoins.setVisibility(View.GONE);
             }
 
 
@@ -182,9 +185,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         cargarvista();
 
 
-        if (preferences.getCantidadIngreso().equals("1")){
-            feed();
-        }
+
         return view;
     }
 
@@ -213,6 +214,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         fotoPerfil = view.findViewById(R.id.fotoPerfil);
         partidos = view.findViewById(R.id.partidos);
+        bufeoCoins = view.findViewById(R.id.bufeoCoins);
         rcv_foro = (RecyclerView) view.findViewById(R.id.rcv_foro);
         progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
         FrameNuevosDatos =  view.findViewById(R.id.FrameNuevosDatos);
@@ -340,7 +342,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void showEditDialog() {
         FragmentManager fm = getFragmentManager();
-        FragmentVersus editNameDialogFragment = FragmentVersus.newInstance("Some Title");
+        NotificacionesList editNameDialogFragment = NotificacionesList.newInstance("Some Title");
         editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 
@@ -400,7 +402,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         adapter= new AdaptadorForo(getActivity(), new AdaptadorForo.OnItemClickListener() {
             @Override
             public void onItemClick(String dato, ModelFeed feedTorneo, int position) {
-               if (dato.equals("btnAccion")){
+                if (dato.equals("btnAccion")){
 
                     idpublicacion=feedTorneo.getPublicacion_id();
                     fab_registrarForo.hide();
@@ -408,24 +410,24 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     }
                 }
-               if (dato.equals("foto_perfil_publicacion")){
-                   if (feedTorneo.getId_torneo().equals("0")){
-                       if(feedTorneo.getUsuario_id().equals(preferences.getIdUsuarioPref())){
-                           Intent i = new Intent(getContext(), ProfileActivity.class);
-                           startActivity(i);
-                       }else{
-                           Intent i = new Intent(getContext(), PerfilUsuarios.class);
-                           i.putExtra("id_user",feedTorneo.getUsuario_id());
-                       startActivity(i);
-                   }
-                   }else{
-                       Intent i = new Intent(getContext(), DetalleTorneoNuevo.class);
-                       i.putExtra("id_torneo",feedTorneo.getId_torneo());
-                       i.putExtra("foto",feedTorneo.getTorneo_foto());
-                       i.putExtra("nombre",feedTorneo.getPublicacion_torneo());
-                       i.putExtra("id_usuario",feedTorneo.getUsuario_id());
-                       startActivity(i);
-                   }
+                if (dato.equals("foto_perfil_publicacion")){
+                    if (feedTorneo.getId_torneo().equals("0")){
+                        if(feedTorneo.getUsuario_id().equals(preferences.getIdUsuarioPref())){
+                            Intent i = new Intent(getContext(), ProfileActivity.class);
+                            startActivity(i);
+                        }else{
+                            Intent i = new Intent(getContext(), PerfilUsuarios.class);
+                            i.putExtra("id_user",feedTorneo.getUsuario_id());
+                            startActivity(i);
+                        }
+                    }else{
+                        Intent i = new Intent(getContext(), DetalleTorneoNuevo.class);
+                        i.putExtra("id_torneo",feedTorneo.getId_torneo());
+                        i.putExtra("foto",feedTorneo.getTorneo_foto());
+                        i.putExtra("nombre",feedTorneo.getPublicacion_torneo());
+                        i.putExtra("id_usuario",feedTorneo.getUsuario_id());
+                        startActivity(i);
+                    }
 
                 }if (dato.equals("txt_usuarioForo")){
                     if (feedTorneo.getId_torneo().equals("0")){
@@ -455,8 +457,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     i.putExtra("id_publicacion",feedTorneo.getPublicacion_id());
                     startActivity(i);
                 }if(dato.equals("pedir")){
-                   //feed();
-                   preferences.codeAdvertencia(String.valueOf(position));
+                    //feed();
+                    preferences.codeAdvertencia(String.valueOf(position));
                 }else if(dato.equals("verMasTorneo")){
                     Intent i = new Intent(getContext(), DetalleTorneoNuevo.class);
                     i.putExtra("id_torneo",feedTorneo.getId_torneo());
@@ -504,7 +506,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     if (resultado.equals("1")){
 
                         FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
-                        feedRoomDBRepository.darlike("1");
+                        feedRoomDBRepository.darlike(idlike);
                         feedRoomDBRepository.cantidadLikes(String.valueOf(totalLikes));
                     }
 
@@ -573,7 +575,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     if (resultado.equals("1")){
 
                         FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
-                        feedRoomDBRepository.dislike("0");
+                        feedRoomDBRepository.dislike(iddislike);
                         feedRoomDBRepository.cantidadLikes(String.valueOf(totalLikes));
                     }
 
@@ -621,7 +623,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         //feedListViewModel.deleteAllFeed();
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0",preferences.getToken());
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0",preferences.getToken(),"","feed");
         /*setAdapter();
         cargarvista();*/
         Log.e("prueba", "onRefresh: funciona" );
@@ -641,7 +643,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //preferences.toasVerde("ok");
 
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
-        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),superior_envio,inferior_envio,preferences.getToken());
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),superior_envio,inferior_envio,preferences.getToken(),"","feed");
     }
 
 

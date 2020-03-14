@@ -608,7 +608,16 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
 
                 Log.e("registrar_reserva", "onResponse: "+response );
 
-                if (response.equals("1")){
+
+                String separador,part1;
+                String[] resultado;
+
+                separador = Pattern.quote("}");
+                resultado = response.split(separador);
+                part1 = resultado[2];
+
+
+                if (part1.equals("1")){
                     preferences.toasVerde("Registro Completo");
                     onRefresh();
                     dialog_carga.dismiss();
@@ -647,6 +656,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
                 parametros.put("fecha",fecha_actual_mas_dos_insert);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
+                parametros.put("id_user",preferences.getIdUsuarioPref());
                 Log.e("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }

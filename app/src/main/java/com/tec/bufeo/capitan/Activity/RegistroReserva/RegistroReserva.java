@@ -24,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -48,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
@@ -55,10 +55,10 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
 
 
     String h_reserva,precio_cancha,fecha,nombre_empresa,cancha_nombre,saldo,cancha_id;
-    TextView hora_reserva,nombre_empresa_Reserva,nombre_cancha_reserva,fecha_reserva,saldo_bufis,precioDeLaCancha,comisionCancha,precioAPagar,txt_costo_cancha;
+    TextView hora_reserva,nombre_empresa_Reserva,nombre_cancha_reserva,fecha_reserva,saldo_bufis,precioDeLaCancha,comisionCancha,precioAPagar;
     Spinner spn_tipo_pago,spn_equipex;
-    LinearLayout layout_precios,layout_bufis,layout_equipo,layout_botones,layout_costo_cancha;
-    LinearLayout btn_reservar,layout_precio_con_chancha,ingresar_precio;
+    LinearLayout layout_precios,layout_bufis,layout_equipo,layout_botones;
+    LinearLayout btn_reservar,layout_precio_con_chancha;
     Preferences preferences;
     ArrayList<String> arrayEquipo;
     ArrayList<Mequipos> ListEquipos = new ArrayList<>();
@@ -67,7 +67,6 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
     double monto_a_pagar ;
     EditText nombre_reserva;
     RecyclerView rcv_colaboraciones;
-    EditText precioDeCanchaTodo;
     ImageView finishReserva;
     RelativeLayout relRes;
 
@@ -83,7 +82,6 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         preferences= new Preferences(this);
         layout_precio_con_chancha = findViewById(R.id.layout_precio_con_chancha);
         hora_reserva = findViewById(R.id.hora_reserva);
-        ingresar_precio = findViewById(R.id.ingresar_precio);
         nombre_empresa_Reserva = findViewById(R.id.nombre_empresa_Reserva);
         nombre_cancha_reserva = findViewById(R.id.nombre_cancha_reserva);
         fecha_reserva = findViewById(R.id.fecha_reserva);
@@ -100,9 +98,6 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         nombre_reserva = findViewById(R.id.nombre_reserva);
         rcv_colaboraciones = findViewById(R.id.rcv_colaboraciones);
         layout_botones = findViewById(R.id.layout_botones);
-        precioDeCanchaTodo = findViewById(R.id.precioDeCanchaTodo);
-        txt_costo_cancha = findViewById(R.id.txt_costo_cancha);
-        layout_costo_cancha = findViewById(R.id.layout_costo_cancha);
         finishReserva = findViewById(R.id.finishReserva);
         relRes = findViewById(R.id.relRes);
 
@@ -123,7 +118,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         nombre_cancha_reserva.setText(cancha_nombre);
         fecha_reserva.setText(fecha);
         saldo_bufis.setText(saldo);
-        txt_costo_cancha.setText(precio_cancha);
+
         precioDeLaCancha.setText(precio_cancha);
         comisionCancha.setText(String.valueOf(comision));
 
@@ -142,15 +137,11 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
                     rcv_colaboraciones.setVisibility(View.GONE);
                     layout_equipo.setVisibility(View.GONE);
                     layout_botones.setVisibility(View.GONE);
-                    ingresar_precio.setVisibility(View.GONE);
-                    layout_costo_cancha.setVisibility(View.GONE);
                     layout_precio_con_chancha.setVisibility(View.GONE);
                 }else if(position==1){
                     layout_precios.setVisibility(View.VISIBLE);
                     layout_bufis.setVisibility(View.VISIBLE);
-                    ingresar_precio.setVisibility(View.VISIBLE);
-                    layout_costo_cancha.setVisibility(View.VISIBLE);
-                    layout_precio_con_chancha.setVisibility(View.GONE);
+                    layout_precio_con_chancha.setVisibility(View.VISIBLE);
                     layout_equipo.setVisibility(View.VISIBLE);
                     rcv_colaboraciones.setVisibility(View.GONE);
                     layout_botones.setVisibility(View.VISIBLE);
@@ -160,8 +151,6 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
                     layout_equipo.setVisibility(View.GONE);
                     rcv_colaboraciones.setVisibility(View.VISIBLE);
                     layout_botones.setVisibility(View.GONE);
-                    layout_costo_cancha.setVisibility(View.GONE);
-                    ingresar_precio.setVisibility(View.GONE);
                     layout_precio_con_chancha.setVisibility(View.VISIBLE);
                 }
             }
@@ -188,26 +177,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
             }
         });
         btn_reservar.setOnClickListener(this);
-        precioDeCanchaTodo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                String v = String.valueOf(s);
-
-                monto_a_pagar = Double.parseDouble(v) + comision;
-                precioAPagar.setText(String.valueOf(monto_a_pagar));
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         finishReserva.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,33 +187,29 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         });
 
     }
-String pago_tipo,colaboracion,equipo_id,pago1;
+    String pago_tipo,colaboracion,equipo_id,pago1;
     @Override
     public void onClick(View v) {
         if (v.equals(btn_reservar)){
 
             if (spn_tipo_pago.getSelectedItem().toString().equals("Seleccionar")){
 
-                Toast.makeText(getApplicationContext(), "Debe seleccionar un tipo de Pago", Toast.LENGTH_SHORT).show();
+                preferences.codeAdvertencia("Debe seleccionar un tipo de Pago");
             }else{
                 if (spn_tipo_pago.getSelectedItem().toString().equals("Yo pago todo")){
 
                     if (nombre_reserva.getText().toString().isEmpty()){
 
-                        Toast.makeText(getApplicationContext(), "el campo nombre no debe estar vacio", Toast.LENGTH_SHORT).show();
+                        preferences.codeAdvertencia("el campo nombre no debe estar vacio");
                     }else{
                         if (spn_equipex.getSelectedItem().toString().equals("Seleccionar Equipo")){
 
-                            Toast.makeText(getApplicationContext(), "Debe seleccionar un Equipo", Toast.LENGTH_SHORT).show();
+                            preferences.codeAdvertencia("Debe seleccionar un Equipo");
                         }else{
 
-                            if (Double.parseDouble(precioDeCanchaTodo.getText().toString()) > Double.parseDouble(precio_cancha)){
-                                Toast.makeText(getApplicationContext(), "El monto a pagar no puede ser mayor al costo de la cancha", Toast.LENGTH_SHORT).show();
-                            }else if (Double.parseDouble(precioDeCanchaTodo.getText().toString()) < Double.parseDouble(precio_cancha)){
-                                registrarReservaUsuario("0","0","2");
-                            }else{
+
                                 registrarReservaUsuario("0","0","1");
-                            }
+
 
                         }
                     }
@@ -295,6 +261,9 @@ String pago_tipo,colaboracion,equipo_id,pago1;
 
 
 
+
+
+
         }
     }
 
@@ -312,14 +281,23 @@ String pago_tipo,colaboracion,equipo_id,pago1;
 
                 Log.e("registrar_reserva", "onResponse: "+response );
 
-                if (response.equals("1")){
-                    Toast.makeText(getApplicationContext(), "Registro Completo", Toast.LENGTH_SHORT).show();
+                String separador,part1;
+                String[] resultado;
+
+                separador = Pattern.quote("}");
+                resultado = response.split(separador);
+                part1 = resultado[2];
+
+                if (part1.equals("1")){
+                    preferences.toasVerde("Registro Completo");
+
                     dialog_carga.dismiss();
                     finish();
 
 
                 }else{
-                    Toast.makeText(getApplicationContext(), "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();
+                    preferences.toasRojo("Lo sentimos hubo un error al registrar la reserva","intentelo nuevamente más tarde");
+
                     dialog_carga.dismiss();
 
                 }
@@ -342,9 +320,9 @@ String pago_tipo,colaboracion,equipo_id,pago1;
                 if (spn_tipo_pago.getSelectedItem().toString().equals("Yo pago todo")){
 
                     pago_tipo="1";
-                    pago1=precioDeCanchaTodo.getText().toString();
+                    pago1=precioDeLaCancha.getText().toString();
                     colaboracion="0";
-                    equipo_id = ListEquipos.get(spn_equipex.getSelectedItemPosition()).getEquipo_id();
+                    equipo_id = ListEquipos.get(spn_equipex.getSelectedItemPosition()-1).getEquipo_id();
                 }else {
                     pago_tipo="2";
                     colaboracion=id_chancha;
@@ -369,6 +347,7 @@ String pago_tipo,colaboracion,equipo_id,pago1;
                 parametros.put("fecha",fecha);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
+                parametros.put("id_user",preferences.getIdUsuarioPref());
                 Log.e("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }
@@ -409,7 +388,7 @@ String pago_tipo,colaboracion,equipo_id,pago1;
 
                 try {
                     jsonObject = new JSONObject(response);
-                     resultJSON = jsonObject.getJSONArray("results");
+                    resultJSON = jsonObject.getJSONArray("results");
 
                     listaItem.clear();
                     int count = resultJSON.length();
@@ -444,9 +423,7 @@ String pago_tipo,colaboracion,equipo_id,pago1;
 
                     }
 
-                    GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
-                    linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
-                    rcv_colaboraciones.setLayoutManager(linearLayoutManager);
+
                     AdapterColaboracionesItem itemAdapter = new AdapterColaboracionesItem(getApplicationContext(), listaItem, new AdapterColaboracionesItem.OnItemClickListener() {
                         @Override
                         public void onItemClick(Colaboraciones mequipos, String tipo, int position) {
@@ -454,30 +431,34 @@ String pago_tipo,colaboracion,equipo_id,pago1;
                                 Log.e("precios", "onItemClick: " + total +" - " + mequipos.getMonto_final() );
                                 if (Double.parseDouble(mequipos.getMonto_final())> total){
 
-                                    Toast.makeText(getApplicationContext(), "El monto de la chancha supera el precio de la  cancha", Toast.LENGTH_SHORT).show();
+                                    preferences.codeAdvertencia("El monto de la chancha supera el precio de la  cancha");
+
                                 }else if (Double.parseDouble(mequipos.getMonto_final())< total){
 
-                                    Toast.makeText(getApplicationContext(), "El monto de la chancha es menor al precio de la  cancha", Toast.LENGTH_SHORT).show();
+                                    preferences.codeAdvertencia("El monto de la chancha es menor al precio de la  cancha");
                                 }else{
                                     if (nombre_reserva.getText().toString().isEmpty()){
 
-                                        Toast.makeText(getApplicationContext(), "El campo reserva nombre de la reserva no debe estar vacio", Toast.LENGTH_SHORT).show();
+                                        preferences.codeAdvertencia("El campo reserva nombre de la reserva no debe estar vacio");
                                     }else{
                                         if (mequipos.getColaboracion_id()!=null || mequipos.getEquipo_id()!=null){
                                             registrarReservaUsuario( mequipos.getColaboracion_id(),mequipos.getEquipo_id(),"1");
                                         }else{
-                                            Toast.makeText(getApplicationContext(), "Valores nulos", Toast.LENGTH_SHORT).show();
+                                            preferences.codeAdvertencia("Valores nulos");
 
                                         }
 
                                     }
 
-                            }
+                                }
 
 
                             }
                         }
                     });
+                    GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
+                    linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
+                    rcv_colaboraciones.setLayoutManager(linearLayoutManager);
                     rcv_colaboraciones.setAdapter(itemAdapter);
 
 

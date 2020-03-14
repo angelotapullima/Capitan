@@ -29,9 +29,11 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Views.ComentariosActivity;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -62,14 +64,22 @@ public class DetalleFotoUsuario extends AppCompatActivity {
    PhotoViewAttacher PVAttacher;
     TextView comentarios,cantidad,tabComen;
     String foto,descripcion,cantidad_comentarios,id_publicacion;
-
+    UniversalImageLoader universalImageLoader;
     Preferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_foto_usuario);
+
+
         preferences= new Preferences(this);
+
+
+        universalImageLoader = new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
+
         img_iconoPerfil = findViewById(R.id.img_iconoPerfil) ;
         comentarios = findViewById(R.id.comentarios) ;
         cantidad = findViewById(R.id.cantidad) ;
@@ -80,7 +90,9 @@ public class DetalleFotoUsuario extends AppCompatActivity {
         cantidad_comentarios =  getIntent().getExtras().getString("cantidad_comentarios");
         id_publicacion =  getIntent().getExtras().getString("id_publicacion");
 
-        Glide.with(getApplicationContext()).load(IP2 + "/" + foto).error(R.drawable.error).into(img_iconoPerfil);
+
+        UniversalImageLoader.setImage(IP2+"/"+ foto,img_iconoPerfil,null);
+        //Glide.with(getApplicationContext()).load(IP2 + "/" + foto).error(R.drawable.error).into(img_iconoPerfil);
         PVAttacher = new PhotoViewAttacher(img_iconoPerfil);
 
         comentarios.setText(descripcion);

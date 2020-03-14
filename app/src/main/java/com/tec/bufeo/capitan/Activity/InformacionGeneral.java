@@ -17,11 +17,11 @@ import com.tec.bufeo.capitan.Util.Preferences;
 
 public class InformacionGeneral extends AppCompatActivity implements View.OnClickListener {
 
-    TextView NombreDelUsuario,UsuarioNickname,DniDelUsuario,DireccionDelUsuario,CamisetaDelUsuario,
+    TextView UsuarioNickname,DniDelUsuario,DireccionDelUsuario,CamisetaDelUsuario,
             PosicionDelUsuario,HabilidadDelUsuario;
 
     Preferences preferences;
-    RelativeLayout nombres,usuario,dni,direccion,NumeroCamiseta,posicionJugadors,habilidadDestacada,Password;
+    RelativeLayout usuario,dni,direccion,NumeroCamiseta,posicionJugadors,habilidadDestacada,Password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +30,6 @@ public class InformacionGeneral extends AppCompatActivity implements View.OnClic
          preferences = new Preferences(this);
 
 
-        NombreDelUsuario= findViewById(R.id.NombreDelUsuario);
         UsuarioNickname= findViewById(R.id.UsuarioNickname);
         DniDelUsuario= findViewById(R.id.DniDelUsuario);
         DireccionDelUsuario= findViewById(R.id.DireccionDelUsuario);
@@ -40,7 +39,7 @@ public class InformacionGeneral extends AppCompatActivity implements View.OnClic
 
 
 
-        nombres= findViewById(R.id.nombres);
+
         Password= findViewById(R.id.Password);
         usuario= findViewById(R.id.usuario);
         dni= findViewById(R.id.dni);
@@ -50,7 +49,7 @@ public class InformacionGeneral extends AppCompatActivity implements View.OnClic
         habilidadDestacada= findViewById(R.id.habilidadDestacada);
 
 
-        NombreDelUsuario.setText(preferences.getPersonName() + " " + preferences.getPersonSurname());
+
         UsuarioNickname.setText(preferences.getNickname());
         DniDelUsuario.setText(preferences.getDni());
         DireccionDelUsuario.setText(preferences.getDireccion());
@@ -60,7 +59,7 @@ public class InformacionGeneral extends AppCompatActivity implements View.OnClic
 
 
 
-        nombres.setOnClickListener(this);
+
         usuario.setOnClickListener(this);
         dni.setOnClickListener(this);
         direccion.setOnClickListener(this);
@@ -90,11 +89,7 @@ public class InformacionGeneral extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
 
-        if (v.equals(nombres)){
-            Intent i = new Intent(InformacionGeneral.this,EditarDatosDePerfil.class);
-            i.putExtra("tipo","nombres");
-            startActivity(i);
-        }else if (v.equals(usuario)){
+        if (v.equals(usuario)){
             Intent i = new Intent(InformacionGeneral.this,EditarDatosDePerfil.class);
             i.putExtra("tipo","UsuarioNickname");
             startActivity(i);

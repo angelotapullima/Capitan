@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
@@ -27,7 +27,8 @@ public class AdaptadorMisTorneos extends RecyclerView.Adapter<AdaptadorMisTorneo
 
     class TorneoViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txt_nombre_torneo,txt_descripcion_torneo,txt_lugar_torneo,txt_fecha_torneo,txt_hora_torneo, txt_cant_equipos_torneo, txt_organizador_torneo;
+        private TextView txt_nombre_torneo,txt_descripcion_torneo,txt_lugar_torneo,txt_fecha_torneo,
+                txt_hora_torneo, txt_cant_equipos_torneo, txt_organizador_torneo,txt_buscar_precioCancha;
 
 
         private TorneoViewHolder(View itemView) {
@@ -41,6 +42,7 @@ public class AdaptadorMisTorneos extends RecyclerView.Adapter<AdaptadorMisTorneo
             txt_hora_torneo = itemView.findViewById(R.id.txt_hora_torneo);
             txt_cant_equipos_torneo = itemView.findViewById(R.id.txt_cant_equipos_torneo);
             txt_organizador_torneo = itemView.findViewById(R.id.txt_organizador_torneo);
+            txt_buscar_precioCancha = itemView.findViewById(R.id.txt_buscar_precioCancha);
 
         }
 
@@ -93,6 +95,7 @@ public class AdaptadorMisTorneos extends RecyclerView.Adapter<AdaptadorMisTorneo
             holder.txt_hora_torneo.setText(current.getTorneo_hora());
             holder.txt_cant_equipos_torneo.setText(current.getTorneo_equipos());
             holder.txt_organizador_torneo.setText(current.getTorneo_organizador());
+            holder.txt_buscar_precioCancha.setText(current.getTorneo_precio());
 
             holder.bid(current, listener);
         } else {

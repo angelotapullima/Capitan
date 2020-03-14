@@ -21,7 +21,7 @@ public class ChatsRoomDBRepository {
 
     public LiveData<List<Chats>> getAllComments() {
 
-        boolean online = ForoFragment.isOnLine();
+        /*boolean online = ForoFragment.isOnLine();*/
 
         /*if (online){
             deleteAllEquipos();

@@ -5,12 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Model.Jugadores;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -27,6 +26,7 @@ public class AdapterJugadores extends RecyclerView.Adapter<AdapterJugadores.Juga
     Context ctx;
     private  OnItemClickListener listener;
     Preferences preferencesUser;
+    UniversalImageLoader universalImageLoader;
 
 
     class JugadoresViewHolder extends RecyclerView.ViewHolder {
@@ -70,6 +70,7 @@ public class AdapterJugadores extends RecyclerView.Adapter<AdapterJugadores.Juga
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
         preferencesUser = new Preferences(context);
+        universalImageLoader= new UniversalImageLoader(context);
         this.listener = listener;}
 
     @NonNull
@@ -86,7 +87,8 @@ public class AdapterJugadores extends RecyclerView.Adapter<AdapterJugadores.Juga
             current = mUsers.get(position);
 
 
-            Glide.with(ctx).load(IP2+"/"+ current.getJugador_foto()).into(holder.civ_fotoUsuario);
+            ImageLoader.getInstance().init(universalImageLoader.getConfig());
+            UniversalImageLoader.setImage(IP2+"/"+ current.getJugador_foto(),holder.civ_fotoUsuario,null);
 
             holder.txt_nombreUsuario.setText(current.getJugador_nombre());
             holder.txt_habilidadUsuario.setText(current.getJugador_habilidad());

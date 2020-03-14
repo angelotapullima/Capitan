@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,8 +23,6 @@ import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Repos
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.ViewModels.EequiposViewModel;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Repository.TequiposRoomDbRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.ViewModels.TequiposViewModel;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Repository.Publicaciones.PublicacionesTorneoRoomDBRepository;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.PublicacionesTorneoViewModel;
 import com.tec.bufeo.capitan.Activity.Login;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Repository.MovimientosRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.ViewModels.MovimientosViewModel;
@@ -56,10 +53,8 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposRoomDBRe
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Repository.MisTorneoRoomDBRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.ViewModels.MisTorneoViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.Repository.OtrosTorneosRoomDBRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.ViewModels.OtrosTorneosViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.MisTorneoViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -83,7 +78,6 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
 
   EequiposViewModel eequiposViewModel;
   TequiposViewModel tequiposViewModel;
-  PublicacionesTorneoViewModel feedTorneoListViewModel;
   RegistroEquiposTorneoViewModel registroEquiposTorneoViewModel;
   JugadoresViewModel jugadoresViewModel;
   SeleccionadosViewModel seleccionadosViewModel;
@@ -97,7 +91,6 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
   MisEquiposViewModel misEquiposViewModel;
   RetosViewModel retosViewModel;
   MisTorneoViewModel misTorneoViewModel;
-  OtrosTorneosViewModel otrosTorneosViewModel;
   MovimientosViewModel movimientosViewModel;
 
 
@@ -117,7 +110,6 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         preferencesUser = getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         pref =  new Preferences(getContext());
 
-        otrosTorneosViewModel = ViewModelProviders.of(getActivity()).get(OtrosTorneosViewModel.class);
         misTorneoViewModel = ViewModelProviders.of(getActivity()).get(MisTorneoViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(getActivity()).get(MisEquiposViewModel.class);
         chatsListViewModel = ViewModelProviders.of(getActivity()).get(ChatsListViewModel.class);
@@ -126,7 +118,6 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         commentsListViewModel = ViewModelProviders.of(getActivity()).get(CommentsListViewModel.class);
         eequiposViewModel = ViewModelProviders.of(getActivity()).get(EequiposViewModel.class);
         tequiposViewModel = ViewModelProviders.of(getActivity()).get(TequiposViewModel.class);
-        feedTorneoListViewModel = ViewModelProviders.of(getActivity()).get(PublicacionesTorneoViewModel.class);
         registroEquiposTorneoViewModel = ViewModelProviders.of(getActivity()).get(RegistroEquiposTorneoViewModel.class);
         jugadoresViewModel = ViewModelProviders.of(getActivity()).get(JugadoresViewModel.class);
         seleccionadosViewModel = ViewModelProviders.of(getActivity()).get(SeleccionadosViewModel.class);
@@ -223,7 +214,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         dialog_logout.show();
 
     }
-  public void logout(){
+    public void logout(){
       dialogLogout();
   }
     private void EliminarDBs() {
@@ -234,8 +225,6 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         TequiposRoomDbRepository tequiposRoomDbRepository = new TequiposRoomDbRepository(application);
         tequiposRoomDbRepository.deleteAllTorneosEquipos();
 
-        PublicacionesTorneoRoomDBRepository feedTorneoRoomDBRepository = new PublicacionesTorneoRoomDBRepository(application);
-        feedTorneoRoomDBRepository.deleteAllFeed();
 
         RegistroEquiposTorneoRoomDBRepository registroEquiposTorneoRoomDBRepository = new RegistroEquiposTorneoRoomDBRepository(application);
         registroEquiposTorneoRoomDBRepository.deleteAllEquipos();
@@ -273,11 +262,10 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         RetosRoomDBRepository retosRoomDBRepository = new RetosRoomDBRepository(application);
         retosRoomDBRepository.deleteAllRetos();
 
-        MisTorneoRoomDBRepository misTorneoRoomDBRepository =  new MisTorneoRoomDBRepository(application);
-        misTorneoRoomDBRepository.deleteAllRetos();
+        TorneosRoomDBRepository torneosRoomDBRepository =  new TorneosRoomDBRepository(application);
+        torneosRoomDBRepository.DeleteAllTorneosAsyncTask();
 
-        OtrosTorneosRoomDBRepository otrosTorneosRoomDBRepository = new OtrosTorneosRoomDBRepository(application);
-        otrosTorneosRoomDBRepository.deleteAllRetos();
+
 
         MovimientosRoomDBRepository movimientosRoomDBRepository = new MovimientosRoomDBRepository(application);
         movimientosRoomDBRepository.deleteAllEquipos();

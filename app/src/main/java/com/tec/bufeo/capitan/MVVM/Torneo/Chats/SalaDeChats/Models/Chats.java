@@ -20,17 +20,44 @@ public class Chats {
     @SerializedName("chat_id")
     private String chat_id;
 
-    @ColumnInfo(name = "chat_usuario")
-    @SerializedName("chat_usuario")
-    private String chat_usuario;
+
+    @ColumnInfo(name = "id_usuario_1")
+    @SerializedName("id_usuario_1")
+    private String id_usuario_1;
+
+
+    @ColumnInfo(name = "usuario_1")
+    @SerializedName("usuario_1")
+    private String usuario_1;
+
+
+    @ColumnInfo(name = "usuario_1_foto")
+    @SerializedName("usuario_1_foto")
+    private String usuario_1_foto;
+
+@ColumnInfo(name = "id_usuario_2")
+    @SerializedName("id_usuario_2")
+    private String id_usuario_2;
+
+
+    @ColumnInfo(name = "usuario_2")
+    @SerializedName("usuario_2")
+    private String usuario_2;
+
+
+    @ColumnInfo(name = "usuario_2_foto")
+    @SerializedName("usuario_2_foto")
+    private String usuario_2_foto;
+
+
 
     @ColumnInfo(name = "chat_fecha")
     @SerializedName("chat_fecha")
     private String chat_fecha;
 
-    @ColumnInfo(name = "chat_mensaje")
+   /* @ColumnInfo(name = "chat_mensaje")
     @SerializedName("chat_mensaje")
-    private String chat_mensaje;
+    private String chat_mensaje;*/
 
     @ColumnInfo(name = "chat_estado")
     @SerializedName("chat_estado")
@@ -40,6 +67,11 @@ public class Chats {
     @SerializedName("chat_ultimo_mensaje")
     private String chat_ultimo_mensaje;
 
+    @ColumnInfo(name = "chat_ultimo_mensaje_id")
+    @SerializedName("chat_ultimo_mensaje_id")
+    private String chat_ultimo_mensaje_id;
+
+
     @ColumnInfo(name = "chat_ultimo_mensaje_fecha")
     @SerializedName("chat_ultimo_mensaje_fecha")
     private String chat_ultimo_mensaje_fecha;
@@ -48,9 +80,6 @@ public class Chats {
     @SerializedName("chat_ultimo_mensaje_hora")
     private String chat_ultimo_mensaje_hora;
 
-    @ColumnInfo(name = "chat_ultimo_mensaje_id")
-    @SerializedName("chat_ultimo_mensaje_id")
-    private String chat_ultimo_mensaje_id;
 
     @ColumnInfo(name = "chat_ultimo_mensaje_usuario")
     @SerializedName("chat_ultimo_mensaje_usuario")
@@ -69,12 +98,52 @@ public class Chats {
         this.chat_id = chat_id;
     }
 
-    public String getChat_usuario() {
-        return chat_usuario;
+    public String getId_usuario_1() {
+        return id_usuario_1;
     }
 
-    public void setChat_usuario(String chat_usuario) {
-        this.chat_usuario = chat_usuario;
+    public void setId_usuario_1(String id_usuario_1) {
+        this.id_usuario_1 = id_usuario_1;
+    }
+
+    public String getUsuario_1() {
+        return usuario_1;
+    }
+
+    public void setUsuario_1(String usuario_1) {
+        this.usuario_1 = usuario_1;
+    }
+
+    public String getUsuario_1_foto() {
+        return usuario_1_foto;
+    }
+
+    public void setUsuario_1_foto(String usuario_1_foto) {
+        this.usuario_1_foto = usuario_1_foto;
+    }
+
+    public String getId_usuario_2() {
+        return id_usuario_2;
+    }
+
+    public void setId_usuario_2(String id_usuario_2) {
+        this.id_usuario_2 = id_usuario_2;
+    }
+
+    public String getUsuario_2() {
+        return usuario_2;
+    }
+
+    public void setUsuario_2(String usuario_2) {
+        this.usuario_2 = usuario_2;
+    }
+
+    public String getUsuario_2_foto() {
+        return usuario_2_foto;
+    }
+
+    public void setUsuario_2_foto(String usuario_2_foto) {
+        this.usuario_2_foto = usuario_2_foto;
     }
 
     public String getChat_fecha() {
@@ -83,14 +152,6 @@ public class Chats {
 
     public void setChat_fecha(String chat_fecha) {
         this.chat_fecha = chat_fecha;
-    }
-
-    public String getChat_mensaje() {
-        return chat_mensaje;
-    }
-
-    public void setChat_mensaje(String chat_mensaje) {
-        this.chat_mensaje = chat_mensaje;
     }
 
     public String getChat_estado() {
@@ -109,6 +170,14 @@ public class Chats {
         this.chat_ultimo_mensaje = chat_ultimo_mensaje;
     }
 
+    public String getChat_ultimo_mensaje_id() {
+        return chat_ultimo_mensaje_id;
+    }
+
+    public void setChat_ultimo_mensaje_id(String chat_ultimo_mensaje_id) {
+        this.chat_ultimo_mensaje_id = chat_ultimo_mensaje_id;
+    }
+
     public String getChat_ultimo_mensaje_fecha() {
         return chat_ultimo_mensaje_fecha;
     }
@@ -123,14 +192,6 @@ public class Chats {
 
     public void setChat_ultimo_mensaje_hora(String chat_ultimo_mensaje_hora) {
         this.chat_ultimo_mensaje_hora = chat_ultimo_mensaje_hora;
-    }
-
-    public String getChat_ultimo_mensaje_id() {
-        return chat_ultimo_mensaje_id;
-    }
-
-    public void setChat_ultimo_mensaje_id(String chat_ultimo_mensaje_id) {
-        this.chat_ultimo_mensaje_id = chat_ultimo_mensaje_id;
     }
 
     public String getChat_ultimo_mensaje_usuario() {
@@ -148,4 +209,6 @@ public class Chats {
     public void setMensaje_id(String mensaje_id) {
         this.mensaje_id = mensaje_id;
     }
+
+
 }

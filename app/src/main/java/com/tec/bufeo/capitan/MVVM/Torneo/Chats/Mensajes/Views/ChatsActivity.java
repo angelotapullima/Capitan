@@ -24,10 +24,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.ViewModels.MensajesViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import java.util.HashMap;
@@ -45,8 +47,10 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
     Preferences preferences;
     MensajesViewModel mensajesViewModel;
     AdapterMensajes adapterMensajes;
-    String id_chat,nombre_chat;
+    String id_chat,foto,nombre;
+    ImageView foto_chat;
     BroadcastReceiver BR;
+    UniversalImageLoader universalImageLoader;
 
 
     public static final String CHAT= "CHAT";
@@ -57,7 +61,9 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
         preferences = new Preferences(this);
         id_chat = getIntent().getStringExtra("id_chat");
-        nombre_chat = getIntent().getStringExtra("nombre_chat");
+        universalImageLoader= new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
         mensajesViewModel = ViewModelProviders.of(this).get(MensajesViewModel.class);
         initViews();
         setAdapter();
@@ -103,9 +109,10 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         mensaje_chat=findViewById(R.id.mensaje_chat);
         enviar_mensaje= findViewById(R.id.enviar_mensaje);
         nombre_charla= findViewById(R.id.nombre_charla);
+        foto_chat= findViewById(R.id.foto_chat);
         enviar_mensaje.setOnClickListener(this);
 
-        nombre_charla.setText(nombre_chat);
+
 
 
 
@@ -131,11 +138,28 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         mensajesViewModel.getmAllMensajes(id_chat,preferences.getToken()).observe(this, new Observer<List<Mensajes>>() {
             @Override
             public void onChanged(@Nullable List<Mensajes> chats) {
-                adapterMensajes.setWords(chats);
-                numero= chats;
-                contador = adapterMensajes.getItemCount()+1;
+                if (chats.size()>0){
+                    adapterMensajes.setWords(chats);
+
+                    foto = chats.get(chats.size()-1).getMensaje_foto();
+                    nombre =chats.get(chats.size()-1).getMensaje_nombre();
+
+
+
+
+                    numero= chats;
+                    contador = adapterMensajes.getItemCount()+1;
+                }else{
+                    nombre ="";
+                    foto ="";
+                }
+                UniversalImageLoader.setImage(IP2+"/"+foto,foto_chat,null);
+                nombre_charla.setText(nombre);
+
             }
         });
+
+
 
 
     }
@@ -178,7 +202,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
 
     StringRequest stringRequest;
     private void EnviarMes(final String mensaje) {
-        String url =IP2+"/api/Usuario/enviar_mensaje";
+        String url =IP2+"/api/User/enviar_mensaje";
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

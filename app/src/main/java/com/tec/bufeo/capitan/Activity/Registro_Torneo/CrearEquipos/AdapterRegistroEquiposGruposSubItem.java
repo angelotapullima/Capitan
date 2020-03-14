@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Models.TablaTorneoSubItem;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -22,9 +23,11 @@ public class AdapterRegistroEquiposGruposSubItem extends RecyclerView.Adapter<Ad
 
     private List<TablaTorneoSubItem> tablaTorneoSubItems;
     Context ctx;
+    UniversalImageLoader universalImageLoader;
 
     public AdapterRegistroEquiposGruposSubItem(Context context, List<TablaTorneoSubItem> tablaTorneoSubItems) {
         this.ctx=context;
+        universalImageLoader= new UniversalImageLoader(context);
         this.tablaTorneoSubItems=tablaTorneoSubItems;
     }
 
@@ -62,8 +65,8 @@ public class AdapterRegistroEquiposGruposSubItem extends RecyclerView.Adapter<Ad
         TablaTorneoSubItem torneoSubItem = tablaTorneoSubItems.get(position);
 
 
-
-        Glide.with(ctx).load(IP2+"/"+ torneoSubItem.getEquipo_foto()).into(holder.imagenEquipo);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+        UniversalImageLoader.setImage(IP2+"/"+ torneoSubItem.getEquipo_foto(),holder.imagenEquipo,null);
         //holder.imagenEquipo.setText(torneoSubItem.getPosicion_lista());
         holder.nombre_equipo_lista.setText(torneoSubItem.getEquipo_nombre());
 

@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosWebServiceRepo
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import java.util.HashMap;
@@ -105,17 +108,15 @@ public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.O
             @Override
             public void onItemClick(Retos retos, int position) {
 
-                if (preferences.getIdUsuarioPref().equals(retos.getUser_respuesta())){
-                    String retos_id = retos.getRetos_id();
-                    String usuario= retos.getRetador_id();
+                if (retos.getUser_respuesta().equals(preferences.getIdUsuarioPref())){
 
-                    if (!usuario.equals(preferences.getIdUsuarioPref())){
-                        dialogoAceptar(retos_id);
-                    }
+                    dialogoAceptar(retos);
+
 
                 }else{
-                    Toast.makeText(getContext(), "usted no puede responder este reto", Toast.LENGTH_SHORT).show();
+                    preferences.codeAdvertencia("Solo el capitán de equipo retado puede responder");
                 }
+
 
 
 
@@ -130,34 +131,48 @@ public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.O
 
     }
 
-    public void dialogoAceptar(final String id_reto){
+    public void dialogoAceptar(final Retos retos){
         final Dialog dialogr = new Dialog(getActivity());
         dialogr.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogr.setContentView(R.layout.dialogo_mensaje);
+        dialogr.setContentView(R.layout.dialogo_mensaje_responder_reto);
 
-        Button btn_cancela = dialogr.findViewById(R.id.btn_cancelar);
-        Button btn_acepta =  dialogr.findViewById(R.id.btn_aceptar);
-        TextView txtMensaje = dialogr.findViewById(R.id.txtMensaje);
-        txtMensaje.setText("¿Desea Aceptar el reto?");
+        ImageView fotoRetosRetador = dialogr.findViewById(R.id.fotoRetosRetador);
+        ImageView fotoRetado = dialogr.findViewById(R.id.fotoRetado);
 
-        btn_cancela.setOnClickListener(new View.OnClickListener() {
+        TextView nombreRetador = dialogr.findViewById(R.id.nombreRetador);
+        TextView nombreRetado = dialogr.findViewById(R.id.nombreRetado);
+
+        TextView mensajeReto = dialogr.findViewById(R.id.mensajeReto);
+
+        LinearLayout btn_cancelar = dialogr.findViewById(R.id.btn_cancelar);
+        LinearLayout btn_aceptar =  dialogr.findViewById(R.id.btn_aceptar);
+
+        String  texto = "tu equipo " + retos.getRetos_nombre_retador() +" fue retado por " + retos.getRetos_nombre_retado();
+        mensajeReto.setText(texto);
+        nombreRetador.setText(retos.getRetos_nombre_retador());
+        nombreRetado.setText(retos.getRetos_nombre_retado());
+
+
+        UniversalImageLoader.setImage(IP2+"/"+ retos.getRetos_foto_retador(),fotoRetosRetador,null);
+        UniversalImageLoader.setImage(IP2+"/"+ retos.getRetos_foto_retado(),fotoRetado,null);
+        btn_cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogr.dismiss();
-                EnviarEstadoReto(id_reto,"2");
+                //EnviarEstadoReto(id_reto,"2");
             }
         });
 
 
 
-        btn_acepta.setOnClickListener(new View.OnClickListener() {
+        btn_aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
                 //Eliminamos los datos de la SharedPreferences
                 //preferencesUser.edit().clear().apply();
-                EnviarEstadoReto(id_reto,"1");
+                EnviarEstadoReto(retos.getRetos_id(),"1");
                 dialogr.dismiss();
 
 
@@ -216,7 +231,7 @@ public class FragmentPendientes extends Fragment implements SwipeRefreshLayout.O
         //retosViewModel.ElimarRetos();
 
         RetosWebServiceRepository retosWebServiceRepository = new RetosWebServiceRepository(application);
-        retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
+        retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"normal");
         RefreshLayoutPendientes.setRefreshing(false);
     }
 }

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -15,6 +16,8 @@ import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
+
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class ChatsListAdapter extends RecyclerView.Adapter<ChatsListAdapter.ChatsViewHolder>  {
 
@@ -28,6 +31,7 @@ public class ChatsListAdapter extends RecyclerView.Adapter<ChatsListAdapter.Chat
     class ChatsViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textCapi,txtHorra,txtmensashe;
+        private ImageView fotoChat;
 
 
         private ChatsViewHolder(View itemView) {
@@ -36,6 +40,7 @@ public class ChatsListAdapter extends RecyclerView.Adapter<ChatsListAdapter.Chat
             textCapi =  itemView.findViewById(R.id.textCapi);
             txtHorra =  itemView.findViewById(R.id.txtHorra);
             txtmensashe =  itemView.findViewById(R.id.txtmensashe);
+            fotoChat =  itemView.findViewById(R.id.fotoChat);
 
         }
 
@@ -80,11 +85,19 @@ public class ChatsListAdapter extends RecyclerView.Adapter<ChatsListAdapter.Chat
 
             ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-            //UniversalImageLoader.setImage("http://"+IP+"/"+ current.getComments_foto(),holder.comentarios_foto,null);
+            //
             //Picasso.with(ctx).load("http://"+IP+"/"+ current.getForo_foto()).into(holder.img_fotoForo);
-            holder.textCapi.setText(current.getChat_usuario());
+
+            if (current.getId_usuario_1().equals(preferencesUser.getIdUsuarioPref())){
+                holder.textCapi.setText(current.getUsuario_2());
+                UniversalImageLoader.setImage(IP2+"/"+ current.getUsuario_2_foto(),holder.fotoChat,null);
+            }else{
+                holder.textCapi.setText(current.getUsuario_1());
+                UniversalImageLoader.setImage(IP2+"/"+ current.getUsuario_1_foto(),holder.fotoChat,null);
+            }
+
             holder.txtmensashe.setText(current.getChat_ultimo_mensaje());
-            holder.txtHorra.setText(current.getChat_ultimo_mensaje_hora());
+            holder.txtHorra.setText(current.getChat_ultimo_mensaje_fecha()+ "   "+ current.getChat_ultimo_mensaje_hora());
 
 
             //holder.imgbt_comment.setOnClickListener(this);

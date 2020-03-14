@@ -13,11 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipoEnGrupo.Model.EquiposGrupo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class AdapterEquiposSeleccionado extends RecyclerView.Adapter<AdapterEqui
     Context ctx;
     private OnItemClickListener listener;
     Preferences preferencesUser;
+    UniversalImageLoader universalImageLoader;
 
 
     class EquiposSeleccionadosViewHolder extends RecyclerView.ViewHolder {
@@ -73,6 +75,7 @@ public class AdapterEquiposSeleccionado extends RecyclerView.Adapter<AdapterEqui
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
         preferencesUser = new Preferences(context);
+        universalImageLoader= new UniversalImageLoader(context);
         this.listener = listener;}
 
     @NonNull
@@ -89,7 +92,8 @@ public class AdapterEquiposSeleccionado extends RecyclerView.Adapter<AdapterEqui
             current = mUsers.get(position);
 
 
-            Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.foto_equipo_elegido);
+            ImageLoader.getInstance().init(universalImageLoader.getConfig());
+            UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.foto_equipo_elegido,null);
 
             holder.name_equipo.setText(current.getEquipo_nombre());
 

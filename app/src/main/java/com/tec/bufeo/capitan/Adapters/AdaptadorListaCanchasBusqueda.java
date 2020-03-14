@@ -3,22 +3,20 @@ package com.tec.bufeo.capitan.Adapters;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.ArrayList;
 
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<AdaptadorListaCanchasBusqueda.canchaBusquedaViewHolder> {
 
@@ -27,15 +25,14 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
     Context context;
     Empresas obj;
     private OnItemClickListener listener;
+    UniversalImageLoader universalImageLoader;
 
-    public AdaptadorListaCanchasBusqueda() {
-
-    }
 
     public AdaptadorListaCanchasBusqueda(Context context, ArrayList<Empresas> array, int layoutpadre, OnItemClickListener listener) {
         this.array = array;
         this.layoutpadre = layoutpadre;
         this.context = context;
+        universalImageLoader = new UniversalImageLoader(context);
         this.listener = listener;
     }
 
@@ -99,7 +96,8 @@ public class AdaptadorListaCanchasBusqueda extends RecyclerView.Adapter<Adaptado
         obj = array.get(position);
 
 
-        Glide.with(context).load(IP+"/"+ obj.getEmpresas_foto()).into(holder.imagen_cancha);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+        universalImageLoader.setImage(IP2+"/"+ obj.getEmpresas_foto(),holder.imagen_cancha,null);
         holder.txt_buscar_nombreEmpresa.setText(obj.getEmpresas_nombre());
         holder.txt_buscar_direccionEmpresa.setText(obj.getEmpresas_direccion());
         holder.txt_buscar_precioCancha.setText(obj.getPrecio());

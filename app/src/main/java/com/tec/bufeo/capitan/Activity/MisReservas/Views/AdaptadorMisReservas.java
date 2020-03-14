@@ -79,14 +79,20 @@ public class AdaptadorMisReservas extends RecyclerView.Adapter<AdaptadorMisReser
         if (mUsers != null) {
             current = mUsers.get(position);
 
+            float totalex;
 
+            if (Float.parseFloat(current.getReserva_pago2())>0){
 
-            holder.nombre_reserva_reserva.setText(current.getNombre_reserva());
-            holder.monto_final_reserva.setText(current.getMonto_final());
-            holder.empresa_reserva.setText(current.getNombre_empresa());
+                totalex= Float.parseFloat(current.getReserva_pago1()) + Float.parseFloat(current.getReserva_pago2());
+                holder.monto_final_reserva.setText(String.valueOf(totalex));
+            }else{
+                holder.monto_final_reserva.setText(current.getReserva_pago1());
+            }
+            holder.nombre_reserva_reserva.setText(current.getReserva_nombre());
+            holder.empresa_reserva.setText(current.getEmpresa_nombre());
             holder.nombre_cancha_reserva.setText(current.getCancha_nombre());
-            holder.horaReserva.setText(current.getHora_reserva());
-            holder.fechaReserva.setText(current.getFecha_reserva());
+            holder.horaReserva.setText(current.getReserva_hora());
+            holder.fechaReserva.setText(current.getReserva_fecha());
 
 
             holder.bid(current,listener);

@@ -10,10 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.EstadisticasTorneo.Models.Goleadores;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import org.json.JSONObject;
 
@@ -31,6 +32,7 @@ public class AdaptadorGoleadores extends RecyclerView.Adapter<AdaptadorGoleadore
     Context ctx;
     private  OnItemClickListener listener;
     Preferences preferencesUser;
+    UniversalImageLoader universalImageLoader;
 
 
 
@@ -66,6 +68,7 @@ public class AdaptadorGoleadores extends RecyclerView.Adapter<AdaptadorGoleadore
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
         preferencesUser = new Preferences(context);
+        universalImageLoader= new UniversalImageLoader(context);
         this.listener = listener;}
 
     @NonNull
@@ -81,8 +84,9 @@ public class AdaptadorGoleadores extends RecyclerView.Adapter<AdaptadorGoleadore
         if (mUsers != null) {
             current = mUsers.get(position);
 
-            Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.equipo_foto);
-            Glide.with(ctx).load(IP2+"/"+ current.getUser_image()).into(holder.user_image);
+            ImageLoader.getInstance().init(universalImageLoader.getConfig());
+            UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.equipo_foto,null);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.user_image,null);
 
 
             holder.user_nickname.setText(current.getUser_nickname());

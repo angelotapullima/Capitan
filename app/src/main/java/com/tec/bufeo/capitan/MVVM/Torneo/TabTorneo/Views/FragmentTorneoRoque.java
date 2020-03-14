@@ -21,14 +21,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.tec.bufeo.capitan.Activity.BusquedaDeTorneos.Views.MasTorneosActivity;
+import com.tec.bufeo.capitan.Activity.MasTorneos.MasTorneosActivity;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneo;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Models.Torneo;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.Repository.MisTorneoWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.MisTorneos.ViewModels.MisTorneoViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.Repository.OtrosTorneosWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.OtrosTorneos.ViewModels.OtrosTorneosViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosWebServiceRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.MisTorneoViewModel;
+
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
@@ -43,7 +42,6 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
     Activity activity;
     Context context;
     MisTorneoViewModel misTorneoViewModel;
-    OtrosTorneosViewModel otrosTorneosViewModel;
     AdaptadorMisTorneos adaptadorMisTorneos;
     FloatingActionButton reg_torneo;
     SwipeRefreshLayout swipeTorneos;
@@ -62,7 +60,6 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
         super.onCreate(savedInstanceState);
 
         misTorneoViewModel = ViewModelProviders.of(getActivity()).get(MisTorneoViewModel.class);
-        otrosTorneosViewModel = ViewModelProviders.of(getActivity()).get(OtrosTorneosViewModel.class);
     }
 
     @Override
@@ -119,7 +116,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
 
     public void cargarvista(){
 
-        misTorneoViewModel.getAllRetos("si").observe(this, new Observer<List<Torneo>>() {
+        misTorneoViewModel.getAllMisTorneo("si").observe(this, new Observer<List<Torneo>>() {
             @Override
             public void onChanged(@Nullable List<Torneo> torneos) {
                 adaptadorMisTorneos.setWords(torneos);
@@ -127,14 +124,16 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
             }
         });
 
-
-
-        otrosTorneosViewModel.getAllOtrosTorneos("no").observe(this, new Observer<List<Torneo>>() {
+        misTorneoViewModel.getAllOtrosTorneos("no").observe(this, new Observer<List<Torneo>>() {
             @Override
             public void onChanged(@Nullable List<Torneo> torneos) {
                 adaptadorOtrosTorneos.setWords(torneos);
+
             }
         });
+
+
+
 
 
     }
@@ -148,7 +147,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
             public void onItemClick(Torneo torneo, int position) {
 
                 Intent intent = new Intent(getContext(), DetalleTorneoNuevo.class);
-                intent.putExtra("id_torneo", torneo.getTorneo_id());
+                intent.putExtra("id_torneo", torneo.getId_torneo());
                 intent.putExtra("id_usuario", torneo.getUsuario_id());
                 intent.putExtra("nombre", torneo.getTorneo_nombre());
                 intent.putExtra("foto", torneo.getFoto_torneo());
@@ -170,7 +169,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
             public void onItemClick(Torneo torneo, int position) {
 
                 Intent intent = new Intent(getContext(), DetalleTorneoNuevo.class);
-                intent.putExtra("id_torneo", torneo.getTorneo_id());
+                intent.putExtra("id_torneo", torneo.getId_torneo());
                 intent.putExtra("id_usuario", torneo.getUsuario_id());
                 intent.putExtra("nombre", torneo.getTorneo_nombre());
                 intent.putExtra("foto", torneo.getFoto_torneo());
@@ -191,11 +190,11 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
     public void onRefresh() {
 
 
-        MisTorneoWebServiceRepository misTorneoWebServiceRepository= new MisTorneoWebServiceRepository(application);
-        misTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
+        TorneosWebServiceRepository torneosWebServiceRepository = new TorneosWebServiceRepository(application);
+        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"mis_torneos","");
+        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"otros_torneos","");
 
-        OtrosTorneosWebServiceRepository otrosTorneosWebServiceRepository =  new OtrosTorneosWebServiceRepository(application);
-        otrosTorneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken());
+
 
         swipeTorneos.setRefreshing(false);
 

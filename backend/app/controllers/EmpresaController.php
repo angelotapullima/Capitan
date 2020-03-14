@@ -313,16 +313,62 @@ class EmpresaController{
     }
     public function listar_empresas_por_id_ciudad(){
         $id_ciudad = $_POST['id_ciudad'];
+        $id_usuario = $_POST['id_usuario'];
         $ciudad = $this->usuario->listar_ciudad_por_id_ubigeo($id_ciudad);
-        $model = $this->empresa->listar_empresas_por_id_ciudad($ciudad->ciudad);
+        $model2 = $this->empresa->listar_empresas_por_id_ciudad($ciudad->ciudad);
         $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $resources[$i] = array(
-                "id_empresa" => $model[$i]->empresa_id,
-                "nombre" => $model[$i]->empresa_nombre,
-                "direccion" => $model[$i]->empresa_direccion,
-                "foto" => $model[$i]->empresa_foto,
-                "horario" => $model[$i]->empresa_horario
+        for ($i=0;$i<count($model2);$i++) {
+            $id_empresa=$model2[$i]->empresa_id;
+            $model = $this->empresa->listar_detalle_empresa($id_empresa);
+            $listado = $this->empresa->listar_rating_empresa($id_empresa);
+            $mi_rating = $this->empresa->listar_detalle_rating_empresa($id_empresa,$id_usuario);
+            $mi_rating_final=null;
+            if(isset($mi_rating->rating_empresa_valor)){
+                $mi_rating_final = $mi_rating->rating_empresa_valor;
+            }
+            if($mi_rating_final==null){
+                $mi_rating_final= 0;
+            }else{
+                $mi_rating_final= $mi_rating_final * 1;
+            }
+            $soy_admin=null;
+            $soy_admin_ = $this->empresa->listar_mi_negocio_reserva($id_usuario,$id_empresa);
+            if(isset($soy_admin_->id_empresa_usuario)){
+                $soy_admin = $soy_admin_->id_empresa_usuario;
+            }
+            if($soy_admin==null){
+                $soy_admin= 0;
+            }else{
+                $soy_admin= 1;
+            }
+            $detalles = $this->empresa->listar_rating_empresa_agrupado($id_empresa);
+            $conteo = $listado->conteo;
+            if($conteo=="0"){$conteo=0;}
+            $suma = $listado->suma;
+            if($suma==null){$suma=0;}
+            ($suma==0 && $conteo==0) ? $prom = 0 : $prom = $suma / $conteo;
+            $promedio = round($prom,2);
+            $resources[] = array(
+                "nombre"=>$model->empresa_nombre,
+                "id_empresa"=>$id_empresa,
+                "direccion"=>$model->empresa_direccion,
+                "telefono_1"=>$model->empresa_telefono_1,
+                "telefono_2"=>$model->empresa_telefono_2,
+                "descripcion"=>$model->empresa_descripcion,
+                "valoracion"=>$mi_rating_final,
+                "foto"=>$model->empresa_foto,
+                "estado"=>$model->empresa_estado,
+                "usuario"=>$model->user_nickname,
+                "distrito"=>$model->ubigeo_distrito,
+                "horario_ls" => $model->empresa_horario_ls,
+                "horario_d" => $model->empresa_horario_d,
+                "fecha_actual" => date('Y-m-d'),
+                "hora_actual" => date('H:i'),
+                "dia" => date('N'),
+                "promedio" => $promedio,
+                "conteo" => $conteo,
+                "rating" => $detalles,
+                "soy_admin" => $soy_admin
             );
         }
         $data = array("results" => $resources);
@@ -440,12 +486,26 @@ class EmpresaController{
         $data = array("results" => $model);
         echo json_encode($data);
     }
+    public function listar_reserva_por_id(){
+        try{
+            $id_reserva = $_POST['id_reserva'];
+            $model = $this->empresa->listar_reserva_por_id($id_reserva);
+            $nombre_user = $this->user->list($model->id_user);
+            $model->nombre_user = $nombre_user->person_name." ".$nombre_user->person_surname;
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $model = 2;
+        }
+        $data = array("results" => $model);
+        echo json_encode($data);
+    }
     public function listar_canchas_por_id_empresa(){
         $id_empresa = $_POST['id_empresa'];
         $model = $this->empresa->listar_canchas_por_id_empresa($id_empresa);
         $resources = array();
         for ($i=0;$i<count($model);$i++) {
             $resources[$i] = array(
+                "id_empresa" => $id_empresa,
                 "cancha_id" => $model[$i]->cancha_id,
                 "nombre" => $model[$i]->cancha_nombre,
                 "dimensiones" => $model[$i]->cancha_dimensiones,
@@ -549,12 +609,54 @@ class EmpresaController{
                     $fecha = $_POST['fecha'];
                     $hora = $_POST['hora'];
                     $pago1 = $_POST['pago1'];
+                    $id_user = $_POST['id_user'];
                     $pago1_date = $pago_date;
                     $pago2 = "0";
                     $pago2_date = "";
                     $estado = $_POST['estado'];
                     $microtime = microtime(true);
-                    $result = $this->empresa->registrar_reserva($id_cancha,$tipopago,$pago_id,$nombre,$fecha,$hora,$pago1,$pago1_date,$pago2,$pago2_date,$estado,$microtime);
+                    $result = $this->empresa->registrar_reserva($id_cancha,$id_user,$tipopago,$pago_id,$nombre,$fecha,$hora,$pago1,$pago1_date,$pago2,$pago2_date,$estado,$microtime);
+                    if($result==1){
+                        $datos_reserva = $this->empresa->listar_reserva_por_microtime($microtime);
+                        $datos_cancha = $this->empresa->listar_usuarios_por_id_cancha($id_cancha);
+                        foreach ($datos_cancha as $dd){
+                            $this->user->guardar_notificacion($dd->id_user,"Reserva",$datos_reserva->id_reserva,"Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora);
+                            $notificar = $this->notificar($dd->user_token,"Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora,"Reserva lista!","Reserva","Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora);
+                        }
+                    }else{
+                        if($tipopago!=0){
+                            $this->empresa->delete_pago_por_microtime($pago_microtime);
+                            if($pago_tipo==1){
+                                $modelando = new Cuenta();
+                                $datos_cuenta=$this->user->listar_cuenta_por_id_user($pago_id_user);
+                                $modelando->receptor = $datos_cuenta->id_cuenta;
+                                $modelando->monto = $pago_total * (1);
+                                $this->cuenta->sumar_saldo($modelando);
+                                //fin actualizar saldo
+                                //guardar transferencia
+                                $this->transferencia->delete_transferencia_u_e_por_pago_id($pago_id);
+                                //fin guardar transferencia
+                            }else{
+                                $this->empresa->actualizar_colaboracion_estado_1($id_colaboracion);
+                                $this->empresa->actualizar_detalle_colaboracion_estado_0($id_colaboracion);
+                                $detalle_colaboracion = $this->empresa->obtener_detalle_chancha($id_colaboracion);
+                                foreach ($detalle_colaboracion as $dc){
+                                    //actualizar saldo
+                                    $modelando = new Cuenta();
+                                    $datos_cuenta=$this->user->listar_cuenta_por_id_user($dc->id_user);
+                                    $modelando->receptor = $datos_cuenta->id_cuenta;
+                                    $modelando->monto = $dc->detalle_colaboracion_monto * (1);
+                                    $this->cuenta->sumar_saldo($modelando);
+                                    //fin actualizar saldo
+                                }
+                                //guardar transferencia
+                                $this->transferencia->delete_transferencia_u_e_por_pago_id($pago_id);
+                                //fin guardar transferencia
+
+                            }
+                        }
+
+                    }
                 }
             }else{
                 $result = 6;
@@ -564,6 +666,29 @@ class EmpresaController{
             $result = 2;
         }
         echo json_encode($result);
+    }
+    public function notificar($token,$body,$title,$tipo,$contenido){
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $fields = array('to' => $token ,
+            'notification' => array('body' => $body, 'title' => $title),
+            'data' =>array('tipo'=> $tipo ,
+                'Contenido' => $contenido
+            ));
+        define('GOOGLE_API_KEY', 'AAAAj5-Syog:APA91bFAMP0UmglvTddGLwEqtTJmfEtFTmVkSElOOEcmAI1rW-GaJ6uTfGuUvdzbwcMxyyLswqYUkM3ALdSvcUNM60rb9ryY-MIN2oLUHVIoT9SyKPE6uyo7omdwNQZjaVZtEDkYnxX7');
+        $headers = array(
+            'Authorization:key='.GOOGLE_API_KEY,
+            'Content-Type: application/json');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        if($result === false){
+            die('Curl failed' . curl_error());}
+        curl_close($ch);
+        return $result;
     }
     public function listar_canchas_libres_por_hora(){
         /*$fecha = $_POST['fecha'];

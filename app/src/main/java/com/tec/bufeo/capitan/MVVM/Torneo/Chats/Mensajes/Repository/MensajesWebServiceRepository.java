@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
 import com.tec.bufeo.capitan.Util.APIUrl;
+import com.tec.bufeo.capitan.Util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,8 +28,10 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class MensajesWebServiceRepository {
 
     Application application;
+    Preferences preferences;
     public MensajesWebServiceRepository(Application application){
         this.application = application;
+        preferences = new Preferences(application);
     }
     private static OkHttpClient providesOkHttpClientBuilder(){
 
@@ -93,7 +96,24 @@ public class MensajesWebServiceRepository {
 
         try {
             jsonObject = new JSONObject(response);
-            JSONArray resultJSON = jsonObject.getJSONArray("results");
+            JSONArray resultJSON = jsonObject.getJSONArray("data");
+
+            String foto="";
+            String nombre="";
+
+            JSONObject jsonObject1 =jsonObject.getJSONObject("datos_user");
+
+            if (jsonObject1.optString("id_usuario_1").equals(preferences.getIdUsuarioPref())){
+                foto = jsonObject1.optString("foto_usuario_2");
+                nombre = jsonObject1.optString("nombre_usuario_2");
+            }else{
+
+                foto = jsonObject1.optString("foto_usuario_1");
+                nombre = jsonObject1.optString("nombre_usuario_1");
+            }
+
+
+
 
             int count = resultJSON.length();
 
@@ -101,11 +121,12 @@ public class MensajesWebServiceRepository {
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
                 Mensajes mensajes = new Mensajes();
-
-                //mMovieModel.setId(object.getString("id"));
-                //reviews.setComments_foto(jsonNode.getString("foto"));
-                mensajes.setChat_id(jsonNode.getString("chat_id"));
+                mensajes.setChat_id(jsonNode.getString("chat_id"));/*
+                MensajesRoomDBRepository mensajesRoomDBRepository = new MensajesRoomDBRepository(application);
+                mensajesRoomDBRepository.deleteOne(jsonNode.getString("chat_id"));*/
                 mensajes.setMensaje_contenido(jsonNode.getString("mensaje"));
+                mensajes.setMensaje_foto(foto);
+                mensajes.setMensaje_nombre(nombre);
                 mensajes.setMensajes_id_usuario(jsonNode.getString("id_usuario"));
                 mensajes.setMensaje_fecha(jsonNode.getString("fecha"));
                 mensajes.setMensaje_hora(jsonNode.getString("hora"));

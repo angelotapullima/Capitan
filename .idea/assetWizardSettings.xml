@@ -216,9 +216,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_create_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\angel\Downloads\galeria.svg" />
+                            <entry key="outputName" value="ic_notificacion" />
+                            <entry key="sourceFile" value="C:\Users\angel\Downloads\notificacion.svg" />
                           </map>
                         </option>
                       </PersistentState>

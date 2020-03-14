@@ -52,7 +52,7 @@ public class MisReservasActivity extends AppCompatActivity {
 
 
 
-        misReservasViewModel.getAll(preferences.getIdUsuarioPref(),preferences.getToken()).observe(this, new Observer<List<MisReservas>>() {
+        misReservasViewModel.getAll(preferences.getIdUsuarioPref(),preferences.getToken(),"normal").observe(this, new Observer<List<MisReservas>>() {
             @Override
             public void onChanged(@Nullable List<MisReservas> mequipos) {
                 adaptadorMisReservas.setWords(mequipos);
@@ -73,14 +73,25 @@ public class MisReservasActivity extends AppCompatActivity {
                 if (tipo.equals("verMas")){
                     Intent i =  new Intent(getApplicationContext(), ConfirmacionReserva.class);
                     i.putExtra("cancha",misReservas.getCancha_nombre());
-                    i.putExtra("lugar",misReservas.getNombre_empresa());
-                    i.putExtra("hora",misReservas.getHora_reserva());
-                    i.putExtra("fecha",misReservas.getFecha_reserva());
-                    i.putExtra("nombre",misReservas.getNombre_reserva());
-                    i.putExtra("direccion",misReservas.getDireccion_reserva());
-                    i.putExtra("telefono",misReservas.getTelefono1_reserva());
-                    i.putExtra("telefono2",misReservas.getTelefono2_reserva());
-                    i.putExtra("precio",misReservas.getMonto_final());
+                    i.putExtra("lugar",misReservas.getEmpresa_nombre());
+                    i.putExtra("hora",misReservas.getReserva_hora());
+                    i.putExtra("fecha",misReservas.getReserva_fecha());
+                    i.putExtra("nombre",misReservas.getReserva_nombre());
+                    i.putExtra("direccion",misReservas.getEmpresa_direccion());
+                    i.putExtra("telefono",misReservas.getEmpresa_telefono_1());
+                    i.putExtra("telefono2",misReservas.getEmpresa_telefono_2());
+
+
+                    float totalex;
+
+                    if (Float.parseFloat(misReservas.getReserva_pago2())>0){
+
+                        totalex= Float.parseFloat(misReservas.getReserva_pago1()) + Float.parseFloat(misReservas.getReserva_pago2());
+
+                    }else{
+                        totalex = Float.parseFloat(misReservas.getReserva_pago1());
+                    }
+                    i.putExtra("precio",String.valueOf(totalex));
                     startActivity(i);
                 }
             }

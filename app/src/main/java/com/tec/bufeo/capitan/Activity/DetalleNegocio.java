@@ -10,8 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -39,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.EstadisticasEmpresas.EstadisticasEmpresas;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Canchas;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
@@ -51,6 +50,7 @@ import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.text.SimpleDateFormat;
@@ -71,8 +71,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     public TextView txt_nombreEmpresa, txt_descripcionEmpresa, txt_direccionEmpresa,separadorTelefonos,
             txt_telefonoEmpresa,txt_telefonoEmpresa2, txt_horario,rating_float,conteo,estadoNegocio,vistaMapa;
 
-    /*TextView txt_promedio,txt_conteo;
-    RatingBar rtb_valoracion;*/
+
 
     public RatingBar  rtb_valorar,ratingBar_promedio;
     CardView cdv_detalleEmpresa;
@@ -86,12 +85,11 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     String id_empresa, tipo_usuario,latitud ="",longitud="";
     FrameLayout frameCarga,frameCarga2;
     DataConnection  dc1, dc2,dc4;
-    /*static ProgressBar progressbar, progressbarcanchas;*/
     public String fecha_actual, hora_actual, cancha_id, horario;
-    String saldo_cargado;
+    String saldo_cargado="";
     public ArrayList<Cancha> arraycancha;
     ArrayList<String> saldo;
-
+    UniversalImageLoader universalImageLoader;
 
     NegociosViewModel negociosViewModel;
     CanchasViewModel canchasViewModel;
@@ -112,6 +110,8 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         preferences= new Preferences(this);
 
         id_empresa = getIntent().getExtras().getString("id_empresa");
+        universalImageLoader = new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
         initViews();
         setAdapter();
@@ -196,9 +196,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
 
 
-       /* *//*cargarEmpresa();*//*
-        dc2 = new DataConnection(DetalleNegocio.this, "listarcanchasEmpresas", new Cancha(id_empresa), false);
-        new DetalleNegocio.GetListadoCanchas().execute();*/
+
 
 
         rtb_valorar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -230,9 +228,9 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onItemClick(Canchas cancha, String tipo, int position) {
                 if (tipo.equals("img_fotoCancha")){
-                    if (!saldo_cargado.equals("") && !saldo_cargado.equals(null) ) {
 
-                        if (!saldo_cargado.equals("vacio")){
+
+                        if (!saldo_cargado.equals("vacio") && !saldo_cargado.equals("")){
                             Intent intent = new Intent(context, DetalleCanchas.class);
                             intent.putExtra("id_cancha", cancha.getCancha_id());
                             intent.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
@@ -249,7 +247,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                             obtenerSaldo();
                         }
 
-                    }
+
                 }
             }
         });
@@ -265,10 +263,9 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onChanged(List<Negocios> negocios) {
                 if (negocios.size()>0){
-                    Glide.with(context).load(IP2 + "/" + negocios.get(0).getFoto_empresa()).into(img_fotoEmpresa);
 
-                   /* latitud = negocios.get(0).getLatitud();
-                    longitud = arrayempresa.get(0).getLongitud();*/
+
+                    universalImageLoader.setImage(IP2+"/"+ negocios.get(0).getFoto_empresa(),img_fotoEmpresa,null);
 
 
                     txt_nombreEmpresa.setText(negocios.get(0).getNombre_empresa());
@@ -279,12 +276,12 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                     String hora = sdf.format(date);
                     int horaactual = Integer.parseInt(hora);
 
-                    SimpleDateFormat formatex = new SimpleDateFormat("E");
+                   /* SimpleDateFormat formatex = new SimpleDateFormat("E");
                     String dia = formatex.format(date);
 
-                    //dia  = variable creada para identificar el día de la semana y ver que horario usar
+                    //dia  = variable creada para identificar el día de la semana y ver que horario usar*/
 
-                    if (dia.equals("dom.")){
+                    if (negocios.get(0).getDia_actual().equals("7")){
                         txt_horario.setText(negocios.get(0).getHorario_d_empresa());
                         horario = negocios.get(0).getHorario_d_empresa();
                     }else{
@@ -322,16 +319,8 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
                     txt_direccionEmpresa.setText(negocios.get(0).getDireccion_empresa());
 
-                    /*if (negocios.get(0).getArrayRatingList().size() >0){
-                        rating_float.setText(arrayempresa.get(0).getArrayRatingList().get(0).getRatingfloat());
-                        conteo.setText(arrayempresa.get(0).getArrayRatingList().get(0).getConteo());
-                        ratingBar_promedio.setRating(Float.parseFloat(arrayempresa.get(0).getArrayRatingList().get(0).getRatingfloat()));
-                    }else{
-                        rating_float.setText("0");
-                        conteo.setText("0");
-                        ratingBar_promedio.setRating(0);
-                    }*/
-                    if (negocios.get(0).getRating_conteo().isEmpty()){
+
+                    if (negocios.get(0).getRating_conteo() != null){
                         rating_float.setText(negocios.get(0).getRating_empresa_valor());
                         conteo.setText(negocios.get(0).getRating_conteo());
                         ratingBar_promedio.setRating(Float.parseFloat(negocios.get(0).getRating_empresa_valor()));
@@ -357,15 +346,15 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                     }
 
 
-                    SimpleDateFormat sdf2 = new SimpleDateFormat("HH:hh");
+                  /*  SimpleDateFormat sdf2 = new SimpleDateFormat("HH:hh");
                     String horaActual = sdf2.format(date);
 
                     SimpleDateFormat fechex = new SimpleDateFormat("yyyy-MM-dd");
                     String fechaActual = fechex.format(date);
+*/
 
-
-                    fecha_actual = fechaActual;
-                    hora_actual = horaActual;
+                    fecha_actual = negocios.get(0).getFecha_actual();
+                    hora_actual = negocios.get(0).getHora_actual();
                     frameCarga.setVisibility(View.GONE);
                     frameCarga2.setVisibility(View.GONE);
                     //progressbar.setVisibility(ProgressBar.INVISIBLE);
@@ -381,7 +370,10 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onChanged(List<Canchas> canchas) {
                 if (canchas.size()>0){
+                    cdv_mensaje.setVisibility(View.GONE);
                     adaptadorListadoCanchaEmpresa.setWords(canchas);
+                }else{
+                    cdv_mensaje.setVisibility(View.VISIBLE);
                 }
 
                 //adaptadorListadoCanchaEmpresa
@@ -508,10 +500,6 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         }
 
     }
-
-
-
-
 }
 
 

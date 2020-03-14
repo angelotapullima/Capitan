@@ -31,7 +31,6 @@ import java.util.Date;
 public class DetalleCanchas extends AppCompatActivity implements View.OnClickListener {
 
     public  TabLayout tabLayout;
-    DataConnection dc;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
     public  String cancha_id, saldo,precio_dia,precio_noche,

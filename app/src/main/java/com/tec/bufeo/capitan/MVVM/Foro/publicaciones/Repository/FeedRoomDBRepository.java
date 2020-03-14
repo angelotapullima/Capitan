@@ -41,6 +41,21 @@ public class FeedRoomDBRepository {
     public void actualizarSup(String sup) {
         new ActualizarSup(feedDao).execute(sup);
     }
+    private static class ActualizarSup extends AsyncTask<String, Void, Void> {
+        private FeedDao feedDao;
+
+        private ActualizarSup(FeedDao feedDao) {
+            this.feedDao = feedDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... modelFeeds) {
+            feedDao.actualizarSup(modelFeeds[0]);
+
+            return null;
+        }
+    }
+
 
     public void ActualizarInf(String inf) {
         new ActualizarInf(feedDao).execute(inf);
@@ -56,6 +71,12 @@ public class FeedRoomDBRepository {
         return mAllPosts;
     }
 
+    public LiveData<List<ModelFeed>> getIdUsuario(String id_usuario) {
+
+
+        mAllPosts = feedDao.getIdUsuario(id_usuario);
+        return mAllPosts;
+    }
     public LiveData<List<ModelFeed>> getSearch(String query){
         mAllPosts = feedDao.searchFeeds(query);
         return mAllPosts;
@@ -201,20 +222,7 @@ public class FeedRoomDBRepository {
 
 
 
-    private static class ActualizarSup extends AsyncTask<String, Void, Void> {
-        private FeedDao feedDao;
 
-        private ActualizarSup(FeedDao feedDao) {
-            this.feedDao = feedDao;
-        }
-
-        @Override
-        protected Void doInBackground(String... modelFeeds) {
-            feedDao.actualizarSup(modelFeeds[0]);
-
-            return null;
-        }
-    }
 
     private static class ActualizarInf extends AsyncTask<String, Void, Void> {
         private FeedDao feedDao;

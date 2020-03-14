@@ -120,6 +120,9 @@ public class NegociosWebServiceRepository {
                 negocios.setHorario_d_empresa(jsonNode.optString("horario_d"));
                 negocios.setPromedio_empresa(jsonNode.optString("promedio"));
                 negocios.setConteo_empresa(jsonNode.optString("conteo"));
+                negocios.setFecha_actual(jsonNode.optString("fecha_actual"));
+                negocios.setHora_actual(jsonNode.optString("hora_actual"));
+                negocios.setDia_actual(jsonNode.optString("dia"));
                 negocios.setSoy_admin(jsonNode.optString("soy_admin"));
 
                 JSONArray jsonArray1 = jsonNode.optJSONArray("rating");

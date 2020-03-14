@@ -618,7 +618,15 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
 
                 Log.e("registrar_reserva", "onResponse: "+response );
 
-                if (response.equals("1")){
+
+                String separador,part1;
+                String[] resultado;
+
+                separador = Pattern.quote("}");
+                resultado = response.split(separador);
+                part1 = resultado[2];
+
+                if (part1.equals("1")){
                     preferences.toasVerde("Registro Completo");
                     /*Toast.makeText(activity, "Registro Completo", Toast.LENGTH_SHORT).show();*/
                     onRefresh();
@@ -659,6 +667,7 @@ public class FragmentMañana extends Fragment implements  SwipeRefreshLayout.OnR
                 parametros.put("fecha",fecha_actual_mas_uno_insert);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
+                parametros.put("id_user",preferences.getIdUsuarioPref());
                 Log.e("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }

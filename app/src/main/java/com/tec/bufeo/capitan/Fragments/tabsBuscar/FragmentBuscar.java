@@ -20,11 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistroReserva.ReservaEnBusqueda;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.AnimatedExpandableListView;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
     FragmentBuscar fragmentBuscar;
     SwipeRefreshLayout swipeRefreshLayout;
     Context context;
+    UniversalImageLoader universalImageLoader;
 
     public FragmentBuscar() {
     }
@@ -54,6 +56,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_buscar, container, false);
         context=getContext();
+        universalImageLoader = new UniversalImageLoader(context);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
         layout_carga =  view.findViewById(R.id.layout_carga);
         cdv_mensaje =  view.findViewById(R.id.cdv_mensaje);
 
@@ -171,7 +175,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
         public TextView txt_buscar_telefonoEmpresa2;
         public LinearLayout imb_llamar;
         public ImageView imagen_cancha;
-        public LinearLayout layout_reserva_busqueda;
+        public LinearLayout layout_reserva_busqueda,layoutReserva;
         public TextView txt_llamar;
 
     }
@@ -234,9 +238,8 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
 
            // holder.title.setText(item.title);
            // holder.hint.setText(item.hint);
-            Glide.with(context)
-                    .load(IP2+"/"+ item.img_cancha)
-                    .into(holder.imagen_cancha);
+            universalImageLoader.setImage(IP2+"/"+ item.img_cancha,holder.imagen_cancha,null);
+
             holder.txt_buscar_nombreEmpresa.setText(item.txt_buscar_nombreEmpresa);
             holder.txt_buscar_precioCancha.setText(item.txt_buscar_precioCancha);
             holder.txt_buscar_direccionEmpresa.setText(item.txt_buscar_direccionEmpresa);

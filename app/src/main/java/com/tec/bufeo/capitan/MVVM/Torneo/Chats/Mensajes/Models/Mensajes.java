@@ -45,6 +45,18 @@ public class Mensajes {
     @SerializedName("mensaje_contenido")
     private String mensaje_contenido;
 
+
+    @ColumnInfo(name = "mensaje_foto")
+    @SerializedName("mensaje_foto")
+    private String mensaje_foto;
+
+    @ColumnInfo(name = "mensaje_nombre")
+    @SerializedName("mensaje_nombre")
+    private String mensaje_nombre;
+
+
+
+
     @NonNull
     public String getMensaje_id() {
         return mensaje_id;
@@ -100,6 +112,22 @@ public class Mensajes {
 
     public void setMensaje_contenido(String mensaje_contenido) {
         this.mensaje_contenido = mensaje_contenido;
+    }
+
+    public String getMensaje_foto() {
+        return mensaje_foto;
+    }
+
+    public void setMensaje_foto(String mensaje_foto) {
+        this.mensaje_foto = mensaje_foto;
+    }
+
+    public String getMensaje_nombre() {
+        return mensaje_nombre;
+    }
+
+    public void setMensaje_nombre(String mensaje_nombre) {
+        this.mensaje_nombre = mensaje_nombre;
     }
 }
 

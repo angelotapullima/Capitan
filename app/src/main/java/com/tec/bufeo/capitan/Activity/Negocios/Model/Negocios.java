@@ -86,6 +86,21 @@ public class Negocios {
     @SerializedName("soy_admin")
     private String soy_admin;
 
+    @ColumnInfo(name = "fecha_actual")
+    @SerializedName("fecha_actual")
+    private String fecha_actual;
+
+    @ColumnInfo(name = "hora_actual")
+    @SerializedName("hora_actual")
+    private String hora_actual;
+
+
+    @ColumnInfo(name = "dia_actual")
+    @SerializedName("dia_actual")
+    private String dia_actual;
+
+
+
     @NonNull
     public String getId_empresa() {
         return id_empresa;
@@ -229,5 +244,29 @@ public class Negocios {
 
     public void setHorario_d_empresa(String horario_d_empresa) {
         this.horario_d_empresa = horario_d_empresa;
+    }
+
+    public String getFecha_actual() {
+        return fecha_actual;
+    }
+
+    public void setFecha_actual(String fecha_actual) {
+        this.fecha_actual = fecha_actual;
+    }
+
+    public String getHora_actual() {
+        return hora_actual;
+    }
+
+    public void setHora_actual(String hora_actual) {
+        this.hora_actual = hora_actual;
+    }
+
+    public String getDia_actual() {
+        return dia_actual;
+    }
+
+    public void setDia_actual(String dia_actual) {
+        this.dia_actual = dia_actual;
     }
 }

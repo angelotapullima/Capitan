@@ -66,7 +66,7 @@ public class AdapterMensajes extends RecyclerView.Adapter<AdapterMensajes.Mensaj
     private List<Mensajes> mUsers; // Cached copy of users
 
 
-    AdapterMensajes(Context context ,OnItemClickListener listener) {
+    public AdapterMensajes(Context context ,OnItemClickListener listener) {
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
         universalImageLoader = new UniversalImageLoader(context);
@@ -126,7 +126,7 @@ public class AdapterMensajes extends RecyclerView.Adapter<AdapterMensajes.Mensaj
             // holder.userNameView.setText("No Word");
         }
     }
-    void setWords(List<Mensajes> users){
+    public void setWords(List<Mensajes> users){
         mUsers = users;
         notifyDataSetChanged();
     }

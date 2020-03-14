@@ -27,6 +27,10 @@ public class MisReservasRoomDBRepository {
          return mAllMisReservas;
     }
 
+    public LiveData<List<MisReservas>> getAllID(String id) {
+        mAllMisReservas=misReservasDao.getAllID(id);
+        return mAllMisReservas;
+    }
 
     public void deleteAllMisReservas() {
         new DeleteAllReservasyncTask(misReservasDao).execute();

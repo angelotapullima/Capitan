@@ -101,7 +101,7 @@ public class FragmentChats extends Fragment implements SwipeRefreshLayout.OnRefr
             public void onItemClick(Chats chats, int position) {
                 Intent i =  new Intent(getContext(), ChatsActivity.class);
                 i.putExtra("id_chat",chats.getChat_id());
-                i.putExtra("nombre_chat",chats.getChat_usuario());
+                //i.putExtra("foto_chat",chats.get());
                 startActivity(i);
             }
         });

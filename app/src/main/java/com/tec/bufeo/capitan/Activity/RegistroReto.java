@@ -38,12 +38,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 import com.tec.bufeo.capitan.others.Equipo;
 import com.tec.bufeo.capitan.R;
@@ -61,6 +62,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -86,6 +88,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
     int cantidad_de_retos;
     RelativeLayout no_hay_equipos;
     LinearLayout btn_Registro_equipo;
+    UniversalImageLoader universalImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,8 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
         misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
 
         preferences= new Preferences(this);
+        universalImageLoader = new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
 
         spn_misEquipos = findViewById(R.id.spn_misEquipos);
@@ -121,7 +126,8 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
 
 
         txt_equipoRetado.setText(nombre_retado);
-        Glide.with(context).load(IP2+"/"+ foto_retado).into(civ_fotoEquipoRetado);
+
+        UniversalImageLoader.setImage(IP2+"/"+ foto_retado,civ_fotoEquipoRetado,null);
         Log.e("registroReto", "foto " + foto_retado );
 
 
@@ -139,7 +145,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                     //falta imagen
                 }else {
                     txt_equipoRetador.setText(arrayEquipos.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_nombre());
-                    Glide.with(context).load(IP2+"/"+ arrayEquipos.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_foto()).into(civ_fotoEquipoRetador);
+                    UniversalImageLoader.setImage(IP2+"/"+ arrayEquipos.get(spn_misEquipos.getSelectedItemPosition()-1).getEquipo_foto(),civ_fotoEquipoRetador,null);
 
                 }
             }
@@ -166,6 +172,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                 //adaptadorMiEquipo.setWords(mequipos);
                 if(mequipos.size()>0){
                     no_hay_equipos.setVisibility(View.GONE);
+                    arrayEquipos.clear();
                     arrayEquipos.addAll(mequipos);
                     Log.e("mis Equipos", "onChanged: "+mequipos.size() );
 
@@ -364,6 +371,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 Log.d("registro reto: ",""+response);
+
 
                 try {
                     JSONObject jsonObject = new JSONObject(response);

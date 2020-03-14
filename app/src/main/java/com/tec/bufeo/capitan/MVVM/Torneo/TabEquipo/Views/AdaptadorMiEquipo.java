@@ -9,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -27,6 +27,7 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
     Context ctx;
     private  OnItemClickListener listener;
     Preferences preferencesUser;
+    UniversalImageLoader universalImageLoader;
 
 
     class EquiposViewHolder extends RecyclerView.ViewHolder {
@@ -69,6 +70,7 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
         this.ctx=context;
         this.tipo=tipo;
         mInflater = LayoutInflater.from(context);
+        universalImageLoader = new UniversalImageLoader(context);
         preferencesUser = new Preferences(context);
         this.listener = listener;
     }
@@ -85,20 +87,20 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
     public void onBindViewHolder(@NonNull final EquiposViewHolder holder, int position) {
         if (mUsers != null) {
             current = mUsers.get(position);
-
+            ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
             if (tipo.equals("mas")){
 
-                Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.img_fotoEquipo);
-                //UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo_300,null);
+                //Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.img_fotoEquipo);
+                UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo,null);
 
                 holder.txt_nombreEquipo.setText(current.getEquipo_nombre());
                 //holder.txt_nombreEquipo_300.setText(current.getEquipo_nombre());
 
                 holder.card_300.setVisibility(View.GONE);
             }else{
-                //UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo,null);
-                Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.img_fotoEquipo_300);
+                UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.img_fotoEquipo_300,null);
+                //Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.img_fotoEquipo_300);
 
                 //holder.txt_nombreEquipo.setText(current.getEquipo_nombre());
                 holder.txt_nombreEquipo_300.setText(current.getEquipo_nombre());
@@ -108,7 +110,7 @@ public class AdaptadorMiEquipo extends RecyclerView.Adapter<AdaptadorMiEquipo.Eq
             }
 
 
-            Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.img_fotoEquipo);
+
 
             holder.txt_nombreEquipo.setText(current.getEquipo_nombre());
             holder.bid(current,listener);

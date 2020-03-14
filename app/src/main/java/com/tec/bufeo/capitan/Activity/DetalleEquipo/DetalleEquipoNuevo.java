@@ -1,7 +1,5 @@
 package com.tec.bufeo.capitan.Activity.DetalleEquipo;
 import android.content.Intent;
-
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -20,11 +18,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Views.ChanchasFragment;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Views.EstadisticasDeEquiposFragment;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Views.TorneoDequiposFragment;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
@@ -39,10 +41,12 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
     String equipo_id,equipo_nombre,equipo_foto,capitan_nombre,capitan_id;
     Preferences preferences;
     FloatingActionButton fab_agregarParticipantesEquipo;
+    UniversalImageLoader universalImageLoader;
 
     private   String[] tituloIds = {
             "Jugadores",
             "Torneos",
+            "Chanchas",
             "Estadísticas"
     };
 
@@ -59,6 +63,7 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
 
 
         preferences = new Preferences(this);
+        universalImageLoader = new UniversalImageLoader(this);
         sectionsDetalleEquipoAdapter = new SectionsDetalleEquipoAdapter(getSupportFragmentManager());
 
         container_Dequipo = findViewById(R.id.container_Dequipo);
@@ -78,7 +83,7 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         }
 
         name_Equipex.setText(equipo_nombre);
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<4;i++) {
             tabs_Dequipo.addTab(tabs_Dequipo.newTab().setText(tituloIds[i]) );
         }
 
@@ -127,8 +132,8 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         });
         tabs_Dequipo.getSelectedTabPosition();
 
-
-        Glide.with(this).load(IP2+"/"+ equipo_foto).into(imagen_Dequipo);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+        UniversalImageLoader.setImage(IP2+"/"+ equipo_foto,imagen_Dequipo,null);
 
         fab_agregarParticipantesEquipo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,14 +192,23 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
                     bundle1.putString("nombre", equipo_nombre);
                     fragment.setArguments(bundle1);
                     break;
-
                 case 2:
+                    fragment = new ChanchasFragment();
+                    Bundle bundle4 =  new Bundle();
+                    bundle4.putString("id_equipo", equipo_id);
+                    bundle4.putString("nombre", equipo_nombre);
+                    bundle4.putString("capitan_id", capitan_id);
+                    fragment.setArguments(bundle4);
+                    break;
+
+                case 3:
                     fragment = new EstadisticasDeEquiposFragment();
                     Bundle bundle3 =  new Bundle();
                     bundle3.putString("id_equipo", equipo_id);
                     bundle3.putString("nombre", equipo_nombre);
                     fragment.setArguments(bundle3);
                     break;
+
 
 
             }
@@ -204,7 +218,7 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
     }

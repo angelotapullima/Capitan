@@ -56,6 +56,7 @@ public class Login extends AppCompatActivity {
     public ArrayList<String> arrayHoras;
     public static Activity activity;
 
+    //pruebex
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,14 +95,8 @@ public class Login extends AppCompatActivity {
 
                 if( !(edt_usuario.getText().toString().isEmpty()) && !(edt_password.getText().toString().isEmpty())){
 
-                   /* usuario = new Usuario();
-                    usuario.setUser_nickname(edt_usuario.getText().toString());
-                    usuario.setUser_password(edt_password.getText().toString());
 
-                    dc = new DataConnection(Login.this,"loginUsuario",usuario,true);*/
                     login();
-
-
 
                 }else {
                     preferences.codeAdvertencia("Llene los campos");
@@ -116,7 +111,7 @@ public class Login extends AppCompatActivity {
 
 
     int code;
-    String messaje,valorcodigo;
+    String messaje;
     JSONObject data_json;
     JSONObject json_data;
     StringRequest stringRequest;
@@ -169,7 +164,6 @@ public class Login extends AppCompatActivity {
 
 
                     Intent intent = new Intent(Login.this, MenuPrincipal.class);
-
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

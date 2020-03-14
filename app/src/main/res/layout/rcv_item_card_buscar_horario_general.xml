@@ -31,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:id="@+id/layout_reserva_busqueda"
                 android:background="#86232222"
                 android:padding="5dp"
                 android:orientation="vertical">
@@ -60,7 +61,6 @@
                         android:gravity="center"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
-                        android:id="@+id/layout_reserva_busqueda"
                         android:background="#FF0000"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">

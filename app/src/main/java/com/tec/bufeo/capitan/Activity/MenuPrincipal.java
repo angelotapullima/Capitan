@@ -1,6 +1,8 @@
 package com.tec.bufeo.capitan.Activity;
 
 import androidx.lifecycle.ViewModelProviders;
+
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +31,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Views.TorneoDequiposFragment;
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
+import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.ViewModels.MensajesViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
@@ -36,6 +41,8 @@ import com.tec.bufeo.capitan.Fragments.FragmentTorneoPadre;
 import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscarPadre;
 import com.tec.bufeo.capitan.Fragments.FragmentInfo;
 import com.tec.bufeo.capitan.Activity.Negocios.Views.FragmentNegocio;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposWebServiceRepository;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
@@ -59,31 +66,31 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
     BroadcastReceiver BR;
     public static final String registro= "registro";
     private static final String TAG = "FirebaseToken";
-
     MensajesViewModel mensajesViewModel;
+    FeedListViewModel feedListViewModel;
+    MisEquiposViewModel misEquiposViewModel;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
 
         mensajesViewModel = ViewModelProviders.of(this).get(MensajesViewModel.class);
+        feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
+        misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
 
         FirebaseApp.initializeApp(this);
 
         preferences = new Preferences(this);
 
         preferencesUser = getSharedPreferences("User", Context.MODE_PRIVATE);
-        //Toast.makeText(getApplicationContext(),"p "+preferencesUser.getString("posicion",""),Toast.LENGTH_SHORT).show();
-        /*if(preferencesUser.getString("idusuario", "").equals("")){
-            usuario_nombre = getIntent().getStringExtra("usuario_nombre");
-            usuario_id = preferences.getIdUsuarioPref();
-            usuario_foto = getIntent().getStringExtra("usuario_foto");
-            ubigeo_id =preferences.getUbigeoId();
-            usuario_posicion = getIntent().getStringExtra("posicion");
-            token = preferencesUser.getString("token_firebase","");
-            //Toast.makeText(getApplicationContext(),"p0 "+usuario_posicion,Toast.LENGTH_SHORT).show();
-        }*/
 
+        if (preferences.getCantidadIngreso().equals("1")){
+            cargarFeed();
+            cargarEquipos();
+        }
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener
                 ( MenuPrincipal.this,  new OnSuccessListener<InstanceIdResult>() {
                     @Override
@@ -107,7 +114,9 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
         bnv_menu = (BottomNavigationView) findViewById(R.id.bnv_menu);
         bnv_menu.setOnNavigationItemSelectedListener(this);
 
-         setInitialFragment();
+
+            setInitialFragment();
+
 
         BR = new BroadcastReceiver() {
             @Override
@@ -143,7 +152,16 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
 
     }
 
-
+    Application application;
+    public void cargarFeed(){
+        FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
+        feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"0","0",preferences.getToken(),"","feed");
+    }
+    public void cargarEquipos(){
+        MisEquiposWebServiceRepository misEquiposWebServiceRepository =  new MisEquiposWebServiceRepository(application);
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken(),"");
+        misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken(),"");
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -211,6 +229,8 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
         fragmentTransaction.add(R.id.content_frame, fragmentactual,"Foro");
         fragmentTransaction.commit();
     }
+
+
 
 
     private  class GetActualizar extends AsyncTask<Void, Void, Void> {

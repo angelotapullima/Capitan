@@ -15,6 +15,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.tec.bufeo.capitan.Activity.MenuPrincipal;
+import com.tec.bufeo.capitan.Activity.PantallasNotificacion.ChatsNotificacion;
 import com.tec.bufeo.capitan.Activity.RegistroForo;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Views.ChatsActivity;
 import com.tec.bufeo.capitan.R;
@@ -58,16 +59,16 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         mmensaje=remoteMessage.getData().get(MMENSAJE);
 
 
-        Notificaciones notificaciones = new Notificaciones();
-        notificaciones.setTitle(remoteMessage.getNotification().getTitle());
-        notificaciones.setDescription(remoteMessage.getNotification().getBody());
-        notificaciones.getDescount(remoteMessage.getData().get(TIPO));
+        NotificacionesService notificacionesService = new NotificacionesService();
+        notificacionesService.setTitle(remoteMessage.getNotification().getTitle());
+        notificacionesService.setDescription(remoteMessage.getNotification().getBody());
+        notificacionesService.getDescount(remoteMessage.getData().get(TIPO));
         createNotificationChannel();
 
         //ShowNotification(notificaciones);
 
         if (tipo==null){
-            ShowNotification(notificaciones);
+            ShowNotification(notificacionesService);
         }else{
             if (tipo.equals("alarmas")){
                 Log.e(TAG, "onMessageReceived:  funcionando la huevada de tipo " +token );
@@ -77,9 +78,10 @@ public class FireBaseMessaging extends FirebaseMessagingService {
                 //mensaje(mhora,mfecha,mid_chat,mmensaje,mid_usuario,tipo);
                 Log.e("mensaje", "mensaje:  funcionando  tipo " +tipo );
                 mensajeChats(mhora,mfecha,mid_chat,mmensaje,mid_usuario,tipo);
-                notificaciones.setTitle(mid_usuario);
-                notificaciones.setDescription(mmensaje);
-                ShowNotification(notificaciones);
+                mensajeNotificacionChats(mhora,mfecha,mid_chat,mmensaje,mid_usuario,tipo);
+                notificacionesService.setTitle(mid_usuario);
+                notificacionesService.setDescription(mmensaje);
+                ShowNotification(notificacionesService);
 
             }
 
@@ -117,6 +119,17 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
 
     }
+    public void mensajeNotificacionChats (String hora,String fecha,String id_chat,String mmensaje,String mid_usuario,String tipo ){
+        Intent i = new Intent(ChatsNotificacion.CHATNOTIFICACION);
+        i.putExtra("tipo",tipo);
+        i.putExtra("hora",hora);
+        i.putExtra("fecha",fecha);
+        i.putExtra("id_chat",id_chat);
+        i.putExtra("id_usuario",mid_usuario);
+        i.putExtra("mensaje",mmensaje);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+
+    }
     public void createNotificationChannel(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             CharSequence name = "Noticacion";
@@ -126,9 +139,10 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         }
     }
 
-    private void ShowNotification(Notificaciones notificaciones ){
+    private void ShowNotification(NotificacionesService notificacionesService){
 
         Intent i = new Intent(this, MenuPrincipal.class);
+        i.putExtra("mostrarPantalla","inicio");
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this,NOTIFICACION_ID,i, PendingIntent.FLAG_ONE_SHOT);
@@ -136,8 +150,8 @@ public class FireBaseMessaging extends FirebaseMessagingService {
 
         NotificationCompat.Builder notificacionBuilder = new NotificationCompat.Builder(this,CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo)
-                .setContentTitle(notificaciones.getTitle())
-                .setContentText(notificaciones.getDescription())
+                .setContentTitle(notificacionesService.getTitle())
+                .setContentText(notificacionesService.getDescription())
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSound(defaultSound)

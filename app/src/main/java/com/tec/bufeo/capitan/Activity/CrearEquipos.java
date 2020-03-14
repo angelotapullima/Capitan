@@ -37,7 +37,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -74,7 +73,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
@@ -187,9 +185,10 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
                     getApplicationContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+
+
                 }  finally {
-                    //Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_LONG).show();
+
                 }
 
 
@@ -206,8 +205,8 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = resultado.getError();
-                //Toast.makeText(getApplicationContext(),"Error"+error, Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(),"Error: Intente de nuevo", Toast.LENGTH_SHORT).show();
+
+                preferences.toasRojo("Error","Intente de nuevo");
 
             }
         }
@@ -289,7 +288,11 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
         }
         output = Uri.fromFile(imagen);
         startActivityForResult(intent,REQUEST_CAMERA);
-        dialog_fotos.dismiss();
+        if ( dialog_fotos!= null ){
+            //if (&& dialog_fotos.isShowing()){
+            dialog_fotos.dismiss();
+        }
+
     }
 
     private void galeria() {
@@ -395,7 +398,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
                                     id_equipo = jsonNode.optString("id_equipo");
 
                                     if (valor==1){
-                                        Toast.makeText(CrearEquipos.this, "funciona", Toast.LENGTH_SHORT).show();
+
 
                                         Intent x = new Intent(CrearEquipos.this, RegistrarJugadoresEnEquipos.class);
                                         x.putExtra("id_equipo",id_equipo);
@@ -434,7 +437,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
 
 
         } catch (Exception exc) {
-            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+
         }
     }
 

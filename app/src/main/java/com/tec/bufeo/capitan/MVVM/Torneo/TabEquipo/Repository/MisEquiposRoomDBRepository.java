@@ -29,11 +29,7 @@ public class MisEquiposRoomDBRepository {
     }
 
     public LiveData<List<Mequipos>> getAllEquipo(String mio ) {
-        boolean online = ForoFragment.isOnLine();
 
-        /*if (online){
-            deleteAllEquipos();
-        }*/
         mAllMiEquipos = equiposDao.getAllEquipo(mio);
         return mAllMiEquipos;
     }

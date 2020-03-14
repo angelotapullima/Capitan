@@ -52,23 +52,14 @@
                         android:orientation="vertical">
 
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:layout_width="150dp"
+                        <ImageView
+                            android:layout_width="wrap_content"
                             android:layout_height="150dp"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="15dp"
-                            android:visibility="visible"
-                            android:src="@drawable/logo_sin_borde"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorTextIcons"
-                            android:textStyle="bold"
-                            android:text="HiPet"
-                            android:layout_marginBottom="15dp"
-                            android:textSize="35sp"
-                            android:visibility="gone"
-                            android:gravity="center"/>
+
+                            android:src="@drawable/logo_capitan"/>
+
 
 
                         <LinearLayout

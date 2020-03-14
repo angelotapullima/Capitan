@@ -247,19 +247,22 @@ class UserController{
             $resources = array();
             for ($i=0;$i<count($model);$i++) {
                 $mensaje = $this->user->listar_ultimo_mensaje_de_chat($model[$i]->chat_id);
-                $datos_u = $this->user->list($model[$i]->usuario_1);
-                $datos_ = $this->user->list($model[$i]->usuario_2);
+                $datos_u = $this->user->list($model[$i]->id_usuario_1);
+                $datos_ = $this->user->list($model[$i]->id_usuario_2);
                 $fecha = explode(' ',$mensaje->detalle_chat_fecha);
+                $fecha_formt=$this->validate->get_date_nominal($fecha[0],'Date','Date','es');
                 $resources[$i] = array(
                     "chat_id" => $model[$i]->chat_id,
+                    "id_usuario_1" => $model[$i]->id_usuario_1,
                     "usuario_1" => $model[$i]->usuario_1,
-                    "usuario_1_foto" => $datos_u->usuario_foto,
+                    "usuario_1_foto" => $datos_u->user_image,
+                    "id_usuario_2" => $model[$i]->id_usuario_2,
                     "usuario_2" => $model[$i]->usuario_2,
-                    "usuario_2_foto" => $datos_->usuario_foto,
+                    "usuario_2_foto" => $datos_->user_image,
                     "chat_fecha" => $model[$i]->chat_fecha,
                     "ultimo_msj" => $mensaje->detalle_chat_mensaje,
                     "ultimo_msj_id" => $mensaje->detalle_chat_id,
-                    "ultimo_msj_fecha" => $fecha[0],
+                    "ultimo_msj_fecha" => $fecha_formt,
                     "ultimo_msj_hora" => $fecha[1],
                     "ultimo_msj_usuario" => $mensaje->id_usuario
                 );
@@ -438,7 +441,13 @@ class UserController{
                     $user=$this->user->list($datos->id_usuario_1);
                     $user2=$this->user->list($datos->id_usuario_2);
                 }
-                $this->notificar_chat($user->usuario_token,$mensaje,$user2->usuario_nombre,"Mensaje",$mensaje,$chat_id,$id_usuario,$hora,$fecha);
+                $datos_notificacion = $this->user->listar_notificacion($user->id_user,$chat_id);
+                if($datos_notificacion->id_notificacion==null){
+                    $this->user->guardar_notificacion($user->id_user,"Mensaje",$chat_id,$user2->user_nickname." te ha enviado un mensaje.");
+                }else{
+                    $this->user->editar_notificacion($user->id_user,$chat_id);
+                }
+                $this->notificar_chat($user->user_token,$mensaje,$user2->user_nickname,"Mensaje",$mensaje,$chat_id,$id_usuario,$hora,$fecha);
             }
             $resources = array();
             $resources[0] = array("valor"=>$result);
@@ -521,23 +530,74 @@ class UserController{
         return $result;
     }
     public function listar_mensajes_por_chat(){
-        $id_chat = $_POST['id_chat'];
-        $model = $this->user->listar_mensajes_por_chat($id_chat);
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $fecha = explode(' ',$model[$i]->detalle_chat_fecha);
-            $resources[$i] = array(
-                "chat_id" => $id_chat,
-                "detalle_chat_id" => $model[$i]->detalle_chat_id,
-                "id_usuario" => $model[$i]->id_usuario,
-                "mensaje" => $model[$i]->detalle_chat_mensaje,
-                "fecha" => $fecha[0],
-                "hora" => $fecha[1],
-                "estado" => $model[$i]->detalle_chat_estado
+        try {
+            $id_chat = $_POST['id_chat'];
+            $model = $this->user->listar_mensajes_por_chat($id_chat);
+            $datos=$this->user->listar_chat_por_id($id_chat);
+            $user=$this->user->list($datos->id_usuario_1);
+            $user2=$this->user->list($datos->id_usuario_2);
+            $datos_user=array(
+                "id_usuario_1"=>$user->id_user,
+                "nombre_usuario_1"=>$user->user_nickname,
+                "foto_usuario_1"=>$user->user_image,
+                "id_usuario_2"=>$user2->id_user,
+                "nombre_usuario_2"=>$user2->user_nickname,
+                "foto_usuario_2"=>$user2->user_image
             );
+            $resources = array();
+            for ($i = 0; $i < count($model); $i++) {
+                $fecha = explode(' ', $model[$i]->detalle_chat_fecha);
+                $resources[$i] = array(
+                    "chat_id" => $id_chat,
+                    "detalle_chat_id" => $model[$i]->detalle_chat_id,
+                    "id_usuario" => $model[$i]->id_usuario,
+                    "foto" => $model[$i]->user_image,
+                    "mensaje" => $model[$i]->detalle_chat_mensaje,
+                    "fecha" => $fecha[0],
+                    "hora" => $fecha[1],
+                    "estado" => $model[$i]->detalle_chat_estado
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = [];
+        }
+        $data = array("data" => $resources,"datos_user"=>$datos_user);
+        echo json_encode($data);
+    }
+    public function listar_notificaciones(){
+        try {
+            $id_user = $_POST['id_usuario'];
+            $model = $this->user->listar_notificaciones($id_user);
+            for ($i = 0; $i < count($model); $i++) {
+                $fecha = $this->validate->get_date_nominal($model[$i]->notificacion_datetime,'DateTime','DateTime','es');
+                $resources[$i] = array(
+                    "id_notificacion" => $model[$i]->id_notificacion,
+                    "id_user" => $model[$i]->id_user,
+                    "notificacion_tipo" => $model[$i]->notificacion_tipo,
+                    "notificacion_id_rel" => $model[$i]->notificacion_id_rel,
+                    "notificacion_mensaje" => $model[$i]->notificacion_mensaje,
+                    "fecha" => $fecha,
+                    "estado" => $model[$i]->notificacion_estado
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = [];
         }
         $data = array("results" => $resources);
         echo json_encode($data);
+    }
+    public function actualizar_perfil(){
+        $usuario_id = $_POST['usuario_id'];
+        $datos = $this->user->list($usuario_id);
+        $file_path = "media/user/".$usuario_id.".jpg";
+        if($datos->usuario_foto == $file_path){
+            unlink($file_path);
+        }
+        move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
+        $result = $this->user->actualizar_perfil($file_path,$usuario_id);
+        echo json_encode($file_path,JSON_UNESCAPED_SLASHES);
     }
 }
 /*

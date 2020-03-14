@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Models.Chats;
 import com.tec.bufeo.capitan.Util.APIUrl;
+import com.tec.bufeo.capitan.Util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,9 +29,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class ChatsWebServiceRepository {
 
     private Application application;
+    Preferences preferences;
 
     public ChatsWebServiceRepository(Application application){
         this.application = application;
+        preferences= new Preferences(application);
     }
 
     private static OkHttpClient providesOkHttpClientBuilder(){
@@ -108,10 +111,24 @@ public class ChatsWebServiceRepository {
                 //mMovieModel.setId(object.getString("id"));
                 //reviews.setComments_foto(jsonNode.getString("foto"));
                 chats.setChat_id(jsonNode.getString("chat_id"));
-                chats.setChat_usuario(jsonNode.getString("usuario_1"));
-                chats.setChat_ultimo_mensaje_hora(jsonNode.getString("ultimo_msj_hora"));
-                chats.setChat_ultimo_mensaje_fecha(jsonNode.getString("ultimo_msj_fecha"));
+
+                chats.setId_usuario_1(jsonNode.getString("id_usuario_1"));
+                chats.setUsuario_1(jsonNode.getString("usuario_1"));
+                chats.setUsuario_1_foto(jsonNode.getString("usuario_1_foto"));
+
+                chats.setId_usuario_2(jsonNode.getString("id_usuario_2"));
+                chats.setUsuario_2(jsonNode.getString("usuario_2"));
+                chats.setUsuario_2_foto(jsonNode.getString("usuario_2_foto"));
+
+
+
+                chats.setChat_fecha(jsonNode.getString("chat_fecha"));
+
                 chats.setChat_ultimo_mensaje(jsonNode.getString("ultimo_msj"));
+                chats.setChat_ultimo_mensaje_id(jsonNode.getString("ultimo_msj_id"));
+                chats.setChat_ultimo_mensaje_fecha(jsonNode.getString("ultimo_msj_fecha"));
+                chats.setChat_ultimo_mensaje_hora(jsonNode.getString("ultimo_msj_hora"));
+                chats.setChat_ultimo_mensaje_usuario(jsonNode.getString("ultimo_msj_usuario"));
 
                 apiResults.add(chats);
             }

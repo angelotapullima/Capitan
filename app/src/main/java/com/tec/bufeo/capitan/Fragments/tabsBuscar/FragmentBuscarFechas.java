@@ -30,7 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistroReserva.ReservaEnBusqueda;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListaCanchasBusqueda;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
@@ -40,6 +40,7 @@ import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.AnimatedExpandableListView;
 import com.tec.bufeo.capitan.Util.DateDialog;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.text.DateFormat;
@@ -68,6 +69,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
     AdaptadorListaCanchasBusqueda adaptadorListaCanchasBusqueda;
     LinearLayout layoutNormal , layoutExpandable, layoutInfoHora,layoutInfoHoraExpandable;
     RelativeLayout carga_Empresas;
+    UniversalImageLoader universalImageLoader;
 
     public FragmentBuscarFechas() {
         // Required empty public constructor
@@ -90,6 +92,10 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         View view =  inflater.inflate(R.layout.fragment_fragment_buscar_fechas, container, false);
         activity= getActivity();
         context=getContext();
+
+        universalImageLoader = new UniversalImageLoader(context);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
         fragmentBuscarFechas=this;
         preferences= new Preferences(context);
         buscar=view.findViewById(R.id.buscar);
@@ -182,6 +188,12 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
             }
         }, year, month, day);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)+7,
+                cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), 0);
+        long time = cal.getTimeInMillis();
+        datePickerDialog.getDatePicker().setMaxDate(time);
         datePickerDialog.show();
     }
 
@@ -550,7 +562,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
 
             // holder.title.setText(item.title);
             // holder.hint.setText(item.hint);
-            Glide.with(context).load(IP2+"/"+ item.img_cancha).into(holder.imagen_cancha);
+            UniversalImageLoader.setImage(IP2+"/"+ item.img_cancha,holder.imagen_cancha,null);
             holder.txt_buscar_nombreEmpresa.setText(item.txt_buscar_nombreEmpresa);
             holder.txt_buscar_precioCancha.setText(item.txt_buscar_precioCancha);
             holder.txt_buscar_direccionEmpresa.setText(item.txt_buscar_direccionEmpresa);

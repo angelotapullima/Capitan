@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -191,9 +190,7 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
 
 
 
-        Toast.makeText(getApplicationContext(), "ensayo"+String.valueOf(contador)+".png",
-                Toast.LENGTH_LONG).show();
-
+        
 
         boolean success = false;
 
@@ -214,8 +211,8 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
         if (success) {
-            Toast.makeText(getApplicationContext(), "Image saved with success",
-                    Toast.LENGTH_LONG).show();
+
+            preferences.toasVerde("Imagen guardada correctamente");
 
 
             if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
@@ -234,8 +231,7 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
             //String stringUri = output.toString();
             enviarADondeSea(imageUri);
         } else {
-            Toast.makeText(getApplicationContext(),
-                    "Error during image saving", Toast.LENGTH_LONG).show();
+            preferences.toasRojo("Error al guardar la imágen","Intentelo más tarde");
         }
     }
 

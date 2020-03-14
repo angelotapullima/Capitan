@@ -30,6 +30,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.tec.bufeo.capitan.Activity.DetalleReservaEmpresa;
+import com.tec.bufeo.capitan.Activity.PantallasNotificacion.ReservasNotificacion;
 import com.tec.bufeo.capitan.Activity.RegistroReserva.RegistroReserva;
 import com.tec.bufeo.capitan.Adapters.AdapListadoCanchaReserva;
 import com.tec.bufeo.capitan.Modelo.Reserva;
@@ -55,7 +57,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
     ArrayList<Reserva> arrayreservados_WS;
     DataConnection dc;
     RecyclerView rcv_reservados;
-    ProgressBar progressBar;
+    LinearLayout layout_carga_reservas;
     CardView cdv_mensaje;
     Activity activity;
     Context context;
@@ -67,13 +69,12 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
 
 
 
-    String tipo_usuario,separador,part1,part2,separador_part1,part1_res,h_apertura,h_cierre,string_apertura,horaFinal= "";//h_reserva,hora,
-    String[] resultado,resultado_part1 ;
+    String tipo_usuario,separador,part1,part2,separador_part1,part1_res,h_apertura,h_cierre,string_apertura,horaFinal= "",separador_hora,partHoraActual;
+    String[] resultado,resultado_part1 ,resultado_horaActual;
     int hapertura = 0, hcierre;
-    //static boolean reservado_pm;
-    //static boolean reservado_am;
 
     String cancha_id,cancha_nombre,precio_dia,precio_noche,hora_actual,fecha_actual,horario,nombre_empresa,saldo;
+
     public FragmentHoy() {
     }
 
@@ -138,11 +139,11 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
         hcierre = Integer.parseInt(h_cierre);
 
         rcv_reservados = (RecyclerView) view.findViewById(R.id.rcv_reservas);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
+        layout_carga_reservas = (LinearLayout) view.findViewById(R.id.layout_carga_reservas);
         cdv_mensaje = (CardView) view.findViewById(R.id.cdv_mensaje);
         fecha = fecha_actual.toString();
 
-        progressBar.setVisibility(View.INVISIBLE);
+        layout_carga_reservas.setVisibility(View.GONE);
 
         cdv_mensaje.setVisibility(View.INVISIBLE);
 
@@ -180,7 +181,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
 
         @Override
         protected void onPreExecute() {
-            progressBar.setVisibility(ProgressBar.VISIBLE);
+            layout_carga_reservas.setVisibility(ProgressBar.VISIBLE);
             super.onPreExecute();
         }
 
@@ -195,13 +196,13 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
             super.onPostExecute(aVoid);
             swipeRefreshLayout.setRefreshing(false);
            // Toast.makeText(getContext(), "size "+arrayreservados_WS.get(0).getReserva_costo(), Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(ProgressBar.INVISIBLE);
+            layout_carga_reservas.setVisibility(ProgressBar.GONE);
 
 
 
-            Date date =new Date();
+            /*Date date =new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("HH");
-            String horas = sdf.format(date);
+            String horas = sdf.format(date);*/
 
 
             separador = Pattern.quote("-");
@@ -213,12 +214,18 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
             resultado_part1 = part1.split(separador_part1);
             part1_res = resultado_part1[0];
 
+
+            separador_hora = Pattern.quote(":");
+            resultado_horaActual = hora_actual.split(separador_hora);
+            partHoraActual = resultado_horaActual[0];
+            partHoraActual = partHoraActual.trim();
+
             if(tipo_usuario.equals("admin")){
                 part1_res = resultado_part1[0];
             }else{
-                if (Integer.parseInt(horas) >= Integer.parseInt(part1_res)){
+                if (Integer.parseInt(partHoraActual) >= Integer.parseInt(part1_res)){
 
-                    part1_res = horas;
+                    part1_res = partHoraActual;
                 }else{
                     part1_res = resultado_part1[0];
                 }
@@ -392,6 +399,12 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
 
 
                         if (reserva.getReserva_color().equals("rojo")){
+                            if (tipo_usuario.equals("admin")){
+                                Intent i = new Intent(context, DetalleReservaEmpresa.class);
+                                i.putExtra("id",reserva.getReserva_id());
+                                context.startActivity(i);
+                            }
+
 
                         }else if (reserva.getReserva_color().equals("verde")){
                             if (tipo_usuario.equals("admin")){
@@ -594,7 +607,14 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
 
                 Log.e("registrar_reserva", "onResponse: "+response );
 
-                if (response.equals("1")){
+                String separador,part1;
+                String[] resultado;
+
+                separador = Pattern.quote("}");
+                resultado = response.split(separador);
+                part1 = resultado[2];
+
+                if (part1.equals("1")){
                     preferences.toasVerde("Registro Completo");
                     onRefresh();
                     dialog_carga.dismiss();
@@ -625,6 +645,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
                 }
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("id_cancha",cancha_id);
+                parametros.put("id_user",preferences.getIdUsuarioPref());
                 parametros.put("nombre",nombre);
                 parametros.put("hora",hora);
                 parametros.put("pago1",String.valueOf(monto));
@@ -682,6 +703,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
 
                 Map<String,String> parametros=new HashMap<>();
                 parametros.put("id",id);
+                parametros.put("id_user",preferences.getIdUsuarioPref());
                 parametros.put("pago2",String.valueOf(pago2));
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());

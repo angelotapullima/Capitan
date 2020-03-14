@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -247,13 +246,6 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                                     preferences.codeAdvertencia("No cuenta con las Bufis Suficientes para la operación");
                                 }
 
-                                /*if (Double.parseDouble(pago1_todo.getText().toString()) > Double.parseDouble(total_cancha_todo.getText().toString())){
-                                    Toast.makeText(getApplicationContext(), "El monto a pagar no puede ser mayor al costo de la cancha", Toast.LENGTH_SHORT).show();
-                                }else if (Double.parseDouble(pago1_todo.getText().toString()) < Double.parseDouble(total_cancha_todo.getText().toString())){
-                                    Toast.makeText(getApplicationContext(), "El monto a pagar no puede ser menor al costo de la cancha", Toast.LENGTH_SHORT).show();
-                                }else{
-
-                                }*/
 
                             }
                         }
@@ -405,19 +397,17 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                                 Log.e("precios", "onItemClick: " + total_busqueda +" - " + mequipos.getMonto_final() );
                                 if (Double.parseDouble(mequipos.getMonto_final())> Double.parseDouble(total.getText().toString())){
 
-                                    Toast.makeText(getApplicationContext(), "El monto de la chancha supera el precio de la  cancha", Toast.LENGTH_SHORT).show();
-                                }else if (Double.parseDouble(mequipos.getMonto_final())< Double.parseDouble(total.getText().toString())){
+                                    preferences.codeAdvertencia("El monto de la chancha supera el precio de la  cancha");}else if (Double.parseDouble(mequipos.getMonto_final())< Double.parseDouble(total.getText().toString())){
 
-                                    Toast.makeText(getApplicationContext(), "El monto de la chancha es menor al precio de la  cancha", Toast.LENGTH_SHORT).show();
-                                }else{
+                                   }else{
                                     if (nombre_reserva_busqueda.getText().toString().isEmpty()){
 
-                                        Toast.makeText(getApplicationContext(), "El campo reserva nombre de la reserva no debe estar vacio", Toast.LENGTH_SHORT).show();
+                                        preferences.codeAdvertencia("El campo reserva nombre de la reserva no debe estar vacio");
                                     }else{
                                         if (mequipos.getColaboracion_id()!=null || mequipos.getEquipo_id()!=null){
                                             registrarReservaUsuario( mequipos.getColaboracion_id(),mequipos.getEquipo_id(),"1");
                                         }else{
-                                            Toast.makeText(getApplicationContext(), "Valores nulos", Toast.LENGTH_SHORT).show();
+                                            preferences.codeAdvertencia("Valores nulos");
 
                                         }
 
@@ -508,8 +498,15 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
                 Log.e("registrar_reserva", "onResponse: "+response );
 
-                if (response.equals("1")){
-                    Toast.makeText(getApplicationContext(), "Registro Completo", Toast.LENGTH_SHORT).show();
+                String separador,part1;
+                String[] resultado;
+
+                separador = Pattern.quote("}");
+                resultado = response.split(separador);
+                part1 = resultado[2];
+
+                if (part1.equals("1")){
+                    preferences.toasVerde("Registro Completo");
                     dialog_carga.dismiss();
                     Intent i = new Intent(ReservaEnBusqueda.this, ConfirmacionReserva.class);
                     i.putExtra("cancha",spn_cancha_busqueda.getSelectedItem().toString());
@@ -525,8 +522,14 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                     finish();
 
 
-                }else{
-                    Toast.makeText(getApplicationContext(), "Fallo al registrar la reserva", Toast.LENGTH_SHORT).show();
+                }else if(response.equals("3")){
+
+                    preferences.codeAdvertencia("Lo sentimos , la cancha seleccionado ya fue ocupada . Intente con otra cancha u otro horario");
+                    dialog_carga.dismiss();
+
+                }else if(response.equals("2")){
+
+                    preferences.codeAdvertencia("Lo sentimos "+  preferences.getNickname()+" , Ocurrio un error . Intentelo más tarde");
                     dialog_carga.dismiss();
 
                 }
@@ -584,6 +587,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 parametros.put("fecha",fecha);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
+                parametros.put("id_user",preferences.getIdUsuarioPref());
                 Log.e("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }

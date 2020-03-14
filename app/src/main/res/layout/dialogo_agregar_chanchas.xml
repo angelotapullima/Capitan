@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="50dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:textColor="#FFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Crear Chancha"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="20dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="Nombre de la Chancha"
+            android:textColor="#151A4F"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            style="@style/cajaDeTexto">
+
+            <EditText
+
+                android:id="@+id/name_chancha"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Nombre chancha "
+                android:inputType="textPersonName"
+                style="@style/InputTexto" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monto que se necesita"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#151A4F"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            style="@style/cajaDeTexto">
+
+            <EditText
+                android:id="@+id/monto_chancha"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Monto "
+                android:inputType="numberDecimal"
+                style="@style/InputTexto" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:weightSum="10"
+            android:paddingBottom="20dp"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:layout_weight="4.5"
+                android:id="@+id/crearChanchex"
+                android:text="Crear"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blue_A400"
+                app:cornerRadius="16dp"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="1dp"/>
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:id="@+id/cancelar"
+                android:layout_weight="4.5"
+                android:text="Cancelar"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blue_A400"
+                app:cornerRadius="16dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/llscrol"
+    android:layout_height="match_parent"
+    tools:context=".Activity.PantallasNotificacion.ReservasNotificacion">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetStartWithNavigation="0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFF"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="@drawable/cancha"
+                android:layout_height="200dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#56000000"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#FFF"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="wrap_content"
+                        android:text="¡GOLAZO!"/>
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/colorPrimary"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:textColor="#FFF"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="¡Tu reserva ha sido confirmada correctamente!"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animacion_carga"
+                android:layout_width="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-60dp"
+                android:layout_height="100dp"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="balon_futbol.json"
+                app:lottie_imageAssetsFolder="assets"
+                app:lottie_loop="true">
+
+            </com.airbnb.lottie.LottieAnimationView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"
+                    android:id="@+id/nombreEmprex"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold|normal"
+                    android:text="LAVADERO"/>
+
+
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_height="wrap_content"
+                android:textSize="17dp"
+                android:id="@+id/canchaReserva"
+                android:textStyle="normal"
+                android:text="Cancha 1"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:textStyle="normal"
+                    android:text="Nombre de la Reserva : "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nameReserva"
+                    android:textSize="16dp"
+                    android:textStyle="normal"
+                    android:text="Angelo"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textStyle="normal"
+                    android:text="Monto Pagado"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:id="@+id/laBufis"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/bufeo_coin" />
+
+                    <TextView
+                        android:id="@+id/precioReserva"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="25.0"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/calendar"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:id="@+id/fechaReserva"
+                    android:text="24 de febrero"/>
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_clock"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:id="@+id/horaReserva"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="11:00 am"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="match_parent"
+                    android:textSize="15dp"
+                    android:textStyle="normal"
+                    android:text="Telefono 1 : "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="match_parent"
+                    android:textSize="14dp"
+                    android:id="@+id/telefonoReserva"
+                    android:textStyle="normal"
+                    android:text="956999999"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="match_parent"
+                    android:textSize="15dp"
+                    android:textStyle="normal"
+                    android:text="Telefono 2 : "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/telefono2Reserva"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="match_parent"
+                    android:textSize="14dp"
+                    android:textStyle="normal"
+                    android:text="956999999"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animacion_mapa"
+                    android:layout_width="60dp"
+                    android:layout_gravity="center"
+                    android:layout_height="60dp"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="map_rojo.json"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_loop="true">
+
+                </com.airbnb.lottie.LottieAnimationView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/direccionReserva"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="match_parent"
+                    android:textSize="15dp"
+                    android:textStyle="normal"
+                    android:text="Alzamora 956"/>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:id="@+id/guardar"
+                android:layout_height="wrap_content"
+                android:text="guardar"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:id="@+id/logoBufeoxD"
+                android:visibility="gone"
+                android:src="@drawable/logobufeopng"/>
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

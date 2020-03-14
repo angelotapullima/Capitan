@@ -138,7 +138,9 @@ class ForoController{
         if($limite_sup==0){
             $model = $this->foro->listar_publicaciones_all();
             $ultima_noticia=$this->foro->listar_ultima_publicacion();
-            $limite_sup=$ultima_noticia->publicaciones_id;
+            if(isset($ultima_noticia->publicaciones_id)){
+                $limite_sup=$ultima_noticia->publicaciones_id;
+            }
             $new = "0";
         }else{
             $model = $this->foro->listar_publicaciones_limite($limite_inf);
@@ -166,12 +168,18 @@ class ForoController{
             $likes = $this->foro->conteo_likes($model[$i]->publicaciones_id);
             $comentarios = $this->foro->conteo_comentarios($model[$i]->publicaciones_id);
             $dio_like = $this->foro->dio_like($model[$i]->publicaciones_id,$id_usuario);
-            ($dio_like->id_likePublicacion==null)? $dio_like_ = 0:$dio_like_ = 1;
+            if(isset($dio_like->id_likePublicacion)){
+                ($dio_like->id_likePublicacion==null)? $dio_like_ = 0:$dio_like_ = 1;
+            }else{
+                $dio_like_ = 0;
+            }
             if($model[$i]->publicaciones_id_torneo != 0){
                 $torneo_ = $this->torneo->listar_torneo_por_id($model[$i]->publicaciones_id_torneo);
                 $torneo =$torneo_->torneo_nombre;
+                $torneo_imagen =$torneo_->torneo_imagen;
             }else{
                 $torneo=" ";
+                $torneo_imagen=" ";
             }
             $resources[$i] = array(
                 "id_publicacion" => $model[$i]->publicaciones_id,
@@ -184,6 +192,7 @@ class ForoController{
                 "estado" => $model[$i]->publicaciones_estado,
                 "id_torneo" => $model[$i]->publicaciones_id_torneo,
                 "torneo" => $torneo,
+                "torneo_imagen" => $torneo_imagen,
                 "foto" => $model[$i]->publicaciones_foto,
                 "fecha" => $time,
                 "tipo" => $model[$i]->publicaciones_tipo,

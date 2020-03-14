@@ -18,6 +18,9 @@ public interface RetosDao {
     @Query("SELECT * from Retos WHERE retos_respuesta = :respuesta_reto")
     LiveData<List<Retos>> getAllRetos(String respuesta_reto);
 
+    @Query("SELECT * from Retos WHERE retos_id = :id")
+    LiveData<List<Retos>> getAllRetoID(String id);
+
     @Query("SELECT * from Retos WHERE retos_id = :id_reto")
     LiveData<List<Retos>> getRetosResutado(String id_reto);
 
