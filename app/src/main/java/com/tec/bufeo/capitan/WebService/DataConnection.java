@@ -21,6 +21,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
 import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.Modelo.Empresas;
+import com.tec.bufeo.capitan.Modelo.Saldo;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.others.Equipo;
 
@@ -74,7 +75,7 @@ public class DataConnection extends AppCompatActivity {
     public ArrayList<FragmentBuscarFechas.GroupItemBusqueda> listaCanchasDisponiblesBusqueda= new ArrayList();
     public ArrayList<Cancha> listaCanchaEmpresa = new ArrayList();
     public ArrayList<Reserva> listaCanchaReserva= new ArrayList();
-    public ArrayList<String> saldo = new ArrayList();
+    public ArrayList<Saldo> saldo = new ArrayList();
     public ArrayList<Empresas> listaEmpresasDistrito= new ArrayList();
 
 
@@ -453,11 +454,18 @@ public class DataConnection extends AppCompatActivity {
                 }
                 if(funcion.equals("ObtenerSaldo")){
 
-                    //JSONArray resultJSON = json_data.getJSONArray("");
-                    //JSONObject jsonNodev = json_data.getJSONObject("");
-                    valorcodigo = json_data.optString("cuenta_saldo");
 
-                    saldo.add(valorcodigo);
+                    JSONArray resultJSON = json_data.getJSONArray("results");
+                    int count = resultJSON.length();
+                    for (int i = 0; i < count;i++){
+                        Saldo s = new Saldo();
+                        JSONObject jsonNode = resultJSON.getJSONObject(i);
+                        s.setSaldo_actual(jsonNode.optString("cuenta_saldo"));
+                        s.setComision(jsonNode.optString("comision"));
+                        saldo.add(s);
+                    }
+
+
 
                 }
 
@@ -1056,7 +1064,7 @@ public class DataConnection extends AppCompatActivity {
     public ArrayList<Reserva> getListadoCanchasReserva(){return listaCanchaReserva;}
     public ArrayList<FragmentBuscar.GroupItem> getListadoCanchasDisponiblesOriginal(){return listaCanchasDisponiblesOriginal;}
     public ArrayList<FragmentBuscarFechas.GroupItemBusqueda> getListadoCanchasDisponiblesBusqueda(){return listaCanchasDisponiblesBusqueda;}
-    public ArrayList<String> getSaldo(){
+    public ArrayList<Saldo> getSaldo(){
         return saldo;
     }
     public ArrayList<Empresas> getListaEmpresasDistrito(){

@@ -10,10 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.EquiposUsuarios.Models.EquiposUsuarios;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class AdaptadorEquiposUsuario extends RecyclerView.Adapter<AdaptadorEquip
 
     EquiposUsuarios current;
     Context ctx;
-    String tipo ="";
     private  OnItemClickListener listener;
     Preferences preferencesUser;
+    UniversalImageLoader universalImageLoader;
 
 
     class EquiposUsuarioViewHolder extends RecyclerView.ViewHolder {
@@ -65,6 +66,8 @@ public class AdaptadorEquiposUsuario extends RecyclerView.Adapter<AdaptadorEquip
     public AdaptadorEquiposUsuario(Context context, OnItemClickListener listener) {
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
+        universalImageLoader = new UniversalImageLoader(context);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
         preferencesUser = new Preferences(context);
         this.listener = listener;}
 
@@ -87,7 +90,7 @@ public class AdaptadorEquiposUsuario extends RecyclerView.Adapter<AdaptadorEquip
                 holder.capitan.setVisibility(View.GONE);
             }
 
-            Glide.with(ctx).load(IP2+"/"+ current.getFoto()).into(holder.img_fotoEquipoUsuarios);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getFoto(),holder.img_fotoEquipoUsuarios,null);
 
             holder.txt_nombreEquipoUsuarios.setText(current.getNombre());
 

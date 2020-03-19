@@ -656,10 +656,28 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
     Dialog dialog_cargando;
     public void dialogCarga(){
 
-        dialog_cargando= new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando= new Dialog(getContext(), android.R.style.Theme_Translucent);
         dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_cargando.setCancelable(true);
         dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_cargando.findViewById(R.id.back);
+        LinearLayout layout = dialog_cargando.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_cargando.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+        });
 
         dialog_cargando.show();
 

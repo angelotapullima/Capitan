@@ -58,6 +58,8 @@ public class Preferences {
 
 /*aca estan los nuevos datos que vienen con el nuevo Login*/
 
+
+
     public int getCantidadFotoPerfil(){
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getInt("cantida_foto_perfil",0);
@@ -125,6 +127,11 @@ public class Preferences {
     public String getTieneNegocio(){
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getString("tiene_negocio","");
+    }
+
+    public String getComision(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("comision","");
     }
 
 

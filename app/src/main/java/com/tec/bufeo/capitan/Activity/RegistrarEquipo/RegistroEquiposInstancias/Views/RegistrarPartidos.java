@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -362,12 +363,31 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
     Dialog dialog_carga;
     public void dialogoCargando(){
 
-        dialog_carga =  new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_carga= new Dialog(this, android.R.style.Theme_Translucent);
         dialog_carga.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_carga.setCancelable(true);
         dialog_carga.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_carga.findViewById(R.id.back);
+        LinearLayout layout = dialog_carga.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_carga.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+        });
 
         dialog_carga.show();
+
     }
 
 }

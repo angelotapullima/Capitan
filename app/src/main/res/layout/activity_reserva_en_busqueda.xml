@@ -521,4 +521,19 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#FFF"
+        android:id="@+id/relRes"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Usted no cuenta con Equipos Registrados, debe crear o pertenecer al menos a un equipo para poder generar una reserva"
+            />
+
+    </RelativeLayout>
 </RelativeLayout>

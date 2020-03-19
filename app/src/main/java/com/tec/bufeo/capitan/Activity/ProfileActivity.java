@@ -41,8 +41,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipoNuevo;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios;
@@ -54,8 +54,8 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views.AdaptadorMiEquipo;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -77,9 +77,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
@@ -103,7 +100,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     LinearLayout tap_de_accion_profile,verFoto,cambiarFoto,tap_foto,accionGaleria,accionTomarFoto;
     ImageView btnClose_profile;
     TextView titulotap;
-
+    UniversalImageLoader universalImageLoader;
     FeedListViewModel feedListViewModel;
     AdaptadorForo adaptadorForo;
     Activity activity;
@@ -121,6 +118,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
         preferences =  new Preferences(this);
+        universalImageLoader= new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
         activity = ProfileActivity.this;
         context = getApplicationContext();
 
@@ -129,11 +128,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         initViews();
 
-        Glide.with(context)
-                .load(IP2+"/"+ preferences.getFotoUsuario())
-                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
-                .apply(LOGO_OPTION)
-                .into(fotodeperfil);
+        UniversalImageLoader.setImage(IP2+"/"+ preferences.getFotoUsuario(),fotodeperfil,null);
+
+
 
 
             nombre_perfil.setText(preferences.getPersonName()+" "+preferences.getPersonSurname());

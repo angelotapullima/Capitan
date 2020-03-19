@@ -16,44 +16,44 @@
         app:contentInsetStartWithNavigation="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:background="#B3FFFFFF"
-        android:id="@+id/carga_Reservasss"
-        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="#B3FFFFFF"
+            android:id="@+id/carga_Reservasss"
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animacion_carga"
-                android:layout_width="100dp"
-                android:layout_gravity="center"
-                android:layout_height="100dp"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="balon_futbol.json"
-                app:lottie_imageAssetsFolder="assets"
-                app:lottie_loop="true">
-
-            </com.airbnb.lottie.LottieAnimationView>
             <LinearLayout
-                android:layout_width="110dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal">
-                <ImageView
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animacion_carga"
+                    android:layout_width="100dp"
+                    android:layout_gravity="center"
+                    android:layout_height="100dp"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="balon_futbol.json"
+                    app:lottie_imageAssetsFolder="assets"
+                    app:lottie_loop="true">
+
+                </com.airbnb.lottie.LottieAnimationView>
+                <LinearLayout
                     android:layout_width="110dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/LogoBufeo"
-                    android:src="@drawable/logobufeopng"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="110dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/LogoBufeo"
+                        android:src="@drawable/logobufeopng"/>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
 
-    </RelativeLayout>
+        </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -146,21 +146,29 @@
         </LinearLayout>
 
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:layout_marginTop="20dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="16dp"
-            android:textColor="#000"
-            android:text="Cliente"/>
+            android:id="@+id/lCliente"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"
+                android:textColor="#000"
+                android:text="Cliente"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:id="@+id/clienteReserva"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:id="@+id/clienteReserva"/>
+        </LinearLayout>
+
+
 
 
         <TextView
@@ -444,7 +452,6 @@
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
                    android:padding="8dp"
-                   android:text="3.0"
                    android:id="@+id/Comision"/>
            </LinearLayout>
            <LinearLayout

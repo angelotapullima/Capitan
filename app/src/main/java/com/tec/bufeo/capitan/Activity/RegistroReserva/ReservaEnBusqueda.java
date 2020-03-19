@@ -35,6 +35,7 @@ import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.Modelo.Cancha;
+import com.tec.bufeo.capitan.Modelo.Saldo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.DataConnection;
@@ -61,7 +62,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     //yo pago todo
     LinearLayout l_todo;
     Spinner spn_equipex_busqueda;
-    double comision_todo_dato = 3;
+    String comision_todo_dato;
 
     TextView total,costo,comision;
 
@@ -90,8 +91,9 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     ArrayList<Mequipos> ListEquipos_busqueda = new ArrayList<>();
 
     double total_busqueda ;
-    ArrayList<String> saldo;
+    ArrayList<Saldo> saldo;
     String saldo_cargado;
+    RelativeLayout relRes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,11 +123,14 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
         preferences= new Preferences(this);
 
+        comision_todo_dato =preferences.getComision();
+
         /*  Widgets que trabajan con YoPagoTodo*/
         //layout para ocultar contenido de yo pagoTodo
         l_todo = findViewById(R.id.l_todo);
 
         comision  = findViewById(R.id.comision);
+        relRes  = findViewById(R.id.relRes);
         costo  = findViewById(R.id.costo);
         //pago1_todo = findViewById(R.id.pago1_todo);
         total= findViewById(R.id.total);
@@ -204,6 +209,9 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                     ListEquipos_busqueda.clear();
                     ListEquipos_busqueda.addAll(mequipos);
                     new ReservaEnBusqueda.GetEquipos().execute();
+                    relRes.setVisibility(View.GONE);
+                }else{
+                    relRes.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -282,7 +290,8 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
 
             if (saldo.size()>0){
-                saldo_cargado=saldo.get(0);
+                saldo_cargado=saldo.get(0).getSaldo_actual();
+                preferences.saveValuePORT("comision", saldo.get(0).getComision());
             }else{
                 saldo_cargado="vacio";
             }
@@ -682,7 +691,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                     double pagoFinalChancha = 0;
 
 
-                    total.setText(String.valueOf(Double.parseDouble(costo.getText().toString()) + comision_todo_dato));
+                    total.setText(String.valueOf(Double.parseDouble(costo.getText().toString()) + Double.parseDouble(comision_todo_dato)));
 
                 }
 

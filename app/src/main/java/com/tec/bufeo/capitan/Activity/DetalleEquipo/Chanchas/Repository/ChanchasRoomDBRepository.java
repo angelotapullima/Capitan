@@ -13,24 +13,24 @@ import java.util.List;
 
 public class ChanchasRoomDBRepository {
 
-    private ChanchasDao misReservasDao;
+    private ChanchasDao chanchasDao;
     LiveData<List<Chanchas>> mAllMisReservas;
 
     public ChanchasRoomDBRepository(Application application){
         ChanchasRoomDataBase db = ChanchasRoomDataBase.getDatabase(application);
-        misReservasDao = db.postInfoDao();
+        chanchasDao = db.postInfoDao();
 
      }
 
     public LiveData<List<Chanchas>> getChanchas(String id_equipo) {
-        mAllMisReservas=misReservasDao.getChanchas(id_equipo);
+        mAllMisReservas=chanchasDao.getChanchas(id_equipo);
          return mAllMisReservas;
     }
 
 
 
     public void deleteAllMisReservas() {
-        new DeleteAllReservasyncTask(misReservasDao).execute();
+        new DeleteAllReservasyncTask(chanchasDao).execute();
     }
 
     private static class DeleteAllReservasyncTask extends AsyncTask<Void, Void, Void> {
@@ -51,7 +51,7 @@ public class ChanchasRoomDBRepository {
 
 
     public void insertEquipos(List<Chanchas> menuModel) {
-        new insertAsyncTask(misReservasDao).execute(menuModel);
+        new insertAsyncTask(chanchasDao).execute(menuModel);
     }
 
     private static class insertAsyncTask extends AsyncTask<List<Chanchas>, Void, Void> {
@@ -65,6 +65,29 @@ public class ChanchasRoomDBRepository {
         @Override
         protected Void doInBackground(final List<Chanchas>... params) {
             mAsyncTaskDao.insertEquipo(params[0]);
+            return null;
+        }
+    }
+
+
+
+
+    public LiveData<List<Chanchas>> loadIDS(List<String> menuModel) {
+        new loadIDS(chanchasDao).execute(menuModel);
+        return null;
+    }
+
+    private static class loadIDS extends AsyncTask<List<String>, Void, Void> {
+
+        private ChanchasDao mAsyncTaskDao;
+
+        loadIDS(ChanchasDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final List<String>... params) {
+            mAsyncTaskDao.loadIDS(params[0]);
             return null;
         }
     }

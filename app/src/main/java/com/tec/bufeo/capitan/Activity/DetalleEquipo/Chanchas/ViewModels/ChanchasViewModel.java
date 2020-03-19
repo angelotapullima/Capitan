@@ -41,5 +41,9 @@ public class ChanchasViewModel extends AndroidViewModel {
     }
 
 
+    public LiveData<List<Chanchas>> loadIDS(List<String> menuModel) {
+        mAllChanchas= movimientosRoomDBRepository.loadIDS(menuModel);
+        return mAllChanchas;
+    }
 
 }

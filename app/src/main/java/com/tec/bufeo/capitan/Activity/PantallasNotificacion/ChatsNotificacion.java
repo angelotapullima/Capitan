@@ -25,12 +25,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Models.Mensajes;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.ViewModels.MensajesViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Views.AdapterMensajes;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import java.util.HashMap;
@@ -51,6 +52,7 @@ public class ChatsNotificacion extends AppCompatActivity implements View.OnClick
     String id_chat,foto,nombre;
     ImageView foto_chat;
     BroadcastReceiver BR;
+    UniversalImageLoader universalImageLoader;
 
     public static final String CHATNOTIFICACION= "CHATNOTIFICACION";
     @Override
@@ -60,6 +62,10 @@ public class ChatsNotificacion extends AppCompatActivity implements View.OnClick
 
 
         preferences = new Preferences(this);
+
+        universalImageLoader= new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
         id_chat = getIntent().getStringExtra("id");
         //id_chat = "25";
 
@@ -149,7 +155,7 @@ public class ChatsNotificacion extends AppCompatActivity implements View.OnClick
                     nombre ="";
                     foto ="";
                 }
-                Glide.with(getApplicationContext()).load(IP2+"/"+foto).into(foto_chat);
+                UniversalImageLoader.setImage(IP2+"/"+foto,foto_chat,null);
                 nombre_charla.setText(nombre);
 
             }

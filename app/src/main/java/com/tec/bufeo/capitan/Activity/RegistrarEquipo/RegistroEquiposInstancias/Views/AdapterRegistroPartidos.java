@@ -9,10 +9,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Models.RegistroEquiposTorneo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class AdapterRegistroPartidos extends RecyclerView.Adapter<AdapterRegistr
     Context ctx;
     private  OnItemClickListener listener;
     Preferences preferencesUser;
+    UniversalImageLoader universalImageLoader;
 
 
     class EquiposSeleccionarViewHolder extends RecyclerView.ViewHolder {
@@ -81,6 +83,8 @@ public class AdapterRegistroPartidos extends RecyclerView.Adapter<AdapterRegistr
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
         preferencesUser = new Preferences(context);
+        universalImageLoader= new UniversalImageLoader(context);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
         this.listener = listener;}
 
     @NonNull
@@ -96,7 +100,7 @@ public class AdapterRegistroPartidos extends RecyclerView.Adapter<AdapterRegistr
         if (mUsers != null) {
             current = mUsers.get(position);
 
-            Glide.with(ctx).load(IP2+"/"+ current.getEquipo_foto()).into(holder.civ_fotoEquipo);
+            UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipo,null);
 
             holder.nombreEquipo.setText(current.getEquipo_nombre());
             holder.capitanEquipo.setText(current.getCapitan_nombre());

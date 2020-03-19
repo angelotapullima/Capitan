@@ -42,12 +42,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
-import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.R;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -63,8 +63,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-
-import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
@@ -74,7 +72,7 @@ import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 
 public class RegistroForo extends AppCompatActivity implements View.OnClickListener{
     EditText edt_tituloForo, edt_descripcionForo;
-    Button btn_registrarForo;
+    MaterialButton btn_registrarForo;
     TextView nombre_para_publicar;
     ImageView img_foroFoto,publicar_foto_camara,publicar_foto_galeria;
     ImageView foto_perfil_para_publicacion;
@@ -86,7 +84,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
     FeedListViewModel feedListViewModel;
     BroadcastReceiver BR;
     public static final String registro= "registro";
-
+    UniversalImageLoader universalImageLoader;
     String concepto,id_torneo;
     String id_torneo_publicacion;
 
@@ -100,13 +98,14 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(R.drawable.barra_cerrar);
         preferences = new Preferences(context);
+        universalImageLoader= new UniversalImageLoader(context);
 
         concepto = getIntent().getExtras().getString("concepto");
         id_torneo = getIntent().getExtras().getString("id_torneo");
 
         edt_tituloForo = (EditText) findViewById(R.id.edt_tituloForo);
         edt_descripcionForo = (EditText) findViewById(R.id.edt_descripcionForo);
-        btn_registrarForo = (Button) findViewById(R.id.btn_registrarForo);
+        btn_registrarForo = (MaterialButton) findViewById(R.id.btn_registrarForo);
         img_foroFoto = findViewById(R.id.img_foroFoto);
         publicar_foto_galeria = findViewById(R.id.publicar_foto_galeria);
         publicar_foto_camara = findViewById(R.id.publicar_foto_camara);
@@ -152,11 +151,8 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
         };
         showToolbar("Crear Publicación",true);
 
-        Glide.with(context)
-                .load(IP2+"/"+ preferences.getFotoUsuario())
-                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
-                .apply(LOGO_OPTION)
-                .into(foto_perfil_para_publicacion);
+        UniversalImageLoader.setImage(IP2+"/"+ preferences.getFotoUsuario(),foto_perfil_para_publicacion,null);
+
         nombre_para_publicar.setText(preferences.getPersonName() + " " + preferences.getPersonSurname());
         publicar_foto_camara.setOnClickListener(this);
         publicar_foto_galeria.setOnClickListener(this);

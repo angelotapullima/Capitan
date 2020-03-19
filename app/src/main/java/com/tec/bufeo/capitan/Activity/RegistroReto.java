@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -295,6 +296,11 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
             }
         }, year, month, day);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)+7,
+                cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), 0);
+        long time = cal.getTimeInMillis();
+        datePickerDialog.getDatePicker().setMaxDate(time);
         datePickerDialog.show();
     }
 
@@ -442,56 +448,33 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
         VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
 
-    public void crearChatReto(final String retado, final String retador){
-        String url =IP2+"/api/User/crear_chat";
-        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("crear chat: ",""+response);
-                dialog_cargando.dismiss();
-                preferences.toasVerde("Reto creado Correctamente");
-                finish();
-
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
-                dialog_cargando.dismiss();
-
-            }
-        })  {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //String imagen=convertirImgString(bitmap);
 
 
-                Map<String,String> parametros=new HashMap<>();
-                parametros.put("id_1",retado);
-                parametros.put("id_2",retador);
-                parametros.put("app","true");
-                parametros.put("token",preferences.getToken());
-                Log.e("registro chat", "getParams: " +parametros );
-                return parametros;
-
-            }
-        };
-        //requestQueue.add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
-
-    }
-
-    Dialog dialog_cargando;
+   Dialog dialog_cargando;
     public void dialogCarga(){
 
-        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent);
         dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_cargando.setCancelable(true);
         dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_cargando.findViewById(R.id.back);
+        LinearLayout layout = dialog_cargando.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_cargando.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+        });
 
         dialog_cargando.show();
 

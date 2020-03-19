@@ -2,6 +2,7 @@ package com.tec.bufeo.capitan.Activity.RegistroUsuario;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -16,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.tec.bufeo.capitan.Activity.WebTerminosYCondiciones;
 import com.tec.bufeo.capitan.Modelo.Usuario;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -35,6 +38,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
     public Usuario usuario;
     Preferences preferences;
     String nombre,apellido,posicion,habilidad,sexo,num_fav,email,telefono;
+    TextView terminosycondiciones;
 
 
 
@@ -52,6 +56,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
         edt_confirmarClave =  findViewById(R.id.edt_confirmarClave);
         btn_Registro_usuario =  findViewById(R.id.btn_Registro_usuario);
         back_paso1 =  findViewById(R.id.back_paso1);
+        terminosycondiciones =  findViewById(R.id.terminosycondiciones);
 
 
         nombre = getIntent().getExtras().getString("nombre");
@@ -65,6 +70,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
 
         back_paso1.setOnClickListener(this);
         btn_Registro_usuario.setOnClickListener(this);
+        terminosycondiciones.setOnClickListener(this);
 
 
 
@@ -87,6 +93,9 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
 
         } else if (v.equals(back_paso1)) {
             finish();
+        }else if (v.equals(terminosycondiciones)){
+            Intent i = new Intent(RegistroUsuario.this, WebTerminosYCondiciones.class);
+            startActivity(i);
         }
     }
 
@@ -183,10 +192,28 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
     Dialog dialog_cargando;
     public void dialogCarga(){
 
-        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent);
         dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_cargando.setCancelable(true);
         dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_cargando.findViewById(R.id.back);
+        LinearLayout layout = dialog_cargando.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_cargando.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+        });
 
         dialog_cargando.show();
 

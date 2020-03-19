@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class RegistroPaso1 extends AppCompatActivity implements View.OnClickListener {
 
@@ -57,6 +60,10 @@ public class RegistroPaso1 extends AppCompatActivity implements View.OnClickList
             telefono =  edt_telefono.getText().toString();
 
 
+            // Patrón para validar el email
+            Pattern pattern = Pattern
+                    .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
             if (nombre.isEmpty()){
                 preferences.codeAdvertencia("El campo Nombre no debe estar vacio");
@@ -74,6 +81,8 @@ public class RegistroPaso1 extends AppCompatActivity implements View.OnClickList
                 preferences.codeAdvertencia("El campo Email no debe estar vacio");
             }else if (telefono.isEmpty()){
                 preferences.codeAdvertencia("El campo Teléfono no debe estar vacio");
+            }else if (telefono.length()<9){
+                preferences.codeAdvertencia("El campo Teléfono debe contar con 9 dígitos");
             }else{
 
                 if (spn_sexo.getSelectedItem().toString().equals("Masculino")){
@@ -81,16 +90,24 @@ public class RegistroPaso1 extends AppCompatActivity implements View.OnClickList
                 }else{
                     sexo="F";
                 }
-                Intent i = new Intent(RegistroPaso1.this,RegistroUsuario.class);
-                i.putExtra("nombre",nombre);
-                i.putExtra("apellido",apellido);
-                i.putExtra("posicion",posicion);
-                i.putExtra("habilidad",habilidad);
-                i.putExtra("sexo",sexo);
-                i.putExtra("num_fav",num_fav);
-                i.putExtra("email",email);
-                i.putExtra("telefono",telefono);
-                startActivity(i);
+
+                Matcher mather = pattern.matcher(email);
+
+                if (mather.find() == true) {
+                    Intent i = new Intent(RegistroPaso1.this,RegistroUsuario.class);
+                    i.putExtra("nombre",nombre);
+                    i.putExtra("apellido",apellido);
+                    i.putExtra("posicion",posicion);
+                    i.putExtra("habilidad",habilidad);
+                    i.putExtra("sexo",sexo);
+                    i.putExtra("num_fav",num_fav);
+                    i.putExtra("email",email);
+                    i.putExtra("telefono",telefono);
+                    startActivity(i);
+                } else {
+                    preferences.codeAdvertencia("El email ingresado es inválido.");
+                }
+
             }
 
         }else if ((v.equals(finalizar_Rusuario))){

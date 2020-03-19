@@ -42,11 +42,12 @@ public class Chanchas {
     private String monto_actual;
 
 
+    @TypeConverters(TimestampConverter.class)
     @ColumnInfo(name = "chancha_fecha")
     @SerializedName("chancha_fecha")
     private String chancha_fecha;
 
-    @TypeConverters(DataConverter.class)
+    @TypeConverters(DataConverterChanchas.class)
     @ColumnInfo(name = "chancha_detalle")
     @SerializedName("chancha_detalle")
     private List<DetalleChancha> chancha_detalle;

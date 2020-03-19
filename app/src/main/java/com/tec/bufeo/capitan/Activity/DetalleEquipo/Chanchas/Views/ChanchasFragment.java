@@ -1,6 +1,7 @@
 package com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Views;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,12 +31,14 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tec.bufeo.capitan.Activity.ChanchasEquipos;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Models.Chanchas;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Repository.ChanchasRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.ViewModels.ChanchasViewModel;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.ViewModel.Jugadores.JugadoresViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,8 +107,12 @@ public class ChanchasFragment extends Fragment {
 
     }
 
-
+   
     public void cargarvista(){
+
+
+
+
 
         chanchasViewModel.getChanchas(id_equipo,preferences.getToken()).observe(this, new Observer<List<Chanchas>>() {
             @Override
@@ -180,15 +187,34 @@ public class ChanchasFragment extends Fragment {
     Dialog dialog_cargando;
     public void dialogCarga(){
 
-        dialog_cargando= new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando= new Dialog(getContext(), android.R.style.Theme_Translucent);
         dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_cargando.setCancelable(true);
         dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_cargando.findViewById(R.id.back);
+        LinearLayout layout = dialog_cargando.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_cargando.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+        });
 
         dialog_cargando.show();
 
     }
 
+    
 
     StringRequest stringRequest;
     private void crearChancha(final String nombre, final String monto) {

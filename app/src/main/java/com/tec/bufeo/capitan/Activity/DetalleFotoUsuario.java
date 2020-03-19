@@ -26,9 +26,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Views.ComentariosActivity;
 import com.tec.bufeo.capitan.R;

@@ -191,8 +191,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
 
 
         TorneosWebServiceRepository torneosWebServiceRepository = new TorneosWebServiceRepository(application);
-        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"mis_torneos","");
-        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"otros_torneos","");
+        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"torneos","");
 
 
 

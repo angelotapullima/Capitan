@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="#80000000"
+    android:id="@+id/back"
     android:gravity="center"
     android:layout_height="match_parent">
 
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingLeft="50dp"
+        android:id="@+id/layout"
         android:paddingRight="50dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"

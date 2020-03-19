@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.tec.bufeo.capitan.Util.APIUrl;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
+import com.tec.bufeo.capitan.Util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +27,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class TorneosWebServiceRepository {
 
+
     Application application;
     public TorneosWebServiceRepository(Application application){
         this.application = application;
@@ -41,7 +43,7 @@ public class TorneosWebServiceRepository {
 
     List<Torneo> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Torneo>> providesWebService(String id_usuario, String token, final String tipo,String dato) {
+ public LiveData<List<Torneo>> providesWebService(final String id_usuario, String token, final String tipo, String dato) {
 
      final MutableLiveData<List<Torneo>> data = new MutableLiveData<>();
 
@@ -54,34 +56,14 @@ public class TorneosWebServiceRepository {
                  .client(providesOkHttpClientBuilder())
                  .build();
 
-         if (tipo.equals("mis_torneos")){
-             //Defining retrofit api service
-             TorneosAPIService service = retrofit.create(TorneosAPIService.class);
-             //  response = service.makeRequest().execute().body();
-             service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
-                 @Override
-                 public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository mis torneos","Response::::"+response.body());
-                     webserviceResponseList = parseJson(response.body(),tipo);
-                     TorneosRoomDBRepository torneosRoomDBRepository = new TorneosRoomDBRepository(application);
-                     torneosRoomDBRepository.insertTorneo(webserviceResponseList);
-                     data.setValue(webserviceResponseList);
-
-                 }
-
-                 @Override
-                 public void onFailure(Call<String> call, Throwable t) {
-                     Log.d("Repository","Failed:::");
-                 }
-             });
-         }else if(tipo.equals("otros_torneos")){
+         if(tipo.equals("torneos")){
              OtrosTorneosAPIService service = retrofit.create(OtrosTorneosAPIService.class);
              //  response = service.makeRequest().execute().body();
              service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
                      Log.e("Repository otros t","Response::::"+response.body());
-                     webserviceResponseList = parseJson(response.body(),tipo);
+                     webserviceResponseList = parseJson(response.body(),tipo,id_usuario);
                      TorneosRoomDBRepository torneosRoomDBRepository = new TorneosRoomDBRepository(application);
                      torneosRoomDBRepository.insertTorneo(webserviceResponseList);
                      data.setValue(webserviceResponseList);
@@ -100,7 +82,7 @@ public class TorneosWebServiceRepository {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
                      Log.e("buscar torneos","Response::::"+response.body());
-                     webserviceResponseList = parseJson(response.body(),tipo);
+                     webserviceResponseList = parseJson(response.body(),tipo,id_usuario);
                      TorneosRoomDBRepository torneosRoomDBRepository = new TorneosRoomDBRepository(application);
                      torneosRoomDBRepository.insertTorneo(webserviceResponseList);
                      data.setValue(webserviceResponseList);
@@ -124,7 +106,7 @@ public class TorneosWebServiceRepository {
     }
 
 
-    private List<Torneo> parseJson(String response,String tipo) {
+    private List<Torneo> parseJson(String response,String tipo,String id) {
 
         List<Torneo> apiResults = new ArrayList<>();
 
@@ -159,13 +141,18 @@ public class TorneosWebServiceRepository {
                 torneo.setUsuario_id(jsonNode.optString("id_organizador"));
                 torneo.setTorneo_precio(jsonNode.optString("costo"));
 
-                if (tipo.equals("mis_torneos")){
+                if (id.equals(jsonNode.optString("id_organizador"))){
                     torneo.setMi_torneo("si");
-                }else if (tipo.equals("otros_torneos")){
-                    torneo.setMi_torneo("no");
-                }else if(tipo.equals("busqueda")){
+                }else{
                     torneo.setMi_torneo("no");
                 }
+
+
+                if(tipo.equals("busqueda")){
+                    torneo.setMi_torneo("no");
+                }
+
+
 
 
 

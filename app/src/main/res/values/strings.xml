@@ -47,16 +47,28 @@
     </string-array>
     <string-array name="posicion">
         <item>Seleccionar</item>
-        <item>Portero</item>
+        <item>Arquero</item>
+        <item>Defensa Derecho</item>
+        <item>Defensa Izquierdo</item>
+        <item>Defensa Central</item>
+        <item>Volante de marca</item>
+        <item>Volante mixto</item>
+        <item>Volante creativo</item>
+        <item>Extremo</item>
         <item>Delantero</item>
-        <item>Defensa</item>
-        <item>Volante</item>
     </string-array>
     <string-array name="habilidad">
         <item>Seleccionar</item>
+        <item>Tapar penales</item>
+        <item>Destructor</item>
+        <item>Impasable</item>
+        <item>10 clasico</item>
+        <item>Super velocidad</item>
+        <item>Hombre de Área</item>
         <item>Goleador</item>
-        <item>Remate </item>
-        <item>Drible</item>
+        <item>Omnipresente</item>
+        <item>Referente</item>
+        <item>Penalero</item>
     </string-array>
     <string-array name="distrito">
         <item>Iquitos</item>
@@ -75,6 +87,15 @@
         <item>M</item>
         <item>F</item>
     </string-array>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 
 
 </resources>

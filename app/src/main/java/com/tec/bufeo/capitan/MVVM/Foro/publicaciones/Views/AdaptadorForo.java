@@ -46,8 +46,6 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
 
     UniversalImageLoader universalImageLoader;
     LinearLayout imgbt_comment_g;
-    JSONObject json_data;
-    String resultado;
     int posicionlocalc;
     ModelFeed current;
     Context ctx;
@@ -150,6 +148,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
         universalImageLoader = new UniversalImageLoader(context);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
         preferencesUser = new Preferences(context);
         this.listener = listener;}
 
@@ -187,7 +186,7 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
 
 
 
-            ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
 
 
             if(current.getId_torneo().equals("0")){

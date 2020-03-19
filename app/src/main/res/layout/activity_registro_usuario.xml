@@ -11,10 +11,26 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="180dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.NoActionBar">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pasto2" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo_capitan"/>
+        </RelativeLayout>
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
@@ -29,6 +45,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="-15dp"
         android:background="@drawable/back_top_corner"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".Activity.RegistroUsuario.RegistroPaso1"
@@ -38,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
+            android:paddingBottom="100dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="10dp"
             android:orientation="vertical">
@@ -99,12 +117,22 @@
             </LinearLayout>
 
             <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="Al crear una cuenta significa que usted está de acuerdo con nuestros términos y condiciones de Nuestra Política de Privacidad "
+            android:textSize="13sp" />
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:text="Al crear una cuenta significa que usted está de acuerdo con nuestros términos y condiciones de Nuestra Política de Privacidad "
-                android:textSize="13sp" />
+                android:textColor="@color/blue_A400"
+                android:paddingLeft="10dp"
+                android:id="@+id/terminosycondiciones"
+                android:textStyle="bold"
+                android:text="Ver términos y condiciones "
+                android:textSize="14sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

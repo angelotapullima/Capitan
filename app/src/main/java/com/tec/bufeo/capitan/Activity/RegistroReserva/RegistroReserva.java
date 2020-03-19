@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -55,17 +56,18 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
 
 
     String h_reserva,precio_cancha,fecha,nombre_empresa,cancha_nombre,saldo,cancha_id;
-    TextView hora_reserva,nombre_empresa_Reserva,nombre_cancha_reserva,fecha_reserva,saldo_bufis,precioDeLaCancha,comisionCancha,precioAPagar;
+    TextView hora_reserva,nombre_empresa_Reserva,nombre_cancha_reserva,fecha_reserva,saldo_bufis,
+            precioDeLaCancha,comisionCancha,precioAPagar;
     Spinner spn_tipo_pago,spn_equipex;
-    LinearLayout layout_precios,layout_bufis,layout_equipo,layout_botones;
-    LinearLayout btn_reservar,layout_precio_con_chancha;
+    LinearLayout layout_bufis,layout_equipo,layout_botones;
+    LinearLayout btn_reservar;//layout_precio_con_chancha,layout_precios;
     Preferences preferences;
     ArrayList<String> arrayEquipo;
     ArrayList<Mequipos> ListEquipos = new ArrayList<>();
     MisEquiposViewModel misEquiposViewModel;
-    double comision = 3,total;
-    double monto_a_pagar ;
+    double total;
     EditText nombre_reserva;
+    String comision;
     RecyclerView rcv_colaboraciones;
     ImageView finishReserva;
     RelativeLayout relRes;
@@ -80,14 +82,16 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         misEquiposViewModel= ViewModelProviders.of(this).get(MisEquiposViewModel.class);
 
         preferences= new Preferences(this);
-        layout_precio_con_chancha = findViewById(R.id.layout_precio_con_chancha);
+
+        comision =preferences.getComision();
+        //layout_precio_con_chancha = findViewById(R.id.layout_precio_con_chancha);
         hora_reserva = findViewById(R.id.hora_reserva);
         nombre_empresa_Reserva = findViewById(R.id.nombre_empresa_Reserva);
         nombre_cancha_reserva = findViewById(R.id.nombre_cancha_reserva);
         fecha_reserva = findViewById(R.id.fecha_reserva);
         spn_tipo_pago = findViewById(R.id.spn_tipo_pago);
         spn_equipex = findViewById(R.id.spn_equipex);
-        layout_precios = findViewById(R.id.layout_precios);
+        //layout_precios = findViewById(R.id.layout_precios);
         layout_bufis = findViewById(R.id.layout_bufis);
         layout_equipo = findViewById(R.id.layout_equipo);
         saldo_bufis = findViewById(R.id.saldo_bufis);
@@ -122,7 +126,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         precioDeLaCancha.setText(precio_cancha);
         comisionCancha.setText(String.valueOf(comision));
 
-        total = Double.parseDouble(precio_cancha )+ comision;
+        total = Double.parseDouble(precio_cancha )+ Double.parseDouble(comision);
         precioAPagar.setText(String.valueOf(total));
 
 
@@ -132,26 +136,26 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if (position==0){
-                    layout_precios.setVisibility(View.GONE);
+                    //layout_precios.setVisibility(View.GONE);
                     layout_bufis.setVisibility(View.GONE);
                     rcv_colaboraciones.setVisibility(View.GONE);
                     layout_equipo.setVisibility(View.GONE);
                     layout_botones.setVisibility(View.GONE);
-                    layout_precio_con_chancha.setVisibility(View.GONE);
+                    //layout_precio_con_chancha.setVisibility(View.GONE);
                 }else if(position==1){
-                    layout_precios.setVisibility(View.VISIBLE);
+                    //layout_precios.setVisibility(View.VISIBLE);
                     layout_bufis.setVisibility(View.VISIBLE);
-                    layout_precio_con_chancha.setVisibility(View.VISIBLE);
+                    //layout_precio_con_chancha.setVisibility(View.VISIBLE);
                     layout_equipo.setVisibility(View.VISIBLE);
                     rcv_colaboraciones.setVisibility(View.GONE);
                     layout_botones.setVisibility(View.VISIBLE);
                 }else{
-                    layout_precios.setVisibility(View.VISIBLE);
+                    //layout_precios.setVisibility(View.VISIBLE);
                     layout_bufis.setVisibility(View.GONE);
                     layout_equipo.setVisibility(View.GONE);
                     rcv_colaboraciones.setVisibility(View.VISIBLE);
                     layout_botones.setVisibility(View.GONE);
-                    layout_precio_con_chancha.setVisibility(View.VISIBLE);
+                    //layout_precio_con_chancha.setVisibility(View.VISIBLE);
                 }
             }
 

@@ -48,6 +48,7 @@ import com.tec.bufeo.capitan.Activity.ratings.RatingReviews;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoCanchaEmpresa;
 import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.Modelo.Empresas;
+import com.tec.bufeo.capitan.Modelo.Saldo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
@@ -87,8 +88,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     DataConnection  dc1, dc2,dc4;
     public String fecha_actual, hora_actual, cancha_id, horario;
     String saldo_cargado="";
-    public ArrayList<Cancha> arraycancha;
-    ArrayList<String> saldo;
+    ArrayList<Saldo> saldo;
     UniversalImageLoader universalImageLoader;
 
     NegociosViewModel negociosViewModel;
@@ -400,6 +400,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
         return false;
     }
+
     public void obtenerSaldo(){
         dc4 = new DataConnection(activity, "ObtenerSaldo", false);
         new DetalleNegocio.GetSaldo().execute();
@@ -440,17 +441,35 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     }
 
     Dialog dialog_cargando;
+    public void dialogCarga(){
 
-    public void dialogCarga() {
-
-        dialog_cargando = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent);
         dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_cargando.setCancelable(true);
         dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_cargando.findViewById(R.id.back);
+        LinearLayout layout = dialog_cargando.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_cargando.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+        });
 
         dialog_cargando.show();
 
     }
+    
 
     public class GetSaldo extends AsyncTask<Void, Void, Void> {
 
@@ -472,7 +491,9 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
 
             if (saldo.size() > 0) {
-                saldo_cargado = saldo.get(0);
+                saldo_cargado =saldo.get(0).getSaldo_actual();
+
+                preferences.saveValuePORT("comision", saldo.get(0).getComision());
             } else {
                 saldo_cargado = "vacio";
             }

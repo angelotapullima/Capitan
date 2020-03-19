@@ -5,8 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,14 +32,10 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.MisTorneoViewModel
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Views.FragmentTorneoRoque;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views.FragmentEquipo;
-import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
@@ -124,8 +118,7 @@ public class FragmentTorneoPadre extends Fragment  {
         retosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"normal");
 
         torneosWebServiceRepository =  new TorneosWebServiceRepository(application);
-        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"mis_torneos","");
-        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"otros_torneos","");
+        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"torneos","");
 
 
 
@@ -177,13 +170,10 @@ public class FragmentTorneoPadre extends Fragment  {
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
 
+        UniversalImageLoader.setImage(IP2+"/"+ preferences.getFotoUsuario(),civ_fotoperfil,null);
 
 
-        Glide.with(getContext())
-                .load(IP2+"/"+ preferences.getFotoUsuario())
-                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
-                .apply(LOGO_OPTION)
-                .into(civ_fotoperfil);
+
 
 
 

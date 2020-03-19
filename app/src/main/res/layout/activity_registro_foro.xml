@@ -14,12 +14,15 @@
         android:layout_height="?attr/actionBarSize"
         app:contentInsetStartWithNavigation="0dp"
         android:background="@color/colorPrimary">
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_registrarForo"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:elevation="0dp"
             android:layout_gravity="end"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="#00000000"
+            app:strokeColor="@color/colorPrimary"
             android:textColor="@color/colorTextIcons"
             android:textStyle="bold"
             android:text="Publicar " />

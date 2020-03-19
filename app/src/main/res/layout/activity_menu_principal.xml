@@ -18,11 +18,12 @@
             android:id="@+id/bnv_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             design:itemBackground="@android:color/white"
             design:itemIconTint="@color/colorPrimary"
             design:itemTextColor="@color/colorPrimary"
             design:menu="@menu/bottom_navigation_menu"
-            design:elevation="4dp">
+            >
         </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </LinearLayout>

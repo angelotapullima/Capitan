@@ -1,8 +1,12 @@
 package com.tec.bufeo.capitan.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +14,9 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,9 +45,9 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
 
     EditText edt_monto_solicitar;
     Button btn_generar;
-    TextView codigo_generado,texto_ayuda;
     Preferences preferences;
-    ImageView LogoBufeo;
+    RadioGroup rg_enabled;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +56,18 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
         preferences = new Preferences(this);
         edt_monto_solicitar= findViewById(R.id.edt_monto_solicitar);
         btn_generar= findViewById(R.id.btn_generar);
-        codigo_generado= findViewById(R.id.codigo_generado);
-        texto_ayuda= findViewById(R.id.texto_ayuda);
-        LogoBufeo= findViewById(R.id.LogoBufeo);
 
+        rg_enabled=findViewById(R.id.rg_enabled);
+        rg_enabled.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton rb = group.findViewById(checkedId);
+                preferences.codeAdvertencia(rb.getText().toString());
+            }
+        });
 
         btn_generar.setOnClickListener(this);
+        showToolbar("Realizar recarga",true);
 
     }
 
@@ -82,15 +95,8 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
                     date_expiracion = resultJSON.optString("date_expiracion");
 
 
-                    String ayuda = "Código generado válido hasta " + date_expiracion + " para usarlo en cualquiera de nuestro agentes afiliados a BufeoTec";
-
-                    LogoBufeo.setVisibility(View.VISIBLE);
-                    codigo_generado.setVisibility(View.VISIBLE);
-                    texto_ayuda.setVisibility(View.VISIBLE);
 
 
-                    codigo_generado.setText(codigo);
-                    texto_ayuda.setText(ayuda);
                     edt_monto_solicitar.setText("");
                     dialog_cargando.dismiss();
                 } catch (JSONException e) {
@@ -130,10 +136,28 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
     Dialog dialog_cargando;
     public void dialogCarga(){
 
-        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent);
         dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_cargando.setCancelable(true);
         dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_cargando.findViewById(R.id.back);
+        LinearLayout layout = dialog_cargando.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_cargando.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+        });
 
         dialog_cargando.show();
 
@@ -155,5 +179,24 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(RealizarRecarga.this, "El monto a solicitar no puede ser vacio", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
     }
 }

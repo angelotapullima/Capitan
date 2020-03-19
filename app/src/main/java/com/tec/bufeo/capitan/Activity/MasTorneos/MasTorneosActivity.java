@@ -137,7 +137,7 @@ public class MasTorneosActivity extends AppCompatActivity implements SwipeRefres
     public void onRefresh() {
 
         TorneosWebServiceRepository torneosWebServiceRepository = new TorneosWebServiceRepository(application);
-        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"otros_torneos","");
+        torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"torneos","");
 
 
         swipeOtrosTorneos.setRefreshing(false);

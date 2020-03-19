@@ -27,4 +27,7 @@ public interface ChanchasDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertEquipo(List<Chanchas> resultModel);
 
+
+    @Query("SELECT id_chancha FROM mis_chanchas WHERE id_chancha IN (:regions)")
+    LiveData<List<Chanchas>> loadIDS(List<String> regions);
 }

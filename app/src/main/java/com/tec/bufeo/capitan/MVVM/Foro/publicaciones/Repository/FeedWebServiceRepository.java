@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.Util.APIUrl;
+import com.tec.bufeo.capitan.Util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,8 +29,10 @@ public class FeedWebServiceRepository {
 
     //Preferences preferencesUser;
     Application application;
+    Preferences preferences;
     public FeedWebServiceRepository(Application application){
         this.application = application;
+        preferences= new Preferences(application);
     }
     private static OkHttpClient providesOkHttpClientBuilder(){
 
@@ -147,6 +150,8 @@ public class FeedWebServiceRepository {
 
 
 
+
+
             JSONArray resultJSON = jsonObject.getJSONArray("results");
 
 
@@ -189,8 +194,10 @@ public class FeedWebServiceRepository {
             }
             if (tipo.equals("feed")||tipo.equals("usuario")){
                 datosNuevos= String.valueOf( nuevos);
+                feedRoomDBRepository.NuevosDatos(datosNuevos);
             }
 
+            Log.e("ver si hay nuevos datos", "parseJson: " +datosNuevos );
             /*FeedRoomDBRepository feedTorneoRoomDBRepository = new FeedRoomDBRepository(application);
             feedTorneoRoomDBRepository.actualizarSup(limite_sup2);
             if (carga.equals("datos")){
@@ -198,7 +205,7 @@ public class FeedWebServiceRepository {
                 feedTorneoRoomDBRepository.ActualizarInf(limite_inf2);
                 Log.e("datos","se hizo la luz");
             }*/
-            feedRoomDBRepository.NuevosDatos(datosNuevos);
+
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -16,8 +16,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Repository.EequiposRoomDbRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.ViewModels.EequiposViewModel;
@@ -28,6 +26,8 @@ import com.tec.bufeo.capitan.Activity.MisMovimientos.Repository.MovimientosRoomD
 import com.tec.bufeo.capitan.Activity.MisMovimientos.ViewModels.MovimientosViewModel;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Views.MisMovimientos;
 import com.tec.bufeo.capitan.Activity.MisReservas.Views.MisReservasActivity;
+import com.tec.bufeo.capitan.Activity.Negocios.Repository.Negocios.NegociosRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.NegociosViewModel;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Repository.RegistroEquiposTorneoRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.ViewModels.RegistroEquiposTorneoViewModel;
@@ -56,13 +56,10 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.MisTorneoViewModel;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
@@ -72,7 +69,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
   CircleImageView civ_iconoPerfil;
   TextView txt_tituloPerfil;
   SharedPreferences preferencesUser;
-
+  UniversalImageLoader universalImageLoader;
   LinearLayout misMovimientos,logout,realizarRecarga,bufis,mensajes,misReservas;
 
 
@@ -92,6 +89,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
   RetosViewModel retosViewModel;
   MisTorneoViewModel misTorneoViewModel;
   MovimientosViewModel movimientosViewModel;
+  NegociosViewModel negociosViewModel;
 
 
 
@@ -109,6 +107,8 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
 
         preferencesUser = getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         pref =  new Preferences(getContext());
+        universalImageLoader= new UniversalImageLoader(getContext());
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
         misTorneoViewModel = ViewModelProviders.of(getActivity()).get(MisTorneoViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(getActivity()).get(MisEquiposViewModel.class);
@@ -126,6 +126,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         estadisticasViewModel = ViewModelProviders.of(getActivity()).get(EstadisticasViewModel.class);
         retosViewModel = ViewModelProviders.of(getActivity()).get(RetosViewModel.class);
         movimientosViewModel = ViewModelProviders.of(getActivity()).get(MovimientosViewModel.class);
+        negociosViewModel = ViewModelProviders.of(getActivity()).get(NegociosViewModel.class);
 
 
 
@@ -154,11 +155,8 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
             }
         });
 
-        Glide.with(getContext())
-                .load(IP2+"/"+ pref.getFotoUsuario())
-                .signature(new IntegerVersionSignature(pref.getCantidadFotoPerfil()))
-                .apply(LOGO_OPTION)
-                .into(civ_iconoPerfil);
+        UniversalImageLoader.setImage(IP2+"/"+ pref.getFotoUsuario(),civ_iconoPerfil,null);
+
 
 
 
@@ -205,8 +203,8 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
                 ImageLoader.getInstance().clearMemoryCache();
                 ImageLoader.getInstance().clearDiskCache();
 
-                Intent intent = new Intent(getActivity(),Login.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent intent = new Intent(getContext(),Login.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
             }
@@ -225,6 +223,8 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         TequiposRoomDbRepository tequiposRoomDbRepository = new TequiposRoomDbRepository(application);
         tequiposRoomDbRepository.deleteAllTorneosEquipos();
 
+        NegociosRoomDBRepository negociosRoomDBRepository = new NegociosRoomDBRepository(application);
+        negociosRoomDBRepository.deleteAllMisNegocios();
 
         RegistroEquiposTorneoRoomDBRepository registroEquiposTorneoRoomDBRepository = new RegistroEquiposTorneoRoomDBRepository(application);
         registroEquiposTorneoRoomDBRepository.deleteAllEquipos();

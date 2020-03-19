@@ -18,7 +18,12 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name,android:allowBackup">
-        <activity android:name=".Activity.ChanchasEquipos"></activity>
+        <activity android:name=".Activity.ForgotPassword"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.WebTerminosYCondiciones"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.ChanchasEquipos" />
         <activity
             android:name=".Activity.DetalleReservaEmpresa"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -52,7 +57,9 @@
         <activity
             android:name=".Activity.CalificarNegocios"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.RealizarRecarga" />
+        <activity
+            android:name=".Activity.RealizarRecarga"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.MisMovimientos.Views.MisMovimientos" />
         <activity
             android:name=".Activity.RegistroReserva.ReservaEnBusqueda"
@@ -120,7 +127,7 @@
             android:name=".Activity.Login"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.Login"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.MenuPrincipal"

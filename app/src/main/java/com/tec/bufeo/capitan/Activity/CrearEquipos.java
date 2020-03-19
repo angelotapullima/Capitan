@@ -38,19 +38,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneo;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.WebService.VolleySingleton;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.others.Equipo;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -71,8 +64,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
@@ -91,6 +82,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
     public Uri output,resultUriRecortada;
     String userChoosenTask;
     TextView nombre_para_publicar;
+    UniversalImageLoader universalImageLoader;
 
     Preferences preferences;
     String url = IP2+"/api/Torneo/registrar_equipo";
@@ -99,7 +91,12 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_equipos);
 
+
         preferences = new Preferences(getApplicationContext());
+        universalImageLoader= new UniversalImageLoader(getApplicationContext());
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
+
         edt_nombreEquipo = (EditText) findViewById(R.id.edt_nombreEquipo);
         btn_registrarEquipo = (Button) findViewById(R.id.btn_registrarEquipo);
         img_equipoFoto = findViewById(R.id.img_equipoFoto);
@@ -122,11 +119,8 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
             },1);
         }
 
-        Glide.with(context)
-                .load(IP2+"/"+ preferences.getFotoUsuario())
-                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
-                .apply(LOGO_OPTION)
-                .into(foto_perfil_para_publicacion);
+        UniversalImageLoader.setImage(IP2+"/"+ preferences.getFotoUsuario(),foto_perfil_para_publicacion,null);
+
         nombre_para_publicar.setText(preferences.getPersonName() + " " + preferences.getPersonSurname());
         showToolbar("Crear un Equipo",true);
     }
@@ -306,7 +300,10 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
 
             startActivityForResult(intentgaleria,SELET_GALERRY);
         }
-        dialog_fotos.dismiss();
+        if (dialog_fotos!=null){
+            dialog_fotos.dismiss();
+        }
+
     }
 
     @Override
@@ -404,6 +401,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
                                         x.putExtra("id_equipo",id_equipo);
                                         x.putExtra("nombre",edt_nombreEquipo.getText().toString());
                                         startActivity(x);
+                                        finish();
 
 
                                     }else{
@@ -486,17 +484,35 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
 
 
 
-
-
-    Dialog dialog_carga;
+Dialog dialog_carga;
     public void dialogoCargando(){
 
-        dialog_carga= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_carga= new Dialog(this, android.R.style.Theme_Translucent);
         dialog_carga.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_carga.setCancelable(true);
         dialog_carga.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_carga.findViewById(R.id.back);
+        LinearLayout layout = dialog_carga.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_carga.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+        });
 
         dialog_carga.show();
 
     }
+
+    
 }

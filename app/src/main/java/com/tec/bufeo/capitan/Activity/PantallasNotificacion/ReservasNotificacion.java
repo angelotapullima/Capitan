@@ -98,6 +98,8 @@ public class ReservasNotificacion extends AppCompatActivity implements View.OnCl
 
                     float totalex;
                     nombreEmprex.setText(misReservas.get(0).getEmpresa_nombre());
+
+
                     if (Float.parseFloat(misReservas.get(0).getReserva_pago2())>0){
 
                         totalex= Float.parseFloat(misReservas.get(0).getReserva_pago1()) + Float.parseFloat(misReservas.get(0).getReserva_pago2());

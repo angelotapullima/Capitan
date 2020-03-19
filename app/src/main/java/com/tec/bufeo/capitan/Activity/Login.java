@@ -17,9 +17,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -43,20 +43,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+import smartdevelop.ir.eram.showcaseviewlib.config.Gravity;
+import smartdevelop.ir.eram.showcaseviewlib.listener.GuideListener;
+
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class Login extends AppCompatActivity {
     EditText edt_usuario,edt_password;
     Button btn_login;
-    TextView txt_resgistrate;
+    TextView txt_resgistrate,olvide;
     Preferences preferences;
     SharedPreferences preferencesUser;
-    Usuario usuario;
-    DataConnection dc;
-    public ArrayList<String> arrayHoras;
     public static Activity activity;
 
     //pruebex
+
+
+    boolean carguepe = false;
+
+    private GuideView mGuideView;
+    private GuideView.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,7 @@ public class Login extends AppCompatActivity {
         btn_login =  findViewById(R.id.btn_login);
         edt_password = findViewById(R.id.edt_password);
         txt_resgistrate = findViewById(R.id.txt_resgistrate);
+        olvide = findViewById(R.id.olvide);
 
         preferences = new Preferences(this);
         preferencesUser = getApplicationContext().getSharedPreferences("User", Context.MODE_PRIVATE);
@@ -107,9 +116,68 @@ public class Login extends AppCompatActivity {
 
             }
         });
+        olvide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Login.this, ForgotPassword.class);
+                startActivity(i);
+            }
+        });
+
+
+
+
+            builder = new GuideView.Builder(this)
+                    .setTitle("Este es texto del usuario")
+                    .setContentText("aca debe ingresar datos de usuario")
+                    .setGravity(Gravity.center)
+                    .setDismissType(DismissType.anywhere)
+                    .setTargetView(edt_usuario)
+                    .setGuideListener(new GuideListener() {
+                        @Override
+                        public void onDismiss(View view) {
+                            switch (view.getId()) {
+                                case R.id.edt_usuario:
+                                    builder.setTargetView(edt_password).setTitle("Este la contraseña del usuario").setContentText("aca debe ingresar la contraseña de usuario").build();
+                                    break;
+                                case R.id.edt_password:
+                                    builder.setTargetView(btn_login).setTitle("Boton de Login").setContentText("esta vaina hace login").build();
+                                    break;
+                                case R.id.btn_login:
+                                    builder.setTargetView(txt_resgistrate).setTitle("Registro usuario").setContentText("aca te registras pe batedia").build();
+                                    break;
+                                case R.id.txt_resgistrate:
+                                    builder.setTargetView(olvide).setTitle("Olvide la contraseña").setContentText("por si la toxica esta viendo y no quieres mostrar la llave maestra").build();
+                                    break;
+                                case R.id.olvide:
+                                    return;
+                            }
+                            mGuideView = builder.build();
+                            mGuideView.show();
+                        }
+                    });
+
+            mGuideView = builder.build();
+            mGuideView.show();
+
+            updatingForDynamicLocationViews();
+
+
+
+
+
+
+
     }
 
-
+    private void updatingForDynamicLocationViews() {
+        btn_login.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                mGuideView.updateGuideViewLocation();
+            }
+        });
+    }
     int code;
     String messaje;
     JSONObject data_json;
@@ -158,7 +226,6 @@ public class Login extends AppCompatActivity {
                     editor.putString("token", data_json.optString("token"));
                     editor.putString("token_firebase",data_json.optString("token_firebase"));
                     editor.putString("tiene_negocio", data_json.optString("tiene_negocio"));
-                    editor.putInt("cantida_foto_perfil", 0);
                     editor.putString("cantidad_ingreso", "1");
                     editor.apply();
 
@@ -217,13 +284,36 @@ public class Login extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
     }
+
+    /*public void dialogCarga(){
+
+    }*/
+
     Dialog dialog_cargando;
     public void dialogCarga(){
 
-        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent);
         dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_cargando.setCancelable(true);
         dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_cargando.findViewById(R.id.back);
+        LinearLayout layout = dialog_cargando.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_cargando.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+        });
 
         dialog_cargando.show();
 

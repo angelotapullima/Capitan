@@ -49,6 +49,9 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
     TextView detalleCompraSolo,precioSolo,cantidadSolo,totalSolo;
     TextView detalleCompra1,precio1,cantidad1,total1;
     TextView detalleCompra2,precio2,cantidad2,total2;
+    LinearLayout lCliente;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,7 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
         pago2= findViewById(R.id.pago2);
         clienteReserva= findViewById(R.id.clienteReserva);
         NameReserrva= findViewById(R.id.NameReserrva);
+        lCliente= findViewById(R.id.lCliente);
         carga_Reservasss= findViewById(R.id.carga_Reservasss);
 
         detalleCompraSolo= findViewById(R.id.detalleCompraSolo);
@@ -120,6 +124,13 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
                     String textInfo;
                     float totalex,totalex2;
 
+                    if (misReservas.get(0).getReserva_tipopago().equals("0")){
+                        Comision.setText("0.0");
+                        lCliente.setVisibility(View.GONE);
+                    }else{
+                        Comision.setText("3.0");
+                        lCliente.setVisibility(View.VISIBLE);
+                    }
 
                     NameReserrva.setText(misReservas.get(0).getReserva_nombre());
 

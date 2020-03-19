@@ -121,16 +121,14 @@ public class MensajesWebServiceRepository {
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
                 Mensajes mensajes = new Mensajes();
-                mensajes.setChat_id(jsonNode.getString("chat_id"));/*
-                MensajesRoomDBRepository mensajesRoomDBRepository = new MensajesRoomDBRepository(application);
-                mensajesRoomDBRepository.deleteOne(jsonNode.getString("chat_id"));*/
+                mensajes.setChat_id(jsonNode.getString("chat_id"));
+                mensajes.setMensaje_id(jsonNode.getString("detalle_chat_id"));
+                mensajes.setMensajes_id_usuario(jsonNode.getString("id_usuario"));
                 mensajes.setMensaje_contenido(jsonNode.getString("mensaje"));
                 mensajes.setMensaje_foto(foto);
                 mensajes.setMensaje_nombre(nombre);
-                mensajes.setMensajes_id_usuario(jsonNode.getString("id_usuario"));
                 mensajes.setMensaje_fecha(jsonNode.getString("fecha"));
                 mensajes.setMensaje_hora(jsonNode.getString("hora"));
-                mensajes.setMensaje_id(jsonNode.getString("detalle_chat_id"));
                 mensajes.setMensaje_estado("1");
 
 

@@ -17,11 +17,9 @@ import android.os.Bundle;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,22 +44,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.utils.DiskCacheUtils;
-import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.tec.bufeo.capitan.Activity.DetalleFotoUsuario;
 import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
 import com.tec.bufeo.capitan.Activity.RegistroForo;
-import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Models.Notificaciones;
 import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Views.NotificacionesList;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
+import com.tec.bufeo.capitan.Modelo.Saldo;
 import com.tec.bufeo.capitan.R;
-import com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.DataConnection;
@@ -75,9 +70,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-import static com.tec.bufeo.capitan.Util.GlideCache.IntegerVersionSignature.GlideOptions.LOGO_OPTION;
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
@@ -97,7 +89,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     ImageView fotoPerfil;
     EditText floating_search_view;
     FrameLayout FrameNuevosDatos;
-    LinearLayout layout_nuevosDatos;
+    LinearLayout layout_nuevosDatos,NoHayMasDatos,verMas,problemasDeInternet;
     View bottomShet;
     BottomSheetBehavior mBottomSheetBehavior;
     LinearLayout tap_de_accion,bottomDelete;
@@ -106,6 +98,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     String idpublicacion;
     DataConnection dc;
     LinearLayout bufeoCoins;
+    UniversalImageLoader universalImageLoader;
 
 
     public ForoFragment() {
@@ -136,7 +129,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         dc = new DataConnection(activity, "ObtenerSaldo", false);
         new GetSaldo().execute();
     }
-    ArrayList<String> saldo = new ArrayList<>();
+    ArrayList<Saldo> saldo = new ArrayList<>();
     public class GetSaldo extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -157,7 +150,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
             if (saldo.size() > 0) {
-                saldo_contable.setText(saldo.get(0));
+                saldo_contable.setText(saldo.get(0).getSaldo_actual());
+                preferences.saveValuePORT("comision", saldo.get(0).getComision());
 
                 bufeoCoins.setVisibility(View.VISIBLE);
             } else {
@@ -175,6 +169,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         context = getContext();
         activity = getActivity();
         preferences = new Preferences(context);
+        universalImageLoader = new UniversalImageLoader(context);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
 
 
@@ -221,6 +217,9 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         floating_search_view =  view.findViewById(R.id.floating_search_view);
         swipeRefreshLayout =  view.findViewById(R.id.SwipeRefreshLayout);
         layout_nuevosDatos =  view.findViewById(R.id.layout_nuevosDatos);
+        verMas =  view.findViewById(R.id.verMas);
+        NoHayMasDatos =  view.findViewById(R.id.NoHayMasDatos);
+        problemasDeInternet =  view.findViewById(R.id.problemasDeInternet);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -245,12 +244,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
+        UniversalImageLoader.setImage(IP2+"/"+ preferences.getFotoUsuario(),fotoPerfil,null);
 
-        Glide.with(context)
-                .load(IP2+"/"+ preferences.getFotoUsuario())
-                .signature(new IntegerVersionSignature(preferences.getCantidadFotoPerfil()))
-                .apply(LOGO_OPTION)
-                .into(fotoPerfil);
 
 
 
@@ -328,7 +323,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        layout_nuevosDatos.setOnClickListener(this);
+        verMas.setOnClickListener(this);
 
 
     }
@@ -361,6 +356,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
     String valorNuevo;
+    int cantidad_de_datos_en_el_array=0;
     public void cargarvista(){
 
         feedListViewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<ModelFeed>>() {
@@ -368,22 +364,66 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void onChanged(List<ModelFeed> modelFeeds) {
                 if (modelFeeds.size()>0){
 
-                    adapter.setWords(modelFeeds);
-                    valorNuevo = modelFeeds.get(0).getNuevos_datos();
-                    if (valorNuevo!=null){
-                        if (valorNuevo.equals("1")){
-                            FrameNuevosDatos.setVisibility(View.VISIBLE);
-                        }else{
-                            FrameNuevosDatos.setVisibility(View.GONE);
-                        }
-                    }
-
-                    limite_sup = modelFeeds.get(modelFeeds.size()-1).getLimite_sup();
-                    limite_inf = modelFeeds.get(modelFeeds.size()-1).getLimite_inf();
-
+                    problemasDeInternet.setVisibility(View.GONE);
                     progressBar.setVisibility(ProgressBar.INVISIBLE);
-                    //Toast.makeText(getContext(), "sup: " + limite_sup + " inf: " + limite_inf, Toast.LENGTH_SHORT).show();
+                    if (cantidad_de_datos_en_el_array==modelFeeds.size()){
+                        verMas.setVisibility(View.VISIBLE);
+                        NoHayMasDatos.setVisibility(View.GONE);
+                        layout_nuevosDatos.setVisibility(View.GONE);
+                    }
+                    /*else{
+                        verMas.setVisibility(View.GONE);
+                        NoHayMasDatos.setVisibility(View.GONE);
+                        problemasDeInternet.setVisibility(View.GONE);
+                        layout_nuevosDatos.setVisibility(View.VISIBLE);
+                    }*/
+                    boolean cantD;
+                    arrayeModelFeed.clear();
+                    arrayeModelFeed.addAll(modelFeeds);
+                    cantidad_de_datos_en_el_array = arrayeModelFeed.size();
+
+                    // CantDatos => verifica si en me llego el ID =1 para mostrar que llego al final o no
+                    //si hay un ID =1 llegara true , si no false
+                    cantD=BuscadorId1(arrayeModelFeed);
+
+
+                    if (cantD){
+
+                        adapter.setWords(modelFeeds);
+                        //mostrar que se llego al final del feed
+
+                        verMas.setVisibility(View.GONE);
+                        problemasDeInternet.setVisibility(View.GONE);
+                        NoHayMasDatos.setVisibility(View.VISIBLE);
+                        layout_nuevosDatos.setVisibility(View.GONE);
+
+                    }else{
+
+                        adapter.setWords(modelFeeds);
+                        valorNuevo = modelFeeds.get(0).getNuevos_datos();
+                        if (valorNuevo!=null){
+                            if (valorNuevo.equals("1")){
+                                FrameNuevosDatos.setVisibility(View.VISIBLE);
+                            }else{
+                                FrameNuevosDatos.setVisibility(View.GONE);
+                            }
+                        }
+
+                        limite_sup = modelFeeds.get(modelFeeds.size()-1).getLimite_sup();
+                        limite_inf = modelFeeds.get(modelFeeds.size()-1).getLimite_inf();
+
+                        progressBar.setVisibility(ProgressBar.INVISIBLE);
+                    }
                 }else{
+
+                    //mostrar no hay conexion a internet
+
+                    verMas.setVisibility(View.VISIBLE);
+                    problemasDeInternet.setVisibility(View.VISIBLE);
+                    NoHayMasDatos.setVisibility(View.GONE);
+                    layout_nuevosDatos.setVisibility(View.GONE);
+
+
                     limite_sup= "0";
                     limite_inf= "0";
                 }
@@ -394,6 +434,32 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
     }
+
+
+    public ArrayList<ModelFeed> arrayeModelFeed =  new ArrayList<>();
+    ArrayList<String> arrayIds = new ArrayList<>();
+
+    public boolean BuscadorId1 ( List<ModelFeed> array ){
+
+        int cant =0;
+        for (ModelFeed obj :array){
+            arrayIds.add(obj.getPublicacion_id());
+        }
+
+        for (int i= 0 ; i<arrayIds.size();i++){
+            if (arrayIds.get(i).equals("1")){
+                cant++;
+            }
+
+        }
+
+        if (cant>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
 
 
@@ -642,6 +708,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
         //preferences.toasVerde("ok");
 
+        Log.e("carga", "feed: sup" +superior_envio + " inf " + inferior_envio );
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
         feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),superior_envio,inferior_envio,preferences.getToken(),"","feed");
     }
@@ -659,7 +726,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }else if (v.equals(FrameNuevosDatos)){
             onRefresh();
             FrameNuevosDatos.setVisibility(View.GONE);
-        }else if (v.equals(layout_nuevosDatos)){
+        }else if (v.equals(verMas)){
+            layout_nuevosDatos.setVisibility(View.VISIBLE);
             feed();
         }
     }

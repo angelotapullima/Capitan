@@ -82,19 +82,19 @@
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="60dp"
+                                    android:background="@android:color/transparent"
                                     android:gravity="center_vertical"
-                                    android:textColorHint="@color/colorTextIcons"
-                                    app:passwordToggleTint="@color/colorTextIcons">
+                                    android:textColorHint="@color/colorTextIcons">
 
                                     <EditText
                                         android:id="@+id/edt_usuario"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:backgroundTint="#FFF"
                                         android:background="@android:color/transparent"
                                         android:textColor="@color/colorTextIcons"
                                         android:paddingBottom="10dp"
                                         android:paddingLeft="10dp"
-
                                         android:hint="Usuario"
                                         android:textColorHint="@color/colorTextIcons"
                                         android:textColorHighlight="@color/colorTextIcons"
@@ -190,8 +190,8 @@
                             android:textColor="@color/colorTextIcons"
                             android:textSize="18dp" />
                         <TextView
-                            android:id="@+id/dfggg"
-                            android:text="Olvide Mi contraseña"
+                            android:id="@+id/olvide"
+                            android:text="Olvidé mi contraseña"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="italic|bold"

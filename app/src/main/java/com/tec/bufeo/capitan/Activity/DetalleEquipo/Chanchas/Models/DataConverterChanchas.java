@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class DataConverter implements Serializable {
+public class DataConverterChanchas implements Serializable {
 
     @TypeConverter // note this annotation
     public String fromOptionValuesList(List<DetalleChancha> optionValues) {

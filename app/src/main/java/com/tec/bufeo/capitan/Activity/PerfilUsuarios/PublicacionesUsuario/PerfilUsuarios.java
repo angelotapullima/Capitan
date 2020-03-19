@@ -25,7 +25,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.DetalleEquipoNuevo;
 import com.tec.bufeo.capitan.Activity.DetalleFotoUsuario;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
@@ -40,6 +39,7 @@ import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewMode
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.AdaptadorForo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import org.json.JSONArray;
@@ -67,6 +67,7 @@ public class PerfilUsuarios extends AppCompatActivity {
     LinearLayout layout_carga_perfil_Usuarios;
     AdaptadorEquiposUsuario adaptadorEquiposUsuario;
     AdaptadorForo adaptadorForo;
+    UniversalImageLoader universalImageLoader;
 
 
     @Override
@@ -80,6 +81,7 @@ public class PerfilUsuarios extends AppCompatActivity {
 
 
         preferences = new Preferences(this);
+        universalImageLoader=new UniversalImageLoader(this);
         id_user= getIntent().getExtras().getString("id_user");
 
         initViews();
@@ -148,7 +150,7 @@ public class PerfilUsuarios extends AppCompatActivity {
                     habilidadUsuarios.setText(datosUsuarios.get(0).getHabilidad());
                     EmailUsuarios.setText(datosUsuarios.get(0).getEmail());
                     nombre_perfil_Usuarios.setText(datosUsuarios.get(0).getNombre());
-                    Glide.with(getApplicationContext()).load(IP2+"/"+datosUsuarios.get(0).getImg()).into(fotodeperfil_Usuarios);
+                    UniversalImageLoader.setImage(IP2+"/"+datosUsuarios.get(0).getImg(),fotodeperfil_Usuarios,null);
                 }else{
 
                 }

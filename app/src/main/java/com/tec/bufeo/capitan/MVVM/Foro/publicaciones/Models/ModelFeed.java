@@ -115,6 +115,10 @@ public class ModelFeed {
     @SerializedName("estado")
     private String estado;
 
+    @ColumnInfo(name = "contador_de_datos")
+    @SerializedName("contador_de_datos")
+    private String contador_de_datos;
+
 
 
 
@@ -287,5 +291,13 @@ public class ModelFeed {
 
     public void setTorneo_foto(String torneo_foto) {
         this.torneo_foto = torneo_foto;
+    }
+
+    public String getContador_de_datos() {
+        return contador_de_datos;
+    }
+
+    public void setContador_de_datos(String contador_de_datos) {
+        this.contador_de_datos = contador_de_datos;
     }
 }

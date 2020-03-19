@@ -105,7 +105,7 @@ public class AdaptadorBusquedaEquipos extends RecyclerView.Adapter<AdaptadorBusq
         if (mUsers != null) {
             current = mUsers.get(position);
 
-            ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
             UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipoRetar,null);
 
             holder.txt_nombreEquipoRetar.setText(current.getEquipo_nombre());
