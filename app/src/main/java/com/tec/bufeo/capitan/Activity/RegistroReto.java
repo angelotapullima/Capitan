@@ -74,7 +74,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
    EditText edt_lugarReto;
    MisEquiposViewModel misEquiposViewModel;
    Retos retos;
-   public  ArrayList<Mequipos> arrayEquipos = new ArrayList<>();
+   ArrayList<Mequipos> arrayEquipos = new ArrayList<>();
    ArrayList<String> arrayequipo = new ArrayList<>();
    Context context;
     public String nombre_retado,foto_retado,id_retado, fecha;

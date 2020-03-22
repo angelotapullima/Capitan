@@ -27,6 +27,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -52,8 +54,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tec.bufeo.capitan.Activity.MenuPrincipal;
+import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
+import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.NegociosViewModel;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Models.Grupos;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.DateDialog;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -78,6 +83,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -91,8 +97,9 @@ import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 public class RegistroTorneo extends AppCompatActivity implements View.OnClickListener {
 
 
-    EditText edt_nombreTorneo, edt_descripcionTorneo, edt_lugarTorneo,edt_organizador,edt_costo;
+    EditText edt_nombreTorneo, edt_descripcionTorneo,edt_organizador,edt_costo;
    Button  btn_crearTorneo;
+   Spinner spn_negocios;
    ArrayList<String> arrayDatos;
    Spinner spn_rutas;
    DataConnection dc;
@@ -100,7 +107,9 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
    int valor;
    String id_torneo,valor_tipo,valor_spinner;
    Preferences preferences;
-
+   NegociosViewModel negociosViewModel;
+    ArrayList<Negocios> arrayNegocios = new ArrayList<>();
+    ArrayList<String> arraynegocios = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,11 +119,12 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
 
         preferences = new Preferences(this);
 
+        negociosViewModel = ViewModelProviders.of(this).get(NegociosViewModel.class);
 
 
         edt_nombreTorneo = findViewById(R.id.edt_nombreTorneo);
         edt_descripcionTorneo = findViewById(R.id.edt_descripcionTorneo);
-        edt_lugarTorneo = findViewById(R.id.edt_lugarTorneo);
+        spn_negocios = findViewById(R.id.spn_negocios);
         edt_organizador = findViewById(R.id.edt_organizador);
         edt_costo = findViewById(R.id.edt_costo);
         btn_fechaTorneo = findViewById(R.id.btn_fechaTorneo);
@@ -144,6 +154,26 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
             },1);
         }
         showToolbar("Registro torneo" ,true);
+
+        negociosViewModel.getAllNegocios(preferences.getUbigeoId(),preferences.getIdUsuarioPref(),preferences.getToken()).observe(this, new Observer<List<Negocios>>() {
+            @Override
+            public void onChanged(List<Negocios> negocios) {
+                if (negocios.size()>0){
+                    arrayNegocios.clear();
+                    arrayNegocios.addAll(negocios);
+                    //Log.e("mis Equipos", "onChanged: "+mequipos.size() );
+
+                    for (Negocios obj :arrayNegocios){
+                        arraynegocios.add(obj.getNombre_empresa());
+                    }
+                    //progressBar.setVisibility(ProgressBar.INVISIBLE);
+                    arraynegocios.add(0,"Seleccionar");
+                    ArrayAdapter<String> adapNegocios = new ArrayAdapter<String>(getApplicationContext(),R.layout.spiner_item,arraynegocios);
+                    adapNegocios.setDropDownViewResource(R.layout.spiner_dropdown_item);
+                    spn_negocios.setAdapter(adapNegocios);
+                }
+            }
+        });
     }
 
     public void showToolbar(String tittle, boolean upButton){
@@ -185,7 +215,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                 preferences.codeAdvertencia("debe seleccionar una Fecha para el torneo");
             }else if(btn_horaTorneo.getText().toString().equals("Hora")){
                 preferences.codeAdvertencia("debe seleccionar una Hora para el torneo");
-            }else if (edt_lugarTorneo.getText().toString().isEmpty()) {
+            }else if (spn_negocios.getSelectedItem().equals("Seleccionar")) {
                 preferences.codeAdvertencia("debe registrar un Lugar para el torneo");
             }else if (edt_organizador.getText().toString().isEmpty()) {
                 preferences.codeAdvertencia("debe registrar un Organizador del torneo");
@@ -284,7 +314,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                 parametros.put("costo", edt_costo.getText().toString());
                 parametros.put("fecha", btn_fechaTorneo.getText().toString());
                 parametros.put("hora", btn_horaTorneo.getText().toString());
-                parametros.put("lugar", edt_lugarTorneo.getText().toString());
+                parametros.put("lugar", spn_negocios.getSelectedItem().toString());
                 parametros.put("nombre", edt_nombreTorneo.getText().toString());
                 parametros.put("tipo", valor_tipo);
                 parametros.put("app", "true");
