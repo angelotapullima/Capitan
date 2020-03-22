@@ -62,7 +62,7 @@ public class BusquedaEquiposRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             misEquiposDao.deleteAll();
-            Log.i("eliminado equipos", "doInBackground: eliminado");
+            Log.d("eliminado equipos", "doInBackground: eliminado");
             return null;
         }
     }

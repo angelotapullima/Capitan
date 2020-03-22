@@ -133,7 +133,7 @@ public class EequiposWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

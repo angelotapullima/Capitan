@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class AdapterNotificacionesList extends RecyclerView.Adapter<AdapterNotif
             notificacion_mensaje=  itemView.findViewById(R.id.notificacion_mensaje);
             RlNotificaciones=  itemView.findViewById(R.id.RlNotificaciones);
             notificacion_datetime=  itemView.findViewById(R.id.notificacion_datetime);
+
 
 
 
@@ -98,6 +100,14 @@ public class AdapterNotificacionesList extends RecyclerView.Adapter<AdapterNotif
             }
             //UniversalImageLoader.setImage(current.getVersus_foto_equipo1(),holder.versus_foto_equipo1,null);
 
+            if (current.getNotificacion_tipo().equals("Reto")){
+
+                holder.notificacion_foto.setImageResource(R.drawable.retos);
+            }else if (current.getNotificacion_tipo().equals("Mensaje")){
+                holder.notificacion_foto.setImageResource(R.drawable.chats);
+            }else if (current.getNotificacion_tipo().equals("Torneo")){
+                holder.notificacion_foto.setImageResource(R.drawable.torneos);
+            }
 
 
             holder.bid(current,listener);

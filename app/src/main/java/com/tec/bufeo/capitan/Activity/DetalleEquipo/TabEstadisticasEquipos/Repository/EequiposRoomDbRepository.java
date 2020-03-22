@@ -47,7 +47,7 @@ public class EequiposRoomDbRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             tequiposDao.deleteAll();
-            Log.i("elim Estadisticas equ", "doInBackground: eliminado");
+            Log.d("elim Estadisticas equ", "doInBackground: eliminado");
             return null;
         }
     }

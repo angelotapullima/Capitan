@@ -59,7 +59,7 @@ public class CanchasWebServiceRepository {
          service.getEquipo(id_empresa,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.e("Repository mis canchas","Response::::"+response.body());
+                 Log.d("Repository mis canchas","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  CanchasRoomDBRepository canchasRoomDBRepository = new CanchasRoomDBRepository(application);
                  canchasRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -125,7 +125,7 @@ public class CanchasWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

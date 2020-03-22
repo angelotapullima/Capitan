@@ -150,7 +150,7 @@ public class InstanciasYPartidosFragment extends Fragment implements SwipeRefres
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
             }
         })  {

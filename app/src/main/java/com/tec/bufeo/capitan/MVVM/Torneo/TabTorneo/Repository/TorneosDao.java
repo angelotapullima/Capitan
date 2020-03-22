@@ -20,6 +20,9 @@ public interface TorneosDao {
     @Query("SELECT * from Torneo WHERE mi_torneo =  :no  ")
     LiveData<List<Torneo>> getAllOtrosTorneos(String no);
 
+    @Query("SELECT * from Torneo WHERE id_torneo =  :id  ")
+    LiveData<List<Torneo>> getIdTorneo(String id);
+
     @Query("DELETE FROM Torneo ")
     void deleteAll();
 

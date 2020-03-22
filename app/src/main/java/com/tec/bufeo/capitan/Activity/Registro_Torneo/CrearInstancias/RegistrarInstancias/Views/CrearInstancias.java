@@ -193,7 +193,7 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
 
 
 
-                Log.e("torneo", "getParams: "+parametros.toString() );
+                Log.d("torneo", "getParams: "+parametros.toString() );
                 return parametros;
 
             }

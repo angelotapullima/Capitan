@@ -52,7 +52,7 @@ public class NegociosRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             misReservasDao.deleteAll();
-            Log.i("eliminado negocios", "doInBackground: eliminado");
+            Log.d("eliminado negocios", "doInBackground: eliminado");
             return null;
         }
     }

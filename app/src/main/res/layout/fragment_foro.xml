@@ -55,22 +55,49 @@
                         android:id="@+id/tituloApp"
                         android:textStyle="bold"
                         android:layout_toEndOf="@+id/framesito"
-                        android:layout_toStartOf="@+id/partidos"
+                        android:layout_toStartOf="@+id/relNot"
                         android:layout_gravity="center"
                         android:textColor="#000"
                         android:gravity="center"
                         android:layout_height="match_parent"
                         android:text="@string/app_name"/>
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:contentDescription="@string/app_name"
-                        android:textColor="@color/colorPrimary"
-                        android:src="@drawable/ic_notificacion"
-                        android:id="@+id/partidos"
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:id="@+id/relNot"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center"
                         android:layout_alignParentEnd="true"
-                        android:layout_height="40dp"
-                        />
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:contentDescription="@string/app_name"
+                            android:textColor="@color/colorPrimary"
+                            android:src="@drawable/ic_notificacion"
+                            android:id="@+id/partidos"
+                            android:layout_height="30dp"
+                            />
+                        <LinearLayout
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:gravity="center"
+                            android:id="@+id/LayoutCantidadDeNotificaciones"
+                            android:background="@drawable/shape_ctoast"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="10sp"
+                                android:layout_gravity="center"
+                                android:textStyle="bold"
+                                android:id="@+id/cantidadDeNotificaciones"
+                                android:textColor="#fff"
+                                android:layout_height="wrap_content"
+                                android:text="1"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
 
                 </RelativeLayout>
 
@@ -87,6 +114,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
                         android:textColor="#999da4"
+                        android:textSize="14sp"
                         android:layout_toLeftOf="@+id/bufeoCoins"
                         android:textColorHint="#999da4"
                         android:layout_marginBottom="5dp"
@@ -99,8 +127,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:id="@+id/bufeoCoins"
-                        android:visibility="gone"
                         android:layout_marginRight="10dp"
+                        android:visibility="gone"
                         android:layout_centerVertical="true"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -117,7 +145,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginRight="10dp"
                             android:textColor="#000"
                             android:textSize="19sp"
                             android:textStyle="bold" />

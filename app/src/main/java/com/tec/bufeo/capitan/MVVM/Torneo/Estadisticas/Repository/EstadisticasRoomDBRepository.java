@@ -54,7 +54,7 @@ public class EstadisticasRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             estadisticasDao.deleteAll();
-            Log.i("eliminado estadisticas", "doInBackground: eliminado");
+            Log.d("eliminado estadisticas", "doInBackground: eliminado");
             return null;
         }
     }

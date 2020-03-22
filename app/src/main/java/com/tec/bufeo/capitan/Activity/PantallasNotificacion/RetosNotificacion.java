@@ -63,12 +63,12 @@ public class RetosNotificacion extends AppCompatActivity {
 
     public void cargarvista(){
 
-        retosViewModel.getAllRetoID("18",preferences.getToken(),"notificacion").observe(this, new Observer<List<Retos>>() {
+        retosViewModel.getAllRetoID(id,preferences.getToken(),"notificacion").observe(this, new Observer<List<Retos>>() {
             @Override
             public void onChanged(@Nullable List<Retos> retos) {
 
                 if (retos.size()>0){
-                    ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
 
                     String  texto = "Tú equipo " + retos.get(0).getRetos_nombre_retador() +" fue retado por " + retos.get(0).getRetos_nombre_retado();
                     UniversalImageLoader.setImage(IP2+"/"+ retos.get(0).getRetos_foto_retador(),RetadorFoto,null);

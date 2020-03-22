@@ -563,12 +563,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             Toast.makeText(context,"Actualizado correctamente"+"-"+ruta, Toast.LENGTH_LONG).show();
 
 
-                            int VersionFinalFoto ;
-                            int VersionFoto = preferences.getCantidadFotoPerfil();
-                            VersionFinalFoto = VersionFoto +1;
 
-                            preferences.saveValuePORTInteger("cantida_foto_perfil",VersionFinalFoto);
-                            Log.e("foto version", "onCompleted: " + VersionFinalFoto );
+
 
                             if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                                 mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

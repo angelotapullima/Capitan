@@ -28,7 +28,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosWebServiceRepo
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Views.FragmentRetos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.MisTorneoViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.TorneosViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Views.FragmentTorneoRoque;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Views.FragmentEquipo;
@@ -49,7 +49,7 @@ public class FragmentTorneoPadre extends Fragment  {
     MisEquiposViewModel misEquiposViewModel;
     RetosViewModel retosViewModel;
     ChatsListViewModel chatsListViewModel;
-    MisTorneoViewModel misTorneoViewModel;
+    TorneosViewModel torneosViewModel;
     UniversalImageLoader universalImageLoader;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -94,7 +94,7 @@ public class FragmentTorneoPadre extends Fragment  {
         misEquiposViewModel = ViewModelProviders.of(getActivity()).get(MisEquiposViewModel.class);
         retosViewModel = ViewModelProviders.of(getActivity()).get(RetosViewModel.class);
         chatsListViewModel = ViewModelProviders.of(getActivity()).get(ChatsListViewModel.class);
-        misTorneoViewModel = ViewModelProviders.of(getActivity()).get(MisTorneoViewModel.class);
+        torneosViewModel = ViewModelProviders.of(getActivity()).get(TorneosViewModel.class);
 
     }
 

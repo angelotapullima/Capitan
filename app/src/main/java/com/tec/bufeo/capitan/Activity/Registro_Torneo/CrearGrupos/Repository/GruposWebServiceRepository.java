@@ -62,7 +62,7 @@ public class GruposWebServiceRepository {
          service.savePost(id_torneo,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.e("Repository","feed::::"+response.body());
+                 Log.d("Repository","feed::::"+response.body());
                  webserviceResponseList = parseJson(response.body(), id_torneo);
                  GruposRoomDBRepository gruposRoomDBRepository = new GruposRoomDBRepository(application);
                  gruposRoomDBRepository.insertPosts(webserviceResponseList);
@@ -124,7 +124,7 @@ public class GruposWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

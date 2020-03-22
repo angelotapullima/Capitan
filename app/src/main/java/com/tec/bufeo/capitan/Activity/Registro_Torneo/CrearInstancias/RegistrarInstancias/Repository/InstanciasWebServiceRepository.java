@@ -61,7 +61,7 @@ public class InstanciasWebServiceRepository {
             service.savePost(id_torneo,"true",token).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.e("Repository","instancias::::"+response.body());
+                    Log.d("Repository","instancias::::"+response.body());
                     webserviceResponseList = parseJson(response.body(), id_torneo);
                     InstanciasRoomDBRepository instanciasRoomDBRepository = new InstanciasRoomDBRepository(application);
                     instanciasRoomDBRepository.insertPosts(webserviceResponseList);
@@ -124,7 +124,7 @@ public class InstanciasWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

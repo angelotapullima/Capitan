@@ -326,6 +326,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#000"
                     android:textSize="20sp"
+                    android:layout_marginLeft="10dp"
                     android:textStyle="bold"
                     android:text="Equipos"/>
                 <androidx.recyclerview.widget.RecyclerView
@@ -350,6 +351,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Publicaciones"
+                    android:layout_marginLeft="10dp"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:textColor="#000"/>

@@ -201,7 +201,7 @@ public class RegistroEquiposTorneoRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             registroEquiposTorneoDao.deleteAll();
-            Log.i("eliminado", "doInBackground: eliminado");
+            Log.d("eliminado", "doInBackground: eliminado");
             return null;
         }
     }

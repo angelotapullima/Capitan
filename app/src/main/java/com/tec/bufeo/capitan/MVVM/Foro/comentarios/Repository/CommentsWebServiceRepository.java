@@ -42,7 +42,7 @@ public class CommentsWebServiceRepository {
     List<Comments> webserviceResponseList = new ArrayList<>();
 
 
- public LiveData<List<Comments>> providesWebService(String id,String token) {
+ public LiveData<List<Comments>> providesWebService(final String id, String token) {
 
      final MutableLiveData<List<Comments>> data = new MutableLiveData<>();
 
@@ -63,7 +63,7 @@ public class CommentsWebServiceRepository {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.d("Repository","Response::::"+response.body());
-                 webserviceResponseList = parseJson(response.body());
+                 webserviceResponseList = parseJson(response.body(),id);
                  CommentsRoomDBRepository commentsRoomDBRepository = new CommentsRoomDBRepository(application);
                  commentsRoomDBRepository.insertReviews(webserviceResponseList);
                  data.setValue(webserviceResponseList);
@@ -85,7 +85,7 @@ public class CommentsWebServiceRepository {
     }
 
 
-    private List<Comments> parseJson(String response) {
+    private List<Comments> parseJson(String response, String id) {
 
         List<Comments> apiResults = new ArrayList<>();
 
@@ -99,6 +99,8 @@ public class CommentsWebServiceRepository {
 
             int count = resultJSON.length();
 
+            CommentsRoomDBRepository commentsRoomDBRepository = new CommentsRoomDBRepository(application);
+            commentsRoomDBRepository.deleteOne(id);
 
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
@@ -112,6 +114,7 @@ public class CommentsWebServiceRepository {
                 reviews.setComments_comentario(jsonNode.getString("comentario"));
                 reviews.setComments_foto(jsonNode.getString("usuario_foto"));
                 reviews.setComments_id(jsonNode.getString("id_comentario"));
+                reviews.setId_usuario(jsonNode.getString("id_usuario"));
 
                 apiResults.add(reviews);
             }
@@ -121,7 +124,7 @@ public class CommentsWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

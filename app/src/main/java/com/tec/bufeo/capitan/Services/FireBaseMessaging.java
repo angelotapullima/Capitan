@@ -41,7 +41,7 @@ public class FireBaseMessaging extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        Log.e(TAG, "Token: " + s);
+        Log.d(TAG, "Token: " + s);
     }
 
     @Override
@@ -71,12 +71,12 @@ public class FireBaseMessaging extends FirebaseMessagingService {
             ShowNotification(notificacionesService);
         }else{
             if (tipo.equals("alarmas")){
-                Log.e(TAG, "onMessageReceived:  funcionando la huevada de tipo " +token );
+                Log.d(TAG, "onMessageReceived:  funcionando la huevada de tipo " +token );
                 alarma(token);
 
             }if (tipo.equals("Mensaje")){
                 //mensaje(mhora,mfecha,mid_chat,mmensaje,mid_usuario,tipo);
-                Log.e("mensaje", "mensaje:  funcionando  tipo " +tipo );
+                Log.d("mensaje", "mensaje:  funcionando  tipo " +tipo );
                 mensajeChats(mhora,mfecha,mid_chat,mmensaje,mid_usuario,tipo);
                 mensajeNotificacionChats(mhora,mfecha,mid_chat,mmensaje,mid_usuario,tipo);
                 notificacionesService.setTitle(mid_usuario);

@@ -69,7 +69,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
     EditText nombre_reserva;
     String comision;
     RecyclerView rcv_colaboraciones;
-    ImageView finishReserva;
+    ImageView finishReserva,noChanchas;
     RelativeLayout relRes;
 
 
@@ -104,6 +104,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         layout_botones = findViewById(R.id.layout_botones);
         finishReserva = findViewById(R.id.finishReserva);
         relRes = findViewById(R.id.relRes);
+        noChanchas = findViewById(R.id.noChanchas);
 
 
         Colaboraciones();
@@ -283,7 +284,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResponse(String response) {
 
-                Log.e("registrar_reserva", "onResponse: "+response );
+                Log.d("registrar_reserva", "onResponse: "+response );
 
                 String separador,part1;
                 String[] resultado;
@@ -312,7 +313,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error", "onErrorResponse: "+error.toString() );
+                Log.d("error", "onErrorResponse: "+error.toString() );
                 dialog_carga.dismiss();
 
             }
@@ -352,7 +353,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
                 parametros.put("id_user",preferences.getIdUsuarioPref());
-                Log.e("parametros", "parametros: "+parametros.toString() );
+                Log.d("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }
         };
@@ -394,9 +395,14 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
                     jsonObject = new JSONObject(response);
                     resultJSON = jsonObject.getJSONArray("results");
 
+
                     listaItem.clear();
                     int count = resultJSON.length();
-
+                    if (count==0){
+                        noChanchas.setVisibility(View.VISIBLE);
+                    }else{
+                        noChanchas.setVisibility(View.GONE);
+                    }
                     for (int i = 0; i < count; i++) {
 
                         jsonNode = resultJSON.getJSONObject(i);
@@ -432,7 +438,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
                         @Override
                         public void onItemClick(Colaboraciones mequipos, String tipo, int position) {
                             if (tipo.equals("btn_reservar_en_chancha")){
-                                Log.e("precios", "onItemClick: " + total +" - " + mequipos.getMonto_final() );
+                                Log.d("precios", "onItemClick: " + total +" - " + mequipos.getMonto_final() );
                                 if (Double.parseDouble(mequipos.getMonto_final())> total){
 
                                     preferences.codeAdvertencia("El monto de la chancha supera el precio de la  cancha");
@@ -475,7 +481,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
             }
         })  {

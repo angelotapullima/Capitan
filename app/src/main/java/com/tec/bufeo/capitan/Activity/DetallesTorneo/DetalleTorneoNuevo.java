@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.GruposYEquipos.GruposYEquiposFragment;
@@ -28,8 +29,11 @@ import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Views.InfoDtorn
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Views.PosicionesFragment;
 import com.tec.bufeo.capitan.Activity.RegistroForo;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.TorneosViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
 
@@ -46,6 +50,9 @@ public class DetalleTorneoNuevo extends AppCompatActivity implements View.OnClic
     String id_torneo,foto,nombre,id_usuario;
     Preferences preferences;
     FloatingActionButton reg_torneo_foro;
+    TorneosViewModel torneosViewModel;
+    LinearLayout cargando_torneo;
+    UniversalImageLoader universalImageLoader;
 
 
 
@@ -65,13 +72,15 @@ public class DetalleTorneoNuevo extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_torneo_nuevo);
 
+        torneosViewModel = ViewModelProviders.of(this).get(TorneosViewModel.class);
         preferences = new Preferences(this);
+        universalImageLoader= new UniversalImageLoader(this);
 
 
         id_torneo = getIntent().getStringExtra("id_torneo");
-        foto = getIntent().getStringExtra("foto");
+        /*foto = getIntent().getStringExtra("foto");
         nombre = getIntent().getStringExtra("nombre");
-        id_usuario = getIntent().getStringExtra("id_usuario");
+        id_usuario = getIntent().getStringExtra("id_usuario");*/
 
 
         sectionsDetalleTorneoAdapter = new SectionsDetalleTorneoAdapter(getSupportFragmentManager());
@@ -83,6 +92,7 @@ public class DetalleTorneoNuevo extends AppCompatActivity implements View.OnClic
         nombre_torneo_Detalle =  findViewById(R.id.nombre_torneo_Detalle);
         unirse_Dtorneo =  findViewById(R.id.unirse_Dtorneo);
         reg_torneo_foro =  findViewById(R.id.reg_torneo_foro);
+        cargando_torneo =  findViewById(R.id.cargando_torneo);
 
 
 
@@ -136,14 +146,36 @@ public class DetalleTorneoNuevo extends AppCompatActivity implements View.OnClic
 
             }
         });
-        //Glide.with(this).load(IP2+"/"+ foto).into(imagen_Dtorneo);
-        nombre_torneo_Detalle.setText(nombre);
+
 
 
         showToolbar("",true);
         reg_torneo_foro.setOnClickListener(this);
 
 
+        torneosViewModel.getIdTorneo(id_torneo,preferences.getToken()).observe(this, new Observer<List<Torneo>>() {
+            @Override
+            public void onChanged(List<Torneo> torneos) {
+                if (torneos.size()>0){
+
+                    cargando_torneo.setVisibility(View.GONE);
+
+
+                        nombre_torneo_Detalle.setText(torneos.get(0).getTorneo_nombre());
+
+                        if (preferences.getIdUsuarioPref().equals(torneos.get(0).getUsuario_id())){
+                            reg_torneo_foro.setVisibility(View.VISIBLE);
+                            unirse_Dtorneo.setVisibility(View.GONE);
+                        }else{
+                            reg_torneo_foro.setVisibility(View.GONE);
+                            unirse_Dtorneo.setVisibility(View.VISIBLE);
+                        }
+
+                }else{
+                    cargando_torneo.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
 

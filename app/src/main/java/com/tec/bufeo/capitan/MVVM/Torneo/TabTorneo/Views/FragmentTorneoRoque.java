@@ -26,7 +26,7 @@ import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.MisTorneoViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.TorneosViewModel;
 
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -41,7 +41,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
     RecyclerView rcv_mis_torneos, rcv_torneos;
     Activity activity;
     Context context;
-    MisTorneoViewModel misTorneoViewModel;
+    TorneosViewModel torneosViewModel;
     AdaptadorMisTorneos adaptadorMisTorneos;
     FloatingActionButton reg_torneo;
     SwipeRefreshLayout swipeTorneos;
@@ -59,7 +59,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        misTorneoViewModel = ViewModelProviders.of(getActivity()).get(MisTorneoViewModel.class);
+        torneosViewModel = ViewModelProviders.of(getActivity()).get(TorneosViewModel.class);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
 
     public void cargarvista(){
 
-        misTorneoViewModel.getAllMisTorneo("si").observe(this, new Observer<List<Torneo>>() {
+        torneosViewModel.getAllMisTorneo("si").observe(this, new Observer<List<Torneo>>() {
             @Override
             public void onChanged(@Nullable List<Torneo> torneos) {
                 adaptadorMisTorneos.setWords(torneos);
@@ -124,7 +124,7 @@ public class FragmentTorneoRoque extends Fragment implements SwipeRefreshLayout.
             }
         });
 
-        misTorneoViewModel.getAllOtrosTorneos("no").observe(this, new Observer<List<Torneo>>() {
+        torneosViewModel.getAllOtrosTorneos("no").observe(this, new Observer<List<Torneo>>() {
             @Override
             public void onChanged(@Nullable List<Torneo> torneos) {
                 adaptadorOtrosTorneos.setWords(torneos);

@@ -15,6 +15,8 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Repository.NotificacionesWebServiceRepository;
+import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.ViewModels.NotificacionesViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
@@ -34,6 +36,7 @@ public class Splash extends AppCompatActivity {
     Preferences preferences;
     FeedListViewModel feedListViewModel;
     MisEquiposViewModel misEquiposViewModel;
+    NotificacionesViewModel notificacionesViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,7 @@ public class Splash extends AppCompatActivity {
 
         feedListViewModel = ViewModelProviders.of(this).get(FeedListViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(this).get(MisEquiposViewModel.class);
+        notificacionesViewModel = ViewModelProviders.of(this).get(NotificacionesViewModel.class);
 
 
         if(!preferences.getIdUsuarioPref().equals("")){
@@ -87,6 +91,7 @@ public class Splash extends AppCompatActivity {
         });
 
         cargarEquipos();
+        cargarNotificaciones();
         Tarea tarea = new Tarea();
         tarea.execute();
 
@@ -137,7 +142,7 @@ public class Splash extends AppCompatActivity {
     String limite_sup,limite_inf;
     Application application;
     public void cargarFeed(){
-        Log.e("feed", "cargarFeed: " +limite_inf + " - " + limite_sup );
+        Log.d("feed", "cargarFeed: " +limite_inf + " - " + limite_sup );
         FeedWebServiceRepository feedTorneoWebServiceRepository = new FeedWebServiceRepository(application);
         feedTorneoWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),limite_sup,limite_inf,preferences.getToken(),"","feed");
     }
@@ -145,6 +150,11 @@ public class Splash extends AppCompatActivity {
         MisEquiposWebServiceRepository misEquiposWebServiceRepository =  new MisEquiposWebServiceRepository(application);
         misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"mi_equipo",preferences.getToken(),"");
         misEquiposWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),"otro_equipo",preferences.getToken(),"");
+    }
+
+    public void cargarNotificaciones() {
+        NotificacionesWebServiceRepository notificacionesWebServiceRepository = new NotificacionesWebServiceRepository(application);
+        notificacionesWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(), preferences.getToken());
     }
 
 }

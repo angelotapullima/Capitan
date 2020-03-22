@@ -49,7 +49,10 @@ import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
+import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.Activity.RegistroForo;
+import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Models.Notificaciones;
+import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.ViewModels.NotificacionesViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Views.NotificacionesList;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
@@ -70,6 +73,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 
@@ -94,12 +99,12 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     BottomSheetBehavior mBottomSheetBehavior;
     LinearLayout tap_de_accion,bottomDelete;
     ImageView btnClose;
-    TextView titulotap,saldo_contable;
+    TextView titulotap,saldo_contable,cantidadDeNotificaciones;
     String idpublicacion;
     DataConnection dc;
-    LinearLayout bufeoCoins;
+    LinearLayout bufeoCoins,LayoutCantidadDeNotificaciones;
     UniversalImageLoader universalImageLoader;
-
+    NotificacionesViewModel notificacionesViewModel;
 
     public ForoFragment() {
     }
@@ -121,9 +126,41 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         super.onCreate(savedInstanceState);
 
         //    progressDialog = new ProgressDialog(getActivity());
+        notificacionesViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(NotificacionesViewModel.class);
         feedListViewModel = ViewModelProviders.of(getActivity()).get(FeedListViewModel.class);
         //commentsListViewModel =  ViewModelProviders.of(getActivity()).get(VersusListViewModel.class);
     }
+
+
+    int cantidadN=0;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_foro, container, false);
+        context = getContext();
+        activity = getActivity();
+        preferences = new Preferences(context);
+        universalImageLoader = new UniversalImageLoader(context);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
+
+
+
+        initViews(view);
+
+
+        obtenerSaldo();
+        setAdapter();
+        cargarvista();
+
+
+
+        return view;
+    }
+
+
+
 
     public void obtenerSaldo(){
         dc = new DataConnection(activity, "ObtenerSaldo", false);
@@ -162,34 +199,6 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_foro, container, false);
-        context = getContext();
-        activity = getActivity();
-        preferences = new Preferences(context);
-        universalImageLoader = new UniversalImageLoader(context);
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
-
-
-
-
-        initViews(view);
-        obtenerSaldo();
-        setAdapter();
-        cargarvista();
-
-
-
-        return view;
-    }
-
-
-
-    
-
-    @Override
     public void onResume() {
 
         super.onResume();
@@ -206,6 +215,8 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         bottomDelete = view.findViewById(R.id.bottomDelete);
         btnClose = view.findViewById(R.id.btnClose);
         saldo_contable = view.findViewById(R.id.saldo_contable);
+        LayoutCantidadDeNotificaciones = view.findViewById(R.id.LayoutCantidadDeNotificaciones);
+        cantidadDeNotificaciones = view.findViewById(R.id.cantidadDeNotificaciones);
 
 
         fotoPerfil = view.findViewById(R.id.fotoPerfil);
@@ -324,15 +335,10 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         verMas.setOnClickListener(this);
+        bufeoCoins.setOnClickListener(this);
 
 
     }
-
-
-
-
-
-
 
 
     private void showEditDialog() {
@@ -359,10 +365,27 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     int cantidad_de_datos_en_el_array=0;
     public void cargarvista(){
 
+        notificacionesViewModel.getAllNoVistos().observe(this, new Observer<List<Notificaciones>>() {
+            @Override
+            public void onChanged(List<Notificaciones> notificaciones) {
+
+                if (notificaciones.size()>0){
+                    cantidadN = notificaciones.size();
+                    cantidadDeNotificaciones.setText(String.valueOf(cantidadN));
+
+                }else {
+                    LayoutCantidadDeNotificaciones.setVisibility(View.GONE);
+                }
+
+
+            }
+        });
+
         feedListViewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<ModelFeed>>() {
             @Override
             public void onChanged(List<ModelFeed> modelFeeds) {
                 if (modelFeeds.size()>0){
+                    Log.e("feed ", modelFeeds.toString());
 
                     problemasDeInternet.setVisibility(View.GONE);
                     progressBar.setVisibility(ProgressBar.INVISIBLE);
@@ -409,10 +432,14 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             }
                         }
 
-                        limite_sup = modelFeeds.get(modelFeeds.size()-1).getLimite_sup();
-                        limite_inf = modelFeeds.get(modelFeeds.size()-1).getLimite_inf();
-
                         progressBar.setVisibility(ProgressBar.INVISIBLE);
+                        limite_sup = modelFeeds.get(0).getLimite_sup();
+                        limite_inf = modelFeeds.get(0).getLimite_inf();
+
+
+                        Log.e("guardando", limite_sup +"-" + limite_inf );
+                        preferences.saveValuePORT("lim_sup",limite_sup);
+                        preferences.saveValuePORT("lim_inf",limite_inf);
                     }
                 }else{
 
@@ -428,8 +455,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     limite_inf= "0";
                 }
 
-                preferences.saveValuePORT("lim_sup",limite_sup);
-                preferences.saveValuePORT("lim_inf",limite_inf);
+
             }
         });
 
@@ -729,6 +755,9 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }else if (v.equals(verMas)){
             layout_nuevosDatos.setVisibility(View.VISIBLE);
             feed();
+        }else if(v.equals(bufeoCoins)){
+            Intent i = new Intent(getContext(), RealizarRecarga.class);
+            startActivity(i);
         }
     }
 

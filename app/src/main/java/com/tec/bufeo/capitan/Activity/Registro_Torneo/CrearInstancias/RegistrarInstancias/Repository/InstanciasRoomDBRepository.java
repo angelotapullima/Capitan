@@ -52,7 +52,7 @@ public class InstanciasRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             instanciasDao.deleteAll();
-            Log.i("instancias", "doInBackground: eliminado");
+            Log.d("instancias", "doInBackground: eliminado");
             return null;
         }
     }

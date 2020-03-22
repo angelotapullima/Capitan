@@ -278,7 +278,7 @@ public class InfoDtorneoFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
             }
         })  {
@@ -339,7 +339,7 @@ public class InfoDtorneoFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
             }
         })  {

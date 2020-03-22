@@ -64,7 +64,7 @@ public class ResutadoRetos extends AppCompatActivity {
 
         preferences =  new Preferences(this);
         universalImageLoader= new UniversalImageLoader(this);
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+        
         spn_equipos_reto = findViewById(R.id.spn_equipos_reto);
         button_enviar_resultado = findViewById(R.id.button_enviar_resultado);
         foto_retado_resultado = findViewById(R.id.foto_retado_resultado);
@@ -159,7 +159,7 @@ public class ResutadoRetos extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
 
             }
@@ -175,7 +175,7 @@ public class ResutadoRetos extends AppCompatActivity {
                 parametros.put("ganador_id",listaRetos.get(spn_equipos_reto.getSelectedItemPosition()-1).getId_participante());
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
-                Log.e("params", "getParams: "+parametros );
+                Log.d("params", "getParams: "+parametros );
 
                 return parametros;
 

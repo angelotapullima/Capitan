@@ -29,8 +29,10 @@ public class TorneosWebServiceRepository {
 
 
     Application application;
+    Preferences preferences;
     public TorneosWebServiceRepository(Application application){
         this.application = application;
+        preferences= new Preferences(application);
     }
     private static OkHttpClient providesOkHttpClientBuilder(){
 
@@ -43,7 +45,7 @@ public class TorneosWebServiceRepository {
 
     List<Torneo> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<Torneo>> providesWebService(final String id_usuario, String token, final String tipo, String dato) {
+ public LiveData<List<Torneo>> providesWebService(final String id, String token, final String tipo, String dato) {
 
      final MutableLiveData<List<Torneo>> data = new MutableLiveData<>();
 
@@ -57,13 +59,13 @@ public class TorneosWebServiceRepository {
                  .build();
 
          if(tipo.equals("torneos")){
-             OtrosTorneosAPIService service = retrofit.create(OtrosTorneosAPIService.class);
+             TorneosAPIService service = retrofit.create(TorneosAPIService.class);
              //  response = service.makeRequest().execute().body();
-             service.getRetos(id_usuario,"true",token).enqueue(new Callback<String>() {
+             service.getRetos(id,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository otros t","Response::::"+response.body());
-                     webserviceResponseList = parseJson(response.body(),tipo,id_usuario);
+                     Log.d("Repository otros t","Response::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo,id);
                      TorneosRoomDBRepository torneosRoomDBRepository = new TorneosRoomDBRepository(application);
                      torneosRoomDBRepository.insertTorneo(webserviceResponseList);
                      data.setValue(webserviceResponseList);
@@ -81,8 +83,27 @@ public class TorneosWebServiceRepository {
              service.getEquipo(dato,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("buscar torneos","Response::::"+response.body());
-                     webserviceResponseList = parseJson(response.body(),tipo,id_usuario);
+                     Log.d("buscar torneos","Response::::"+response.body());
+                     webserviceResponseList = parseJson(response.body(),tipo,id);
+                     TorneosRoomDBRepository torneosRoomDBRepository = new TorneosRoomDBRepository(application);
+                     torneosRoomDBRepository.insertTorneo(webserviceResponseList);
+                     data.setValue(webserviceResponseList);
+
+                 }
+
+                 @Override
+                 public void onFailure(Call<String> call, Throwable t) {
+                     Log.d("Repository","Failed:::");
+                 }
+             });
+         }if(tipo.equals("id")){
+             IdTorneoAPIService service = retrofit.create(IdTorneoAPIService.class);
+             //  response = service.makeRequest().execute().body();
+             service.getIdTorneo(id,"true",token).enqueue(new Callback<String>() {
+                 @Override
+                 public void onResponse(Call<String> call, Response<String> response) {
+                     Log.d("torneos por  id","Response::::"+response.body());
+                     webserviceResponseList = parseJsonID(response.body(),preferences.getIdUsuarioPref());
                      TorneosRoomDBRepository torneosRoomDBRepository = new TorneosRoomDBRepository(application);
                      torneosRoomDBRepository.insertTorneo(webserviceResponseList);
                      data.setValue(webserviceResponseList);
@@ -164,7 +185,61 @@ public class TorneosWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        return apiResults;
+
+    }
+
+    private List<Torneo> parseJsonID(String response,String id) {
+
+        List<Torneo> apiResults = new ArrayList<>();
+
+        JSONObject jsonObject;
+
+        JSONArray jsonArray;
+
+        try {
+            jsonObject = new JSONObject(response);
+            JSONObject jsonNode = jsonObject.getJSONObject("results");
+
+
+                Torneo torneo = new Torneo();
+
+
+
+
+                torneo.setId_torneo(jsonNode.optString("id_torneo"));
+                torneo.setTorneo_nombre(jsonNode.optString("nombre"));
+                torneo.setTorneo_descripcion(jsonNode.optString("descripcion"));
+                torneo.setTorneo_fecha(jsonNode.optString("fecha"));
+                torneo.setTorneo_hora(jsonNode.optString("hora"));
+                torneo.setFoto_torneo(jsonNode.optString("foto"));
+                torneo.setTorneo_lugar(jsonNode.optString("lugar"));
+                torneo.setTorneo_equipos(jsonNode.optString("equipos"));
+                torneo.setTorneo_organizador(jsonNode.optString("organizador"));
+                torneo.setUsuario_id(jsonNode.optString("id_organizador"));
+                torneo.setTorneo_precio(jsonNode.optString("costo"));
+
+                if (id.equals(jsonNode.optString("id_organizador"))){
+                    torneo.setMi_torneo("si");
+                }else{
+                    torneo.setMi_torneo("no");
+                }
+
+
+
+
+
+
+                apiResults.add(torneo);
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

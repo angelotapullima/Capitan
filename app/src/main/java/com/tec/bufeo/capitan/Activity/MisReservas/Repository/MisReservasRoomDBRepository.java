@@ -46,7 +46,7 @@ public class MisReservasRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             misReservasDao.deleteAll();
-            Log.i("eliminado mis reservas", "doInBackground: eliminado");
+            Log.d("eliminado mis reservas", "doInBackground: eliminado");
             return null;
         }
     }

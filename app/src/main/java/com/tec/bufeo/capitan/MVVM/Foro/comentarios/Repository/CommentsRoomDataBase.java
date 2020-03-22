@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Models.Comments;
 
-@Database(entities = {Comments.class}, version = 1)
+@Database(entities = {Comments.class}, version = 2,exportSchema = false)
 public abstract class CommentsRoomDataBase extends RoomDatabase {
     public abstract CommentsDao postInfoDao();
 
@@ -21,7 +21,7 @@ public abstract class CommentsRoomDataBase extends RoomDatabase {
             synchronized (CommentsRoomDataBase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            CommentsRoomDataBase.class, "lista_comments_database")
+                            CommentsRoomDataBase.class, "comments_database")
                             .fallbackToDestructiveMigration ()
                             .addCallback(sRoomDatabaseCallback)
                             .build();

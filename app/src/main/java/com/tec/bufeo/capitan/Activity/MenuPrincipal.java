@@ -96,7 +96,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
                     @Override
                     public void onSuccess(InstanceIdResult instanceIdResult) {
                         tokenNuevo = instanceIdResult.getToken();
-                        Log.i("Token", "onSuccess: " + tokenNuevo);
+                        Log.d("Token", "onSuccess: " + tokenNuevo);
                         if (tokenNuevo.equals(token)) {
                             Log.d(TAG, "todo esta chevere 1  " + tokenNuevo);
                             Log.d(TAG, "todo esta chevere 2: " + token);
@@ -263,7 +263,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Log.e("actualizartoken: ",""+response);
+                //Log.d("actualizartoken: ",""+response);
 
             }
 
@@ -283,7 +283,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
                 parametros.put("token_firebase",tokenNuevo);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
-                //Log.e("parametros: ",""+parametros);
+                //Log.d("parametros: ",""+parametros);
 
                 return parametros;
             }

@@ -60,7 +60,7 @@ public class JugadoresWebServiceRepository {
                 service.getJugadores(id_equipo,"true",token).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Log.e("Repository jugadores","Response::::"+response.body());
+                        Log.d("Repository jugadores","Response::::"+response.body());
                         webserviceResponseList = parseJson(response.body(),dato);
                         JugadoresRoomDBRepository jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
                         jugadoresRoomDBRepository.insertJugadores(webserviceResponseList);
@@ -78,7 +78,7 @@ public class JugadoresWebServiceRepository {
                 service.getMisJugadores(id_equipo,"true",token).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Log.e("Repo mis jugadores","Response::::"+response.body());
+                        Log.d("Repo mis jugadores","Response::::"+response.body());
                         webserviceResponseList = parseJson(response.body(),dato);
                         JugadoresRoomDBRepository jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
                         jugadoresRoomDBRepository.insertJugadores(webserviceResponseList);
@@ -97,7 +97,7 @@ public class JugadoresWebServiceRepository {
                 service.getBuscarJugadores(id_equipo,"true",token,dato).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Log.e("Repository jugadores","Response::::"+response.body());
+                        Log.d("Repository jugadores","Response::::"+response.body());
                         webserviceResponseList = parseJson(response.body(),dato);
                         JugadoresRoomDBRepository jugadoresRoomDBRepository = new JugadoresRoomDBRepository(application);
                         jugadoresRoomDBRepository.insertJugadores(webserviceResponseList);
@@ -176,7 +176,7 @@ public class JugadoresWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

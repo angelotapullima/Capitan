@@ -55,7 +55,7 @@ public class MisMovimientos extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Movimientos> mequipos) {
                 adaptadorMovimientos.setWords(mequipos);
-                Log.e("mis Equipos", "onChanged: "+mequipos.size() );
+                Log.d("mis Equipos", "onChanged: "+mequipos.size() );
             }
         });
 

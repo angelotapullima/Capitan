@@ -147,7 +147,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Torneo","registrar grupo"+response);
+                Log.d("Torneo","registrar grupo"+response);
 
 
                 try {
@@ -196,7 +196,7 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
                 parametros.put("grupo_nombre", name_grupo);
                 parametros.put("app", "true");
                 parametros.put("token", preferences.getToken());
-                Log.e("torneo", "getParams: "+parametros.toString() );
+                Log.d("torneo", "getParams: "+parametros.toString() );
                 return parametros;
 
             }

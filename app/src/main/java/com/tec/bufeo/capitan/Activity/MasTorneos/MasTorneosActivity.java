@@ -18,7 +18,7 @@ import android.widget.ImageView;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.MisTorneoViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.TorneosViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
@@ -27,7 +27,7 @@ import java.util.List;
 public class MasTorneosActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
 
-    MisTorneoViewModel misTorneoViewModel;
+    TorneosViewModel torneosViewModel;
     RecyclerView rcv_otros_torneos;
     Preferences preferences;
     SwipeRefreshLayout swipeOtrosTorneos;
@@ -41,7 +41,7 @@ public class MasTorneosActivity extends AppCompatActivity implements SwipeRefres
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mas_torneos);
 
-        misTorneoViewModel = ViewModelProviders.of(this).get(MisTorneoViewModel.class);
+        torneosViewModel = ViewModelProviders.of(this).get(TorneosViewModel.class);
         preferences =  new Preferences(this);
         initViews();
         cargarvista();
@@ -87,7 +87,7 @@ public class MasTorneosActivity extends AppCompatActivity implements SwipeRefres
         TorneosWebServiceRepository torneosWebServiceRepository = new TorneosWebServiceRepository(application);
         torneosWebServiceRepository.providesWebService(preferences.getIdUsuarioPref(),preferences.getToken(),"busqueda",v);
 
-        misTorneoViewModel.searchTorneo(v).observe(this, new Observer<List<Torneo>>() {
+        torneosViewModel.searchTorneo(v).observe(this, new Observer<List<Torneo>>() {
             @Override
             public void onChanged(List<Torneo> torneos) {
                 adaptadorBusquedaTorneos.setWords(torneos);
@@ -99,7 +99,7 @@ public class MasTorneosActivity extends AppCompatActivity implements SwipeRefres
     }
     public void cargarvista(){
 
-        misTorneoViewModel.getAllOtrosTorneos("no").observe(this, new Observer<List<Torneo>>() {
+        torneosViewModel.getAllOtrosTorneos("no").observe(this, new Observer<List<Torneo>>() {
             @Override
             public void onChanged(List<Torneo> torneos) {
                 adaptadorBusquedaTorneos.setWords(torneos);

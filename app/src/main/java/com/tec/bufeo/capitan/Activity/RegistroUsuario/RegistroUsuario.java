@@ -109,7 +109,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("registro new: ",""+response);
+                Log.d("registro new: ",""+response);
 
 
 
@@ -148,7 +148,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
             }
         })  {
@@ -179,7 +179,7 @@ public class RegistroUsuario extends AppCompatActivity  implements View.OnClickL
                 parametros.put("app","true");
                 parametros.put("ubigeo_id","1");
 
-                Log.e("params", "getParams: "+parametros );
+                Log.d("params", "getParams: "+parametros );
                 return parametros;
 
             }

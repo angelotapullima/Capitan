@@ -53,7 +53,7 @@ public class JugadoresRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             jugadoresDao.deleteAll();
-            Log.i("eliminado jugadores", "doInBackground: eliminado");
+            Log.d("eliminado jugadores", "doInBackground: eliminado");
             return null;
         }
     }

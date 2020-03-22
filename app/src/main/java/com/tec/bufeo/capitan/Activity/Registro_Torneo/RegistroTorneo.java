@@ -14,6 +14,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.os.Bundle;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -87,7 +90,8 @@ import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 
 public class RegistroTorneo extends AppCompatActivity implements View.OnClickListener {
 
-   EditText edt_nombreTorneo, edt_descripcionTorneo, edt_lugarTorneo,edt_organizador,edt_costo;
+
+    EditText edt_nombreTorneo, edt_descripcionTorneo, edt_lugarTorneo,edt_organizador,edt_costo;
    Button  btn_crearTorneo;
    ArrayList<String> arrayDatos;
    Spinner spn_rutas;
@@ -105,6 +109,9 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
 
 
         preferences = new Preferences(this);
+
+
+
         edt_nombreTorneo = findViewById(R.id.edt_nombreTorneo);
         edt_descripcionTorneo = findViewById(R.id.edt_descripcionTorneo);
         edt_lugarTorneo = findViewById(R.id.edt_lugarTorneo);
@@ -136,8 +143,28 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
             },1);
         }
+        showToolbar("Registro torneo" ,true);
     }
 
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
     @Override
     public void onClick(View view) {
 
@@ -193,7 +220,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Torneo","publicar sin foto"+response);
+                Log.d("Torneo","publicar sin foto"+response);
 
 
                 try {
@@ -263,7 +290,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                 parametros.put("app", "true");
                 parametros.put("token", preferences.getToken());
 
-                Log.e("torneo", "getParams: "+parametros.toString() );
+                Log.d("torneo", "getParams: "+parametros.toString() );
                 return parametros;
 
             }

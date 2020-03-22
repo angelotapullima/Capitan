@@ -61,7 +61,7 @@ public class RegistroEquiposTorneoWebServiceRepository {
          service.getEquipo(id_torneo,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.e("Repository","equipos por torneo::::"+response.body());
+                 Log.d("Repository","equipos por torneo::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  RegistroEquiposTorneoRoomDBRepository registroEquiposTorneoRoomDBRepository = new RegistroEquiposTorneoRoomDBRepository(application);
                  registroEquiposTorneoRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -126,7 +126,7 @@ public class RegistroEquiposTorneoWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

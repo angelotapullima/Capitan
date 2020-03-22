@@ -29,12 +29,10 @@ public class FeedWebServiceRepository {
 
     //Preferences preferencesUser;
     Application application;
-    Preferences preferences;
     public FeedWebServiceRepository(Application application){
         this.application = application;
-        preferences= new Preferences(application);
     }
-    private static OkHttpClient providesOkHttpClientBuilder(){
+    public static OkHttpClient providesOkHttpClientBuilder(){
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         return httpClient.readTimeout(1200, TimeUnit.SECONDS)
@@ -65,7 +63,7 @@ public class FeedWebServiceRepository {
              service.savePost(id_usuario,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository","feed::::"+response.body());
+                     Log.d("Repository","feed::::"+response.body());
                      webserviceResponseList = parseJson(response.body(),tipo);
                      FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
                      feedRoomDBRepository.insertPosts(webserviceResponseList);
@@ -84,7 +82,7 @@ public class FeedWebServiceRepository {
              service.savePost(id_usuario,id_torneo,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository","feed torneo::::"+response.body());
+                     Log.d("Repository","feed torneo::::"+response.body());
                      webserviceResponseList = parseJson(response.body(),tipo);
                      FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
                      feedRoomDBRepository.insertPosts(webserviceResponseList);
@@ -103,7 +101,7 @@ public class FeedWebServiceRepository {
              service.savePost(id_usuario,limite_sup,"true",token,limite_inf).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository","feed usuario::::"+response.body());
+                     Log.d("Repository","feed usuario::::"+response.body());
                      webserviceResponseList = parseJson(response.body(),tipo);
                      FeedRoomDBRepository feedRoomDBRepository = new FeedRoomDBRepository(application);
                      feedRoomDBRepository.insertPosts(webserviceResponseList);
@@ -131,8 +129,8 @@ public class FeedWebServiceRepository {
 
 
 
-    String datosNuevos;
-    private List<ModelFeed> parseJson(String response,String tipo) {
+    String datosNuevos,limite_sup2,limite_inf2;
+    public  List<ModelFeed> parseJson(String response,String tipo) {
 
         List<ModelFeed> apiResults = new ArrayList<>();
 
@@ -143,9 +141,10 @@ public class FeedWebServiceRepository {
         try {
             jsonObject = new JSONObject(response);
 
-            String limite_sup2 = jsonObject.optString("limite_sup");
-            String limite_inf2 = jsonObject.optString("limite_inf");
+            limite_sup2 = jsonObject.optString("limite_sup");
+            limite_inf2 = jsonObject.optString("limite_inf");
             int nuevos  = jsonObject.optInt("nuevos");
+
 
 
 
@@ -192,18 +191,22 @@ public class FeedWebServiceRepository {
 
                 apiResults.add(foro);
             }
+            feedRoomDBRepository.ActualizarInf(limite_inf2);
+            feedRoomDBRepository.actualizarSup(limite_sup2);
             if (tipo.equals("feed")||tipo.equals("usuario")){
                 datosNuevos= String.valueOf( nuevos);
                 feedRoomDBRepository.NuevosDatos(datosNuevos);
             }
 
-            Log.e("ver si hay nuevos datos", "parseJson: " +datosNuevos );
+
+
+            Log.d("ver si hay nuevos datos", "parseJson: " +datosNuevos + "lim " + limite_sup2 + " - " + limite_inf2 );
             /*FeedRoomDBRepository feedTorneoRoomDBRepository = new FeedRoomDBRepository(application);
             feedTorneoRoomDBRepository.actualizarSup(limite_sup2);
             if (carga.equals("datos")){
 
                 feedTorneoRoomDBRepository.ActualizarInf(limite_inf2);
-                Log.e("datos","se hizo la luz");
+                Log.d("datos","se hizo la luz");
             }*/
 
 
@@ -211,7 +214,7 @@ public class FeedWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

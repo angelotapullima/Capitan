@@ -60,7 +60,7 @@ public class RetosWebServiceRepository {
          if (tipo.equals("normal")){
              RetosAPIService service = retrofit.create(RetosAPIService.class);
              //  response = service.makeRequest().execute().body();
-             //Log.e("params retos", "providesWebService: " + id_usuario );
+             //Log.d("params retos", "providesWebService: " + id_usuario );
              service.getRetos(id,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
@@ -80,7 +80,7 @@ public class RetosWebServiceRepository {
          }else if (tipo.equals("notificacion")){
              RetosNotificacionApiService service = retrofit.create(RetosNotificacionApiService.class);
              //  response = service.makeRequest().execute().body();
-             //Log.e("params retos", "providesWebService: " + id_usuario );
+             //Log.d("params retos", "providesWebService: " + id_usuario );
              service.getRetos(id,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
@@ -154,7 +154,7 @@ public class RetosWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }
@@ -199,7 +199,7 @@ public class RetosWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

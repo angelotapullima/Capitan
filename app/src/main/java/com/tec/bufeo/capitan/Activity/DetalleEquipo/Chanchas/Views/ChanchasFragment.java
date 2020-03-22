@@ -245,7 +245,7 @@ public class ChanchasFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
 
             }
@@ -262,7 +262,7 @@ public class ChanchasFragment extends Fragment {
                 parametros.put("id_equipo",id_equipo);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
-                Log.i("parametros: ",""+parametros.toString());
+                Log.d("parametros: ",""+parametros.toString());
 
                 return parametros;
 
@@ -355,7 +355,7 @@ public class ChanchasFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
 
             }
@@ -372,7 +372,7 @@ public class ChanchasFragment extends Fragment {
                 parametros.put("app","true");
                 parametros.put("id_user",preferences.getIdUsuarioPref());
                 parametros.put("token",preferences.getToken());
-                Log.i("parametros: ",""+parametros.toString());
+                Log.d("parametros: ",""+parametros.toString());
 
                 return parametros;
 

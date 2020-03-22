@@ -18,7 +18,7 @@ public interface CommentsDao {
 
 
 
-    @Query("SELECT * from Comments WHERE publicacion_id = :id_publicacion ORDER BY comments_id desc ")
+    @Query("SELECT * from Comments WHERE publicacion_id = :id_publicacion ORDER BY comments_id asc ")
     LiveData<List<Comments>> getAllComments(String id_publicacion );
 
 

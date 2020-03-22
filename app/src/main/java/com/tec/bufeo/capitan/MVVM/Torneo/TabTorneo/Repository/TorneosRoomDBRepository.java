@@ -25,6 +25,14 @@ public class TorneosRoomDBRepository {
         return misTorneos;
     }
 
+    public LiveData<List<Torneo>> getIdTorneo(String id) {
+
+        misTorneos = misTorneoDao.getIdTorneo(id);
+        return misTorneos;
+    }
+
+
+
     public LiveData<List<Torneo>> searchTorneo(String query){
         misTorneos = misTorneoDao.searchTorneo(query);
         return misTorneos;
@@ -49,7 +57,7 @@ public class TorneosRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             retosDao.deleteAll();
-            Log.i("eliminado  torneos", "doInBackground: eliminado");
+            Log.d("eliminado  torneos", "doInBackground: eliminado");
             return null;
         }
     }

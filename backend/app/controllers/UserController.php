@@ -500,7 +500,7 @@ class UserController{
         if($result === false){
             die('Curl failed' . curl_error());}
         curl_close($ch);
-        return $result;
+
     }
     public function notificar_chat($token,$body,$title,$tipo,$mensaje,$id_chat,$id_usuario,$hora,$fecha){
         $url = 'https://fcm.googleapis.com/fcm/send';
@@ -527,7 +527,7 @@ class UserController{
         if($result === false){
             die('Curl failed' . curl_error());}
         curl_close($ch);
-        return $result;
+
     }
     public function listar_mensajes_por_chat(){
         try {
@@ -588,13 +588,41 @@ class UserController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+    public function badge_notificaciones(){
+        try {
+            $id_user = $_POST['id_usuario'];
+            $model = $this->user->listar_cant_notificaciones_no_vistas($id_user);
+            $resources = array(
+                "id_notificacion" => $model->conteo,
+            );
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = [];
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
+    public function notificacion_vista(){
+        try {
+            $id = $_POST['id_notificacion'];
+            $result = $this->user->notificacion_vista($id);
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        echo json_encode($result);
+    }
     public function actualizar_perfil(){
         $usuario_id = $_POST['usuario_id'];
         $datos = $this->user->list($usuario_id);
-        $file_path = "media/user/".$usuario_id.".jpg";
-        if($datos->usuario_foto == $file_path){
-            unlink($file_path);
-        }
+        $imagen_Act = $datos->user_image;
+        unlink($imagen_Act);
+        $longitud = 10;
+        $token = '';
+        $pattern = '1234567890abcdefghijklmnopqrstuvwxyz';
+        $max = strlen($pattern)-1;
+        for($i=0;$i < $longitud;$i++) $token .= $pattern{mt_rand(0,$max)};
+        $file_path = "media/user/".$usuario_id."_".$token.".jpg";
         move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
         $result = $this->user->actualizar_perfil($file_path,$usuario_id);
         echo json_encode($file_path,JSON_UNESCAPED_SLASHES);

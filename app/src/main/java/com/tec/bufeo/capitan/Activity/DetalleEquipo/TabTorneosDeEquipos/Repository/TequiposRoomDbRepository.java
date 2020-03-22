@@ -46,7 +46,7 @@ public class TequiposRoomDbRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             tequiposDao.deleteAll();
-            Log.i("elim Torneos Equipos", "doInBackground: eliminado");
+            Log.d("elim Torneos Equipos", "doInBackground: eliminado");
             return null;
         }
     }

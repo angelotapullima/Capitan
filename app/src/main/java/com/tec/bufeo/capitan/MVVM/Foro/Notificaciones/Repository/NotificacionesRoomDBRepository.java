@@ -27,6 +27,10 @@ public class NotificacionesRoomDBRepository {
         mAllMisReservas=misReservasDao.getAllNotificaciones();
          return mAllMisReservas;
     }
+    public LiveData<List<Notificaciones>> getAllNoVistos() {
+        mAllMisReservas=misReservasDao.getAllNoVistos();
+        return mAllMisReservas;
+    }
 
     public void actualizarEstado(String sup) {
         new actualizarEstado(misReservasDao).execute(sup);
@@ -60,7 +64,7 @@ public class NotificacionesRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             misReservasDao.deleteAll();
-            Log.i("eli 1notificaciones", "doInBackground: eliminado");
+            Log.d("eli 1notificaciones", "doInBackground: eliminado");
             return null;
         }
     }

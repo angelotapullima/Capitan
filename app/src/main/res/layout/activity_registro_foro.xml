@@ -94,7 +94,7 @@
                 android:background="@color/transparent"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/colorPrimary"
-                android:hint="¿Que paso Capitán?"
+                android:hint="¿Qué pasó, Capitán?"
                 android:inputType="textMultiLine" />
 
             <FrameLayout

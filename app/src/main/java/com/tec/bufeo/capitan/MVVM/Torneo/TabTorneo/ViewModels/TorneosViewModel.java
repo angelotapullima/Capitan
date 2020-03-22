@@ -11,7 +11,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosWebServiceR
 
 import java.util.List;
 
-public class MisTorneoViewModel extends AndroidViewModel {
+public class TorneosViewModel extends AndroidViewModel {
 
     private TorneosRoomDBRepository torneosRoomDBRepository;
 
@@ -22,7 +22,7 @@ public class MisTorneoViewModel extends AndroidViewModel {
     private  LiveData<List<Torneo>> retroObservable;
 
 
-    public MisTorneoViewModel(Application application){
+    public TorneosViewModel(Application application){
         super(application);
         torneosRoomDBRepository = new TorneosRoomDBRepository(application);
         torneosWebServiceRepository = new TorneosWebServiceRepository(application);
@@ -40,6 +40,13 @@ public class MisTorneoViewModel extends AndroidViewModel {
         //retroObservable = misTorneoWebServiceRepository.providesWebService(id_usuario,token);
         //listPlatosRoomDBRepository.insertPosts(retroObservable.getValue());
         mAllTorneo = torneosRoomDBRepository.getAllMisTorneo(si);
+        return mAllTorneo;
+    }
+
+    public LiveData<List<Torneo>> getIdTorneo( String id,String token) {
+        retroObservable = torneosWebServiceRepository.providesWebService(id,token,"id","");
+        //listPlatosRoomDBRepository.insertPosts(retroObservable.getValue());
+        mAllTorneo = torneosRoomDBRepository.getIdTorneo(id);
         return mAllTorneo;
     }
 

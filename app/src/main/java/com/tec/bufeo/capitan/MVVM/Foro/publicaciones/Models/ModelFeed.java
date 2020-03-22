@@ -115,10 +115,6 @@ public class ModelFeed {
     @SerializedName("estado")
     private String estado;
 
-    @ColumnInfo(name = "contador_de_datos")
-    @SerializedName("contador_de_datos")
-    private String contador_de_datos;
-
 
 
 
@@ -293,11 +289,30 @@ public class ModelFeed {
         this.torneo_foto = torneo_foto;
     }
 
-    public String getContador_de_datos() {
-        return contador_de_datos;
-    }
-
-    public void setContador_de_datos(String contador_de_datos) {
-        this.contador_de_datos = contador_de_datos;
+    @Override
+    public String toString() {
+        return "ModelFeed{" +
+                "publicacion_id='" + publicacion_id + '\'' +
+                ", usuario_nombre='" + usuario_nombre + '\'' +
+                ", foro_foto='" + foro_foto + '\'' +
+                ", foro_titulo='" + foro_titulo + '\'' +
+                ", foro_descripcion='" + foro_descripcion + '\'' +
+                ", publicacion_concepto='" + publicacion_concepto + '\'' +
+                ", id_torneo='" + id_torneo + '\'' +
+                ", torneo_foto='" + torneo_foto + '\'' +
+                ", publicacion_torneo='" + publicacion_torneo + '\'' +
+                ", usuario_id='" + usuario_id + '\'' +
+                ", foro_feccha='" + foro_feccha + '\'' +
+                ", foro_tipo='" + foro_tipo + '\'' +
+                ", cant_likes='" + cant_likes + '\'' +
+                ", cant_Comentarios='" + cant_Comentarios + '\'' +
+                ", dio_like='" + dio_like + '\'' +
+                ", usuario_foto='" + usuario_foto + '\'' +
+                ", orden='" + orden + '\'' +
+                ", limite_sup='" + limite_sup + '\'' +
+                ", limite_inf='" + limite_inf + '\'' +
+                ", nuevos_datos='" + nuevos_datos + '\'' +
+                ", estado='" + estado + '\'' +
+                '}';
     }
 }

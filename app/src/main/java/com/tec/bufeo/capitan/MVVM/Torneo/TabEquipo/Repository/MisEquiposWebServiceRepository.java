@@ -60,7 +60,7 @@ public class MisEquiposWebServiceRepository {
              service.getEquipo(id_usuario,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository mi_equipo","Response::::"+response.body());
+                     Log.d("Repository mi_equipo","Response::::"+response.body());
                      webserviceResponseList = parseJson(response.body(),tipo_equipo);
                      MisEquiposRoomDBRepository menuRoomDBRepository = new MisEquiposRoomDBRepository(application);
                      menuRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -78,7 +78,7 @@ public class MisEquiposWebServiceRepository {
              service.getEquipo(id_usuario,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository otro_equipo" ,"Response::::"+response.body());
+                     Log.d("Repository otro_equipo" ,"Response::::"+response.body());
                      webserviceResponseList = parseJson(response.body(),tipo_equipo);
                      MisEquiposRoomDBRepository menuRoomDBRepository = new MisEquiposRoomDBRepository(application);
                      menuRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -97,7 +97,7 @@ public class MisEquiposWebServiceRepository {
              service.getEquipo(dato,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("buscar torneos","Response::::"+response.body());
+                     Log.d("buscar torneos","Response::::"+response.body());
                      webserviceResponseList = parseJson(response.body(),tipo_equipo);
                      MisEquiposRoomDBRepository menuRoomDBRepository = new MisEquiposRoomDBRepository(application);
                      menuRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -169,7 +169,7 @@ public class MisEquiposWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(tipo, String.valueOf(apiResults.size()));
+        Log.d(tipo, String.valueOf(apiResults.size()));
         return apiResults;
 
     }

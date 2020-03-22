@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.tec.bufeo.capitan.MVVM.Torneo.Chats.SalaDeChats.Models.Chats;
 import com.tec.bufeo.capitan.Util.APIUrl;
-import com.tec.bufeo.capitan.Util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,11 +28,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class ChatsWebServiceRepository {
 
     private Application application;
-    Preferences preferences;
 
     public ChatsWebServiceRepository(Application application){
         this.application = application;
-        preferences= new Preferences(application);
     }
 
     private static OkHttpClient providesOkHttpClientBuilder(){
@@ -138,7 +135,7 @@ public class ChatsWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

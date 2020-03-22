@@ -62,7 +62,7 @@ public class BusquedaEquiposWebServiceRepository {
              service.getEquipo(limite_sup,limite_inf,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("buscar equipos","Response::::"+response.body());
+                     Log.d("buscar equipos","Response::::"+response.body());
                      webserviceResponseList = parseJson(response.body(),tipo);
                      BusquedaEquiposRoomDBRepository menuRoomDBRepository = new BusquedaEquiposRoomDBRepository(application);
                      menuRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -81,7 +81,7 @@ public class BusquedaEquiposWebServiceRepository {
              service.getEquipo(dato,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("buscar equipos","Response::::"+response.body());
+                     Log.d("buscar equipos","Response::::"+response.body());
                      webserviceResponseList = parseJson(response.body(),tipo);
                      BusquedaEquiposRoomDBRepository busquedaEquiposRoomDBRepository = new BusquedaEquiposRoomDBRepository(application);
                      busquedaEquiposRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -156,7 +156,7 @@ public class BusquedaEquiposWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

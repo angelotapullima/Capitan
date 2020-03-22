@@ -168,7 +168,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
     public void onResume() {
         super.onResume();
         onRefresh();
-        Log.e("OnRefresh", "la csmare se refresca al iniciar " );
+        Log.d("OnRefresh", "la csmare se refresca al iniciar " );
     }
 
     @Override
@@ -605,7 +605,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
             @Override
             public void onResponse(String response) {
 
-                Log.e("registrar_reserva", "onResponse: "+response );
+                Log.d("registrar_reserva", "onResponse: "+response );
 
                 String separador,part1;
                 String[] resultado;
@@ -629,7 +629,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error", "onErrorResponse: "+error.toString() );
+                Log.d("error", "onErrorResponse: "+error.toString() );
 
 
             }
@@ -654,7 +654,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
                 parametros.put("fecha",fecha_actual);
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
-                Log.e("parametros", "parametros: "+parametros.toString() );
+                Log.d("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }
         };
@@ -675,7 +675,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
             @Override
             public void onResponse(String response) {
 
-                Log.e("registrar_reserva", "onResponse: "+response );
+                Log.d("registrar_reserva", "onResponse: "+response );
 
                 if (response.equals("1")){
                     preferences.toasVerde("Registro Completo");
@@ -692,7 +692,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error", "onErrorResponse: "+error.toString() );
+                Log.d("error", "onErrorResponse: "+error.toString() );
 
 
             }
@@ -707,7 +707,7 @@ public class FragmentHoy extends Fragment implements View.OnClickListener, Swipe
                 parametros.put("pago2",String.valueOf(pago2));
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
-                Log.e("parametros", "parametros: "+parametros.toString() );
+                Log.d("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }
         };

@@ -208,7 +208,7 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
                     }
 
 
-                    Log.e("Tamaño", "onChanged: " + arrayListEquipos.size());
+                    Log.d("Tamaño", "onChanged: " + arrayListEquipos.size());
                     adapterEquiposVacio.setWords(arrayListEquipos);
                 }
 
@@ -232,7 +232,7 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
 
                 for (int i=0;listaDatos.size()>i;i++) {
                     conteo = conteo + 1;
-                    Log.e("lista datos", "onClick: "+conteo +" :" + listaDatos.get(i).getEquipo_nombre() );
+                    Log.d("lista datos", "onClick: "+conteo +" :" + listaDatos.get(i).getEquipo_nombre() );
                 }
             }
         });
@@ -293,7 +293,7 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
                 dialog_cargando.dismiss();
 
             }
@@ -363,7 +363,7 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
         si.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("tamaño de lista", "onClick: "+listaDatos.size() );
+                Log.d("tamaño de lista", "onClick: "+listaDatos.size() );
 
 
                     dialog_completado.dismiss();
@@ -375,7 +375,7 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
 
                     conteo = conteo+1;
 
-                    Log.e("registro jugadores", "onClick: "+conteo +" :" + listaDatos.get(i).getEquipo_nombre() );
+                    Log.d("registro jugadores", "onClick: "+conteo +" :" + listaDatos.get(i).getEquipo_nombre() );
                     //registarJugadores(listaDatos.get(i));
                     agregar_equipo(listaDatos.get(i));
 

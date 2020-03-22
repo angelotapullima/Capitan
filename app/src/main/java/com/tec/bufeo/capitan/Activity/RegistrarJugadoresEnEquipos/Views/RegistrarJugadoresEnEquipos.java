@@ -160,7 +160,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
 
                 for (int i=0;listaDatos.size()>i;i++) {
                     conteo = conteo + 1;
-                    Log.e("lista datos", "onClick: "+conteo +" :" + listaDatos.get(i).getJugadors_nombre() );
+                    Log.d("lista datos", "onClick: "+conteo +" :" + listaDatos.get(i).getJugadors_nombre() );
                 }
 
 
@@ -224,14 +224,14 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
                 ProgressDialog loading;
 
                 loading = ProgressDialog.show(RegistrarJugadoresEnEquipos.this, "", "Por favor espere...", false, false);
-                Log.e("tamaño de lista", "onClick: "+listaDatos.size() );
+                Log.d("tamaño de lista", "onClick: "+listaDatos.size() );
 
                 for (int i=0;listaDatos.size()>i;i++){
 
 
                         conteo = conteo+1;
 
-                        Log.e("registro jugadores", "onClick: "+conteo +" :" + listaDatos.get(i).getJugadors_nombre() );
+                        Log.d("registro jugadores", "onClick: "+conteo +" :" + listaDatos.get(i).getJugadors_nombre() );
                         //registarJugadores(listaDatos.get(i));
                         registarJugadores(listaDatos.get(i));
 
@@ -259,7 +259,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
             public void onResponse(String response) {
 
 
-                Log.e("respons e", "registrar_equipo_usuario: "+response.toString() );
+                Log.d("respons e", "registrar_equipo_usuario: "+response.toString() );
                 JSONObject json_data;
                 int code;
                 try {
@@ -292,7 +292,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error", "onErrorResponse: "+error.toString() );
+                Log.d("error", "onErrorResponse: "+error.toString() );
 
 
             }
@@ -305,7 +305,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
                 parametros.put("id_usuario",jugadoresSeleccionados.getJugadors_id());
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
-                Log.e("parametros", "parametros: "+parametros.toString() );
+                Log.d("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }
         };

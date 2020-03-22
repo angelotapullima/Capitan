@@ -166,7 +166,7 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
 
                     for (int i = 0; i<registroEquiposTorneos.size();i++){
 
-                        Log.e("cambios", "local: "+registroEquiposTorneos.get(i).getLocal() + " -  visitante" + registroEquiposTorneos.get(i).getVisitante() +"- estado " +registroEquiposTorneos.get(i).getEstado_equipo() +"nombre" +registroEquiposTorneos.get(i).getEquipo_nombre() );
+                        Log.d("cambios", "local: "+registroEquiposTorneos.get(i).getLocal() + " -  visitante" + registroEquiposTorneos.get(i).getVisitante() +"- estado " +registroEquiposTorneos.get(i).getEstado_equipo() +"nombre" +registroEquiposTorneos.get(i).getEquipo_nombre() );
 
                         if(registroEquiposTorneos.get(i).getLocal().equals("1")){
                             local.setText(registroEquiposTorneos.get(i).getEquipo_nombre());
@@ -301,7 +301,7 @@ public class RegistrarPartidos extends AppCompatActivity implements View.OnClick
                 parametros.put("app", "true");
                 parametros.put("token", preferences.getToken());
 
-                Log.e("torneo", "getParams: "+parametros.toString() );
+                Log.d("torneo", "getParams: "+parametros.toString() );
                 return parametros;
 
             }

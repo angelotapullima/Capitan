@@ -61,7 +61,7 @@ public class DetalleTorneoWebServiceRepository {
             service.savePost(id_torneo,"true",token).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.e("Repository","detalle torneo::::"+response.body());
+                    Log.d("Repository","detalle torneo::::"+response.body());
                     webserviceResponseList = parseJson(response.body());
                     DetalleTorneoRoomDBRepository feedTorneoRoomDBRepository = new DetalleTorneoRoomDBRepository(application);
                     feedTorneoRoomDBRepository.insertPosts(webserviceResponseList);
@@ -126,7 +126,7 @@ public class DetalleTorneoWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

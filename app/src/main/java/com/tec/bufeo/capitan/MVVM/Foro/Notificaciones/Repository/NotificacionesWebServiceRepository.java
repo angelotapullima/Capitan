@@ -60,7 +60,7 @@ public class NotificacionesWebServiceRepository {
          service.getEquipo(id_usuario,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.e("Repo notificaciones","Response::::"+response.body());
+                 Log.d("Repo notificaciones","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  NotificacionesRoomDBRepository notificacionesRoomDBRepository = new NotificacionesRoomDBRepository(application);
                  notificacionesRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -126,7 +126,7 @@ public class NotificacionesWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

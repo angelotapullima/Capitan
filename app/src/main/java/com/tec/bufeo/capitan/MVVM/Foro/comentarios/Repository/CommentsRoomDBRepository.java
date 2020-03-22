@@ -48,6 +48,7 @@ public class CommentsRoomDBRepository {
 
         @Override
         protected Void doInBackground(String... params) {
+            Log.d("eliminando", "doInBackground: eliminado" );
             mAsyncTaskDao.deleteOne(params[0]);
             return null;
         }
@@ -108,7 +109,7 @@ public class CommentsRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             instanciasDao.deleteAll();
-            Log.i("eliminado Comments", "doInBackground: eliminado");
+            Log.d("eliminado Comments", "doInBackground: eliminado");
             return null;
         }
     }

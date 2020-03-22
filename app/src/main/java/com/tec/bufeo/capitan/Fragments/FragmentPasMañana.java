@@ -189,7 +189,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
     public void onResume() {
         super.onResume();
         onRefresh();
-        Log.e("OnRefresh", "la csmare se refresca al iniciar " );
+        Log.d("OnRefresh", "la csmare se refresca al iniciar " );
     }
 
     @Override
@@ -606,7 +606,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
             @Override
             public void onResponse(String response) {
 
-                Log.e("registrar_reserva", "onResponse: "+response );
+                Log.d("registrar_reserva", "onResponse: "+response );
 
 
                 String separador,part1;
@@ -632,7 +632,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error", "onErrorResponse: "+error.toString() );
+                Log.d("error", "onErrorResponse: "+error.toString() );
 
 
             }
@@ -657,7 +657,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
                 parametros.put("id_user",preferences.getIdUsuarioPref());
-                Log.e("parametros", "parametros: "+parametros.toString() );
+                Log.d("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }
         };
@@ -678,7 +678,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
             @Override
             public void onResponse(String response) {
 
-                Log.e("registrar_reserva", "onResponse: "+response );
+                Log.d("registrar_reserva", "onResponse: "+response );
 
                 if (response.equals("1")){
                     preferences.toasVerde("Registro Completo");
@@ -695,7 +695,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error", "onErrorResponse: "+error.toString() );
+                Log.d("error", "onErrorResponse: "+error.toString() );
 
 
             }
@@ -709,7 +709,7 @@ public class FragmentPasMañana extends Fragment  implements  SwipeRefreshLayout
                 parametros.put("pago2",String.valueOf(pago2));
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
-                Log.e("parametros", "parametros: "+parametros.toString() );
+                Log.d("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }
         };

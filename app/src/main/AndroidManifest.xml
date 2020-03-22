@@ -161,7 +161,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Registro_Torneo.RegistroTorneo"
-            android:label="Registro Torneo" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activity.RegistroForo"
             android:theme="@style/AppTheme.NoActionBar"

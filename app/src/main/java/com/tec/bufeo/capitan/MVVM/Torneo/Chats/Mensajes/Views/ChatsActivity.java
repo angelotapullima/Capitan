@@ -62,7 +62,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
         preferences = new Preferences(this);
         id_chat = getIntent().getStringExtra("id_chat");
         universalImageLoader= new UniversalImageLoader(this);
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+        
 
         mensajesViewModel = ViewModelProviders.of(this).get(MensajesViewModel.class);
         initViews();
@@ -217,7 +217,7 @@ public class ChatsActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
             }
         })  {

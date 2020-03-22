@@ -59,7 +59,7 @@ public class MovimientosWebServiceRepository {
          service.getEquipo(id_user,"true",token).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
-                 Log.e("Repository movimientos","Response::::"+response.body());
+                 Log.d("Repository movimientos","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
                  MovimientosRoomDBRepository movimientosRoomDBRepository = new MovimientosRoomDBRepository(application);
                  movimientosRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -126,7 +126,7 @@ public class MovimientosWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

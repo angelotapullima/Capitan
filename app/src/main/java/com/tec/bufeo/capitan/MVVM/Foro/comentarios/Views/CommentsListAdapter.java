@@ -43,11 +43,11 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
         }
 
         public void bid(final Comments comments,final OnItemClickListener listener){
-            itemView.setOnClickListener(new View.OnClickListener() {
+            comentarios_nombre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    listener.onItemClick(comments , getAdapterPosition());
+                    listener.onItemClick(comments ,"comentarios_nombre", getAdapterPosition());
                 }
             });
 
@@ -119,7 +119,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
 
     public interface  OnItemClickListener{
-        void onItemClick(Comments comments, int position);
+        void onItemClick(Comments comments,String tipo, int position);
     }
 
 }

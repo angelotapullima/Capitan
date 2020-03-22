@@ -549,16 +549,21 @@ class TorneoController{
             if($ok_data){
                 $equipo_id = $_POST['id_equipo'];
                 $id_torneo_grupo = $_POST['id_torneo_grupo'];
-                $result = $this->torneo->registrar_equipo_en_torneo($id_torneo_grupo,$equipo_id);
-                if($result==1){
-                    $estadisticas_1 = $this->torneo->listar_estadisticas_por_id_equipo($equipo_id);
-                    $datos_torneo = $this->torneo->listar_torneo_por_equipo_grupo($id_torneo_grupo,$equipo_id);
-                    $datos_equipo=$this->torneo->listar_equipo_por_id($equipo_id);
-                    $valor_1 = $estadisticas_1->torneos;
-                    $valor_1++;
-                    $this->torneo->sumar_estadistica($equipo_id,"torneos",$valor_1);
-                    $this->user->guardar_notificacion($datos_equipo->id_user,"Torneo",$datos_torneo->id_torneo,"Tu equipo fue agregado a un torneo");
-                    $notificar = $this->notificar($datos_equipo->user_token,"Retaron a tu equipo ","Tu equipo fue agregado a un torneo","Torneo","Tu equipo fue agregado a un torneo");
+                $datos_exists=$this->torneo->listar_equipo_en_torneo($id_torneo_grupo,$equipo_id);
+                if(isset($datos_exists->torneo_equipo_id)){
+                    $result=3;
+                }else{
+                    $result = $this->torneo->registrar_equipo_en_torneo($id_torneo_grupo,$equipo_id);
+                    if($result==1){
+                        $estadisticas_1 = $this->torneo->listar_estadisticas_por_id_equipo($equipo_id);
+                        $datos_torneo = $this->torneo->listar_torneo_por_equipo_grupo($id_torneo_grupo,$equipo_id);
+                        $datos_equipo=$this->torneo->listar_equipo_por_id($equipo_id);
+                        $valor_1 = $estadisticas_1->torneos;
+                        $valor_1++;
+                        $this->torneo->sumar_estadistica($equipo_id,"torneos",$valor_1);
+                        $this->user->guardar_notificacion($datos_equipo->id_user,"Torneo",$datos_torneo->id_torneo,"Tu equipo fue agregado a un torneo");
+                        $notificar = $this->notificar($datos_equipo->user_token,"Retaron a tu equipo ","Tu equipo fue agregado a un torneo","Torneo","Tu equipo fue agregado a un torneo");
+                    }
                 }
             }else{
                 $result = 6;
@@ -1434,11 +1439,14 @@ class TorneoController{
             if($model[$i]->publicaciones_id_torneo != 0){
                 $torneo_ = $this->torneo->listar_torneo_por_id($model[$i]->publicaciones_id_torneo);
                 $torneo =$torneo_->torneo_nombre;
+                $torneo_imagen =$torneo_->torneo_imagen;
             }else{
                 $torneo=" ";
+                $torneo_imagen =" ";
             }
             $resources[$i] = array(
                 "id_publicacion" => $model[$i]->publicaciones_id,
+                "id_usuario" => $model[$i]->id_user,
                 "usuario_nombre" => $model[$i]->usuario_nombre,
                 "usuario_foto" => $model[$i]->usuario_foto,
                 "titulo" => $model[$i]->publicaciones_titulo,
@@ -1446,6 +1454,7 @@ class TorneoController{
                 "concepto" => $model[$i]->publicaciones_concepto,
                 "id_torneo" => $model[$i]->publicaciones_id_torneo,
                 "torneo" => $torneo,
+                "torneo_imagen" => $torneo_imagen,
                 "foto" => $model[$i]->publicaciones_foto,
                 "fecha" => $time,
                 "tipo" => $model[$i]->publicaciones_tipo,

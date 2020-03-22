@@ -47,7 +47,7 @@ public class ChatsRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             chatsDao.deleteAll();
-            Log.i("eliminado chats", "doInBackground: eliminado");
+            Log.d("eliminado chats", "doInBackground: eliminado");
             return null;
         }
     }

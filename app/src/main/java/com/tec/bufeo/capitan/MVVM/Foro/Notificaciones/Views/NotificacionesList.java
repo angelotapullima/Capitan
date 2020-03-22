@@ -12,11 +12,20 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.MenuPrincipal;
 import com.tec.bufeo.capitan.Activity.PantallasNotificacion.ChatsNotificacion;
 import com.tec.bufeo.capitan.Activity.PantallasNotificacion.RetosNotificacion;
@@ -25,8 +34,13 @@ import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Repository.NotificacionesR
 import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.ViewModels.NotificacionesViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class NotificacionesList extends DialogFragment {
 
@@ -131,14 +145,19 @@ public class NotificacionesList extends DialogFragment {
                     if (notificaciones.getNotificacion_tipo().equals("Reto")){
                         Intent i = new Intent(getActivity(), RetosNotificacion.class);
                         i.putExtra("id",notificaciones.getNotificacion_id_rel());
+
                         startActivity(i);
                     }else if (notificaciones.getNotificacion_tipo().equals("Mensaje")){
                         Intent i = new Intent(getActivity(), ChatsNotificacion.class);
                         i.putExtra("id",notificaciones.getNotificacion_id_rel());
                         startActivity(i);
+                    }else if (notificaciones.getNotificacion_tipo().equals("Torneo")){
+                        Intent i = new Intent(getActivity(), DetalleTorneoNuevo.class);
+                        i.putExtra("id_torneo",notificaciones.getNotificacion_id_rel());
+                        startActivity(i);
                     }
 
-
+                    notificacionLeida(notificaciones.getId_notificacion());
                     NotificacionesRoomDBRepository notificacionesRoomDBRepository = new NotificacionesRoomDBRepository(application);
                     notificacionesRoomDBRepository.actualizarEstado(notificaciones.getId_notificacion());
                 }
@@ -150,5 +169,44 @@ public class NotificacionesList extends DialogFragment {
 
 
 
+    }
+
+    StringRequest stringRequest;
+    private void notificacionLeida(final String id) {
+        String url =IP2+"/api/User/notificacion_vista";
+        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("notificacionLeida: ","id " + id +" -" +response);
+
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
+                Log.d("RESPUESTA: ",""+error.toString());
+
+            }
+        })  {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //String imagen=convertirImgString(bitmap);
+
+
+                Map<String,String> parametros=new HashMap<>();
+                parametros.put("id_notificacion",id);
+                parametros.put("app","true");
+                parametros.put("token",preferences.getToken());
+
+                return parametros;
+
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
     }
 }

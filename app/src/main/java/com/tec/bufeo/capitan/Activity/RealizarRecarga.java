@@ -109,7 +109,7 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error", "onErrorResponse: "+error.toString() );
+                Log.d("error", "onErrorResponse: "+error.toString() );
                 dialog_cargando.dismiss();
 
             }
@@ -123,7 +123,7 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
 
-                Log.e("parametros", "parametros: "+parametros.toString() );
+                Log.d("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }
         };

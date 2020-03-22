@@ -61,7 +61,7 @@ public class MisReservasWebServiceRepository {
              service.getEquipo(id_user,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository mis reservas","Response::::"+response.body());
+                     Log.d("Repository mis reservas","Response::::"+response.body());
                      webserviceResponseList = parseJson(response.body());
                      MisReservasRoomDBRepository movimientosRoomDBRepository = new MisReservasRoomDBRepository(application);
                      movimientosRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -80,7 +80,7 @@ public class MisReservasWebServiceRepository {
              service.getEquipo(id_user,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository mis reservas","Response::::"+response.body());
+                     Log.d("Repository mis reservas","Response::::"+response.body());
                      webserviceResponseList = parseJsonNotificacion(response.body());
                      MisReservasRoomDBRepository movimientosRoomDBRepository = new MisReservasRoomDBRepository(application);
                      movimientosRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -161,7 +161,7 @@ public class MisReservasWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }
@@ -218,7 +218,7 @@ public class MisReservasWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

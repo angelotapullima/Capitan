@@ -49,7 +49,7 @@ public class DetalleTorneoRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             feedTorneoDao.deleteAll();
-            Log.i("eliminado", "doInBackground: eliminado");
+            Log.d("eliminado", "doInBackground: eliminado");
             return null;
         }
     }

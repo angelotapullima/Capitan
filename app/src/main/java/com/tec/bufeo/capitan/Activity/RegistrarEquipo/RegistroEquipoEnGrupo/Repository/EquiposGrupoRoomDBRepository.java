@@ -46,7 +46,7 @@ public class EquiposGrupoRoomDBRepository {
         @Override
         protected Void doInBackground(String... strings) {
             equiposGrupoDao.deleteID( strings[0]);
-            Log.i("eliminado equipos", "doInBackground: eliminado");
+            Log.d("eliminado equipos", "doInBackground: eliminado");
             return null;
         }
     }
@@ -68,7 +68,7 @@ public class EquiposGrupoRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             misEquiposDao.deleteAll();
-            Log.i("eliminado equipos", "doInBackground: eliminado");
+            Log.d("eliminado equipos", "doInBackground: eliminado");
             return null;
         }
     }

@@ -59,7 +59,7 @@ public class RetosRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             retosDao.deleteAll();
-            Log.i("eliminado retos", "doInBackground: eliminado");
+            Log.d("eliminado retos", "doInBackground: eliminado");
             return null;
         }
     }

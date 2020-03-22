@@ -42,9 +42,6 @@ public class Notificaciones
     @SerializedName("notificacion_estado")
     private String notificacion_estado;
 
-    @ColumnInfo(name = "cantidad_no_vistos")
-    @SerializedName("cantidad_no_vistos")
-    private String cantidad_no_vistos;
 
 
     @NonNull
@@ -104,11 +101,5 @@ public class Notificaciones
         this.notificacion_estado = notificacion_estado;
     }
 
-    public String getCantidad_no_vistos() {
-        return cantidad_no_vistos;
-    }
 
-    public void setCantidad_no_vistos(String cantidad_no_vistos) {
-        this.cantidad_no_vistos = cantidad_no_vistos;
-    }
 }

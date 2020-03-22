@@ -39,4 +39,8 @@ public class NotificacionesViewModel extends AndroidViewModel {
     }
 
 
+    public LiveData<List<Notificaciones>> getAllNoVistos( ) {
+        mAllMiEquipos= notificacionesRoomDBRepository.getAllNoVistos();
+        return mAllMiEquipos;
+    }
 }

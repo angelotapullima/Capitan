@@ -109,7 +109,7 @@ public class CalificarNegocios extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
 
             }
@@ -126,7 +126,7 @@ public class CalificarNegocios extends AppCompatActivity {
                 parametros.put("comentario",reseña.getText().toString());
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
-                Log.i("parametros: ",""+parametros.toString());
+                Log.d("parametros: ",""+parametros.toString());
 
                 return parametros;
 

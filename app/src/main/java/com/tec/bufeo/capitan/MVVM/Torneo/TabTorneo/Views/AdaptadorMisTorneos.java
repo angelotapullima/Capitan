@@ -86,7 +86,7 @@ public class AdaptadorMisTorneos extends RecyclerView.Adapter<AdaptadorMisTorneo
         if (mUsers != null) {
             current = mUsers.get(position);
 
-            ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
 
             holder.txt_nombre_torneo.setText(current.getTorneo_nombre());
             holder.txt_descripcion_torneo.setText(current.getTorneo_descripcion());

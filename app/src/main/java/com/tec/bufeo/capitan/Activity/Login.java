@@ -189,7 +189,7 @@ public class Login extends AppCompatActivity {
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("validar_usuario new: ", "" + response);
+                Log.d("validar_usuario new: ", "" + response);
                 try {
 
                     json_data = new JSONObject(response);
@@ -226,7 +226,10 @@ public class Login extends AppCompatActivity {
                     editor.putString("token", data_json.optString("token"));
                     editor.putString("token_firebase",data_json.optString("token_firebase"));
                     editor.putString("tiene_negocio", data_json.optString("tiene_negocio"));
+                    editor.putString("lim_sup", "0");
+                    editor.putString("lim_inf", "0");
                     editor.putString("cantidad_ingreso", "1");
+                    editor.putInt("notificaciones", 0);
                     editor.apply();
 
 
@@ -257,7 +260,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
             }
         })  {
@@ -274,7 +277,7 @@ public class Login extends AppCompatActivity {
                 parametros.put("pass",edt_password.getText().toString());
                 parametros.put("app","true");
 
-                Log.e("params", "getParams: "+parametros );
+                Log.d("params", "getParams: "+parametros );
                 return parametros;
 
             }

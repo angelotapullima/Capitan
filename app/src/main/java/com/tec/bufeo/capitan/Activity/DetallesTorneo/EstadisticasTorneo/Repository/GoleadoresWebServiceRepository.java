@@ -64,7 +64,7 @@ public class GoleadoresWebServiceRepository {
             service.savePost(id_torneo,"true",token).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.e("Repository","goleadores::::"+response.body());
+                    Log.d("Repository","goleadores::::"+response.body());
                     webserviceResponseList = parseJson(response.body(),id_torneo);
                     GoleadoresRoomDBRepository goleadoresRoomDBRepository = new GoleadoresRoomDBRepository(application);
                     goleadoresRoomDBRepository.insertPosts(webserviceResponseList);
@@ -129,7 +129,7 @@ public class GoleadoresWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

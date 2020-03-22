@@ -276,12 +276,20 @@ class EmpresaController{
             }else{
                 $id = $_POST['id'];
             }
-            $result = $this->empresa->obtener_saldo_actual($id);
+            $model = $this->empresa->obtener_saldo_actual($id);
+            $saldo = $model->cuenta_saldo;
+            if($saldo==null){$saldo=0;}
+            $comision = "3.00";
+            $resources[] = array(
+                "cuenta_saldo" => $saldo,
+                "comision" => $comision
+            );
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
             $result = 2;
         }
-        echo json_encode($result);
+        $data = array("results" => $resources);
+        echo json_encode($data);
     }
     public function obtener_chanchas_disponibles() {
         try{
@@ -291,6 +299,30 @@ class EmpresaController{
                 $id = $_POST['id'];
             }
             $model = $this->empresa->obtener_chanchas_disponibles($id);
+            $resources = array();
+            for ($i=0;$i<count($model);$i++) {
+                $detalle=$this->empresa->obtener_detalle_chancha($model[$i]->colaboracion_id);
+                $resources[$i] = array(
+                    "id" => $model[$i]->colaboracion_id,
+                    "id_equipo" => $model[$i]->equipo_id,
+                    "equipo" => $model[$i]->equipo_nombre,
+                    "nombre" => $model[$i]->colaboracion_nombre,
+                    "monto" => $model[$i]->colaboracion_monto,
+                    "fecha" => $model[$i]->colaboracion_date,
+                    "detalle" => $detalle
+                );
+            }
+            $data = array("results" => $resources);
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $data = 2;
+        }
+        echo json_encode($data);
+    }
+    public function obtener_chanchas_disponibles_por_equipo() {
+        try{
+            $id = $_POST['id_equipo'];
+            $model = $this->empresa->obtener_chanchas_disponibles_por_equipo($id);
             $resources = array();
             for ($i=0;$i<count($model);$i++) {
                 $detalle=$this->empresa->obtener_detalle_chancha($model[$i]->colaboracion_id);

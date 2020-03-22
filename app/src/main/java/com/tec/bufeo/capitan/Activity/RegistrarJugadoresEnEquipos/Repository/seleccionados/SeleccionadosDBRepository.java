@@ -40,7 +40,7 @@ public class SeleccionadosDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             seleccionadosDao.deleteAll();
-            Log.i("eliminado jugadores", "doInBackground: eliminado");
+            Log.d("eliminado jugadores", "doInBackground: eliminado");
             return null;
         }
     }

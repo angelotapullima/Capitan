@@ -86,6 +86,12 @@ public class InformacionGeneral extends AppCompatActivity implements View.OnClic
 
     }
 
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
     @Override
     public void onClick(View v) {
 

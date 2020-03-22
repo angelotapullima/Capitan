@@ -244,8 +244,10 @@ class ForoController{
             if($model[$i]->publicaciones_id_torneo != 0){
                 $torneo_ = $this->torneo->listar_torneo_por_id($model[$i]->publicaciones_id_torneo);
                 $torneo =$torneo_->torneo_nombre;
+                $torneo_imagen =$torneo_->torneo_imagen;
             }else{
                 $torneo=" ";
+                $torneo_imagen =" ";
             }
             $resources[$i] = array(
                 "id_publicacion" => $model[$i]->publicaciones_id,
@@ -258,6 +260,7 @@ class ForoController{
                 "estado" => $model[$i]->publicaciones_estado,
                 "id_torneo" => $model[$i]->publicaciones_id_torneo,
                 "torneo" => $torneo,
+                "torneo_imagen" => $torneo_imagen,
                 "foto" => $model[$i]->publicaciones_foto,
                 "fecha" => $time,
                 "tipo" => $model[$i]->publicaciones_tipo,

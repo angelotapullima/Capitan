@@ -108,7 +108,7 @@ public class MensajesRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             feedDao.deleteAll();
-            Log.i("eliminado mensajes", "doInBackground: eliminado");
+            Log.d("eliminado mensajes", "doInBackground: eliminado");
             return null;
         }
     }

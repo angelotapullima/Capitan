@@ -112,7 +112,7 @@ public class FragmentEquipo extends Fragment implements View.OnClickListener , S
             @Override
             public void onChanged(@Nullable List<Mequipos> mequipos) {
                 adaptadorMiEquipo.setWords(mequipos);
-                Log.e("mis Equipos", "onChanged: "+mequipos.size() );
+                Log.d("mis Equipos", "onChanged: "+mequipos.size() );
             }
         });
 

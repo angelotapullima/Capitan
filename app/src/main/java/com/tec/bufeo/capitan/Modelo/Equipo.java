@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.others;
+package com.tec.bufeo.capitan.Modelo;
 
 
 

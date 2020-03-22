@@ -63,7 +63,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     LinearLayout l_todo;
     Spinner spn_equipex_busqueda;
     String comision_todo_dato;
-
+    ImageView noChanchas;
     TextView total,costo,comision;
 
     //chancha
@@ -134,6 +134,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         costo  = findViewById(R.id.costo);
         //pago1_todo = findViewById(R.id.pago1_todo);
         total= findViewById(R.id.total);
+        noChanchas= findViewById(R.id.noChanchas);
         saldo_bufis_busqueda  = findViewById(R.id.saldo_bufis_busqueda);
 
 
@@ -364,7 +365,11 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
                     listaItem.clear();
                     int count = resultJSON.length();
-
+                    if (count==0){
+                        noChanchas.setVisibility(View.VISIBLE);
+                    }else{
+                        noChanchas.setVisibility(View.GONE);
+                    }
 
                     for (int i = 0; i < count; i++) {
 
@@ -403,7 +408,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                         @Override
                         public void onItemClick(Colaboraciones mequipos, String tipo, int position) {
                             if (tipo.equals("btn_reservar_en_chancha")){
-                                Log.e("precios", "onItemClick: " + total_busqueda +" - " + mequipos.getMonto_final() );
+                                Log.d("precios", "onItemClick: " + total_busqueda +" - " + mequipos.getMonto_final() );
                                 if (Double.parseDouble(mequipos.getMonto_final())> Double.parseDouble(total.getText().toString())){
 
                                     preferences.codeAdvertencia("El monto de la chancha supera el precio de la  cancha");}else if (Double.parseDouble(mequipos.getMonto_final())< Double.parseDouble(total.getText().toString())){
@@ -440,7 +445,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-                Log.i("RESPUESTA: ",""+error.toString());
+                Log.d("RESPUESTA: ",""+error.toString());
 
             }
         })  {
@@ -505,7 +510,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
             @Override
             public void onResponse(String response) {
 
-                Log.e("registrar_reserva", "onResponse: "+response );
+                Log.d("registrar_reserva", "onResponse: "+response );
 
                 String separador,part1;
                 String[] resultado;
@@ -549,7 +554,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("error", "onErrorResponse: "+error.toString() );
+                Log.d("error", "onErrorResponse: "+error.toString() );
                 dialog_carga.dismiss();
 
             }
@@ -597,7 +602,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 parametros.put("app","true");
                 parametros.put("token",preferences.getToken());
                 parametros.put("id_user",preferences.getIdUsuarioPref());
-                Log.e("parametros", "parametros: "+parametros.toString() );
+                Log.d("parametros", "parametros: "+parametros.toString() );
                 return parametros;
             }
         };

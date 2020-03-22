@@ -26,10 +26,6 @@ public class Preferences {
     }
 
 
-
-
-
-
     public String getLimite_sup(){
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getString("lim_sup","");
@@ -44,7 +40,7 @@ public class Preferences {
         SharedPreferences.Editor editor;
         editor = settings.edit();
         editor.putString(llave, valor);
-        editor.commit();
+        editor.apply();
     }
 
     public void saveValuePORTInteger(String llave, int valor) {
@@ -60,10 +56,8 @@ public class Preferences {
 
 
 
-    public int getCantidadFotoPerfil(){
-        pref=context.getSharedPreferences("User", MODE_PRIVATE);
-        return pref.getInt("cantida_foto_perfil",0);
-    }
+
+
     public String getCantidadIngreso(){
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getString("cantidad_ingreso","");

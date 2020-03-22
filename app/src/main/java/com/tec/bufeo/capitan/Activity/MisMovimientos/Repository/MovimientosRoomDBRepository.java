@@ -47,7 +47,7 @@ public class MovimientosRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             movimientosDao.deleteAll();
-            Log.i("eliminado equipos", "doInBackground: eliminado");
+            Log.d("eliminado equipos", "doInBackground: eliminado");
             return null;
         }
     }

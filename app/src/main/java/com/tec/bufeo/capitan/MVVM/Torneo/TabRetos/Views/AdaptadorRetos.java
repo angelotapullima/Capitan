@@ -101,7 +101,7 @@ public class AdaptadorRetos extends RecyclerView.Adapter<AdaptadorRetos.RetosVie
             current = mUsers.get(position);
 
             holder.layoutListRetos.setId(position);
-            ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
 
             UniversalImageLoader.setImage(IP2+"/"+ current.getRetos_foto_retador(),holder.civ_fotoRetosRetador,null);
             UniversalImageLoader.setImage(IP2+"/"+ current.getRetos_foto_retado(),holder.civ_fotoRetosRetado,null);

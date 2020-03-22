@@ -20,6 +20,9 @@ public interface NotificacionesDao {
     @Query("SELECT * from notificaciones ")
     LiveData<List<Notificaciones>> getAllNotificaciones();
 
+    @Query("SELECT * from notificaciones where notificacion_estado = '0' ")
+    LiveData<List<Notificaciones>> getAllNoVistos();
+
     @Query("DELETE FROM notificaciones")
     void deleteAll();
 

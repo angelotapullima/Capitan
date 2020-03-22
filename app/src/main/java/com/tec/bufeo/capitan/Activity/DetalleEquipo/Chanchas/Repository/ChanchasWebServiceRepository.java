@@ -63,7 +63,7 @@ public class ChanchasWebServiceRepository {
              service.getEquipo(id_equipo,"true",token).enqueue(new Callback<String>() {
                  @Override
                  public void onResponse(Call<String> call, Response<String> response) {
-                     Log.e("Repository mis chanchas","Response::::"+response.body());
+                     Log.d("Repository mis chanchas","Response::::"+response.body());
                      webserviceResponseList = parseJson(response.body());
                      ChanchasRoomDBRepository movimientosRoomDBRepository = new ChanchasRoomDBRepository(application);
                      movimientosRoomDBRepository.insertEquipos(webserviceResponseList);
@@ -141,7 +141,7 @@ public class ChanchasWebServiceRepository {
             e.printStackTrace();
         }
 
-        Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;
 
     }

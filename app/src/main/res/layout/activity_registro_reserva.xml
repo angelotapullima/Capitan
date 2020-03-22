@@ -436,6 +436,13 @@
                     </LinearLayout>
 
 
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp"
+                        android:scaleType="fitCenter"
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/noChanchas"
+                        android:src="@drawable/ic_nochanchas"/>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcv_colaboraciones"
                         android:layout_width="match_parent"

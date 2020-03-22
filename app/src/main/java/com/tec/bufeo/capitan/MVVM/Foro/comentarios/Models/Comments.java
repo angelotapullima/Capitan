@@ -42,6 +42,11 @@ public class Comments {
     @SerializedName("comments_comentario")
     private String comments_comentario;
 
+    @ColumnInfo(name = "id_usuario")
+    @SerializedName("id_usuario")
+    private String id_usuario;
+
+
     @NonNull
     public String getComments_id() {
         return comments_id;
@@ -91,15 +96,11 @@ public class Comments {
         this.comments_comentario = comments_comentario;
     }
 
-    @Override
-    public String toString() {
-        return "Comments{" +
-                "comments_id='" + comments_id + '\'' +
-                ", publicacion_id='" + publicacion_id + '\'' +
-                ", comments_foto='" + comments_foto + '\'' +
-                ", comments_fecha='" + comments_fecha + '\'' +
-                ", comments_nombre='" + comments_nombre + '\'' +
-                ", comments_comentario='" + comments_comentario + '\'' +
-                '}';
+    public String getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(String id_usuario) {
+        this.id_usuario = id_usuario;
     }
 }

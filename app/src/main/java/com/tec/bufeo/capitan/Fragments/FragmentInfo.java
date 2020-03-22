@@ -39,6 +39,8 @@ import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.Repository.Gru
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearGrupos.ViewModels.GruposListViewModel;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Repository.InstanciasRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.ViewModels.InstanciasViewModel;
+import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Repository.NotificacionesRoomDBRepository;
+import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.ViewModels.NotificacionesViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.Repository.CommentsRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Foro.comentarios.ViewModels.CommentsListViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
@@ -54,7 +56,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewMode
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Repository.RetosRoomDBRepository;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosRoomDBRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.MisTorneoViewModel;
+import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.TorneosViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
@@ -87,9 +89,10 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
   EstadisticasViewModel estadisticasViewModel;
   MisEquiposViewModel misEquiposViewModel;
   RetosViewModel retosViewModel;
-  MisTorneoViewModel misTorneoViewModel;
+  TorneosViewModel torneosViewModel;
   MovimientosViewModel movimientosViewModel;
   NegociosViewModel negociosViewModel;
+  NotificacionesViewModel notificacionesViewModel;
 
 
 
@@ -110,7 +113,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         universalImageLoader= new UniversalImageLoader(getContext());
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
-        misTorneoViewModel = ViewModelProviders.of(getActivity()).get(MisTorneoViewModel.class);
+        torneosViewModel = ViewModelProviders.of(getActivity()).get(TorneosViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(getActivity()).get(MisEquiposViewModel.class);
         chatsListViewModel = ViewModelProviders.of(getActivity()).get(ChatsListViewModel.class);
         mensajesViewModel = ViewModelProviders.of(getActivity()).get(MensajesViewModel.class);
@@ -127,6 +130,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         retosViewModel = ViewModelProviders.of(getActivity()).get(RetosViewModel.class);
         movimientosViewModel = ViewModelProviders.of(getActivity()).get(MovimientosViewModel.class);
         negociosViewModel = ViewModelProviders.of(getActivity()).get(NegociosViewModel.class);
+        notificacionesViewModel = ViewModelProviders.of(getActivity()).get(NotificacionesViewModel.class);
 
 
 
@@ -216,6 +220,11 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
       dialogLogout();
   }
     private void EliminarDBs() {
+
+
+        NotificacionesRoomDBRepository notificacionesRoomDBRepository = new NotificacionesRoomDBRepository(application);
+        notificacionesRoomDBRepository.deleteAllMisReservas();
+
 
         EequiposRoomDbRepository eequiposRoomDbRepository =  new EequiposRoomDbRepository(application);
         eequiposRoomDbRepository.DeleteAllEstadisticasEquipos();

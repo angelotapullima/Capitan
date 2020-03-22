@@ -53,7 +53,7 @@ public class GruposRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             gruposTorneoDao.deleteAll();
-            Log.i("eliminado", "doInBackground: eliminado");
+            Log.d("eliminado", "doInBackground: eliminado");
             return null;
         }
     }

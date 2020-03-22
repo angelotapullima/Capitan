@@ -94,7 +94,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
         context=getContext();
 
         universalImageLoader = new UniversalImageLoader(context);
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+        
 
         fragmentBuscarFechas=this;
         preferences= new Preferences(context);
@@ -210,7 +210,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                 preferences.codeAdvertencia("El campo fecha no debe estar vacio");
             }else{
                 dialogCarga();
-                    Log.e("click buscar", "onClick: funciona" );
+                    Log.d("click buscar", "onClick: funciona" );
 
                     hours = btnHoraCancha.getSelectedItem().toString();
                     if ((hours.equals("Todos"))){

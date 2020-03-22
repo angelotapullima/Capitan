@@ -269,7 +269,7 @@ public class EditarDatosDePerfil extends AppCompatActivity implements View.OnCli
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("edit","editar"+response);
+                Log.d("edit","editar"+response);
 
 
 
@@ -336,7 +336,7 @@ public class EditarDatosDePerfil extends AppCompatActivity implements View.OnCli
                 parametros.put("app", "true");
                 parametros.put("token", preferences.getToken());
 
-                Log.e("edit", "Params: "+parametros.toString() );
+                Log.d("edit", "Params: "+parametros.toString() );
                 return parametros;
 
             }
@@ -352,7 +352,7 @@ public class EditarDatosDePerfil extends AppCompatActivity implements View.OnCli
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("editar_nickname","editar"+response);
+                Log.d("editar_nickname","editar"+response);
 
 
 
@@ -378,7 +378,7 @@ public class EditarDatosDePerfil extends AppCompatActivity implements View.OnCli
                 parametros.put("app", "true");
                 parametros.put("token", preferences.getToken());
 
-                Log.e("editar_nickname", "Params: "+parametros.toString() );
+                Log.d("editar_nickname", "Params: "+parametros.toString() );
                 return parametros;
 
             }
@@ -394,7 +394,7 @@ public class EditarDatosDePerfil extends AppCompatActivity implements View.OnCli
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("edit_pass","editar"+response);
+                Log.d("edit_pass","editar"+response);
 
 
 
@@ -420,7 +420,7 @@ public class EditarDatosDePerfil extends AppCompatActivity implements View.OnCli
                 parametros.put("app", "true");
                 parametros.put("token", preferences.getToken());
 
-                Log.e("edit_pass", "Params: "+parametros.toString() );
+                Log.d("edit_pass", "Params: "+parametros.toString() );
                 return parametros;
 
             }

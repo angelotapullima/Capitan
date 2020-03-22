@@ -130,7 +130,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
 
                 String to = intent.getStringExtra("tipo");
                 Toast.makeText(context, "funciona" + to, Toast.LENGTH_SHORT).show();
-                Log.i("registro", "onMessageReceived:  funcionando la huevada de Registro" +to );
+                Log.d("registro", "onMessageReceived:  funcionando la huevada de Registro" +to );
                 ModelFeed feedTorneo =  new ModelFeed();
                 feedTorneo.setPublicacion_id("1");
                 feedTorneo.setForo_foto("ubbbbjbfhh");
@@ -145,7 +145,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
                 feedTorneo.setDio_like("0");
                 feedTorneo.setOrden("1");
 
-                Log.i("registro", "onMessageReceived:  funcionando la huevada de tipo" + feedTorneo.toString() );
+                Log.d("registro", "onMessageReceived:  funcionando la huevada de tipo" + feedTorneo.toString() );
                 RegistroForope(feedTorneo);
             }
         };
@@ -444,7 +444,7 @@ public class RegistroForo extends AppCompatActivity implements View.OnClickListe
 
                         @Override
                         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
-                            Log.e("foro", "multipart Completed: " + serverResponse.getBodyAsString() );
+                            Log.d("foro", "multipart Completed: " + serverResponse.getBodyAsString() );
                             //Toast.makeText(RegistroForo.this, "completo", Toast.LENGTH_SHORT).show();
                         }
 

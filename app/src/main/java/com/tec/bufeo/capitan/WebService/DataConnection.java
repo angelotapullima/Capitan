@@ -23,7 +23,7 @@ import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.Modelo.Saldo;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.others.Equipo;
+import com.tec.bufeo.capitan.Modelo.Equipo;
 
 import com.tec.bufeo.capitan.Modelo.Reserva;
 import com.tec.bufeo.capitan.Modelo.Usuario;
@@ -345,14 +345,14 @@ public class DataConnection extends AppCompatActivity {
     private  boolean filtrardDatos(){
 
         cargarDatos = obtenerDatos();
-        Log.e("obtenerDatos", "cargarDatos: "+cargarDatos + funcion);
+        Log.d("obtenerDatos", "cargarDatos: "+cargarDatos + funcion);
         try {
 
             if(!(cargarDatos.equalsIgnoreCase("")  )){
 
 
                 json_data = new JSONObject(cargarDatos);
-                //Log.e("Login", "filtrardDatos: "+cargarDatos );
+                //Log.d("Login", "filtrardDatos: "+cargarDatos );
 
                 if(funcion.equals("loginUsuario")){
 

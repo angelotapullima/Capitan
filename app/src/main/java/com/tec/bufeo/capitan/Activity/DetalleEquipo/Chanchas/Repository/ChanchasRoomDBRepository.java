@@ -43,7 +43,7 @@ public class ChanchasRoomDBRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             misReservasDao.deleteAll();
-            Log.i("eliminado mis chanchas", "doInBackground: eliminado");
+            Log.d("eliminado mis chanchas", "doInBackground: eliminado");
             return null;
         }
     }
