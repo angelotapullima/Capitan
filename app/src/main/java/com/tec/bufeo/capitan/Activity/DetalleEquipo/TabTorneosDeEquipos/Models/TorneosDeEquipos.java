@@ -11,11 +11,11 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "torneos_equipos")
 public class TorneosDeEquipos {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @NonNull
     @ColumnInfo(name = "id_torneo")
     @SerializedName("id_torneo")
-    private int  id_torneo;
+    private String  id_torneo;
 
     @ColumnInfo(name = "equipo_id")
     @SerializedName("equipo_id")
@@ -42,11 +42,12 @@ public class TorneosDeEquipos {
     private String organizador;
 
 
-    public int getId_torneo() {
+    @NonNull
+    public String getId_torneo() {
         return id_torneo;
     }
 
-    public void setId_torneo(int id_torneo) {
+    public void setId_torneo(@NonNull String id_torneo) {
         this.id_torneo = id_torneo;
     }
 

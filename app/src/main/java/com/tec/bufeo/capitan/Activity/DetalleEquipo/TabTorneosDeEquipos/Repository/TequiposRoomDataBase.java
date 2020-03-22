@@ -10,7 +10,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {TorneosDeEquipos.class}, version = 1,exportSchema = false)
+@Database(entities = {TorneosDeEquipos.class}, version = 2,exportSchema = false)
 public abstract class TequiposRoomDataBase extends RoomDatabase {
     public abstract TequiposDao postInfoDao();
 

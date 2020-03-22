@@ -106,7 +106,7 @@ public class TequiposWebServiceRepository {
                 TequiposRoomDbRepository tequiposRoomDbRepository =new TequiposRoomDbRepository(application);
                 tequiposRoomDbRepository.deleteAllTorneosEquipos();
 
-                torneo.setId_torneo(jsonNode.optInt("id_torneo"));
+                torneo.setId_torneo(jsonNode.optString("id_torneo"));
                 torneo.setEquipo_id(jsonNode.optString("equipo_id"));
                 torneo.setNombre(jsonNode.optString("nombre"));
                 torneo.setFoto(jsonNode.optString("foto"));

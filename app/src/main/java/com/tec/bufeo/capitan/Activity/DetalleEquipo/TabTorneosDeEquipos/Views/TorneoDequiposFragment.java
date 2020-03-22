@@ -1,6 +1,7 @@
 package com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Views;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Models.TorneosDeEquipos;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Repository.TequiposWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.ViewModels.TequiposViewModel;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Views.AdaptadorOtrosTorneos;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -90,10 +92,14 @@ public class TorneoDequiposFragment extends Fragment implements SwipeRefreshLayo
 
     }
     private void setAdapter() {
-        adaptersTorneoEquipos = new AdaptersTorneoEquipos(getActivity(), new AdaptersTorneoEquipos.OnItemClickListener() {
+        adaptersTorneoEquipos= new AdaptersTorneoEquipos(getActivity(), new AdaptersTorneoEquipos.OnItemClickListener() {
             @Override
-            public void onItemClick(TorneosDeEquipos comments, int position) {
-
+            public void onItemClick(TorneosDeEquipos torneosDeEquipos, String tipo, int position) {
+                if (tipo.equals("cardTornios")){
+                    Intent intent = new Intent(getContext(), DetalleTorneoNuevo.class);
+                    intent.putExtra("id_torneo", torneosDeEquipos.getId_torneo());
+                    startActivity(intent);
+                }
             }
         });
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 1);

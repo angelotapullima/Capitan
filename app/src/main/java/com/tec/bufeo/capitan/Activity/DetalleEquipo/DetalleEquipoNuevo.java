@@ -24,13 +24,14 @@ import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Views.ChanchasFragm
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Views.EstadisticasDeEquiposFragment;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Views.TorneoDequiposFragment;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos;
+import com.tec.bufeo.capitan.Activity.RegistroReto;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
-public class DetalleEquipoNuevo extends AppCompatActivity {
+public class DetalleEquipoNuevo extends AppCompatActivity implements View.OnClickListener {
 
     public TabLayout tabs_Dequipo;
     Button btn_retarDequipo;
@@ -146,6 +147,7 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         });
 
         showToolbar("",true);
+        btn_retarDequipo.setOnClickListener(this);
     }
     public void showToolbar(String tittle, boolean upButton){
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
@@ -166,6 +168,19 @@ public class DetalleEquipoNuevo extends AppCompatActivity {
         onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
         return false;
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(btn_retarDequipo)){
+            Intent intent = new Intent(DetalleEquipoNuevo.this, RegistroReto.class);
+            intent.putExtra("nombre_retado", equipo_nombre);
+            intent.putExtra("foto_retado", equipo_foto);
+            intent.putExtra("id_retado", equipo_id);
+            intent.putExtra("capitan_id", capitan_id);
+            startActivity(intent);
+        }
+    }
+
     public class SectionsDetalleEquipoAdapter extends FragmentPagerAdapter {
 
         public SectionsDetalleEquipoAdapter(FragmentManager fm) {

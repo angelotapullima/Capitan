@@ -7,6 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp"
     android:padding="10dp"
+    android:id="@+id/cardTornios"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
         <LinearLayout

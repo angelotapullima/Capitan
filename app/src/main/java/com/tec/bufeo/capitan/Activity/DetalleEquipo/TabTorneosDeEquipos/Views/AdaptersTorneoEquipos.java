@@ -13,6 +13,7 @@ import com.tec.bufeo.capitan.Util.Preferences;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class AdaptersTorneoEquipos extends RecyclerView.Adapter<AdaptersTorneoEquipos.TorneoEquiposViewHolder> {
@@ -29,6 +30,7 @@ public class AdaptersTorneoEquipos extends RecyclerView.Adapter<AdaptersTorneoEq
 
         private TextView txt_nombre_torneo,txt_descripcion_torneo,txt_lugar_torneo,txt_fecha_torneo,txt_hora_torneo, txt_cant_equipos_torneo, txt_organizador_torneo;
 
+        private CardView cardTornios;
 
         private TorneoEquiposViewHolder(View itemView) {
             super(itemView);
@@ -41,15 +43,16 @@ public class AdaptersTorneoEquipos extends RecyclerView.Adapter<AdaptersTorneoEq
             txt_hora_torneo = itemView.findViewById(R.id.txt_hora_torneo);
             txt_cant_equipos_torneo = itemView.findViewById(R.id.txt_cant_equipos_torneo);
             txt_organizador_torneo = itemView.findViewById(R.id.txt_organizador_torneo);
+            cardTornios = itemView.findViewById(R.id.cardTornios);
 
         }
 
         public void bid(final TorneosDeEquipos torneo, final OnItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
+            cardTornios.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    listener.onItemClick(torneo, getAdapterPosition());
+                    listener.onItemClick(torneo,"cardTornios", getAdapterPosition());
                 }
             });
 
@@ -114,6 +117,6 @@ public class AdaptersTorneoEquipos extends RecyclerView.Adapter<AdaptersTorneoEq
 
 
     public interface OnItemClickListener {
-        void onItemClick(TorneosDeEquipos comments, int position);
+        void onItemClick(TorneosDeEquipos comments ,String tipo, int position);
     }
 }
