@@ -2,12 +2,14 @@
 require_once 'app/models/Torneo.php';
 require_once 'app/models/Empresa.php';
 require_once 'app/models/Foro.php';
+require_once 'app/models/Cuenta.php';
 require_once 'app/models/User.php';
 class TorneoController{
     private $torneo;
     private $nav;
     private $foro;
     private $empresa;
+    private $cuenta;
     private $user;
     private $crypt;
     private $clean;
@@ -17,6 +19,7 @@ class TorneoController{
         $this->torneo = new Torneo();
         $this->foro = new Foro();
         $this->empresa= new Empresa();
+        $this->cuenta= new Cuenta();
         $this->user= new User();
         $this->crypt = new Crypt();
         $this->clean = new Clean();
@@ -561,7 +564,7 @@ class TorneoController{
                         $valor_1 = $estadisticas_1->torneos;
                         $valor_1++;
                         $this->torneo->sumar_estadistica($equipo_id,"torneos",$valor_1);
-                        $this->user->guardar_notificacion($datos_equipo->id_user,"Torneo",$datos_torneo->id_torneo,"Tu equipo fue agregado a un torneo");
+                        $this->user->guardar_notificacion($datos_equipo->id_user,"Torneo",$datos_torneo->id_torneo,"Tu equipo fue agregado a un torneo",$datos_torneo->torneo_imagen);
                         $notificar = $this->notificar($datos_equipo->user_token,"Retaron a tu equipo ","Tu equipo fue agregado a un torneo","Torneo","Tu equipo fue agregado a un torneo");
                     }
                 }
@@ -937,7 +940,7 @@ class TorneoController{
                             if($datos->user_token!=""){
                                 $detalle_Chat = $this->user->listar_chat_por_id($datos_chat->chat_id);
                                 $this->user->enviar_mensaje($detalle_Chat->chat_id,$datos->id_user,"Hola! He retado a tu equipo",$fechahora);
-                                $this->user->guardar_notificacion($datos->id_user,"Reto",$reto_exists2->reto_id,"Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre);
+                                $this->user->guardar_notificacion($datos->id_user,"Reto",$reto_exists2->reto_id,"Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,$datos2->equipo_foto);
                                 $notificar = $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
                             }
                         }else{
@@ -946,8 +949,8 @@ class TorneoController{
                             $this->user->crear_chat($datos2->id_user,$datos->id_user,$fechahora,$microtime);
                             if($datos->user_token!=""){
                                 $detalle_Chat = $this->user->listar_chat_por_microtime($microtime);
-                                $this->user->enviar_mensaje($detalle_Chat->chat_id,$datos->id_user,"Hola! He retado a tu equipo",$fechahora);
-                                $this->user->guardar_notificacion($datos->id_user,"Reto",$reto_exists2->reto_id,"Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre);
+                                $this->user->enviar_mensaje($detalle_Chat->chat_id,$datos2->id_user,"Hola! He retado a tu equipo",$fechahora);
+                                $this->user->guardar_notificacion($datos->id_user,"Reto",$reto_exists2->reto_id,"Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,$datos2->equipo_foto);
                                 $notificar = $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
                             }
                         }
@@ -969,10 +972,15 @@ class TorneoController{
         echo json_encode($data);
     }
     public function responder_reto() {
-        $respuesta = $_POST['respuesta'];
-        $id_reto = $_POST['id_reto'];
-        $result = $this->torneo->responder_reto($respuesta,$id_reto);
-        $resources = array();
+        try{
+            $respuesta = $_POST['respuesta'];
+            $id_reto = $_POST['id_reto'];
+            $result = $this->torneo->responder_reto($respuesta,$id_reto);
+            $resources = array();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
         $resources[0] = array("valor"=>$result);
         $data = array("results" => $resources);
         echo json_encode($data);
@@ -1168,6 +1176,7 @@ class TorneoController{
         $cont=0;
         for ($i=0;$i<count($model);$i++) {
             if($model[$i]->equipo_id_1!=null || $model[$i]->equipo_id_2!=null){
+                $user_respuesta=0;
                 if($model[$i]->equipo_id_1==null){
                     $equipo1 = $this->torneo->listar_equipo_por_id($model[$i]->retador_id);
                     $id_e1 = $equipo1->equipo_id;
@@ -1216,39 +1225,45 @@ class TorneoController{
         echo json_encode($data);
     }
     public function listar_reto_por_id() {
-        $usuario_id = $_POST['id_reto'];
-        $model = $this->torneo->listar_reto_por_id($usuario_id);
-        $resources = array();
-        $equipo1 = $this->torneo->listar_equipo_por_id($model->retador_id);
-        $id_e1 = $equipo1->equipo_id;
-        $nombre_e1 = $equipo1->equipo_nombre;
-        $foto_e1 = $equipo1->equipo_foto;
-        $equipo2 = $this->torneo->listar_equipo_por_id($model->retado_id);
-        $id_e2 = $equipo2->equipo_id;
-        $nombre_e2 = $equipo2->equipo_nombre;
-        $foto_e2 = $equipo2->equipo_foto;
-        $user_respuesta = $equipo2->usuario_id;
-        $date1 = new DateTime(date('Y-m-d'));
-        $date2 = new DateTime($model->reto_fecha);
-        $diff = $date1->diff($date2);
-        ($diff->days<0)? $estado = 0:$estado = 1;
-        $resources = array(
-            "id_reto" => $model->reto_id,
-            "equipo_id_1" => $id_e1,
-            "equipo_id_2" => $id_e2,
-            "user_respuesta" => $user_respuesta,
-            "nombre_1" => $nombre_e1,
-            "nombre_2" => $nombre_e2,
-            "foto_1" => $foto_e1,
-            "foto_2" => $foto_e2,
-            "fecha" => $model->reto_fecha,
-            "hora" => $model->reto_hora,
-            "lugar" => $model->reto_lugar,
-            "respuesta" => $model->reto_respuesta,
-            "ganador_id" => $model->ganador_id,
-            "ganador_estado" => $model->ganador_estado,
-            "estado" => $estado
-        );
+        try{
+            $usuario_id = $_POST['id_reto'];
+            $model = $this->torneo->listar_reto_por_id($usuario_id);
+            if(isset($model->retador_id)){
+                $equipo1 = $this->torneo->listar_equipo_por_id($model->retador_id);
+                $id_e1 = $equipo1->equipo_id;
+                $nombre_e1 = $equipo1->equipo_nombre;
+                $foto_e1 = $equipo1->equipo_foto;
+                $equipo2 = $this->torneo->listar_equipo_por_id($model->retado_id);
+                $id_e2 = $equipo2->equipo_id;
+                $nombre_e2 = $equipo2->equipo_nombre;
+                $foto_e2 = $equipo2->equipo_foto;
+                $user_respuesta = $equipo2->usuario_id;
+                $date1 = new DateTime(date('Y-m-d'));
+                $date2 = new DateTime($model->reto_fecha);
+                $diff = $date1->diff($date2);
+                ($diff->days<0)? $estado = 0:$estado = 1;
+                $resources = array(
+                "id_reto" => $model->reto_id,
+                "equipo_id_1" => $id_e1,
+                "equipo_id_2" => $id_e2,
+                "user_respuesta" => $user_respuesta,
+                "nombre_1" => $nombre_e1,
+                "nombre_2" => $nombre_e2,
+                "foto_1" => $foto_e1,
+                "foto_2" => $foto_e2,
+                "fecha" => $model->reto_fecha,
+                "hora" => $model->reto_hora,
+                "lugar" => $model->reto_lugar,
+                "respuesta" => $model->reto_respuesta,
+                "ganador_id" => $model->ganador_id,
+                "ganador_estado" => $model->ganador_estado,
+                "estado" => $estado
+            );
+        }
+    } catch (Exception $e){
+        $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+        $result = 2;
+    }
         $data = array("results" => $resources);
         echo json_encode($data);
     }
@@ -1323,21 +1338,28 @@ class TorneoController{
         echo json_encode($data);
     }
     public function listar_torneo_por_id() {
-        $model = $this->torneo->listar_torneo_por_id($_POST['id_torneo']);
-        $equipos_por_torneo = $this->torneo->listar_equipos_por_torneo($model->torneo_id);
-        $resources = array(
-            "id_torneo" => $model->torneo_id,
-            "nombre" => $model->torneo_nombre,
-            "foto" => $model->torneo_imagen,
-            "descripcion" => $model->torneo_descripcion,
-            "fecha" => $model->torneo_fecha,
-            "hora" => $model->torneo_hora,
-            "lugar" => $model->torneo_lugar,
-            "id_organizador" => $model->usuario_id,
-            "organizador" => $model->torneo_organizador,
-            "costo" => $model->torneo_costo,
-            "equipos" => count($equipos_por_torneo)
-        );
+        try{
+            $model = $this->torneo->listar_torneo_por_id($_POST['id_torneo']);
+            if(isset($model->torneo_id)){
+                $equipos_por_torneo = $this->torneo->listar_equipos_por_torneo($model->torneo_id);
+                $resources = array(
+                    "id_torneo" => $model->torneo_id,
+                    "nombre" => $model->torneo_nombre,
+                    "foto" => $model->torneo_imagen,
+                    "descripcion" => $model->torneo_descripcion,
+                    "fecha" => $model->torneo_fecha,
+                    "hora" => $model->torneo_hora,
+                    "lugar" => $model->torneo_lugar,
+                    "id_organizador" => $model->usuario_id,
+                    "organizador" => $model->torneo_organizador,
+                    "costo" => $model->torneo_costo,
+                    "equipos" => count($equipos_por_torneo)
+                );
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
         $data = array("results" => $resources);
         echo json_encode($data);
     }
@@ -1400,69 +1422,74 @@ class TorneoController{
         echo json_encode($data);
     }
     public function listar_publicaciones_por_id_torneo(){
-        $id_usuario = $_POST['id_usuario'];
-        $id_torneo = $_POST['id_torneo'];
-        $limite_sup = $_POST['limite_sup'];
-        $limite_inf = $_POST['limite_inf'];
-        if($limite_sup==0){
-            $model = $this->torneo->listar_publicaciones($id_torneo);
-            $ultima_noticia=$this->torneo->listar_ultima_publicacion($id_torneo);
-            $limite_sup=$ultima_noticia->publicaciones_id;
-            $new = "0";
-        }else{
-            $model = $this->torneo->listar_publicaciones_limite($id_torneo,$limite_inf);
-            $nuevos = $this->torneo->listar_publicaciones_limite_sup($id_torneo,$limite_sup);
-            (count($nuevos)>0)?$new = "1":$new="0";
-        }
-        $resources = array();
-        for ($i=0;$i<count($model);$i++) {
-            $date1 = new DateTime($model[$i]->publicaciones_fecha);
-            $date2 = new DateTime("now");
-            $diff = $date1->diff($date2);
-            if($diff->y !==0){
-                $time=($diff->y > 1) ? $diff->y . ' años ' : $diff->y . ' año ';
-            }elseif ($diff->m !==0){
-                $time=($diff->m > 1) ? $diff->m . ' meses ' : $diff->m . ' mes ';
-            }elseif ($diff->d !==0){
-                $time=($diff->d > 1) ? $diff->d . ' días ' : $diff->d . ' día ';
-            }elseif ($diff->h !==0){
-                $time=($diff->h > 1) ? $diff->h . ' horas ' : $diff->h . ' hora ';
-            }elseif ($diff->i!==0){
-                $time = ( ($diff->days * 24 ) * 60 ) + ( $diff->i ) . ' minutos';
-            }else{
-                $time = "0 min";
+        try {
+            $id_usuario = $_POST['id_usuario'];
+            $id_torneo = $_POST['id_torneo'];
+            $limite_sup = $_POST['limite_sup'];
+            $limite_inf = $_POST['limite_inf'];
+            if ($limite_sup == 0) {
+                $model = $this->torneo->listar_publicaciones($id_torneo);
+                $ultima_noticia = $this->torneo->listar_ultima_publicacion($id_torneo);
+                $limite_sup = $ultima_noticia->publicaciones_id;
+                $new = "0";
+            } else {
+                $model = $this->torneo->listar_publicaciones_limite($id_torneo, $limite_inf);
+                $nuevos = $this->torneo->listar_publicaciones_limite_sup($id_torneo, $limite_sup);
+                (count($nuevos) > 0) ? $new = "1" : $new = "0";
             }
-            $likes = $this->foro->conteo_likes($model[$i]->publicaciones_id);
-            $comentarios = $this->foro->conteo_comentarios($model[$i]->publicaciones_id);
-            $dio_like = $this->foro->dio_like($model[$i]->publicaciones_id,$id_usuario);
-            ($dio_like->id_like_pueblo==null)? $dio_like_ = 0:$dio_like_ = 1;
-            if($model[$i]->publicaciones_id_torneo != 0){
-                $torneo_ = $this->torneo->listar_torneo_por_id($model[$i]->publicaciones_id_torneo);
-                $torneo =$torneo_->torneo_nombre;
-                $torneo_imagen =$torneo_->torneo_imagen;
-            }else{
-                $torneo=" ";
-                $torneo_imagen =" ";
+            $resources = array();
+            for ($i = 0; $i < count($model); $i++) {
+                $date1 = new DateTime($model[$i]->publicaciones_fecha);
+                $date2 = new DateTime("now");
+                $diff = $date1->diff($date2);
+                if ($diff->y !== 0) {
+                    $time = ($diff->y > 1) ? $diff->y . ' años ' : $diff->y . ' año ';
+                } elseif ($diff->m !== 0) {
+                    $time = ($diff->m > 1) ? $diff->m . ' meses ' : $diff->m . ' mes ';
+                } elseif ($diff->d !== 0) {
+                    $time = ($diff->d > 1) ? $diff->d . ' días ' : $diff->d . ' día ';
+                } elseif ($diff->h !== 0) {
+                    $time = ($diff->h > 1) ? $diff->h . ' horas ' : $diff->h . ' hora ';
+                } elseif ($diff->i !== 0) {
+                    $time = (($diff->days * 24) * 60) + ($diff->i) . ' minutos';
+                } else {
+                    $time = "0 min";
+                }
+                $likes = $this->foro->conteo_likes($model[$i]->publicaciones_id);
+                $comentarios = $this->foro->conteo_comentarios($model[$i]->publicaciones_id);
+                $dio_like = $this->foro->dio_like($model[$i]->publicaciones_id, $id_usuario);
+                ($dio_like->id_like_pueblo == null) ? $dio_like_ = 0 : $dio_like_ = 1;
+                if ($model[$i]->publicaciones_id_torneo != 0) {
+                    $torneo_ = $this->torneo->listar_torneo_por_id($model[$i]->publicaciones_id_torneo);
+                    $torneo = $torneo_->torneo_nombre;
+                    $torneo_imagen = $torneo_->torneo_imagen;
+                } else {
+                    $torneo = " ";
+                    $torneo_imagen = " ";
+                }
+                $resources[$i] = array(
+                    "id_publicacion" => $model[$i]->publicaciones_id,
+                    "id_usuario" => $model[$i]->id_user,
+                    "usuario_nombre" => $model[$i]->usuario_nombre,
+                    "usuario_foto" => $model[$i]->usuario_foto,
+                    "titulo" => $model[$i]->publicaciones_titulo,
+                    "descripcion" => $model[$i]->publicaciones_descripcion,
+                    "concepto" => $model[$i]->publicaciones_concepto,
+                    "id_torneo" => $model[$i]->publicaciones_id_torneo,
+                    "torneo" => $torneo,
+                    "torneo_imagen" => $torneo_imagen,
+                    "foto" => $model[$i]->publicaciones_foto,
+                    "fecha" => $time,
+                    "tipo" => $model[$i]->publicaciones_tipo,
+                    "cant_likes" => $likes->conteo,
+                    "cant_comentarios" => $comentarios->conteo,
+                    "dio_like" => $dio_like_
+                );
+                $limite_inf = $model[$i]->publicaciones_id;
             }
-            $resources[$i] = array(
-                "id_publicacion" => $model[$i]->publicaciones_id,
-                "id_usuario" => $model[$i]->id_user,
-                "usuario_nombre" => $model[$i]->usuario_nombre,
-                "usuario_foto" => $model[$i]->usuario_foto,
-                "titulo" => $model[$i]->publicaciones_titulo,
-                "descripcion" => $model[$i]->publicaciones_descripcion,
-                "concepto" => $model[$i]->publicaciones_concepto,
-                "id_torneo" => $model[$i]->publicaciones_id_torneo,
-                "torneo" => $torneo,
-                "torneo_imagen" => $torneo_imagen,
-                "foto" => $model[$i]->publicaciones_foto,
-                "fecha" => $time,
-                "tipo" => $model[$i]->publicaciones_tipo,
-                "cant_likes" => $likes->conteo,
-                "cant_comentarios" => $comentarios->conteo,
-                "dio_like" => $dio_like_
-            );
-            $limite_inf = $model[$i]->publicaciones_id;
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = "Code 2: General error";
         }
         $data = array("results" => $resources,"limite_sup" => $limite_sup,"limite_inf" => $limite_inf,"nuevos"=>$new);
         echo json_encode($data);
@@ -1632,8 +1659,34 @@ class TorneoController{
                 $monto = $_POST['monto'];
                 $fecha = date('Y-m-d H:i:s');
                 $result = $this->torneo->agregar_colaboracion($id_colab,$id_user,$monto,$fecha);
+                if($result==1){
+                    $modelando = new Cuenta();
+                    $datos_cuenta=$this->user->listar_cuenta_por_id_user($id_user);
+                    $modelando->receptor = $datos_cuenta->id_cuenta;
+                    $modelando->monto = $monto * (-1);
+                    $this->cuenta->sumar_saldo($modelando);
+                }
             }else{
                 $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        echo json_encode($result);
+    }
+    public function eliminar_colaboracion() {
+        try{
+            $id_colab = $_POST['id_detalle_colaboracion'];
+            $id_user = $_POST['id_user'];
+            $monto = $_POST['monto'];
+            $result = $this->torneo->eliminar_detalle_colaboracion($id_colab);
+            if($result==1){
+                $modelando = new Cuenta();
+                $datos_cuenta=$this->user->listar_cuenta_por_id_user($id_user);
+                $modelando->receptor = $datos_cuenta->id_cuenta;
+                $modelando->monto = $monto * (1);
+                $this->cuenta->sumar_saldo($modelando);
             }
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);

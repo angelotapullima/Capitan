@@ -7,6 +7,7 @@
  */
 //Llamada a modelos necesarios
 require 'app/models/User.php';
+require 'app/models/Cuenta.php';
 require 'app/models/Userg.php';
 require 'app/models/Person.php';
 require 'app/models/Role.php';
@@ -15,6 +16,7 @@ class UserController{
     private $crypt;
     private $nav;
     private $user;
+    private $cuenta;
     private $userg;
     private $person;
     private $role;
@@ -26,6 +28,7 @@ class UserController{
     {
         $this->crypt = new Crypt();
         $this->user = new User();
+        $this->cuenta = new Cuenta();
         $this->userg = new Userg();
         $this->person = new Person();
         $this->role = new Role();
@@ -442,12 +445,14 @@ class UserController{
                     $user2=$this->user->list($datos->id_usuario_2);
                 }
                 $datos_notificacion = $this->user->listar_notificacion($user->id_user,$chat_id);
-                if($datos_notificacion->id_notificacion==null){
-                    $this->user->guardar_notificacion($user->id_user,"Mensaje",$chat_id,$user2->user_nickname." te ha enviado un mensaje.");
-                }else{
-                    $this->user->editar_notificacion($user->id_user,$chat_id);
+                if(isset($datos_notificacion->id_notificacion)){
+                    if($datos_notificacion->id_notificacion==null){
+                        $r_n = $this->user->guardar_notificacion($user->id_user,"Mensaje",$chat_id,$user2->user_nickname." te ha enviado un mensaje.",$user2->user_image);
+                    }else{
+                        $r_n = $this->user->editar_notificacion($user->id_user,$chat_id);
+                    }
+                    if($r_n==1){$this->notificar_chat($user->user_token,$mensaje,$user2->user_nickname,"Mensaje",$mensaje,$chat_id,$id_usuario,$hora,$fecha);}
                 }
-                $this->notificar_chat($user->user_token,$mensaje,$user2->user_nickname,"Mensaje",$mensaje,$chat_id,$id_usuario,$hora,$fecha);
             }
             $resources = array();
             $resources[0] = array("valor"=>$result);
@@ -534,29 +539,34 @@ class UserController{
             $id_chat = $_POST['id_chat'];
             $model = $this->user->listar_mensajes_por_chat($id_chat);
             $datos=$this->user->listar_chat_por_id($id_chat);
-            $user=$this->user->list($datos->id_usuario_1);
-            $user2=$this->user->list($datos->id_usuario_2);
-            $datos_user=array(
-                "id_usuario_1"=>$user->id_user,
-                "nombre_usuario_1"=>$user->user_nickname,
-                "foto_usuario_1"=>$user->user_image,
-                "id_usuario_2"=>$user2->id_user,
-                "nombre_usuario_2"=>$user2->user_nickname,
-                "foto_usuario_2"=>$user2->user_image
-            );
-            $resources = array();
-            for ($i = 0; $i < count($model); $i++) {
-                $fecha = explode(' ', $model[$i]->detalle_chat_fecha);
-                $resources[$i] = array(
-                    "chat_id" => $id_chat,
-                    "detalle_chat_id" => $model[$i]->detalle_chat_id,
-                    "id_usuario" => $model[$i]->id_usuario,
-                    "foto" => $model[$i]->user_image,
-                    "mensaje" => $model[$i]->detalle_chat_mensaje,
-                    "fecha" => $fecha[0],
-                    "hora" => $fecha[1],
-                    "estado" => $model[$i]->detalle_chat_estado
+            if(isset($datos->id_usuario_1)){
+                $user=$this->user->list($datos->id_usuario_1);
+                $user2=$this->user->list($datos->id_usuario_2);
+                $datos_user=array(
+                    "id_usuario_1"=>$user->id_user,
+                    "nombre_usuario_1"=>$user->user_nickname,
+                    "foto_usuario_1"=>$user->user_image,
+                    "id_usuario_2"=>$user2->id_user,
+                    "nombre_usuario_2"=>$user2->user_nickname,
+                    "foto_usuario_2"=>$user2->user_image
                 );
+                $resources = array();
+                if(count($model)>0){
+                    for ($i = 0; $i < count($model); $i++) {
+                        $fecha = explode(' ', $model[$i]->detalle_chat_fecha);
+                        $resources[$i] = array(
+                            "chat_id" => $id_chat,
+                            "detalle_chat_id" => $model[$i]->detalle_chat_id,
+                            "id_usuario" => $model[$i]->id_usuario,
+                            "foto" => $model[$i]->user_image,
+                            "mensaje" => $model[$i]->detalle_chat_mensaje,
+                            "fecha" => $fecha[0],
+                            "hora" => $fecha[1],
+                            "estado" => $model[$i]->detalle_chat_estado
+                        );
+                    }
+                }
+
             }
         }catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
@@ -577,6 +587,7 @@ class UserController{
                     "notificacion_tipo" => $model[$i]->notificacion_tipo,
                     "notificacion_id_rel" => $model[$i]->notificacion_id_rel,
                     "notificacion_mensaje" => $model[$i]->notificacion_mensaje,
+                    "notificacion_imagen" => $model[$i]->notificacion_imagen,
                     "fecha" => $fecha,
                     "estado" => $model[$i]->notificacion_estado
                 );
@@ -602,6 +613,35 @@ class UserController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+    public function recarga_pendiente(){
+        try {
+            $id_user = $_POST['id_user'];
+            $datos_cuenta = $this->user->listar_cuenta_por_id_user($this->crypt->decrypt($_SESSION['id_user'],_FULL_KEY_));
+            $recarga_pendiente = $this->cuenta->listar_recarga_pendiente($datos_cuenta->id_cuenta);
+            $resources = [];
+            $hay = 0;
+            if(isset($recarga_pendiente->id_pagocip)){
+                $resources = $recarga_pendiente;
+                $hay=1;
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = [];
+        }
+        $data = array("hay"=>$hay,"results" => $resources);
+        echo json_encode($data);
+    }
+    public function cancelar_recarga(){
+        try {
+            $id = $_POST['id_pagocip'];
+            $result = $this->cuenta->cancelar_recarga($id);
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        $data = array("results" => $result);
+        echo json_encode($data);
+    }
     public function notificacion_vista(){
         try {
             $id = $_POST['id_notificacion'];
@@ -613,18 +653,23 @@ class UserController{
         echo json_encode($result);
     }
     public function actualizar_perfil(){
-        $usuario_id = $_POST['usuario_id'];
-        $datos = $this->user->list($usuario_id);
-        $imagen_Act = $datos->user_image;
-        unlink($imagen_Act);
-        $longitud = 10;
-        $token = '';
-        $pattern = '1234567890abcdefghijklmnopqrstuvwxyz';
-        $max = strlen($pattern)-1;
-        for($i=0;$i < $longitud;$i++) $token .= $pattern{mt_rand(0,$max)};
-        $file_path = "media/user/".$usuario_id."_".$token.".jpg";
-        move_uploaded_file($_FILES['imagen']['tmp_name'],$file_path);
-        $result = $this->user->actualizar_perfil($file_path,$usuario_id);
+        try {
+            $usuario_id = $_POST['usuario_id'];
+            $datos = $this->user->list($usuario_id);
+            $imagen_Act = $datos->user_image;
+            unlink($imagen_Act);
+            $longitud = 10;
+            $token = '';
+            $pattern = '1234567890abcdefghijklmnopqrstuvwxyz';
+            $max = strlen($pattern) - 1;
+            for ($i = 0; $i < $longitud; $i++) $token .= $pattern{mt_rand(0, $max)};
+            $file_path = "media/user/" . $usuario_id . "_" . $token . ".jpg";
+            move_uploaded_file($_FILES['imagen']['tmp_name'], $file_path);
+            $this->user->actualizar_perfil($file_path, $usuario_id);
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $file_path = "";
+        }
         echo json_encode($file_path,JSON_UNESCAPED_SLASHES);
     }
 }

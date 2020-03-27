@@ -1,0 +1,123 @@
+2020-03-17 00:00:25[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 655[MESSAGGE]Undefined property: stdClass::$id_reserva
+
+2020-03-17 00:00:25[UTC -5] [ip] 190.239.102.53 [location] User|guardar_notificacion [text] SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'notificacion_id_rel' cannot be null
+2020-03-17 00:02:22[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 655[MESSAGGE]Undefined property: stdClass::$id_reserva
+
+2020-03-17 00:02:22[UTC -5] [ip] 190.239.102.53 [location] User|guardar_notificacion [text] SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'notificacion_id_rel' cannot be null
+2020-03-17 00:05:43[UTC -5] [ip] 190.43.126.239 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 597[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:05:51[UTC -5] [ip] 190.43.126.239 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 280[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:05:55[UTC -5] [ip] 190.43.126.239 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 280[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:05:58[UTC -5] [ip] 190.43.126.239 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 280[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:08:59[UTC -5] [ip] 190.43.126.239 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 280[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:09:27[UTC -5] [ip] 190.43.126.239 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 280[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:17:34[UTC -5] [ip] 190.43.126.239 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/CuentaController.php: 89[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:17:34[UTC -5] [ip] 190.43.126.239 [location] Cuenta|save_recargar_mi_cuenta [text] SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'id_cuenta' cannot be null
+2020-03-17 00:18:04[UTC -5] [ip] 190.43.126.239 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/CuentaController.php: 89[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:18:04[UTC -5] [ip] 190.43.126.239 [location] Cuenta|save_recargar_mi_cuenta [text] SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'id_cuenta' cannot be null
+2020-03-17 00:49:59[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 00:51:10[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1630[MESSAGGE]Undefined index: id_user
+
+2020-03-17 00:51:10[UTC -5] [ip] 190.239.102.53 [location] Torneo|agregar_colaboracion [text] SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'id_user' cannot be null
+2020-03-17 00:51:50[UTC -5] [ip] 190.239.102.53 [location] Admin|index [text] SIN PERMISOS SUFICIENTES
+2020-03-17 00:52:04[UTC -5] [ip] 190.239.102.53 [location] Admin|index [text] SIN PERMISOS SUFICIENTES
+2020-03-17 00:52:10[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/admin/index.php: 32[MESSAGGE]Undefined offset: 0
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 266[MESSAGGE]Undefined offset: 1
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 266[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 266[MESSAGGE]Undefined offset: 1
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 266[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 266[MESSAGGE]Undefined variable: datos_
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 266[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 268[MESSAGGE]Undefined variable: datos_
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 268[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 271[MESSAGGE]Undefined offset: 1
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 271[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 271[MESSAGGE]Undefined variable: fecha
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 271[MESSAGGE]Undefined variable: fecha
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 272[MESSAGGE]Undefined variable: mensaje
+
+2020-03-17 00:52:34[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/view/torneo/index.php: 272[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 01:08:47[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 01:12:08[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 01:13:21[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 01:13:59[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 01:42:21[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 01:43:22[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 01:43:44[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:05:26[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:05:30[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:05:31[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:05:33[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:05:37[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:05:41[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:05:44[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:06:06[UTC -5] [ip] 190.239.102.53 [location] User|listar_chats_por_id_usuario [text] SIN PERMISOS SUFICIENTES
+2020-03-17 02:06:06[UTC -5] [ip] 190.239.102.53 [location] Torneo|listar_torneos_en_equipo [text] SIN PERMISOS SUFICIENTES
+2020-03-17 02:06:06[UTC -5] [ip] 190.239.102.53 [location] Torneo|listar_detalle_equipo [text] SIN PERMISOS SUFICIENTES
+2020-03-17 02:06:19[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:06:29[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 02:06:31[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 03:04:35[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 03:06:49[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 03:15:40[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/LoginController.php: 151[MESSAGGE]Undefined variable: permisos
+
+2020-03-17 03:15:41[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/LoginController.php: 151[MESSAGGE]Undefined variable: permisos
+
+2020-03-17 03:15:51[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 03:15:56[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 03:19:13[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 03:23:01[UTC -5] [ip] 190.239.102.53 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
+
+2020-03-17 13:49:48[UTC -5] [ip] 190.236.131.104 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 280[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 13:52:23[UTC -5] [ip] 190.236.131.104 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 280[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 13:52:29[UTC -5] [ip] 190.236.131.104 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 215[MESSAGGE]Trying to get property of non-object
+
+2020-03-17 15:51:03[UTC -5] [ip] 190.235.175.107 [location] Admin|index [text] SIN PERMISOS SUFICIENTES
+2020-03-17 16:10:56[UTC -5] [ip] 190.235.175.107 [location] Admin|index [text] SIN PERMISOS SUFICIENTES
+2020-03-17 16:15:38[UTC -5] [ip] 190.235.175.107 [location] Admin|index [text] SIN PERMISOS SUFICIENTES

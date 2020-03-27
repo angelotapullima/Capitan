@@ -1,0 +1,52 @@
+2020-03-24 00:01:30[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1360[MESSAGGE]Undefined variable: resources
+
+2020-03-24 00:01:30[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1360[MESSAGGE]Undefined variable: resources
+
+2020-03-24 00:01:31[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1430[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:01:32[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1360[MESSAGGE]Undefined variable: resources
+
+2020-03-24 00:01:32[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1360[MESSAGGE]Undefined variable: resources
+
+2020-03-24 00:01:39[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:01:39[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:01:39[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:01:39[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:01:39[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:01:39[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:01:39[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:01:44[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1430[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:03:43[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:03:43[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:03:43[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:03:43[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:03:43[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:03:43[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:03:43[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/ForoController.php: 243[MESSAGGE]Trying to get property of non-object
+
+2020-03-24 00:32:13[UTC -5] [ip] 201.230.122.2 [location] User|listar_notificaciones [text] SIN PERMISOS SUFICIENTES
+2020-03-24 01:32:03[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 347[MESSAGGE]Undefined index: id_usuario
+
+2020-03-24 09:46:12[UTC -5] [ip] 181.176.36.78 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1264[MESSAGGE]Undefined variable: resources
+
+2020-03-24 09:46:25[UTC -5] [ip] 181.176.36.78 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 347[MESSAGGE]Undefined index: id_usuario
+
+2020-03-24 09:47:06[UTC -5] [ip] 181.176.36.78 [location] Torneo|listar_equipos_por_id_usuario [text] SIN PERMISOS SUFICIENTES
+2020-03-24 09:47:06[UTC -5] [ip] 181.176.36.78 [location] Foro|listar_publicaciones [text] SIN PERMISOS SUFICIENTES
+2020-03-24 09:47:11[UTC -5] [ip] 181.176.36.78 [location] Torneo|listar_equipos_por_id_usuario_not [text] SIN PERMISOS SUFICIENTES
+2020-03-24 09:57:14[UTC -5] [ip] 190.43.126.231 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 596[MESSAGGE]Trying to get property of non-object
+

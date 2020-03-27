@@ -17,17 +17,20 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tec.bufeo.capitan.Activity.ChanchasEquipos;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Repository.EequiposRoomDbRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.ViewModels.EequiposViewModel;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Repository.TequiposRoomDbRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.ViewModels.TequiposViewModel;
 import com.tec.bufeo.capitan.Activity.Login;
+import com.tec.bufeo.capitan.Activity.MenuPrincipal;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Repository.MovimientosRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.ViewModels.MovimientosViewModel;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Views.MisMovimientos;
 import com.tec.bufeo.capitan.Activity.MisReservas.Views.MisReservasActivity;
 import com.tec.bufeo.capitan.Activity.Negocios.Repository.Negocios.NegociosRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.NegociosViewModel;
+import com.tec.bufeo.capitan.Activity.ProfileActivity;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Repository.RegistroEquiposTorneoRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.ViewModels.RegistroEquiposTorneoViewModel;
@@ -69,10 +72,10 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
 
   CardView cdv_perfil;
   CircleImageView civ_iconoPerfil;
-  TextView txt_tituloPerfil;
+  TextView txt_tituloPerfil,saldo_contable;
   SharedPreferences preferencesUser;
   UniversalImageLoader universalImageLoader;
-  LinearLayout misMovimientos,logout,realizarRecarga,bufis,mensajes,misReservas;
+  LinearLayout misMovimientos,logout,realizarRecarga,bufis,mensajes,misReservas,bufeoCoins,Chanchex;
 
 
   EequiposViewModel eequiposViewModel;
@@ -140,14 +143,18 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         civ_iconoPerfil = view.findViewById(R.id.civ_iconoPerfil);
         txt_tituloPerfil = view.findViewById(R.id.txt_tituloPerfil);
         cdv_perfil = view.findViewById(R.id.cdv_perfil);
+        bufeoCoins = view.findViewById(R.id.bufeoCoins);
         misMovimientos = view.findViewById(R.id.misMovimientos);
         mensajes = view.findViewById(R.id.mensajes);
+        Chanchex = view.findViewById(R.id.Chanchex);
+        saldo_contable = view.findViewById(R.id.saldo_contable);
         realizarRecarga = view.findViewById(R.id.realizarRecarga);
         misReservas = view.findViewById(R.id.misReservas);
         logout = view.findViewById(R.id.logout);
         bufis = view.findViewById(R.id.bufis);
 
 
+        saldo_contable.setText(pref.getSaldo());
 
         txt_tituloPerfil.setText(pref.getPersonName() + " " + pref.getPersonSurname());
 
@@ -156,6 +163,8 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
+                Intent i = new Intent(getContext(), ProfileActivity.class);
+                startActivity(i);
             }
         });
 
@@ -171,6 +180,8 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         bufis.setOnClickListener(this);
         mensajes.setOnClickListener(this);
         misReservas.setOnClickListener(this);
+        bufeoCoins.setOnClickListener(this);
+        Chanchex.setOnClickListener(this);
         return view;
     }
 
@@ -294,6 +305,17 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
             startActivity(i);
         }else if (v.equals(misReservas)){
             Intent i = new Intent(getContext(), MisReservasActivity.class);
+            startActivity(i);
+        }else if(v.equals(bufeoCoins)){
+            Intent i = new Intent(getContext(), RealizarRecarga.class);
+            startActivity(i);
+        }else if (v.equals(mensajes)){
+            Intent i = new Intent(getContext(), MenuPrincipal.class);
+            i.putExtra("inicio","mensajes");
+            pref.saveValuePORT("inicio","mensajes");
+            startActivity(i);
+        }else if (v.equals(Chanchex)){
+            Intent i = new Intent(getContext(), ChanchasEquipos.class);
             startActivity(i);
         }
     }

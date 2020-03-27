@@ -179,7 +179,23 @@ public class ChanchasFragment extends Fragment {
         crearChanchex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crearChancha(name_chancha.getText().toString(),monto_chancha.getText().toString());
+                if (!name_chancha.getText().toString().isEmpty()){
+                    if (monto_chancha.getText().toString().isEmpty()){
+                        if (Integer.parseInt(monto_chancha.getText().toString())>0){
+                            crearChancha(name_chancha.getText().toString(),monto_chancha.getText().toString());
+                        }else{
+                            preferences.codeAdvertencia("El monto debe ser mayor a 0");
+                        }
+                    }else{
+                        preferences.codeAdvertencia("El campo monto no debe estar vacio");
+                    }
+
+                }else{
+                    preferences.codeAdvertencia("El campo nombre no debe estar vacio");
+                }
+
+
+
             }
         });
     }

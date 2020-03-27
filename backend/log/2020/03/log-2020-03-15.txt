@@ -1,0 +1,4 @@
+2020-03-15 12:53:39[UTC -5] [ip] 190.43.126.147 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 280[MESSAGGE]Trying to get property of non-object
+
+2020-03-15 12:53:56[UTC -5] [ip] 190.43.126.147 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 348[MESSAGGE]Undefined index: id_usuario
+

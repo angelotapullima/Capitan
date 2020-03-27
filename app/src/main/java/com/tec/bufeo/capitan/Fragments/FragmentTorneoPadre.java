@@ -51,7 +51,7 @@ public class FragmentTorneoPadre extends Fragment  {
     ChatsListViewModel chatsListViewModel;
     TorneosViewModel torneosViewModel;
     UniversalImageLoader universalImageLoader;
-
+    String inicio;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
 
@@ -143,6 +143,14 @@ public class FragmentTorneoPadre extends Fragment  {
             tabLayoutT.addTab(tabLayoutT.newTab(). setIcon(imgBordeIds[i]).setText(tituloIds[i]) );
         }
 
+        final Bundle bdl = getArguments();
+
+
+
+        if (preferences.getInicio().equals("mensajes")){
+            mViewPager.setCurrentItem(3);
+            preferences.saveValuePORT("inicio","inicio");
+        }
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayoutT));
         //tabLayoutT.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));

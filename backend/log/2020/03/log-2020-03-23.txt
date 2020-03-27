@@ -1,0 +1,12 @@
+2020-03-23 16:48:35[UTC -5] [ip] 190.236.72.162 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 347[MESSAGGE]Undefined index: id_usuario
+
+2020-03-23 20:08:24[UTC -5] [ip] 201.230.122.2 [location] User|listar_notificaciones [text] SIN PERMISOS SUFICIENTES
+2020-03-23 20:39:16[UTC -5] [ip] 201.230.122.2 [location] Empresa|listar_reservados_por_cancha_por_fecha [text] SIN PERMISOS SUFICIENTES
+2020-03-23 20:39:16[UTC -5] [ip] 201.230.122.2 [location] Torneo|listar_equipos_por_id_usuario_not [text] SIN PERMISOS SUFICIENTES
+2020-03-23 20:39:16[UTC -5] [ip] 201.230.122.2 [location] Torneo|listar_equipos_por_id_usuario [text] SIN PERMISOS SUFICIENTES
+2020-03-23 21:26:45[UTC -5] [ip] 201.230.122.2 [location] Empresa|listar_reservados_por_cancha_por_fecha [text] SIN PERMISOS SUFICIENTES
+2020-03-23 21:26:47[UTC -5] [ip] 201.230.122.2 [location] Empresa|listar_empresas_por_id_ciudad [text] SIN PERMISOS SUFICIENTES
+2020-03-23 23:16:34[UTC -5] [ip] 190.43.126.89 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 347[MESSAGGE]Undefined index: id_usuario
+
+2020-03-23 23:56:24[UTC -5] [ip] 201.230.122.2 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 347[MESSAGGE]Undefined index: id_usuario
+

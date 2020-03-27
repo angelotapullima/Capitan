@@ -115,9 +115,9 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
         return b;
     }
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
-        return false;
+        public boolean onSupportNavigateUp() {
+            onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+            return false;
     }
 
     public void enviarADondeSea(Uri ur){ //Recibimos el string y lo convertimos a Uri

@@ -9,13 +9,15 @@ public class TablaTorneoItem {
 
     private String nombre_grupo;
     private String id_grupo;
+    private String condicion;
     private List<TablaTorneoSubItem> tablaTorneoSubItems;
 
 
 
-    public TablaTorneoItem(String nombre_grupo,String id_grupo, List<TablaTorneoSubItem> tablaTorneoSubItems) {
+    public TablaTorneoItem(String nombre_grupo,String id_grupo,String condicion, List<TablaTorneoSubItem> tablaTorneoSubItems) {
         this.nombre_grupo = nombre_grupo;
         this.id_grupo = id_grupo;
+        this.condicion = condicion;
         this.tablaTorneoSubItems = tablaTorneoSubItems;
     }
 
@@ -35,6 +37,15 @@ public class TablaTorneoItem {
         this.nombre_grupo = nombre_grupo;
     }
 
+
+
+    public String getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
+    }
     public List<TablaTorneoSubItem> getTablaTorneoSubItems() {
         return tablaTorneoSubItems;
     }

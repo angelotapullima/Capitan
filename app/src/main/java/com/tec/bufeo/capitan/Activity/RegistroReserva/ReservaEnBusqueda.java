@@ -293,6 +293,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
             if (saldo.size()>0){
                 saldo_cargado=saldo.get(0).getSaldo_actual();
                 preferences.saveValuePORT("comision", saldo.get(0).getComision());
+                preferences.saveValuePORT("saldo", saldo.get(0).getSaldo_actual());
             }else{
                 saldo_cargado="vacio";
             }

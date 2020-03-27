@@ -69,7 +69,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
     MensajesViewModel mensajesViewModel;
     FeedListViewModel feedListViewModel;
     MisEquiposViewModel misEquiposViewModel;
-
+    String carga;
 
 
     @Override
@@ -85,6 +85,7 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
 
         preferences = new Preferences(this);
 
+        carga = getIntent().getExtras().getString("inicio");
         preferencesUser = getSharedPreferences("User", Context.MODE_PRIVATE);
 
         if (preferences.getCantidadIngreso().equals("1")){
@@ -114,8 +115,13 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
         bnv_menu = (BottomNavigationView) findViewById(R.id.bnv_menu);
         bnv_menu.setOnNavigationItemSelectedListener(this);
 
-
+        if (carga.equals("mensajes")){
+            setMensajesFragment();
+        }else{
             setInitialFragment();
+        }
+
+
 
 
         BR = new BroadcastReceiver() {
@@ -226,10 +232,20 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
     private void setInitialFragment() {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentactual = new ForoFragment();
-        fragmentTransaction.add(R.id.content_frame, fragmentactual,"Foro");
+        Bundle bundle =  new Bundle();
+        bundle.putString("inicio","mensajes");
+        fragmentactual.setArguments(bundle);
+
+        fragmentTransaction.add(R.id.content_frame, fragmentactual,"frag");
         fragmentTransaction.commit();
     }
 
+    private void setMensajesFragment() {
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentactual = new FragmentTorneoPadre();
+        fragmentTransaction.add(R.id.content_frame, fragmentactual,"frag");
+        fragmentTransaction.commit();
+    }
 
 
 

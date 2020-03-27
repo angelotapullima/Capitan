@@ -49,6 +49,18 @@ class Transferencia{
         }
         return $result;
     }
+    public function delete_transferencia_u_e_por_pago_id($id){
+        try{
+            $sql = 'delete from transferencia_u_e where id_pago = ?';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$id]);
+            $result = 1;
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
     public function listar_mis_transferencias($id_user){
         try {
             $sql = 'select * from transferencia_u_u t inner join cuenta c on t.id_usuario_emisor = c.id_cuenta where c.id_user = ?';

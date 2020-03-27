@@ -136,7 +136,7 @@ public class GruposYEquiposFragment extends Fragment implements SwipeRefreshLayo
                             //tablaTorneoItem = new TablaTorneoItem(nombre_grupo, );
                             //listaItem.add(tablaTorneoItem);
                         } else {
-                            tablaTorneoItem = new TablaTorneoItem(nombre_grupo,id_grupo, buildSubItemList(jsonArray));
+                            tablaTorneoItem = new TablaTorneoItem(nombre_grupo,id_grupo,"detalle_torneo", buildSubItemList(jsonArray));
                             listaItem.add(tablaTorneoItem);
                         }
 

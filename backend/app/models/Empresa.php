@@ -15,6 +15,7 @@ class Empresa{
                     ubigeo_id,
                     empresa_nombre,
                     empresa_direccion,
+                    
                     empresa_coord_x,
                     empresa_coord_y,
                     empresa_telefono_1,
@@ -65,6 +66,18 @@ class Empresa{
             $stm = $this->pdo->prepare($sql);
             $stm->execute([$id]);
             $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_mi_negocio_reserva($id_user,$id_empresa){
+        try{
+            $sql = 'select * from empresa_usuario eu inner join empresa e on eu.empresa_id=e.empresa_id where eu.id_user = ? and eu.empresa_id=?';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$id_user,$id_empresa]);
+            $result = $stm->fetch();
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
             $result = [];
@@ -129,6 +142,20 @@ class Empresa{
         }
         return $result;
     }
+    public function registrar_promo($cancha_id,$precio,$inicio,$fin,$est){
+        try {
+            $sql = 'update cancha set cancha_promo_precio=?, cancha_promo_inicio=?,cancha_promo_fin=?,cancha_promo_estado=? where cancha_id=?';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([
+                $precio,$inicio,$fin,$est,$cancha_id
+            ]);
+            $result = 1;
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
     public function listar_reservados_por_cancha_por_fecha($id_cancha,$fecha){
         try {
             $stm = $this->pdo->prepare("select * from reserva where cancha_id =? and reserva_fecha=?");
@@ -140,11 +167,55 @@ class Empresa{
         }
         return $result;
     }
+    public function listar_reservas_por_usuario($id_user){
+        try {
+            $stm = $this->pdo->prepare("select * from reserva r inner join pago p on r.pago_id = p.pago_id inner join cancha c on r.cancha_id = c.cancha_id inner join empresa e on c.empresa_id = e.empresa_id where p.id_user=?");
+            $stm->execute([$id_user]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_reserva_por_id($id){
+        try {
+            $stm = $this->pdo->prepare("select * from reserva r inner join cancha c on r.cancha_id = c.cancha_id inner join empresa e on c.empresa_id = e.empresa_id where r.reserva_id=?");
+            $stm->execute([$id]);
+            $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_reserva_por_microtime($id){
+        try {
+            $stm = $this->pdo->prepare("select * from reserva r inner join cancha c on r.cancha_id = c.cancha_id inner join empresa e on c.empresa_id = e.empresa_id where r.reserva_microtime=?");
+            $stm->execute([$id]);
+            $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
     public function listar_cancha_por_id($id){
         try {
             $stm = $this->pdo->prepare("select * from cancha c inner join empresa e on c.empresa_id = e.empresa_id where c.cancha_id =?");
             $stm->execute([$id]);
             $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_usuarios_por_id_cancha($id){
+        try {
+            $stm = $this->pdo->prepare("select * from cancha c inner join empresa e on c.empresa_id = e.empresa_id inner join empresa_usuario eu on e.empresa_id = eu.empresa_id inner join user u on eu.id_user = u.id_user where c.cancha_id =?");
+            $stm->execute([$id]);
+            $result = $stm->fetchAll();
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
             $result = [];
@@ -166,7 +237,7 @@ class Empresa{
         $hora_1 = $hora + 1;
         $hora=$hora.":00-".$hora_1.":00";
         try {
-            $stm = $this->pdo->prepare("SELECT DISTINCT e.*,c.cancha_precioD,c.cancha_precioN FROM cancha c inner join empresa e on e.empresa_id=c.empresa_id where c.cancha_id NOT in (SELECT r.cancha_id from reserva r where r.reserva_fecha=? and r.reserva_hora=?) and e.empresa_estado=1 and c.cancha_estado=1 group by e.empresa_id");
+            $stm = $this->pdo->prepare("SELECT DISTINCT e.*,c.cancha_id,c.cancha_precioD,c.cancha_precioN,c.cancha_promo_precio,c.cancha_promo_inicio,c.cancha_promo_fin,c.cancha_promo_estado FROM cancha c inner join empresa e on e.empresa_id=c.empresa_id where c.cancha_id NOT in (SELECT r.cancha_id from reserva r where r.reserva_fecha=? and r.reserva_hora=?) and e.empresa_estado=1 and c.cancha_estado=1 group by e.empresa_id");
             $stm->execute([$fecha,$hora]);
             $result = $stm->fetchAll();
         } catch (Exception $e){
@@ -179,7 +250,7 @@ class Empresa{
         $hora_1 = $hora + 1;
         $hora=$hora.":00-".$hora_1.":00";
         try {
-            $stm = $this->pdo->prepare("SELECT DISTINCT e.*,c.cancha_precioD,c.cancha_precioN FROM cancha c inner join empresa e on e.empresa_id=c.empresa_id where c.cancha_id NOT in (SELECT r.cancha_id from reserva r where r.reserva_fecha=? and r.reserva_hora=?) and e.empresa_estado=1 and e.empresa_id = ? and c.cancha_estado=1 group by e.empresa_id");
+            $stm = $this->pdo->prepare("SELECT DISTINCT e.*,c.cancha_id,c.cancha_precioD,c.cancha_precioN,c.cancha_promo_precio,c.cancha_promo_inicio,c.cancha_promo_fin,c.cancha_promo_estado FROM cancha c inner join empresa e on e.empresa_id=c.empresa_id where c.cancha_id NOT in (SELECT r.cancha_id from reserva r where r.reserva_fecha=? and r.reserva_hora=?) and e.empresa_estado=1 and e.empresa_id = ? and c.cancha_estado=1 group by e.empresa_id");
             $stm->execute([$fecha,$hora,$negocio]);
             $result = $stm->fetchAll();
         } catch (Exception $e){
@@ -220,10 +291,11 @@ class Empresa{
         }
         return $result;
     }
-    public function registrar_reserva($id_cancha,$tipopago,$pago_id,$nombre,$fecha,$hora,$pago1,$pago1_date,$pago2,$pago2_date,$estado,$microtime){
+    public function registrar_reserva($id_cancha,$id_user,$tipopago,$pago_id,$nombre,$fecha,$hora,$pago1,$pago1_date,$pago2,$pago2_date,$estado,$microtime){
         try {
             $sql = 'insert into reserva(
                     cancha_id,
+                    id_user,
                     reserva_tipopago,
                     pago_id,
                     reserva_nombre,
@@ -235,10 +307,10 @@ class Empresa{
                     reserva_pago2_date,
                     reserva_estado,
                     reserva_microtime
-                    ) values(?,?,?,?,?,?,?,?,?,?,?,?)';
+                    ) values(?,?,?,?,?,?,?,?,?,?,?,?,?)';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([
-                $id_cancha,$tipopago,$pago_id,$nombre,$fecha,$hora,$pago1,$pago1_date,$pago2,$pago2_date,$estado,$microtime
+                $id_cancha,$id_user,$tipopago,$pago_id,$nombre,$fecha,$hora,$pago1,$pago1_date,$pago2,$pago2_date,$estado,$microtime
             ]);
             $result = 1;
         } catch (Exception $e){
@@ -265,6 +337,18 @@ class Empresa{
             $stm->execute([
                 $pago_id_user,$pago_equipo_id,$id_colaboracion,$pago_tipo,$pago_monto,$pago_comision,$pago_total,$pago_date,$pago_microtime
             ]);
+            $result = 1;
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
+    public function delete_pago_por_microtime($mt){
+        try{
+            $sql = 'delete from pago where pago_microtime=?';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$mt]);
             $result = 1;
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
@@ -363,9 +447,32 @@ class Empresa{
         }
         return $result;
     }
+    public function actualizar_colaboracion_estado_1($id){
+        try {
+            $sql = 'update colaboracion set colaboracion_estado = 1 where colaboracion_id = ?';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$id]);
+            $result = 1;
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
     public function actualizar_detalle_colaboracion_estado_0($id){
         try {
             $sql = 'update detalle_colaboracion set detalle_colaboracion_estado = 0 where id_colaboracion = ?';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$id]);
+            $result = 1;
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }public function actualizar_detalle_colaboracion_estado_1($id){
+        try {
+            $sql = 'update detalle_colaboracion set detalle_colaboracion_estado = 1 where id_colaboracion = ?';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([$id]);
             $result = 1;

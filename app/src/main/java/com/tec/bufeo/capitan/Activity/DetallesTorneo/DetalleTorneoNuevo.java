@@ -103,6 +103,7 @@ public class DetalleTorneoNuevo extends AppCompatActivity implements View.OnClic
         }
 
 
+
         container_Dtorneo.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs_Dtorneo));
         //tabLayoutT.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         tabs_Dtorneo.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

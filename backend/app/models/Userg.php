@@ -88,6 +88,23 @@ class Userg{
         }
         return $result;
     }
+    public function validateEmail($Email){
+        try{
+            $sql = 'select * from user u where u.user_email = ? limit 2';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$Email]);
+            $re = $stm->fetchAll();
+            if(count($re) > 0){
+                $result = true;
+            } else {
+                $result = false;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = false;
+        }
+        return $result;
+    }
 
     public function validateDNI($dni){
         try{

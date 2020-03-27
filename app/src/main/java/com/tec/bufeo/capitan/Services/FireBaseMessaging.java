@@ -142,7 +142,7 @@ public class FireBaseMessaging extends FirebaseMessagingService {
     private void ShowNotification(NotificacionesService notificacionesService){
 
         Intent i = new Intent(this, MenuPrincipal.class);
-        i.putExtra("mostrarPantalla","inicio");
+        i.putExtra("inicio","inicio");
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this,NOTIFICACION_ID,i, PendingIntent.FLAG_ONE_SHOT);

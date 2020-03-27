@@ -60,6 +60,28 @@ class Foro{
         }
         return $result;
     }
+    public function listar_publicaciones_all(){
+        try {
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join user u on u.id_user=p.usuario_id order by publicaciones_id desc limit 2");
+            $stm->execute();
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_publicaciones_all_id_user($id_user){
+        try {
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join user u on u.id_user=p.usuario_id where u.id_user=? order by publicaciones_id desc");
+            $stm->execute([$id_user]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
     public function listar_publicacion($id){
         try {
             $stm = $this->pdo->prepare("select * from publicaciones p where p.publicaciones_id=? limit 1");
@@ -73,8 +95,19 @@ class Foro{
     }
     public function listar_ultima_publicacion(){
         try {
-            $stm = $this->pdo->prepare("select * from publicaciones p inner join usuario u on u.usuario_id=p.usuario_id where p.publicaciones_estado=1 order by publicaciones_id desc limit 1");
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join user u on u.id_user=p.usuario_id where p.publicaciones_estado=1 order by publicaciones_id desc limit 1");
             $stm->execute();
+            $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_ultima_publicacion_id_user($id_user){
+        try {
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join user u on u.id_user=p.usuario_id where p.publicaciones_estado=1 and u.id_user=? order by publicaciones_id desc limit 1");
+            $stm->execute([$id_user]);
             $result = $stm->fetch();
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
@@ -84,8 +117,19 @@ class Foro{
     }
     public function listar_publicaciones_limite($limite_inf){
         try {
-            $stm = $this->pdo->prepare("select * from publicaciones p inner join usuario u on u.usuario_id=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id < ? order by publicaciones_id desc limit 10");
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join user u on u.id_user=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id < ? order by publicaciones_id desc limit 2");
             $stm->execute([$limite_inf]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_publicaciones_limite_id_user($limite_inf,$id_user){
+        try {
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join user u on u.id_user=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id < ? and u.id_user=? order by publicaciones_id desc limit 2");
+            $stm->execute([$limite_inf,$id_user]);
             $result = $stm->fetchAll();
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
@@ -95,8 +139,19 @@ class Foro{
     }
     public function listar_publicaciones_limite_sup($limite_sup){
         try {
-            $stm = $this->pdo->prepare("select * from publicaciones p inner join usuario u on u.usuario_id=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id > ? order by publicaciones_id desc");
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join user u on u.id_user=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id > ? order by publicaciones_id desc");
             $stm->execute([$limite_sup]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_publicaciones_limite_sup_id_user($limite_sup,$id_user){
+        try {
+            $stm = $this->pdo->prepare("select * from publicaciones p inner join user u on u.id_user=p.usuario_id where p.publicaciones_estado=1 and publicaciones_id > ? and u.id_user=? order by publicaciones_id desc");
+            $stm->execute([$limite_sup,$id_user]);
             $result = $stm->fetchAll();
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
@@ -201,7 +256,7 @@ class Foro{
     }
     public function eliminar_likes($id){
         try{
-            $sql = 'delete from likepublicacion where publicaciones_id = ?';
+            $sql = 'delete from likePublicacion where publicaciones_id = ?';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([$id]);
             $result = 1;
@@ -214,6 +269,18 @@ class Foro{
     public function eliminar_publicacion($id){
         try{
             $sql = 'delete from publicaciones where publicaciones_id = ?';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$id]);
+            $result = 1;
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
+    public function desactivar_publicacion($id){
+        try{
+            $sql = 'update publicaciones set publicaciones_estado = 0 where publicaciones_id = ?';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([$id]);
             $result = 1;

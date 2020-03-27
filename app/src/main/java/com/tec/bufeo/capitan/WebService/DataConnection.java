@@ -991,7 +991,7 @@ public class DataConnection extends AppCompatActivity {
                     public void run() {
 
                         Intent intent = new Intent(context, MenuPrincipal.class);
-                        intent.putExtra("mostrarPantalla","inicio");
+                        intent.putExtra("inicio","inicio");
 
 
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -1,77 +1,90 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.DetalleCanchas">
+    android:orientation="vertical"
+    tools:context=".Activity.DetalleCanchas.Views.DetalleCanchas">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:background="#ffffff"
-            android:layout_height="40dp">
+       <com.google.android.material.appbar.AppBarLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:background="#FFF"
+               android:orientation="vertical">
+               <RelativeLayout
+                   android:layout_width="match_parent"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
+                   android:layout_height="match_parent">
+                   <ImageView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_centerVertical="true"
+                       android:layout_marginLeft="16dp"
+                       android:id="@+id/arrow_back"
+                       app:srcCompat="@drawable/ic_arrow_back_black_24dp"/>
+                   <LinearLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/lbufis"
+                       android:layout_alignParentEnd="true"
+                       android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:id="@+id/arrow_back"
-                    app:srcCompat="@drawable/ic_arrow_back_black_24dp"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/lbufis"
-                    android:layout_alignParentEnd="true"
-                    android:orientation="horizontal">
+                       <ImageView
+                           android:layout_width="30dp"
+                           android:layout_height="30dp"
+                           android:src="@drawable/bufeo_coin"/>
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/bufeo_coin"/>
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_marginLeft="5dp"
+                           android:id="@+id/saldo_contable"
+                           android:textColor="#000"
+                           android:layout_gravity="center"
+                           android:layout_marginRight="10dp"
+                           android:textSize="19sp"
+                           android:textStyle="bold"/>
+                   </LinearLayout>
+               </RelativeLayout>
+               <devs.mulham.horizontalcalendar.HorizontalCalendarView
+                   android:id="@+id/calendarView"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:textColorNormal="#000"
+                   app:selectorColor="@color/colorPrimary"
+                   app:textColorSelected="@color/colorPrimary"/>
+           </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:id="@+id/saldo_contable"
-                        android:textColor="#000"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="10dp"
-                        android:textSize="19sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </RelativeLayout>
-
-        </LinearLayout>
-
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
+       </com.google.android.material.appbar.AppBarLayout>
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFF"
-            app:tabTextColor="#388E3C"
-            app:tabSelectedTextColor="#000"
-            app:tabIndicatorHeight="2dp"
-            android:visibility="visible">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_reservas"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        </com.google.android.material.tabs.TabLayout>
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:visibility="visible"/>
+                </androidx.recyclerview.widget.RecyclerView>
 
 
-    </LinearLayout>
 
-</FrameLayout>
+            </LinearLayout>
+
+
+
+        </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

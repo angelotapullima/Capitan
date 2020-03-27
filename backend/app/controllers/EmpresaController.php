@@ -261,8 +261,23 @@ class EmpresaController{
 
     public function listar_cancha_por_id() {
         try{
+            $fecha_actual = date('Y-m-d H:i:s');
             $id = $_POST["id"];
-            $result = $this->empresa->listar_cancha_por_id($id);
+            $model = $this->empresa->listar_cancha_por_id($id);
+            $resources = array(
+                "id_empresa" => $model->empresa_id,
+                "cancha_id" => $model->cancha_id,
+                "nombre" => $model->cancha_nombre,
+                "dimensiones" => $model->cancha_dimensiones,
+                "precioD" => $model->cancha_precioD,
+                "precioN" => $model->cancha_precioN,
+                "foto" => $model->cancha_foto,
+                "fecha_actual" => $fecha_actual,
+                "promo_precio" => $model->cancha_promo_precio,
+                "promo_inicio" => $model->cancha_promo_inicio,
+                "promo_fin" => $model->cancha_promo_fin,
+                "promo_estado" => $model->cancha_promo_estado,
+            );
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
             $result = 2;
@@ -277,8 +292,7 @@ class EmpresaController{
                 $id = $_POST['id'];
             }
             $model = $this->empresa->obtener_saldo_actual($id);
-            $saldo = $model->cuenta_saldo;
-            if($saldo==null){$saldo=0;}
+            (isset($model->cuenta_saldo))? $saldo = $model->cuenta_saldo:$saldo=0;
             $comision = "3.00";
             $resources[] = array(
                 "cuenta_saldo" => $saldo,
@@ -482,6 +496,50 @@ class EmpresaController{
         }
         echo json_encode($result);
     }
+    public function registrar_promo() {
+        try{
+            $ok_data = true;
+            if(isset($_POST['cancha_id']) && isset($_POST['cancha_promo_precio']) &&isset($_POST['cancha_promo_inicio']) &&isset($_POST['cancha_promo_fin'])){
+                $_POST['cancha_id'] = $this->clean->clean_post_int($_POST['cancha_id']);
+                $_POST['cancha_promo_inicio'] = $this->clean->clean_post_date($_POST['cancha_promo_inicio']);
+                $_POST['cancha_promo_fin'] = $this->clean->clean_post_date($_POST['cancha_promo_fin']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['cancha_id'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_date($_POST['cancha_promo_inicio'], true, $ok_data, 100,2);
+                $ok_data = $this->clean->validate_post_date($_POST['cancha_promo_fin'], true, $ok_data, 100,2);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $cancha_id = $_POST['cancha_id'];
+                $precio = $_POST['cancha_promo_precio'];
+                $inicio = $_POST['cancha_promo_inicio'];
+                $fin = $_POST['cancha_promo_fin'];
+                $est=1;
+                $result = $this->empresa->registrar_promo($cancha_id,$precio,$inicio,$fin,$est);
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e) {
+            $this->log->insert($e->getMessage(), get_class($this) . '|' . __FUNCTION__);
+            $result = 2;
+        }
+        echo json_encode($result);
+    }
+    public function desactivar_promo() {
+        try{
+            $cancha_id = $_POST['cancha_id'];
+            $precio = 0;
+            $inicio = '00-00-0000 00:00:00';
+            $fin = '00-00-0000 00:00:00';
+            $est=0;
+            $result = $this->empresa->registrar_promo($cancha_id,$precio,$inicio,$fin,$est);
+        } catch (Exception $e) {
+            $this->log->insert($e->getMessage(), get_class($this) . '|' . __FUNCTION__);
+            $result = 2;
+        }
+        echo json_encode($result);
+    }
     public function listar_reservados_por_cancha_por_fecha(){
         $id_cancha = $_POST['id_cancha'];
         $fecha = $_POST['fecha'];
@@ -531,11 +589,14 @@ class EmpresaController{
         $data = array("results" => $model);
         echo json_encode($data);
     }
-    public function listar_canchas_por_id_empresa(){
+    public function listar_canchas_por_id_empresa()
+    {
+        try{
+        $fecha_actual = date('Y-m-d H:i:s');
         $id_empresa = $_POST['id_empresa'];
         $model = $this->empresa->listar_canchas_por_id_empresa($id_empresa);
         $resources = array();
-        for ($i=0;$i<count($model);$i++) {
+        for ($i = 0; $i < count($model); $i++) {
             $resources[$i] = array(
                 "id_empresa" => $id_empresa,
                 "cancha_id" => $model[$i]->cancha_id,
@@ -543,8 +604,17 @@ class EmpresaController{
                 "dimensiones" => $model[$i]->cancha_dimensiones,
                 "precioD" => $model[$i]->cancha_precioD,
                 "precioN" => $model[$i]->cancha_precioN,
-                "foto" => $model[$i]->cancha_foto
+                "foto" => $model[$i]->cancha_foto,
+                "fecha_actual" => $fecha_actual,
+                "promo_precio" => $model[$i]->cancha_promo_precio,
+                "promo_inicio" => $model[$i]->cancha_promo_inicio,
+                "promo_fin" => $model[$i]->cancha_promo_fin,
+                "promo_estado" => $model[$i]->cancha_promo_estado,
             );
+        }
+    }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
         }
         $data = array("results" => $resources);
         echo json_encode($data);
@@ -579,63 +649,73 @@ class EmpresaController{
                     }
                     else{
                         $pago_id_user = $_POST['pago_id_user'];
-                        $pago_equipo_id = $_POST['pago_equipo_id'];
                         $pago_tipo = $_POST['pago_tipo'];
+                        $pago_equipo_id = $_POST['pago_equipo_id'];
                         $id_colaboracion = $_POST['id_colaboracion'];
                         $pago_monto = $_POST['pago1'];
                         $pago_comision = $_POST['pago_comision'];
                         $pago_total = $pago_monto * 1 + $pago_comision * 1;
-                        $pago_microtime = microtime(true);
-                        $result = $this->empresa->registrar_pago($pago_id_user,$pago_equipo_id,$id_colaboracion,$pago_tipo,$pago_monto,$pago_comision,$pago_total,$pago_date,$pago_microtime);
-                        if($result==1){
-                            $pago_detalle = $this->empresa->listar_pago_por_mt($pago_microtime);
-                            $pago_id=$pago_detalle->pago_id;
-                            if($pago_tipo==1){
-                                //actualizar saldo
-                                $modelando = new Cuenta();
-                                $datos_cuenta=$this->user->listar_cuenta_por_id_user($pago_id_user);
-                                $modelando->receptor = $datos_cuenta->id_cuenta;
-                                $modelando->monto = $pago_total * (-1);
-                                $this->cuenta->sumar_saldo($modelando);
-                                //fin actualizar saldo
-                                //guardar transferencia
-                                $modelando_T = new Transferencia();
-                                $datos_empresa = $this->empresa->listar_cancha_por_id($id_cancha);
-                                $modelando_T->nro_operacion = $datos_empresa->empresa_id."-1111111";
-                                $modelando_T->id_user = $pago_id_user;
-                                $modelando_T->id_empresa = $datos_empresa->empresa_id;
-                                $modelando_T->id_pago = $pago_id;
-                                $modelando_T->monto = $pago_monto;
-                                $modelando_T->concepto = "Reserva Cancha ".$datos_empresa->empresa_nombre;
-                                $this->transferencia->save_transferencia_u_e($modelando_T);
-                                //fin guardar transferencia
-                            }else{
-                                $this->empresa->actualizar_colaboracion_estado_0($id_colaboracion);
-                                $detalle_colaboracion = $this->empresa->obtener_detalle_chancha($id_colaboracion);
-                                foreach ($detalle_colaboracion as $dc){
-                                    //actualizar saldo
-                                    $modelando = new Cuenta();
-                                    $datos_cuenta=$this->user->listar_cuenta_por_id_user($dc->id_user);
-                                    $modelando->receptor = $datos_cuenta->id_cuenta;
-                                    $modelando->monto = $dc->detalle_colaboracion_monto * (-1);
-                                    $this->cuenta->sumar_saldo($modelando);
-                                    //fin actualizar saldo
-                                }
-                                //guardar transferencia
-                                $modelando_T = new Transferencia();
-                                $datos_empresa = $this->empresa->listar_cancha_por_id($id_cancha);
-                                $modelando_T->nro_operacion = $datos_empresa->empresa_id."-1111111";
-                                $modelando_T->id_user = $pago_id_user;
-                                $modelando_T->id_empresa = $datos_empresa->empresa_id;
-                                $modelando_T->id_pago = $pago_id;
-                                $modelando_T->monto = $pago_monto;
-                                $modelando_T->concepto = "Reserva Cancha ".$datos_empresa->empresa_nombre;
-                                $this->transferencia->save_transferencia_u_e($modelando_T);
-                                //fin guardar transferencia
-                                $this->empresa->actualizar_detalle_colaboracion_estado_0($id_colaboracion);
+                        $enter=true;
+                        if($pago_tipo==1) {
+                            $datos_cuenta_ = $this->user->listar_cuenta_por_id_user($pago_id_user);
+                            if($datos_cuenta_->cuenta_saldo < $pago_total){
+                                $enter = false;
                             }
                         }else{
-                            throw new Exception('Ocurrió un error al registrar pago.');
+                            $detalle_colaboracion = $this->empresa->obtener_detalle_chancha($id_colaboracion);
+                            $monto_chanchita_pe = 0;
+                            foreach ($detalle_colaboracion as $dc){
+                                $monto_chanchita_pe = $monto_chanchita_pe + $dc->detalle_colaboracion_monto * (1);
+                            }
+                            if($monto_chanchita_pe!=$pago_total){
+                                $enter=false;
+                            }
+                        }
+                        if($enter){
+                            $pago_microtime = microtime(true);
+                            $result = $this->empresa->registrar_pago($pago_id_user,$pago_equipo_id,$id_colaboracion,$pago_tipo,$pago_monto,$pago_comision,$pago_total,$pago_date,$pago_microtime);
+                            if($result==1){
+                                $pago_detalle = $this->empresa->listar_pago_por_mt($pago_microtime);
+                                $pago_id=$pago_detalle->pago_id;
+                                if($pago_tipo==1){
+                                    //actualizar saldo
+                                    $modelando = new Cuenta();
+                                    $datos_cuenta=$this->user->listar_cuenta_por_id_user($pago_id_user);
+                                    $modelando->receptor = $datos_cuenta->id_cuenta;
+                                    $modelando->monto = $pago_total * (-1);
+                                    $this->cuenta->sumar_saldo($modelando);
+                                    //fin actualizar saldo
+                                    //guardar transferencia
+                                    $modelando_T = new Transferencia();
+                                    $datos_empresa = $this->empresa->listar_cancha_por_id($id_cancha);
+                                    $modelando_T->nro_operacion = $datos_empresa->empresa_id."-1111111";
+                                    $modelando_T->id_user = $pago_id_user;
+                                    $modelando_T->id_empresa = $datos_empresa->empresa_id;
+                                    $modelando_T->id_pago = $pago_id;
+                                    $modelando_T->monto = $pago_monto;
+                                    $modelando_T->concepto = "Reserva Cancha ".$datos_empresa->empresa_nombre;
+                                    $this->transferencia->save_transferencia_u_e($modelando_T);
+                                    //fin guardar transferencia
+                                }else{
+                                    $this->empresa->actualizar_colaboracion_estado_0($id_colaboracion);
+                                    //guardar transferencia
+                                    $modelando_T = new Transferencia();
+                                    $datos_empresa = $this->empresa->listar_cancha_por_id($id_cancha);
+                                    $modelando_T->nro_operacion = $datos_empresa->empresa_id."-1111111";
+                                    $modelando_T->id_user = $pago_id_user;
+                                    $modelando_T->id_empresa = $datos_empresa->empresa_id;
+                                    $modelando_T->id_pago = $pago_id;
+                                    $modelando_T->monto = $pago_monto;
+                                    $modelando_T->concepto = "Reserva Cancha ".$datos_empresa->empresa_nombre;
+                                    $this->transferencia->save_transferencia_u_e($modelando_T);
+                                    //fin guardar transferencia
+                                    $this->empresa->actualizar_detalle_colaboracion_estado_0($id_colaboracion);
+                                }
+                            }else{
+                                throw new Exception('Ocurrió un error al registrar pago.');
+                            }
+                        }else{
+                            throw new Exception('Ocurrió un error con los saldos.');
                         }
                     }
                     $fecha = $_POST['fecha'];
@@ -652,7 +732,7 @@ class EmpresaController{
                         $datos_reserva = $this->empresa->listar_reserva_por_microtime($microtime);
                         $datos_cancha = $this->empresa->listar_usuarios_por_id_cancha($id_cancha);
                         foreach ($datos_cancha as $dd){
-                            $this->user->guardar_notificacion($dd->id_user,"Reserva",$datos_reserva->id_reserva,"Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora);
+                            $this->user->guardar_notificacion($dd->id_user,"Reserva",$datos_reserva->id_reserva,"Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora,$dd->cancha_foto);
                             $notificar = $this->notificar($dd->user_token,"Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora,"Reserva lista!","Reserva","Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora);
                         }
                     }else{
@@ -671,16 +751,6 @@ class EmpresaController{
                             }else{
                                 $this->empresa->actualizar_colaboracion_estado_1($id_colaboracion);
                                 $this->empresa->actualizar_detalle_colaboracion_estado_0($id_colaboracion);
-                                $detalle_colaboracion = $this->empresa->obtener_detalle_chancha($id_colaboracion);
-                                foreach ($detalle_colaboracion as $dc){
-                                    //actualizar saldo
-                                    $modelando = new Cuenta();
-                                    $datos_cuenta=$this->user->listar_cuenta_por_id_user($dc->id_user);
-                                    $modelando->receptor = $datos_cuenta->id_cuenta;
-                                    $modelando->monto = $dc->detalle_colaboracion_monto * (1);
-                                    $this->cuenta->sumar_saldo($modelando);
-                                    //fin actualizar saldo
-                                }
                                 //guardar transferencia
                                 $this->transferencia->delete_transferencia_u_e_por_pago_id($pago_id);
                                 //fin guardar transferencia
@@ -723,66 +793,75 @@ class EmpresaController{
         return $result;
     }
     public function listar_canchas_libres_por_hora(){
-        /*$fecha = $_POST['fecha'];
-        $hora_i = $_POST['hora_i'];
-        $hora_f = $_POST['hora_f'];
-        */
-        $fecha = date("Y-m-d");
-        $hora = date("H");
-        $resources = [];
-        for ($i=$hora;$i<25;$i++) {
-            $model = $this->empresa->listar_canchas_libres_por_hora($fecha,$i);
-            $resources[] = array(
-                $i => $model
-            );
+        try {
+            $fecha = date("Y-m-d");
+            $fecha_actual = date("Y-m-d H:i:s");
+            $hora = date("H");
+            $resources = [];
+            for ($i = $hora; $i < 25; $i++) {
+                $model = $this->empresa->listar_canchas_libres_por_hora($fecha, $i);
+                $resources[] = array(
+                    $i => $model
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = 2;
         }
-        $data = array("results" => $resources);
+        $data = array("fecha_actual"=>$fecha_actual,"results" => $resources);
         echo json_encode($data);
     }
     public function busqueda_avanzada(){
-        $fecha = $_POST['fecha'];
-        $hora = $_POST['hora'];
-        $negocio = $_POST['negocio'];
-        $resources = [];
-        if($negocio!="Todos" && $hora!="Todos"){
-            $resources = $this->empresa->busqueda_avanzada_tres_params($fecha,$hora,$negocio);
-        }elseif ($negocio=="Todos" && $hora!="Todos"){
-            $resources = $this->empresa->listar_canchas_libres_por_hora($fecha,$hora);
-        }elseif ($negocio!="Todos" && $hora=="Todos"){
-            for ($i=10;$i<25;$i++) {
-                $model = $this->empresa->busqueda_avanzada_tres_params($fecha,$i,$negocio);
-                $resources[] = array(
-                    $i => $model
-                );
+        try {
+            $fecha_actual = date("Y-m-d H:i:s");
+            $fecha = $_POST['fecha'];
+            $hora = $_POST['hora'];
+            $negocio = $_POST['negocio'];
+            $resources = [];
+            if ($negocio != "Todos" && $hora != "Todos") {
+                $resources = $this->empresa->busqueda_avanzada_tres_params($fecha, $hora, $negocio);
+            } elseif ($negocio == "Todos" && $hora != "Todos") {
+                $resources = $this->empresa->listar_canchas_libres_por_hora($fecha, $hora);
+            } elseif ($negocio != "Todos" && $hora == "Todos") {
+                for ($i = 10; $i < 25; $i++) {
+                    $model = $this->empresa->busqueda_avanzada_tres_params($fecha, $i, $negocio);
+                    $resources[] = array(
+                        $i => $model
+                    );
+                }
+            } elseif ($negocio == "Todos" && $hora == "Todos") {
+                for ($i = 10; $i < 25; $i++) {
+                    $model = $this->empresa->listar_canchas_libres_por_hora($fecha, $i);
+                    $resources[] = array(
+                        $i => $model
+                    );
+                }
             }
-        }elseif ($negocio=="Todos" && $hora=="Todos"){
-            for ($i=10;$i<25;$i++) {
-                $model = $this->empresa->listar_canchas_libres_por_hora($fecha,$i);
-                $resources[] = array(
-                    $i => $model
-                );
-            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
         }
-        $data = array("results" => $resources);
+        $data = array("fecha_actual"=>$fecha_actual,"results" => $resources);
         echo json_encode($data);
     }
     public function estadisticas_por_empresa(){
-        $fecha_i = $_POST['fecha_i'];
-        $fecha_f = $_POST['fecha_f'];
-        $id_empresa = $_POST['id_empresa'];
-
-        /*$fecha_i = '2020-01-22';
-        $fecha_f = '2020-02-04';
-        $id_empresa = 4;*/
-        $resources = [];
-        $fecha_inicio = strtotime($fecha_i);
-        $fecha_final = strtotime($fecha_f);
-        for ($j=$fecha_inicio;$j<=$fecha_final;$j+=86400) {
-            $fecha_d = date('Y-m-d',$j);
-            $model = $this->empresa->estadisticas_por_empresa_fecha($fecha_d,$id_empresa);
-            $resources[] = array(
-                $fecha_d => $model
-            );
+        try {
+            $fecha_i = $_POST['fecha_i'];
+            $fecha_f = $_POST['fecha_f'];
+            $id_empresa = $_POST['id_empresa'];
+            $resources = [];
+            $fecha_inicio = strtotime($fecha_i);
+            $fecha_final = strtotime($fecha_f);
+            for ($j = $fecha_inicio; $j <= $fecha_final; $j += 86400) {
+                $fecha_d = date('Y-m-d', $j);
+                $model = $this->empresa->estadisticas_por_empresa_fecha($fecha_d, $id_empresa);
+                $resources[] = array(
+                    $fecha_d => $model
+                );
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $resources = 2;
         }
         $data = array("results" => $resources);
         echo json_encode($data);

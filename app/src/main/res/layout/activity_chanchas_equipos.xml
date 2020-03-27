@@ -1,9 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Activity.ChanchasEquipos">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/no_hay_equipos"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:id="@+id/tshirt"
+                android:layout_centerInParent="true"
+                android:layout_height="150dp"
+                android:src="@drawable/tshirt_crew"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="80dp"
+                android:src="@drawable/logobufeopng"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_nocreaste"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:textStyle="bold|italic"
+                android:layout_below="@id/tshirt"
+                android:layout_marginLeft="16dp"
+                android:text="Aun no creaste ningun equipo, por favor cree uno"/>
+            <LinearLayout
+                android:id="@+id/btnFinishHim"
+                android:layout_width="150dp"
+                android:layout_marginTop="16dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/text_nocreaste"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/shape_azul"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:id="@+id/finish"
+                    android:gravity="center"
+                    android:text="Finalizar "
+                    android:textColor="#fff"
+                    android:textSize="13sp" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetStartWithNavigation="0dp"
+        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="20dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="Nombre de la Chancha"
+            android:textColor="#151A4F"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            style="@style/cajaDeTexto">
+
+            <EditText
+
+                android:id="@+id/name_chancha"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Nombre chancha "
+                android:inputType="textPersonName"
+                style="@style/InputTexto" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="Equipo"
+            android:textColor="#151A4F"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:orientation="vertical"
+                android:background="@drawable/bgnoseleccionado"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:elevation="2dp">
+
+                <Spinner
+                    android:id="@+id/spn_misEquipos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:layout_gravity="right"
+                    android:popupBackground="@color/colorCeniza" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monto que se necesita"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#151A4F"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            style="@style/cajaDeTexto">
+
+            <EditText
+                android:id="@+id/monto_chancha"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Monto "
+                android:inputType="numberDecimal"
+                style="@style/InputTexto" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:weightSum="10"
+            android:paddingBottom="20dp"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:layout_weight="4.5"
+                android:id="@+id/crearChanchex"
+                android:text="Crear"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blue_A400"
+                app:cornerRadius="16dp"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="1dp"/>
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:id="@+id/cancelar"
+                android:layout_weight="4.5"
+                android:text="Cancelar"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blue_A400"
+                app:cornerRadius="16dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

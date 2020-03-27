@@ -63,6 +63,12 @@ public class AdapterRegistroEquiposGruposItem extends RecyclerView.Adapter<Adapt
 
 
         final TablaTorneoItem tablaTorneoItem = tablaTorneoItems.get(position);
+
+        if (tablaTorneoItem.getCondicion().equals("detalle_torneo")){
+            holder.agg_equipo.setVisibility(View.GONE);
+        }else{
+            holder.agg_equipo.setVisibility(View.VISIBLE);
+        }
         holder.agg_equipo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

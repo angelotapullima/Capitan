@@ -146,7 +146,7 @@ class User{
     //Listar Un Unico Usuario por ID
     public function list($id){
         try{
-            $sql = 'select * from user u inner join role r on u.id_role = r.id_role where u.id_user = ? limit 1';
+            $sql = 'select * from user u inner join person p on u.id_person = p.id_person inner join role r on u.id_role = r.id_role where u.id_user = ? limit 1';
             $stm = $this->pdo->prepare($sql);
             $stm->execute([$id]);
             $result = $stm->fetch();
@@ -162,9 +162,7 @@ class User{
         try {
             $fecha = date("Y-m-d H:i:s");
             if(empty($model->id_user)){
-                $sql = 'insert into user(
-                    id_person, id_role,ubigeo_id, user_nickname, user_password, user_email, user_image,user_posicion,user_habilidad,user_num, user_status, user_created_at, user_modified_at 
-                    ) values(?,?,?,?,?,?,?,?,?,?,?,?,?)';
+                $sql = 'insert into user(id_person, id_role,ubigeo_id, user_nickname, user_password, user_email, user_image,user_posicion,user_habilidad,user_num, user_status, user_created_at, user_modified_at,user_email_validate_code ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
                 $stm = $this->pdo->prepare($sql);
                 $stm->execute([
                     //$model->id_auth,
@@ -181,18 +179,12 @@ class User{
                     1,
                     $fecha,
                     $fecha,
+                    $model->user_email_validate_code
                 ]);
 
             } else {
                 if(empty($model->id_person)){
-                    $sql = "update user 
-                set
-                user_nickname = ?,
-                user_email = ?,
-                id_role = ?,
-                user_status = ?,
-                user_modified_at = ?
-                where id_user = ?";
+                    $sql = "update user set user_nickname = ?,user_email = ?,id_role = ?,user_status = ?,user_modified_at = ? where id_user = ?";
                     $stm = $this->pdo->prepare($sql);
                     $stm->execute([
                         $model->user_nickname,
@@ -204,16 +196,7 @@ class User{
                     ]);
                     unset($_SESSION['id_usered']);
                 } elseif(isset($model->user_auth_exists)){
-                    $sql = "update user 
-                set
-                id_role = ?,
-                id_person = ?,
-                user_nickname = ?,
-                user_password = ?,
-                user_email = ?,
-                user_status = ?,
-                user_modified_at = ?
-                where id_user = ?";
+                    $sql = "update user set id_role = ?, id_person = ?, user_nickname = ?, user_password = ?, user_email = ?, user_status = ?, user_modified_at = ? where id_user = ?";
                     $stm = $this->pdo->prepare($sql);
                     $stm->execute([
                         $model->id_role,
@@ -226,15 +209,7 @@ class User{
                         $model->id_user
                     ]);
                 }else {
-                    $sql = "update user 
-                set
-                id_role = ?,
-                id_person = ?,
-                user_nickname = ?,
-                user_email = ?,
-                user_status = ?,
-                user_modified_at = ?
-                where id_user = ?";
+                    $sql = "update user set id_role = ?, id_person = ?, user_nickname = ?, user_email = ?, user_status = ?, user_modified_at = ? where id_user = ?";
                     $stm = $this->pdo->prepare($sql);
                     $stm->execute([
                         $model->id_role,
@@ -249,6 +224,26 @@ class User{
                 }
 
             }
+            $result = 1;
+        } catch (Exception $e){
+            //throw new Exception($e->getMessage());
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
+    public function edit($model){
+        try {
+            $fecha = date("Y-m-d H:i:s");
+            $sql = "update user set user_posicion = ?, user_habilidad = ?, user_num = ?, user_modified_at = ? where id_user = ?";
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([
+                $model->user_posicion,
+                $model->user_habilidad,
+                $model->user_num,
+                $fecha,
+                $model->id_user
+            ]);
             $result = 1;
         } catch (Exception $e){
             //throw new Exception($e->getMessage());
@@ -278,7 +273,20 @@ class User{
         }
         return $result;
     }
-
+    public function actualizar_perfil($foto,$id){
+        $result = 2;
+        try {
+            $sql = 'update user set user_image = ? where id_user= ?';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([
+                $foto,$id
+            ]);
+            $result = 1;
+        } catch (Exception $e){
+            //throw new Exception($e->getMessage());
+        }
+        return $result;
+    }
     public function changestatus($model){
         try {
             $sql = 'update user set
@@ -380,7 +388,7 @@ class User{
     }
     public function listar_mensajes_por_chat($id_chat){
         try {
-            $stm = $this->pdo->prepare("SELECT * from detalle_chat where chat_id=?");
+            $stm = $this->pdo->prepare("SELECT * from detalle_chat dt inner join user u on dt.id_usuario = u.id_user where dt.chat_id=?");
             $stm->execute([$id_chat]);
             $result = $stm->fetchAll();
         } catch (Exception $e){
@@ -394,6 +402,50 @@ class User{
             $stm = $this->pdo->prepare("SELECT chat_id,(SELECT us.user_nickname from user us where us.id_user = c.id_usuario_1) as usuario_1,(SELECT us.id_user from user us where us.id_user = c.id_usuario_1) as id_usuario_1,(SELECT us.user_nickname from user us where us.id_user = c.id_usuario_2) as usuario_2,(SELECT us.id_user from user us where us.id_user = c.id_usuario_2) as id_usuario_2,chat_fecha from chat c where c.id_usuario_1=? or c.id_usuario_2=?");
             $stm->execute([$id_usuario,$id_usuario]);
             $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_chat_por_id_usuarios($id_usuario_1,$id_usuario_2){
+        try {
+            $stm = $this->pdo->prepare("SELECT chat_id,(SELECT us.user_nickname from user us where us.id_user = c.id_usuario_1) as usuario_1,(SELECT us.id_user from user us where us.id_user = c.id_usuario_1) as id_usuario_1,(SELECT us.user_nickname from user us where us.id_user = c.id_usuario_2) as usuario_2,(SELECT us.id_user from user us where us.id_user = c.id_usuario_2) as id_usuario_2,chat_fecha from chat c where c.id_usuario_1=? and c.id_usuario_2=? or c.id_usuario_2=? and c.id_usuario_1=? limit 1");
+            $stm->execute([$id_usuario_1,$id_usuario_2,$id_usuario_1,$id_usuario_2]);
+            $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_notificaciones($id_user){
+        try {
+            $stm = $this->pdo->prepare("SELECT * from notificacion where id_user=? order by notificacion_datetime desc");
+            $stm->execute([$id_user]);
+            $result = $stm->fetchAll();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_cant_notificaciones_no_vistas($id_user){
+        try {
+            $stm = $this->pdo->prepare("SELECT count(id_notificacion) as conteo from notificacion where id_user=? and notificacion_estado=0");
+            $stm->execute([$id_user]);
+            $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        return $result;
+    }
+    public function listar_notificacion($id_user,$chat_id){
+        try {
+            $stm = $this->pdo->prepare("SELECT * from notificacion where id_user=? and notificacion_tipo='Mensaje' and notificacion_id_rel = ?");
+            $stm->execute([$id_user,$chat_id]);
+            $result = $stm->fetch();
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
             $result = [];
@@ -472,6 +524,50 @@ class User{
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
             $result = [];
+        }
+        return $result;
+    }
+    public function guardar_notificacion($id_user,$tipo,$id_rel,$mensaje,$imagen){
+        try {
+            $fecha = date("Y-m-d H:i:s");
+            $sql = "Insert into notificacion (id_user, notificacion_tipo, notificacion_id_rel, notificacion_mensaje, notificacion_imagen, notificacion_datetime, notificacion_estado) values (?,?,?,?,?,?,0)";
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([
+                $id_user,$tipo,$id_rel,$mensaje,$imagen,$fecha
+            ]);
+            $result = 1;
+        } catch (Exception $e){
+            //throw new Exception($e->getMessage());
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
+    public function editar_notificacion($id_user,$id_rel){
+        try {
+            $fecha = date("Y-m-d H:i:s");
+            $sql = "update notificacion set notificacion_datetime=?,notificacion_estado=0 where id_user=? and notificacion_id_rel=? and notificacion_tipo='Mensaje' ";
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([
+                $fecha,$id_user,$id_rel
+            ]);
+            $result = 1;
+        } catch (Exception $e){
+            //throw new Exception($e->getMessage());
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
+    public function notificacion_vista($id){
+        try {
+            $sql = "update notificacion set notificacion_estado=1 where id_notificacion=?";
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$id]);
+            $result = 1;
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
         }
         return $result;
     }

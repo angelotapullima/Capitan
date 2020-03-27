@@ -101,6 +101,7 @@ public class Splash extends AppCompatActivity {
             public void run() {
 
                 Intent i= new Intent(getApplicationContext(),MenuPrincipal.class);
+                i.putExtra("inicio","inicio");
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
                 finish();

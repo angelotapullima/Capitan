@@ -24,7 +24,7 @@ class Database_Auth{
             return self::$db;
         } catch (\Throwable $e){
             $saltodelinea = '\n';
-            echo "<script language=\"javascript\">alert(\"Error Critico. Por favor, regrese más tardecito. " . $saltodelinea . "Nuestros mejores técnicos dejaron su juanecito a medio comer y ya van camino a resolver el problema.\");</script>";
+            echo "<script language=\"javascript\">alert(\"Error Critico. Por favor, regrese mas tarde. " . $saltodelinea . "Nuestros mejores técnicos ya van camino a resolver el problema.\");</script>";
             exit;
             //$this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);;
             //echo "<script language=\"javascript\">window.location.href=\"error/error\";</script>";

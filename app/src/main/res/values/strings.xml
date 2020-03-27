@@ -96,6 +96,9 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="estas_seguro_de_cancelar_est_recarga">¿Estas seguro de cancelar está recarga?</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
 
 
 </resources>

@@ -6,10 +6,8 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.tec.bufeo.capitan.Activity.DetalleCanchas;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Models.Chanchas;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Models.DetalleChancha;
-import com.tec.bufeo.capitan.Activity.RegistroReserva.DetalleColaboraciones;
 import com.tec.bufeo.capitan.Util.APIUrl;
 
 import org.json.JSONArray;

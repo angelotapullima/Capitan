@@ -37,31 +37,70 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="8dp"
                     android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/txt_tituloPerfil"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:maxLines="1"
-                        android:textColor="#383838"
-                        android:textSize="14dp"
-                        android:gravity="center_vertical"
-                        android:text="Cuenta"
-                        android:textStyle="bold" />
-                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/txt_tituloPerfil"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:maxLines="1"
+                                android:textColor="#383838"
+                                android:textSize="14dp"
+                                android:gravity="center_vertical"
+                                android:text="Cuenta"
+                                android:textStyle="bold" />
+                            <TextView
 
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textColor="#383838"
-                        android:textSize="14dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:gravity="center_vertical"
-                        android:text="Ver perfil" />
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:textColor="#383838"
+                                android:textSize="14dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:gravity="center_vertical"
+                                android:text="Ver perfil" />
 
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/bufeoCoins"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/bufeo_coin" />
+
+                        <TextView
+                            android:id="@+id/saldo_contable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:text="50225"
+                            android:textColor="#000"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
+
 
 
             </LinearLayout>
@@ -165,26 +204,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold"/>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/bufeo_coin"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Codigos De Recarga Generados"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="#000"
-                    android:gravity="center"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -212,6 +232,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:id="@+id/Chanchex"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -231,26 +252,7 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/bufeo_coin"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Datos personales"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="#000"
-                    android:gravity="center"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

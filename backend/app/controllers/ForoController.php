@@ -297,6 +297,7 @@ class ForoController{
             $resources[$i] = array(
                 "id_comentario" => $model[$i]->id_comentario,
                 "id_publicacion" => $model[$i]->publicaciones_id,
+                "id_usuario" => $model[$i]->id_user,
                 "usuario_nombre" => $model[$i]->user_nickname,
                 "usuario_foto" => $model[$i]->user_image,
                 "comentario" => $model[$i]->comentario_coment,

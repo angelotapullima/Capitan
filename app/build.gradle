@@ -9,8 +9,8 @@ android {
         applicationId "com.tec.bufeo.capitan"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 8
-        versionName "0.9955"
+        versionCode 9
+        versionName "beta9"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -85,5 +85,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.github.mreram:showcaseview:1.1'
 
+    implementation 'devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -8,10 +8,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,21 +21,17 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tec.bufeo.capitan.Activity.DetalleCanchas.Views.DetalleCanchas;
 import com.tec.bufeo.capitan.Activity.EstadisticasEmpresas.EstadisticasEmpresas;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Canchas;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
@@ -46,20 +40,14 @@ import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.NegociosViewModel;
 import com.tec.bufeo.capitan.Activity.ratings.BarLabels;
 import com.tec.bufeo.capitan.Activity.ratings.RatingReviews;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoCanchaEmpresa;
-import com.tec.bufeo.capitan.Modelo.Cancha;
-import com.tec.bufeo.capitan.Modelo.Empresas;
-import com.tec.bufeo.capitan.Modelo.Saldo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
@@ -85,10 +73,8 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     Preferences preferences;
     String id_empresa, tipo_usuario,latitud ="",longitud="";
     FrameLayout frameCarga,frameCarga2;
-    DataConnection  dc1, dc2,dc4;
     public String fecha_actual, hora_actual, cancha_id, horario;
-    String saldo_cargado="";
-    ArrayList<Saldo> saldo;
+
     UniversalImageLoader universalImageLoader;
 
     NegociosViewModel negociosViewModel;
@@ -192,8 +178,6 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
             Misnegocios.setVisibility(View.GONE);
         }
 
-        obtenerSaldo();
-
 
 
 
@@ -230,22 +214,20 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                 if (tipo.equals("img_fotoCancha")){
 
 
-                        if (!saldo_cargado.equals("vacio") && !saldo_cargado.equals("")){
-                            Intent intent = new Intent(context, DetalleCanchas.class);
-                            intent.putExtra("id_cancha", cancha.getCancha_id());
-                            intent.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
-                            intent.putExtra("nombre_cancha", cancha.getNombre_cancha());
-                            intent.putExtra("precio_dia", cancha.getPrecioD());
-                            intent.putExtra("precio_noche", cancha.getPrecioN());
-                            intent.putExtra("horario", horario);
-                            intent.putExtra("tipo_usuario", tipo_usuario);
-                            intent.putExtra("hora_actual", hora_actual);
-                            intent.putExtra("fecha_actual", fecha_actual);
-                            intent.putExtra("saldo", saldo_cargado);
-                            context.startActivity(intent);
-                        }else{
-                            obtenerSaldo();
-                        }
+
+                        Intent intent = new Intent(context, DetalleCanchas.class);
+                        intent.putExtra("id_cancha", cancha.getCancha_id());
+                        intent.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
+                        intent.putExtra("nombre_cancha", cancha.getNombre_cancha());
+                        intent.putExtra("precio_dia", cancha.getPrecioD());
+                        intent.putExtra("precio_noche", cancha.getPrecioN());
+                        intent.putExtra("horario", horario);
+                        intent.putExtra("tipo_usuario", tipo_usuario);
+                        intent.putExtra("hora_actual", hora_actual);
+                        intent.putExtra("fecha_actual", fecha_actual);
+                        context.startActivity(intent);
+
+
 
 
                 }
@@ -401,10 +383,6 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         return false;
     }
 
-    public void obtenerSaldo(){
-        dc4 = new DataConnection(activity, "ObtenerSaldo", false);
-        new DetalleNegocio.GetSaldo().execute();
-    }
 
     int LAUNCH_SECOND_ACTIVITY = 1;
 
@@ -471,36 +449,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     }
     
 
-    public class GetSaldo extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            saldo = new ArrayList<>();
-            saldo = dc4.getSaldo();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-
-            if (saldo.size() > 0) {
-                saldo_cargado =saldo.get(0).getSaldo_actual();
-
-                preferences.saveValuePORT("comision", saldo.get(0).getComision());
-            } else {
-                saldo_cargado = "vacio";
-            }
-
-
-        }
-    }
 
 
     @Override

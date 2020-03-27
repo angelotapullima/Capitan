@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.button.MaterialButton;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
@@ -35,7 +36,8 @@ public class CalificarNegocios extends AppCompatActivity {
     String id_empresa,nombre_empresa;
     Float valor_rating;
     EditText reseña;
-    TextView publicar,nombre_negocio,entendido;
+    TextView nombre_negocio,entendido;
+    MaterialButton publicar;
     Preferences preferences;
     LinearLayout layoutEntendido;
 

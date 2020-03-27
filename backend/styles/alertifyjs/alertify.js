@@ -525,7 +525,7 @@
                 elements.modal = elements.root.lastChild;
                 elements.modal.innerHTML = templates.dialog;
                 elements.dialog = elements.modal.firstChild;
-                elements.diaLog.dnnerHTML = templates.reset + templates.commands + templates.header + templates.body + templates.footer + templates.resizeHandle + templates.reset;
+                elements.dialog.innerHTML = templates.reset + templates.commands + templates.header + templates.body + templates.footer + templates.resizeHandle + templates.reset;
 
                 //reset links
                 elements.reset = [];

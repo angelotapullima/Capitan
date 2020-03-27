@@ -61,19 +61,20 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Califica está negocio"
+                                android:text="Califica este negocio"
                                 android:ellipsize="end"
                                 android:maxLines="1"/>
                         </LinearLayout>
 
                     </LinearLayout>
 
-                    <TextView
+                    <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
                         android:id="@+id/publicar"
-                        android:focusable="true"
+                        app:strokeColor="#FFF"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_height="match_parent"
-                        android:text="PUBLICAR"
+                        android:text="Calificar"
                         android:textColor="@color/colorPrimaryDark"
                         android:layout_marginRight="10dp"
                         android:gravity="center_vertical"

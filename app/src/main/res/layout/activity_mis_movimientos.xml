@@ -17,18 +17,16 @@
         android:orientation="vertical">
         <!--android:background="#73000000"-->
 
-        <TextView
-
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#fff"
-            android:text="Movimientos"/>
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetStartWithNavigation="0dp"
+            android:background="@color/colorPrimary"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -36,20 +34,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:layout_marginLeft="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#fff"
                 android:text="Saldo Actual"/>
 
-            <TextView
-
+            <LinearLayout
+                android:id="@+id/bufeoCoins"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginLeft="20dp"
-                android:textStyle="bold"
-                android:textColor="#fff"
-                android:text="S/. 180 soles"/>
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/bufeo_coin" />
+
+                <TextView
+                    android:id="@+id/saldo_contable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:text="50225"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
 
         </LinearLayout>

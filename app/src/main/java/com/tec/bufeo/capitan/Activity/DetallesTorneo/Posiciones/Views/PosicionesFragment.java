@@ -122,7 +122,7 @@ public class PosicionesFragment extends Fragment implements SwipeRefreshLayout.O
                         jsonArray = jsonNode.getJSONArray("equipos");
 
 
-                        tablaTorneoItem = new TablaTorneoItem(nombre_grupo,id_grupo,buildSubItemList(jsonArray));
+                        tablaTorneoItem = new TablaTorneoItem(nombre_grupo,id_grupo,"posiciones",buildSubItemList(jsonArray));
                         listaItem.add(tablaTorneoItem);
                         //listaSubItem.clear();
 

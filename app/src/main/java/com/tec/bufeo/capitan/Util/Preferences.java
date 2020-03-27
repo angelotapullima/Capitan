@@ -56,8 +56,15 @@ public class Preferences {
 
 
 
+    public String getInicio(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("inicio","");
+    }
 
-
+    public String getSaldo(){
+        pref=context.getSharedPreferences("User", MODE_PRIVATE);
+        return pref.getString("saldo","");
+    }
     public String getCantidadIngreso(){
         pref=context.getSharedPreferences("User", MODE_PRIVATE);
         return pref.getString("cantidad_ingreso","");

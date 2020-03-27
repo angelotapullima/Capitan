@@ -44,13 +44,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tec.bufeo.capitan.Activity.DetalleCanchas.Views.DetalleCanchas;
 import com.tec.bufeo.capitan.Activity.DetalleFotoUsuario;
-import com.tec.bufeo.capitan.Activity.DetalleNegocio;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;
-import com.tec.bufeo.capitan.Activity.RegistroForo;
 import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Models.Notificaciones;
 import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.ViewModels.NotificacionesViewModel;
 import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Views.NotificacionesList;
@@ -189,6 +188,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             if (saldo.size() > 0) {
                 saldo_contable.setText(saldo.get(0).getSaldo_actual());
                 preferences.saveValuePORT("comision", saldo.get(0).getComision());
+                preferences.saveValuePORT("saldo", saldo.get(0).getSaldo_actual());
 
                 bufeoCoins.setVisibility(View.VISIBLE);
             } else {
@@ -239,8 +239,11 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         fab_registrarForo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), RegistroForo.class);
+                /*Intent i = new Intent(getContext(), RegistroForo.class);
                 i.putExtra("concepto","publicacion");
+                startActivity(i);*/
+
+                Intent i = new Intent(getContext(), DetalleCanchas.class);
                 startActivity(i);
             }
         });

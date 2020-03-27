@@ -25,9 +25,6 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class AdaptadorGoleadores extends RecyclerView.Adapter<AdaptadorGoleadores.GoleadoresViewHolder> {
 
 
-
-
-    JSONObject json_data;
     Goleadores current;
     Context ctx;
     private  OnItemClickListener listener;

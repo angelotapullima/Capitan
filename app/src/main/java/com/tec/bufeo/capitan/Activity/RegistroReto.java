@@ -169,6 +169,7 @@ public class RegistroReto extends AppCompatActivity implements View.OnClickListe
                 if(mequipos.size()>0){
                     no_hay_equipos.setVisibility(View.GONE);
                     arrayEquipos.clear();
+                    arrayequipo.clear();
                     arrayEquipos.addAll(mequipos);
                     Log.e("mis Equipos", "onChanged: "+mequipos.size() );
 

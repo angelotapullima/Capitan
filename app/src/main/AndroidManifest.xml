@@ -18,12 +18,16 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name,android:allowBackup">
-        <activity android:name=".Activity.ForgotPassword"
+        <activity android:name=".Activity.DetalleCanchas.Views.DetalleCanchas"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.ForgotPassword"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.WebTerminosYCondiciones"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.ChanchasEquipos" />
+        <activity android:name=".Activity.ChanchasEquipos"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.DetalleReservaEmpresa"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -59,8 +63,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.RealizarRecarga"
+            android:theme="@style/AppTheme.NoActionBarTransparent" />
+
+
+        <activity android:name=".Activity.MisMovimientos.Views.MisMovimientos"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.MisMovimientos.Views.MisMovimientos" />
         <activity
             android:name=".Activity.RegistroReserva.ReservaEnBusqueda"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -116,7 +123,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Splash"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBarTransparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -143,11 +150,6 @@
             android:name=".Activity.DetalleNegocio"
             android:theme="@style/AppTheme.NoActionBarTransparent" />
         <activity
-            android:name=".Activity.DetalleCanchas"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".Activity.RegistroReserva.RegistroReserva"
             android:configChanges="orientation|screenSize"
             android:label="Reservar Cancha"
@@ -161,7 +163,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Registro_Torneo.RegistroTorneo"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.RegistroForo"
             android:theme="@style/AppTheme.NoActionBar"

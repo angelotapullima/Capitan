@@ -76,7 +76,7 @@ class CuentaController{
     }
     public function save_recargar_mi_cuenta(){
         try{
-            if(isset($_POST['monto'])){
+            if(isset($_POST['monto']) && isset($_POST['tipo'])){
                 $fecha = date('Y-m-d H:i:s');
                 $fecha_exp = date('Y-m-d H:i:s',strtotime($fecha." + 1 days"));
                 $model = new Cuenta();
@@ -98,6 +98,7 @@ class CuentaController{
                 }while($exists);
                 $model->codigo = $token;
                 $model->monto = $_POST['monto'];
+                $model->tipo = $_POST['tipo'];
                 $model->concepto = 'Recargar mi cuenta';
                 $model->estado = 2;
                 $model->date = $fecha;

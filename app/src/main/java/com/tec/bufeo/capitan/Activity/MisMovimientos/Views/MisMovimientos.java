@@ -2,12 +2,16 @@ package com.tec.bufeo.capitan.Activity.MisMovimientos.Views;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Application;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -39,8 +43,26 @@ public class MisMovimientos extends AppCompatActivity {
         initViews();
         cargarvista();
         setAdapter();
+        showToolbar("Movimientos",true);
     }
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
 
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
     private void initViews(){
 
         rcv_ver_recargas= findViewById(R.id.rcv_ver_recargas);

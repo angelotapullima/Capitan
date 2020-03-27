@@ -25,21 +25,42 @@
             }else{
                 ?>
             <div class="box-body">
-                <div class="form-group">
-                    <label class="col-form-label">Nro de cuenta</label>
-                    <input class="form-control" type="text" readonly value="<?= $datos_cuenta->cuenta_codigo ;?>">
-                </div>
-                <div class="form-group">
-                    <label class="col-form-label">Usuario</label>
-                    <input class="form-control" type="text" readonly value="<?= $datos_cuenta->person_name.' '.$datos_cuenta->person_surname;?>">
-                </div>
-                <div class="form-group">
-                    <label class="col-form-label">Saldo Actual</label>
-                    <input class="form-control" type="text" readonly value="<?= $datos_cuenta->cuenta_saldo;?>">
-                </div>
-                <div class="form-group">
-                    <label class="col-form-label">Monto de recarga</label>
-                    <input class="form-control" type="text" id="monto"  placeholder="Ingrese el monto a recargar (min 5, max 1000)">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Nro de cuenta</label>
+                            <input class="form-control" type="text" readonly value="<?= $datos_cuenta->cuenta_codigo ;?>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Usuario</label>
+                            <input class="form-control" type="text" readonly value="<?= $datos_cuenta->person_name.' '.$datos_cuenta->person_surname;?>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Saldo Actual</label>
+                            <input class="form-control" type="text" readonly value="<?= $datos_cuenta->cuenta_saldo;?>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Monto de recarga</label>
+                            <input class="form-control" type="text" id="monto"  placeholder="(min 5, max 1000)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label>Método de pago</label><br>
+                        <input type="radio" name="tipo" value="Agente" id="agente">
+                        <label for="agente">Pagar a través de un Agente <img src="<?= _SERVER_ ?>media/pelota.jpg" width="50"></label><br>
+                        <input type="radio" name="tipo" value="BCP" id="bcp">
+                        <label for="bcp">Pagar por banca móvil BCP <img src="<?= _SERVER_ ?>media/pelota.jpg" width="50"></label><br>
+                        <input type="radio" name="tipo" value="Interbank" id="interbank">
+                        <label for="interbank">Pagar por banca móvil Interbank <img src="<?= _SERVER_ ?>media/pelota.jpg" width="50"></label><br>
+                        <input type="radio" name="tipo" value="Bbva" id="bbva">
+                        <label for="bbva">Pagar por banca móvil BBVA <img src="<?= _SERVER_ ?>media/pelota.jpg" width="50"></label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success" id="btn_recargar_mi_cuenta" onclick="recargar_mi_cuenta()"> Recargar mi cuenta</button>

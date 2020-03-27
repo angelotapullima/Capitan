@@ -10,10 +10,11 @@ class Cuenta{
     //Guardar o Editar Informacion de Empresa
     public function save_recargar_mi_cuenta($model){
         try {
-            $sql = "insert into pagocip(id_cuenta, pagocip_codigo,pagocip_monto,pagocip_concepto,pagocip_estado,pagocip_date,pagocip_date_expiracion) values(?,?,?,?,?,?,?)";
+            $sql = "insert into pagocip(id_cuenta, pagocip_tipo, pagocip_codigo,pagocip_monto,pagocip_concepto,pagocip_estado,pagocip_date,pagocip_date_expiracion) values(?,?,?,?,?,?,?,?)";
             $stm = $this->pdo->prepare($sql);
             $stm->execute([
                 $model->id_cuenta,
+                $model->tipo,
                 $model->codigo,
                 $model->monto,
                 $model->concepto,
@@ -90,6 +91,19 @@ class Cuenta{
             $stm = $this->pdo->prepare($sql);
             $stm->execute([$id]);
             $result = $stm->fetch();
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        return $result;
+    }
+    public function cancelar_recarga($id){
+        try{
+            $date=date('Y-m-d H:i:s' );
+            $sql = 'update pagocip set pagocip_estado=3, pagocip_date_eliminado=? where id_pagocip = ?';
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute([$id]);
+            $result = 1;
         } catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
             $result = 2;
