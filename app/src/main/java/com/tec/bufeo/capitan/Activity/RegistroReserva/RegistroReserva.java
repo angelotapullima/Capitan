@@ -2,6 +2,7 @@ package com.tec.bufeo.capitan.Activity.RegistroReserva;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
+import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.Modelo.Reserva;
@@ -60,7 +63,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
             precioDeLaCancha,comisionCancha,precioAPagar;
     Spinner spn_tipo_pago,spn_equipex;
     LinearLayout layout_bufis,layout_equipo,layout_botones;
-    LinearLayout btn_reservar;//layout_precio_con_chancha,layout_precios;
+    LinearLayout btn_reservar,recargaSaldo;//layout_precio_con_chancha,layout_precios;
     Preferences preferences;
     ArrayList<String> arrayEquipo;
     ArrayList<Mequipos> ListEquipos = new ArrayList<>();
@@ -71,8 +74,9 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
     RecyclerView rcv_colaboraciones;
     ImageView finishReserva,noChanchas;
     RelativeLayout relRes;
+    boolean permiso =false;
 
-
+    String telefono,telefono2,direccion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +103,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         comisionCancha = findViewById(R.id.comisionCancha);
         precioAPagar = findViewById(R.id.precioAPagar);
         btn_reservar = findViewById(R.id.btn_reservar);
+        recargaSaldo = findViewById(R.id.recargaSaldo);
         nombre_reserva = findViewById(R.id.nombre_reserva);
         rcv_colaboraciones = findViewById(R.id.rcv_colaboraciones);
         layout_botones = findViewById(R.id.layout_botones);
@@ -117,7 +122,13 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         cancha_nombre = getIntent().getStringExtra("cancha_nombre");
         saldo = getIntent().getStringExtra("saldo");
         cancha_id = getIntent().getStringExtra("cancha_id");
+        telefono = getIntent().getStringExtra("telefono");
+        telefono2 = getIntent().getStringExtra("telefono2");
+        direccion = getIntent().getStringExtra("direccion");
 
+        if (Integer.parseInt(saldo)>0){
+            permiso=true;
+        }
         hora_reserva.setText(h_reserva);
         nombre_empresa_Reserva.setText(nombre_empresa);
         nombre_cancha_reserva.setText(cancha_nombre);
@@ -155,6 +166,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
                     layout_bufis.setVisibility(View.GONE);
                     layout_equipo.setVisibility(View.GONE);
                     rcv_colaboraciones.setVisibility(View.VISIBLE);
+                    recargaSaldo.setVisibility(View.GONE);
                     layout_botones.setVisibility(View.GONE);
                     //layout_precio_con_chancha.setVisibility(View.VISIBLE);
                 }
@@ -182,6 +194,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
             }
         });
         btn_reservar.setOnClickListener(this);
+        recargaSaldo.setOnClickListener(this);
 
 
         finishReserva.setOnClickListener(new View.OnClickListener() {
@@ -203,26 +216,38 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
             }else{
                 if (spn_tipo_pago.getSelectedItem().toString().equals("Yo pago todo")){
 
-                    if (nombre_reserva.getText().toString().isEmpty()){
 
-                        preferences.codeAdvertencia("el campo nombre no debe estar vacio");
-                    }else{
-                        if (spn_equipex.getSelectedItem().toString().equals("Seleccionar Equipo")){
+                    if (permiso ==true){
+                        if (nombre_reserva.getText().toString().isEmpty()){
 
-                            preferences.codeAdvertencia("Debe seleccionar un Equipo");
+                            preferences.codeAdvertencia("el campo nombre no debe estar vacio");
                         }else{
+                            if (spn_equipex.getSelectedItem().toString().equals("Seleccionar Equipo")){
+
+                                preferences.codeAdvertencia("Debe seleccionar un Equipo");
+                            }else{
 
 
                                 registrarReservaUsuario("0","0","1");
 
 
+                            }
                         }
+                    }else{
+                        preferences.toasRojo("No cuentas con Bufis para esta operación", "por favor , recargue su saldo");
+                        recargaSaldo.setVisibility(View.VISIBLE);
                     }
+
+
+
                 }
 
 
             }
 
+        }else if (v.equals(recargaSaldo)){
+            Intent i = new Intent(RegistroReserva.this, RealizarRecarga.class);
+            startActivity(i);
         }
     }
 
@@ -286,16 +311,21 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
 
                 Log.d("registrar_reserva", "onResponse: "+response );
 
-                String separador,part1;
-                String[] resultado;
 
-                separador = Pattern.quote("}");
-                resultado = response.split(separador);
-                part1 = resultado[2];
 
-                if (part1.equals("1")){
+                if (response.equals("1")){
                     preferences.toasVerde("Registro Completo");
-
+                    Intent i = new Intent(RegistroReserva.this, ConfirmacionReserva.class);
+                    i.putExtra("cancha",nombre_cancha_reserva.getText().toString());
+                    i.putExtra("lugar",nombre_empresa_Reserva.getText().toString());
+                    i.putExtra("hora",h_reserva);
+                    i.putExtra("fecha",fecha);
+                    i.putExtra("precio",precioAPagar.getText().toString());
+                    i.putExtra("nombre",nombre_reserva.getText().toString());
+                    i.putExtra("direccion",direccion);
+                    i.putExtra("telefono",telefono);
+                    i.putExtra("telefono2",telefono2);
+                    startActivity(i);
                     dialog_carga.dismiss();
                     finish();
 

@@ -225,6 +225,9 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                         intent.putExtra("tipo_usuario", tipo_usuario);
                         intent.putExtra("hora_actual", hora_actual);
                         intent.putExtra("fecha_actual", fecha_actual);
+                        intent.putExtra("telefono", txt_telefonoEmpresa.getText().toString());
+                        intent.putExtra("telefono2", txt_telefonoEmpresa2.getText().toString());
+                        intent.putExtra("direccion", txt_direccionEmpresa.getText().toString());
                         context.startActivity(intent);
 
 

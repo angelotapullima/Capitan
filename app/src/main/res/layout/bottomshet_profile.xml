@@ -27,6 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:visibility="gone"
                     android:id="@+id/btnClose_profile"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
@@ -36,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="18sp"
+                    android:visibility="gone"
                     android:id="@+id/titulotap"
                     android:textStyle="bold"
                     android:text="Opciones"
@@ -51,6 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/verFoto"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
             <!--android:id="@+id/bottomDelete"-->
 

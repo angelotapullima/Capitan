@@ -48,7 +48,7 @@ public class AdapListadoCanchaReserva extends RecyclerView.Adapter<AdapListadoCa
     public class canchaReservaViewHolder extends RecyclerView.ViewHolder{
 
        // private ImageView img_fotoCancha;
-        private TextView txt_horasCancha, txt_precioCancha, txt_estadoCancha, txt_nombreReservaCancha, txt_precioAbonadoCancha;
+        private TextView txt_horasCancha, txt_precioCancha, txt_estadoCancha, txt_nombreReservaCancha, txt_precioAbonadoCancha,txt_Fecha;
         private LinearLayout lny_precioAbonado;
         private CardView cdv_canchas_horario_reserva;
         private ImageView imb_reserva_llamada;
@@ -65,6 +65,7 @@ public class AdapListadoCanchaReserva extends RecyclerView.Adapter<AdapListadoCa
             lny_precioAbonado = (LinearLayout) itemView.findViewById(R.id.lny_precioAbonado);
             cdv_canchas_horario_reserva = (CardView) itemView.findViewById(R.id.cdv_canchas_horario_reserva);
             imb_reserva_llamada =(ImageView)itemView.findViewById(R.id.imb_reserva_llamada);
+            txt_Fecha =(TextView) itemView.findViewById(R.id.txt_Fecha);
 
 
         }
@@ -110,6 +111,7 @@ public class AdapListadoCanchaReserva extends RecyclerView.Adapter<AdapListadoCa
             holder.txt_estadoCancha.setText(current.getReserva_estado());
             holder.txt_nombreReservaCancha.setText(current.getReserva_nombre());
             holder.txt_precioAbonadoCancha.setText(current.getReserva_costo());
+            holder.txt_Fecha.setText(current.getReserva_fecha());
 
             switch(current.getReserva_color()){
                 case "rojo":
@@ -118,6 +120,7 @@ public class AdapListadoCanchaReserva extends RecyclerView.Adapter<AdapListadoCa
                     break;
                 case "verde":
                     holder.cdv_canchas_horario_reserva.setCardBackgroundColor(ctx.getResources().getColor( R.color.colorVerde));
+                    holder.lny_precioAbonado.setVisibility(View.GONE);
                     break;
                 case "anaranjado":
                     holder.cdv_canchas_horario_reserva.setCardBackgroundColor(ctx.getResources().getColor( R.color.colorAnaranjado));

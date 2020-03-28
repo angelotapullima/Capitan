@@ -148,7 +148,6 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
         this.ctx=context;
         mInflater = LayoutInflater.from(context);
         universalImageLoader = new UniversalImageLoader(context);
-        ImageLoader.getInstance().init(universalImageLoader.getConfig());
         preferencesUser = new Preferences(context);
         this.listener = listener;}
 
@@ -166,6 +165,8 @@ public class AdaptadorForo extends RecyclerView.Adapter<AdaptadorForo.foroViewHo
         if (mUsers != null) {
             current = mUsers.get(position);
 
+
+            ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
             holder.layout_like.setId(position);
             holder.layout_comentar.setId(position);

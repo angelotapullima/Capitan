@@ -52,6 +52,21 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:id="@+id/recargaSaldo"
+                    android:visibility="gone"
+                    android:background="#000">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:text="presione para recargar su saldo"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

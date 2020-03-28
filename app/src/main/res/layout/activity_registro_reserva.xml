@@ -55,6 +55,21 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:visibility="gone"
+                    android:id="@+id/recargaSaldo"
+                    android:background="#000">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:text="presione para recargar su saldo"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
@@ -77,6 +92,7 @@
 
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -96,27 +112,6 @@
                             android:textStyle="bold"
                             android:text=" "/>
                     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -440,6 +435,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="280dp"
                         android:scaleType="fitCenter"
+                        android:visibility="gone"
                         android:layout_marginTop="20dp"
                         android:id="@+id/noChanchas"
                         android:src="@drawable/ic_nochanchas"/>

@@ -65,7 +65,7 @@ public class ReservasCanchaWebServiceRepository {
             service.savePost(cancha_id,fecha,"true",token).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.d("Repository","goleadores::::"+response.body());
+                    Log.e("Repository","DReservasCanchas::::"+response.body());
                     webserviceResponseList = parseJson(response.body());
                     ReservasCanchaRoomDBRepository goleadoresRoomDBRepository = new ReservasCanchaRoomDBRepository(application);
                     goleadoresRoomDBRepository.insertPosts(webserviceResponseList);

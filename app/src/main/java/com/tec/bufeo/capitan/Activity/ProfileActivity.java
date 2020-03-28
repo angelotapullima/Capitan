@@ -97,7 +97,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     View bottomOpcionesFoto;
     BottomSheetBehavior mBottomSheetBehavior;
-    LinearLayout tap_de_accion_profile,verFoto,cambiarFoto,tap_foto,accionGaleria,accionTomarFoto;
+    LinearLayout tap_de_accion_profile,verFoto,cambiarFoto,tap_foto,accionGaleria,accionTomarFoto,publicar;
     ImageView btnClose_profile;
     TextView titulotap;
     UniversalImageLoader universalImageLoader;
@@ -186,6 +186,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         accionTomarFoto.setOnClickListener(this);
         editarPerfil.setOnClickListener(this);
         buttonEditarPerfil.setOnClickListener(this);
+        publicar.setOnClickListener(this);
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -343,6 +344,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         EmailJuegador = findViewById(R.id.EmailJuegador);
         editarPerfil = findViewById(R.id.editarPerfil);
         buttonEditarPerfil = findViewById(R.id.buttonEditarPerfil);
+        publicar = findViewById(R.id.publicar);
 
 
 
@@ -394,6 +396,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(i);
         }else if (v.equals(buttonEditarPerfil)){
             Intent i = new Intent(ProfileActivity.this, InformacionGeneral.class);
+            startActivity(i);
+        }else if (v.equals(publicar)){
+            Intent i = new Intent(ProfileActivity.this, RegistroForo.class);
             startActivity(i);
         }
 

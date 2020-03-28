@@ -70,6 +70,7 @@ public class DetalleCanchas extends AppCompatActivity  {
     String separador,part1,part2,separador_part1,part1_res,h_apertura,h_cierre,string_apertura,horaFinal= "",separador_hora,partHoraActual;
     String[] resultado,resultado_part1 ,resultado_horaActual;
     int hapertura = 0, hcierre;
+    String telefono,telefono2,direccion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,9 @@ public class DetalleCanchas extends AppCompatActivity  {
         tipo_usuario = getIntent().getStringExtra("tipo_usuario");
         fecha_actual = getIntent().getStringExtra("fecha_actual");
         hora_actual = getIntent().getStringExtra("hora_actual");
-
+        telefono = getIntent().getStringExtra("telefono");
+        telefono2 = getIntent().getStringExtra("telefono2");
+        direccion = getIntent().getStringExtra("direccion");
 
 
         initViews();
@@ -232,7 +235,7 @@ public class DetalleCanchas extends AppCompatActivity  {
                     reserva.setPago_id(reservasCanchas.get(j).getPago_id());
                     reserva.setTipopago(reservasCanchas.get(j).getTipopago());
                     reserva.setCancha_id(reservasCanchas.get(j).getCancha_id());
-                    reserva.setCancha_nombre(reservasCanchas.get(j).getNombre());
+                    reserva.setReserva_nombre(reservasCanchas.get(j).getNombre());
                     reserva.setReserva_fecha(reservasCanchas.get(j).getFecha());
                     reserva.setReserva_hora(reservasCanchas.get(j).getHora());
                     reserva.setPago1(reservasCanchas.get(j).getPago1());
@@ -411,6 +414,9 @@ public class DetalleCanchas extends AppCompatActivity  {
                                 i.putExtra("cancha_nombre",cancha_nombre);
                                 i.putExtra("saldo",saldo_cargado);
                                 i.putExtra("cancha_id",cancha_id);
+                                i.putExtra("telefono",telefono);
+                                i.putExtra("telefono2",telefono2);
+                                i.putExtra("direccion",direccion);
                                 startActivity(i);
                             }
 
@@ -433,6 +439,9 @@ public class DetalleCanchas extends AppCompatActivity  {
                                 i.putExtra("cancha_nombre",cancha_nombre);
                                 i.putExtra("saldo",saldo_cargado);
                                 i.putExtra("cancha_id",cancha_id);
+                                i.putExtra("telefono",telefono);
+                                i.putExtra("telefono2",telefono2);
+                                i.putExtra("direccion",direccion);
                                 startActivity(i);
                             }
 

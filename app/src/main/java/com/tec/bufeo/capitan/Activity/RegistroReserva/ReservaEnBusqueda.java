@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
 import com.tec.bufeo.capitan.Activity.DetalleNegocio;
+import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.Modelo.Cancha;
@@ -82,9 +83,9 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     Preferences preferences;
     RelativeLayout relaitveCarga;
     String nombre_empresa_dato,empresa_id,h_reserva,fecha,hora,precio,telefono1,telefono2,direccion;
-    LinearLayout btn_reservar_busqueda;
+    LinearLayout btn_reservar_busqueda,recargaSaldo;
     TextView nombre_reserva_busqueda,saldo_bufis_busqueda;
-
+    boolean permiso =false;
 
 
     ArrayList<String> arrayEquipo_busqueda,arrayCanchaBusqueda;
@@ -136,6 +137,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         total= findViewById(R.id.total);
         noChanchas= findViewById(R.id.noChanchas);
         saldo_bufis_busqueda  = findViewById(R.id.saldo_bufis_busqueda);
+        recargaSaldo  = findViewById(R.id.recargaSaldo);
 
 
         costo.setText(precio);
@@ -194,6 +196,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 }else{
                     l_todo.setVisibility(View.GONE);
                     l_chancha.setVisibility(View.VISIBLE);
+                    recargaSaldo.setVisibility(View.GONE);
                 }
             }
 
@@ -220,6 +223,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
         btn_reservar_busqueda.setOnClickListener(this);
         backReserva.setOnClickListener(this);
+        recargaSaldo.setOnClickListener(this);
 
 
     }
@@ -232,13 +236,15 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
 
 
-                if (spn_tipo_pago_busqueda.getSelectedItem().toString().equals("Seleccionar")){
+
+            if (spn_tipo_pago_busqueda.getSelectedItem().toString().equals("Seleccionar")){
 
 
-                    preferences.codeAdvertencia("Debe seleccionar un tipo de Pago");
-                }else{
-                    if (spn_tipo_pago_busqueda.getSelectedItem().toString().equals("Yo pago todo")){
+                preferences.codeAdvertencia("Debe seleccionar un tipo de Pago");
+            }else{
+                if (spn_tipo_pago_busqueda.getSelectedItem().toString().equals("Yo pago todo")){
 
+                    if (permiso ==true){
                         if (nombre_reserva_busqueda.getText().toString().isEmpty()){
 
                             preferences.codeAdvertencia("el campo nombre no debe estar vacio");
@@ -258,14 +264,22 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
                             }
                         }
+                    }else{
+                        preferences.toasRojo("No cuentas con Bufis para esta operación", "por favor , recargue su saldo");
+                        recargaSaldo.setVisibility(View.VISIBLE);
                     }
-
 
                 }
 
 
+            }
+
+
         }else if (v.equals(backReserva)){
             finish();
+        }else if (v.equals(recargaSaldo)){
+            Intent i = new Intent(ReservaEnBusqueda.this, RealizarRecarga.class);
+            startActivity(i);
         }
     }
 
@@ -294,6 +308,10 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 saldo_cargado=saldo.get(0).getSaldo_actual();
                 preferences.saveValuePORT("comision", saldo.get(0).getComision());
                 preferences.saveValuePORT("saldo", saldo.get(0).getSaldo_actual());
+                if (Integer.parseInt(saldo_cargado)>0){
+                    permiso=true;
+                }
+
             }else{
                 saldo_cargado="vacio";
             }
@@ -513,14 +531,9 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
                 Log.d("registrar_reserva", "onResponse: "+response );
 
-                String separador,part1;
-                String[] resultado;
 
-                separador = Pattern.quote("}");
-                resultado = response.split(separador);
-                part1 = resultado[2];
 
-                if (part1.equals("1")){
+                if (response.equals("1")){
                     preferences.toasVerde("Registro Completo");
                     dialog_carga.dismiss();
                     Intent i = new Intent(ReservaEnBusqueda.this, ConfirmacionReserva.class);

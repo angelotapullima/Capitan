@@ -92,6 +92,8 @@ public class MenuPrincipal extends AppCompatActivity implements BottomNavigation
             cargarFeed();
             cargarEquipos();
         }
+
+
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener
                 ( MenuPrincipal.this,  new OnSuccessListener<InstanceIdResult>() {
                     @Override
