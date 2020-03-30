@@ -1,6 +1,6 @@
 package com.tec.bufeo.capitan.Activity.RegistroReserva;
 
-import android.app.Activity;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,11 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
+
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -40,7 +38,7 @@ import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewMode
 import com.tec.bufeo.capitan.Modelo.Reserva;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.WebService.DataConnection;
+
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
 import org.json.JSONArray;
@@ -51,7 +49,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
+
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 

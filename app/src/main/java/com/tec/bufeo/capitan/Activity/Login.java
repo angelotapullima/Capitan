@@ -56,7 +56,6 @@ public class Login extends AppCompatActivity {
     TextView txt_resgistrate,olvide;
     Preferences preferences;
     SharedPreferences preferencesUser;
-    public static Activity activity;
 
     //pruebex
 

@@ -18,15 +18,19 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name,android:allowBackup">
-        <activity android:name=".Activity.DetalleCanchas.Views.DetalleCanchas"
+        <activity android:name=".Activity.PromocionesCanchas"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.DetalleCanchas.Views.DetalleCanchas"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.ForgotPassword"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.WebTerminosYCondiciones"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.ChanchasEquipos"
+        <activity
+            android:name=".Activity.ChanchasEquipos"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.DetalleReservaEmpresa"
@@ -64,9 +68,8 @@
         <activity
             android:name=".Activity.RealizarRecarga"
             android:theme="@style/AppTheme.NoActionBarTransparent" />
-
-
-        <activity android:name=".Activity.MisMovimientos.Views.MisMovimientos"
+        <activity
+            android:name=".Activity.MisMovimientos.Views.MisMovimientos"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.RegistroReserva.ReservaEnBusqueda"

@@ -85,14 +85,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
-import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
-import static net.gotev.uploadservice.Placeholders.PROGRESS;
-import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
-import static net.gotev.uploadservice.Placeholders.UPLOADED_FILES;
-import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 
 public class RegistroTorneo extends AppCompatActivity implements View.OnClickListener {
 
@@ -334,6 +327,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
     private  final String DOS_PUNTOS = ":";
     private void obtenerHora(final TextView Hora){
         Calendar cur_calender = Calendar.getInstance();
+
         TimePickerDialog recogerHora = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -355,6 +349,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
             //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
             //Pero el sistema devuelve la hora en formato 24 horas
         }, cur_calender.get(Calendar.HOUR_OF_DAY), cur_calender.get(Calendar.MINUTE), true);
+
 
         recogerHora.show();
 

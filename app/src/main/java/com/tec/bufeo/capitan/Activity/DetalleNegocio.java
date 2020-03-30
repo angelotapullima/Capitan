@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.Views.DetalleCanchas;
@@ -72,13 +73,20 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     CoordinatorLayout cordinator;
     Preferences preferences;
     String id_empresa, tipo_usuario,latitud ="",longitud="";
-    FrameLayout frameCarga,frameCarga2;
+    FrameLayout frameCargaArribaNegocios,frameCarga2;
     public String fecha_actual, hora_actual, cancha_id, horario;
-
+    MaterialButton promociones;
     UniversalImageLoader universalImageLoader;
-
+    RatingReviews rating_reviews;
     NegociosViewModel negociosViewModel;
     CanchasViewModel canchasViewModel;
+
+    int colors[] = new int[]{
+            Color.parseColor("#0e9d58"),
+            Color.parseColor("#bfd047"),
+            Color.parseColor("#ffc105"),
+            Color.parseColor("#ef7e14"),
+            Color.parseColor("#d36259")};
     public void getReportes() {
         Intent intent = new Intent(this, EstadisticasEmpresas.class);
         intent.putExtra("id_empresa",id_empresa);
@@ -106,33 +114,18 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
     }
 
+
     private void initViews() {
         img_fotoEmpresa = (ImageView) findViewById(R.id.img_fotoEmpresa);
 
         cordinator=(CoordinatorLayout)findViewById(R.id.cordinator);
-        int colors[] = new int[]{
-                Color.parseColor("#0e9d58"),
-                Color.parseColor("#bfd047"),
-                Color.parseColor("#ffc105"),
-                Color.parseColor("#ef7e14"),
-                Color.parseColor("#d36259")};
 
-        int raters[] = new int[5];
 
-        for (int i = 0; i < 5; i++) {
-            raters[i] = i + 10 ;
 
-        }
-        /*{
-                new Random().nextInt(100),
-                new Random().nextInt(100),
-                new Random().nextInt(100),
-                new Random().nextInt(100),
-                new Random().nextInt(100)
-        };*/
-        RatingReviews rating_reviews =  findViewById(R.id.rating_reviews);
 
-        rating_reviews.createRatingBars(100, BarLabels.STYPE3, colors, raters);
+        rating_reviews =  findViewById(R.id.rating_reviews);
+
+
 
         txt_nombreEmpresa = (TextView) findViewById(R.id.txt_nombreEmpresa);
         txt_telefonoEmpresa2 = (TextView) findViewById(R.id.txt_telefonoEmpresa2);
@@ -145,7 +138,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         txt_direccionEmpresa = (TextView) findViewById(R.id.txt_direccionEmpresa);
         rtb_valorar = (RatingBar) findViewById(R.id.rtb_valorar);
         cdv_detalleEmpresa = (CardView) findViewById(R.id.cdv_detalleEmpresa);
-        frameCarga = (FrameLayout) findViewById(R.id.frameCarga);
+        frameCargaArribaNegocios = (FrameLayout) findViewById(R.id.frameCargaArribaNegocios);
         frameCarga2 = (FrameLayout) findViewById(R.id.frameCarga2);
         rcv_canchas = (RecyclerView) findViewById(R.id.rcv_canchas);
         abl_detalleEmpresa = (AppBarLayout) findViewById(R.id.abl_detalleEmpresa);
@@ -155,6 +148,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         estadoNegocio = (TextView) findViewById(R.id.estadoNegocio);
         vistaMapa = (TextView) findViewById(R.id.vistaMapa);
         Misnegocios = (ImageView) findViewById(R.id.Misnegocios);
+        promociones = (MaterialButton) findViewById(R.id.promociones);
         context = this;
         activity = this;
         //rtb_valorar.setRating(4);
@@ -174,8 +168,10 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
         if (tipo_usuario.equals("admin")){
             Misnegocios.setVisibility(View.VISIBLE);
+            promociones.setVisibility(View.VISIBLE);
         }else{
             Misnegocios.setVisibility(View.GONE);
+            promociones.setVisibility(View.GONE);
         }
 
 
@@ -204,6 +200,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
         showToolbar("Detalle de Negocio",true);
         Misnegocios.setOnClickListener(this);
+        promociones.setOnClickListener(this);
     }
 
     private void setAdapter() {
@@ -315,7 +312,16 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                         ratingBar_promedio.setRating(0);
                     }
 
-                    //latitud =  arrayempresa.get(0).get
+
+                    int raters[] = new int[5];
+
+                    for (int i = 0; i < 5; i++) {
+                        raters[i] = i + 10 ;
+
+                    }
+                    rating_reviews.createRatingBars(100, BarLabels.STYPE3, colors, raters);
+
+
 
                     if (negocios.get(0).getTelefono_1_empresa().isEmpty() && !negocios.get(0).getTelefono_2_empresa().isEmpty()){
                         txt_telefonoEmpresa.setVisibility(View.GONE);
@@ -331,16 +337,10 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                     }
 
 
-                  /*  SimpleDateFormat sdf2 = new SimpleDateFormat("HH:hh");
-                    String horaActual = sdf2.format(date);
-
-                    SimpleDateFormat fechex = new SimpleDateFormat("yyyy-MM-dd");
-                    String fechaActual = fechex.format(date);
-*/
 
                     fecha_actual = negocios.get(0).getFecha_actual();
                     hora_actual = negocios.get(0).getHora_actual();
-                    frameCarga.setVisibility(View.GONE);
+                    frameCargaArribaNegocios.setVisibility(View.GONE);
                     frameCarga2.setVisibility(View.GONE);
                     //progressbar.setVisibility(ProgressBar.INVISIBLE);
 
@@ -470,6 +470,11 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
         }else  if(v.equals(Misnegocios)){
             getReportes();
+        }else if (v.equals(promociones)){
+
+            Intent i = new Intent(DetalleNegocio.this, PromocionesCanchas.class);
+            i.putExtra("id_empresa",id_empresa);
+            startActivity(i);
         }
 
     }

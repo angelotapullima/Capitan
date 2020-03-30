@@ -31,8 +31,8 @@ public class DataConverterChanchas implements Serializable {
         Gson gson = new Gson();
         Type type = new TypeToken<List<DetalleChancha>>() {
         }.getType();
-        List<DetalleChancha> productCategoriesList = gson.fromJson(optionValuesString, type);
-        return productCategoriesList;
+        List<DetalleChancha> listaChanchas = gson.fromJson(optionValuesString, type);
+        return listaChanchas;
     }
 
 }

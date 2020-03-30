@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#fff"
-                android:id="@+id/frameCarga"
+                android:id="@+id/frameCargaArribaNegocios"
                 app:layout_anchor="@id/cdv_detalleEmpresa"
                 app:layout_anchorGravity="center_horizontal"
                 android:layout_gravity="center">
@@ -304,6 +304,12 @@
                             android:text="(Ver en el Mapa)" />
                     </LinearLayout>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/promociones"
+                        android:layout_marginBottom="20dp"
+                        android:text="Agregar Promociones"/>
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
