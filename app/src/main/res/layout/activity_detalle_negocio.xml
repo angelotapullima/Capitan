@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".Activity.DetalleNegocio">
+    tools:context=".Activity.DetalleNegocio.DetalleNegocio">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/abl_detalleEmpresa"
@@ -278,7 +278,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
                         android:orientation="horizontal">
                         <ImageView
                             android:layout_width="wrap_content"
@@ -292,18 +291,19 @@
                             android:textSize="18dp"
                             android:textStyle="normal|italic"
                             android:textColor="#f11d1c1c"/>
-                        <TextView
 
-                            android:layout_width="wrap_content"
-                            android:id="@+id/vistaMapa"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="16dp"
-                            android:textStyle="bold|italic"
-                            android:textColor="@color/blue_A700"
-                            android:text="(Ver en el Mapa)" />
                     </LinearLayout>
+                    <TextView
 
+                        android:layout_width="wrap_content"
+                        android:id="@+id/vistaMapa"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="16dp"
+                        android:textStyle="bold|italic"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="@color/blue_A700"
+                        android:text="(Ver en el Mapa)" />
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -311,8 +311,24 @@
                         android:layout_marginBottom="20dp"
                         android:text="Agregar Promociones"/>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="normal|bold"
+                        android:textSize="20sp"
+
+                        android:id="@+id/imagenesLocal"
+                        android:textColor="@color/colorPrimaryText"
+                        android:text="Imágenes del Local"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:id="@+id/rcv_galeria"
+                        android:layout_height="wrap_content"/>
+
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
+                        android:layout_marginTop="20dp"
                         android:layout_height="wrap_content">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -363,12 +379,46 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
+                            android:layout_marginTop="20dp"
                             android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:weightSum="10"
+                                android:id="@+id/masComentarios"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/textView3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="9.2"
+                                    android:text="Valoraciones &amp; Comentarios"
+                                    android:textAppearance="@android:style/TextAppearance.Material.WindowTitle"
+                                    android:textStyle="bold"
+                                    tools:targetApi="lollipop" />
+
+                                <ImageButton
+                                    android:id="@+id/imb_mas_Comentarios"
+                                    android:layout_width="0dp"
+                                    android:layout_weight=".8"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="10dp"
+                                    android:title="Agregar"
+                                    android:backgroundTint="@color/colorPrimary"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/ic_arrow_forward" />
+
+                            </LinearLayout>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            </RelativeLayout>
+
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                >
+                                android:layout_height="match_parent">
 
                                 <com.tec.bufeo.capitan.Activity.ratings.RatingReviews
                                     xmlns:bar="http://schemas.android.com/apk/res-auto"
@@ -438,21 +488,7 @@
                                     app:layout_constraintTop_toBottomOf="@+id/ratingBar_promedio"
                                     android:layout_marginLeft="8dp" />
 
-                                <TextView
-                                    android:id="@+id/textView3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="16dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:layout_marginBottom="24dp"
-                                    android:text="Valoraciones &amp; Comentarios"
-                                    android:textAppearance="@android:style/TextAppearance.Material.WindowTitle"
-                                    android:textStyle="bold"
-                                    app:layout_constraintBottom_toTopOf="@+id/rating_reviews"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    tools:targetApi="lollipop" />
+
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 

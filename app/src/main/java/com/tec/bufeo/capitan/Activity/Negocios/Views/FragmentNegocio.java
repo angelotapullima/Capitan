@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.tec.bufeo.capitan.Activity.DetalleNegocio;
+import com.tec.bufeo.capitan.Activity.DetalleNegocio.DetalleNegocio;
 import com.tec.bufeo.capitan.Activity.MisNegociosActivity;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
 import com.tec.bufeo.capitan.Activity.Negocios.Repository.Negocios.NegociosWebServiceRepository;

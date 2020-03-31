@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.tec.bufeo.capitan.Activity.DetalleNegocio.DetalleNegocio;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
 import com.tec.bufeo.capitan.Activity.Negocios.Repository.Negocios.NegociosWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.NegociosViewModel;

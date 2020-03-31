@@ -6,7 +6,9 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.tec.bufeo.capitan.Activity.Negocios.Model.Galeria;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
+import com.tec.bufeo.capitan.Activity.Negocios.Model.Ratings;
 import com.tec.bufeo.capitan.Util.APIUrl;
 
 import org.json.JSONArray;
@@ -91,7 +93,7 @@ public class NegociosWebServiceRepository {
 
         JSONObject jsonObject;
 
-        JSONArray jsonArray;
+        JSONArray jsonArray,jsonArraye;
 
         try {
             jsonObject = new JSONObject(response);
@@ -105,8 +107,8 @@ public class NegociosWebServiceRepository {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
                 Negocios negocios = new Negocios();
 
-                negocios.setId_empresa(jsonNode.optString("id_empresa"));
                 negocios.setNombre_empresa(jsonNode.optString("nombre"));
+                negocios.setId_empresa(jsonNode.optString("id_empresa"));
                 negocios.setDireccion_empresa(jsonNode.optString("direccion"));
                 negocios.setTelefono_1_empresa(jsonNode.optString("telefono_1"));
                 negocios.setTelefono_2_empresa(jsonNode.optString("telefono_2"));
@@ -118,25 +120,22 @@ public class NegociosWebServiceRepository {
                 negocios.setDistrito_empresa(jsonNode.optString("distrito"));
                 negocios.setHorario_ls_empresa(jsonNode.optString("horario_ls"));
                 negocios.setHorario_d_empresa(jsonNode.optString("horario_d"));
-                negocios.setPromedio_empresa(jsonNode.optString("promedio"));
-                negocios.setConteo_empresa(jsonNode.optString("conteo"));
                 negocios.setFecha_actual(jsonNode.optString("fecha_actual"));
                 negocios.setHora_actual(jsonNode.optString("hora_actual"));
                 negocios.setDia_actual(jsonNode.optString("dia"));
+                negocios.setPromedio_empresa(jsonNode.optString("promedio"));
+                negocios.setConteo_empresa(jsonNode.optString("conteo"));
+
                 negocios.setSoy_admin(jsonNode.optString("soy_admin"));
 
-                JSONArray jsonArray1 = jsonNode.optJSONArray("rating");
-
-                int count2 = jsonArray1.length();
-                if (count2>0){
-                    for (int x = 0 ; x<count2 ; x++){
-                        JSONObject jsonObject1 = jsonArray1.getJSONObject(x);
-                        negocios.setRating_empresa_valor(jsonObject1.optString("rating_empresa_valor"));
-                        negocios.setRating_conteo(jsonObject1.optString("conteo"));
-                    }
-                }
+                jsonArray = jsonNode.getJSONArray("rating");
+                jsonArraye = jsonNode.getJSONArray("galeria");
 
 
+                negocios.setList_galeria(buildSubItemListGaleria(jsonArraye));
+
+
+                negocios.setList_ratings(buildSubItemList(negocios.getId_empresa(),jsonArray));
 
 
 
@@ -154,5 +153,75 @@ public class NegociosWebServiceRepository {
         return apiResults;
 
     }
+
+
+
+    JSONObject jsonNode2;
+    Ratings ratings;
+
+    private List<Ratings> buildSubItemList(String id,JSONArray array) {
+        List<Ratings> subItemList = new ArrayList<>();
+
+        String conteo1 ="0",conteo2="0",conteo3="0",conteo4="0",conteo5="0";
+        for (int i=0; i<array.length(); i++) {
+            try {
+                jsonNode2 = array.getJSONObject(i);
+
+                if(i==0){
+                    conteo1 = jsonNode2.optString("conteo");
+                }else  if(i==1){
+                    conteo2 = jsonNode2.optString("conteo");
+                }else if(i==2){
+                    conteo3 = jsonNode2.optString("conteo");
+                }else if(i==3){
+                    conteo4 = jsonNode2.optString("conteo");
+                }else if(i==4){
+                    conteo5 = jsonNode2.optString("conteo");
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        ratings = new Ratings(id,conteo1,conteo2,conteo3,conteo4,conteo5);
+        subItemList.add(ratings);
+        return subItemList;
+    }
+
+
+    JSONObject jsonNode3;
+    Galeria galeria;
+
+    private List<Galeria> buildSubItemListGaleria(JSONArray array) {
+        List<Galeria> subItemList = new ArrayList<>();
+
+        for (int i=0; i<array.length(); i++) {
+            try {
+                jsonNode3 = array.getJSONObject(i);
+
+                String id_galeria,id_empresa,galeria_foto;
+
+                id_galeria = jsonNode3.optString("id_galeria");
+                id_empresa = jsonNode3.optString("id_empresa");
+                galeria_foto = jsonNode3.optString("galeria_foto");
+
+
+                galeria = new Galeria(id_galeria,id_empresa,galeria_foto);
+                subItemList.add(galeria);
+
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return subItemList;
+    }
+
 
 }

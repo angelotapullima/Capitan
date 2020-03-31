@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity;
+package com.tec.bufeo.capitan.Activity.DetalleNegocio;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -32,19 +33,22 @@ import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tec.bufeo.capitan.Activity.CalificarNegocios;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.Views.DetalleCanchas;
+import com.tec.bufeo.capitan.Activity.DetalleFotoUsuario;
 import com.tec.bufeo.capitan.Activity.EstadisticasEmpresas.EstadisticasEmpresas;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Canchas;
+import com.tec.bufeo.capitan.Activity.Negocios.Model.Galeria;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
 import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.CanchasViewModel;
 import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.NegociosViewModel;
+import com.tec.bufeo.capitan.Activity.PromocionesCanchas;
 import com.tec.bufeo.capitan.Activity.ratings.BarLabels;
 import com.tec.bufeo.capitan.Activity.ratings.RatingReviews;
 import com.tec.bufeo.capitan.Adapters.AdaptadorListadoCanchaEmpresa;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
-import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,7 +60,7 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class DetalleNegocio extends AppCompatActivity implements View.OnClickListener {
 
     ImageView img_fotoEmpresa,Misnegocios;
-    RecyclerView rcv_canchas;
+    RecyclerView rcv_canchas,rcv_galeria;
     AppBarLayout abl_detalleEmpresa;
     public TextView txt_nombreEmpresa, txt_descripcionEmpresa, txt_direccionEmpresa,separadorTelefonos,
             txt_telefonoEmpresa,txt_telefonoEmpresa2, txt_horario,rating_float,conteo,estadoNegocio,vistaMapa;
@@ -65,7 +69,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
     public RatingBar  rtb_valorar,ratingBar_promedio;
     CardView cdv_detalleEmpresa;
-    LinearLayout lny_telefono;
+    LinearLayout lny_telefono,masComentarios;
     AdaptadorListadoCanchaEmpresa adaptadorListadoCanchaEmpresa;
     CardView cdv_mensaje;
     public Context context;
@@ -80,6 +84,9 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
     RatingReviews rating_reviews;
     NegociosViewModel negociosViewModel;
     CanchasViewModel canchasViewModel;
+    TextView imagenesLocal;
+    AdapterGaleria adapterGaleria;
+    ImageButton imb_mas_Comentarios;
 
     int colors[] = new int[]{
             Color.parseColor("#0e9d58"),
@@ -137,18 +144,22 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         txt_horario = (TextView) findViewById(R.id.txt_horario);
         txt_direccionEmpresa = (TextView) findViewById(R.id.txt_direccionEmpresa);
         rtb_valorar = (RatingBar) findViewById(R.id.rtb_valorar);
+        rcv_galeria = (RecyclerView) findViewById(R.id.rcv_galeria);
         cdv_detalleEmpresa = (CardView) findViewById(R.id.cdv_detalleEmpresa);
         frameCargaArribaNegocios = (FrameLayout) findViewById(R.id.frameCargaArribaNegocios);
         frameCarga2 = (FrameLayout) findViewById(R.id.frameCarga2);
         rcv_canchas = (RecyclerView) findViewById(R.id.rcv_canchas);
         abl_detalleEmpresa = (AppBarLayout) findViewById(R.id.abl_detalleEmpresa);
         lny_telefono = (LinearLayout) findViewById(R.id.lny_telefono);
+        masComentarios = (LinearLayout) findViewById(R.id.masComentarios);
         separadorTelefonos = (TextView) findViewById(R.id.separadorTelefonos);
         cdv_mensaje = (CardView) findViewById(R.id.cdv_mensaje);
         estadoNegocio = (TextView) findViewById(R.id.estadoNegocio);
+        imagenesLocal = (TextView) findViewById(R.id.imagenesLocal);
         vistaMapa = (TextView) findViewById(R.id.vistaMapa);
         Misnegocios = (ImageView) findViewById(R.id.Misnegocios);
         promociones = (MaterialButton) findViewById(R.id.promociones);
+        imb_mas_Comentarios = (ImageButton) findViewById(R.id.imb_mas_Comentarios);
         context = this;
         activity = this;
         //rtb_valorar.setRating(4);
@@ -164,6 +175,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
         txt_telefonoEmpresa.setOnClickListener(this);
         txt_telefonoEmpresa2.setOnClickListener(this);
+        masComentarios.setOnClickListener(this);
         vistaMapa.setOnClickListener(this);
 
         if (tipo_usuario.equals("admin")){
@@ -198,7 +210,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
         // rtb_valoracion.setRating();
 
-        showToolbar("Detalle de Negocio",true);
+        //showToolbar("Detalle de Negocio",true);
         Misnegocios.setOnClickListener(this);
         promociones.setOnClickListener(this);
     }
@@ -242,7 +254,33 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
         linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
         rcv_canchas.setLayoutManager(linearLayoutManager);
         rcv_canchas.setAdapter(adaptadorListadoCanchaEmpresa);
+
+
+        adapterGaleria = new AdapterGaleria(this, new AdapterGaleria.OnItemClickListener() {
+            @Override
+            public void onItemClick(Galeria cancha, String tipo, int position) {
+
+                if (tipo.equals("foto")){
+                    Intent i = new Intent(getApplicationContext(), DetalleFotoUsuario.class);
+                    i.putExtra("foto",cancha.getGaleria_foto());
+                    i.putExtra("descripcion","0");
+                    i.putExtra("cantidad_comentarios","0");
+                    i.putExtra("id_publicacion","0");
+                    startActivity(i);
+                }
+            }
+        });
+
+        //RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(this,lstBook);
+        rcv_galeria.setLayoutManager(new GridLayoutManager(this,2));
+        rcv_galeria.setAdapter(adapterGaleria);
     }
+
+
+
+
+
+
 
     private void cargarvista() {
         negociosViewModel.getAllDetalle(id_empresa).observe(this, new Observer<List<Negocios>>() {
@@ -256,6 +294,8 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
                     txt_nombreEmpresa.setText(negocios.get(0).getNombre_empresa());
                     txt_descripcionEmpresa.setText(negocios.get(0).getDescripcion_empresa());
+
+                    showToolbar(negocios.get(0).getNombre_empresa(),true);
 
                     Date date =new Date();
                     SimpleDateFormat sdf = new SimpleDateFormat("HH");
@@ -306,21 +346,30 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                     txt_direccionEmpresa.setText(negocios.get(0).getDireccion_empresa());
 
 
-                    if (negocios.get(0).getRating_conteo() != null){
-                        rating_float.setText(negocios.get(0).getRating_empresa_valor());
-                        conteo.setText(negocios.get(0).getRating_conteo());
-                        ratingBar_promedio.setRating(Float.parseFloat(negocios.get(0).getRating_empresa_valor()));
-                    }else{
-                        rating_float.setText("0");
-                        conteo.setText("0");
-                        ratingBar_promedio.setRating(0);
-                    }
+                    rating_float.setText(negocios.get(0).getPromedio_empresa());
+                    conteo.setText(negocios.get(0).getConteo_empresa());
+                    ratingBar_promedio.setRating(Float.parseFloat(negocios.get(0).getPromedio_empresa()));
+
+
+
+
 
 
                     int raters[] = new int[5];
 
                     for (int i = 0; i < 5; i++) {
-                        raters[i] = i + 10 ;
+                        if (i==0){
+                            raters[i] = Integer.parseInt(negocios.get(0).getList_ratings().get(0).getConteo1());
+                        }else if (i==1){
+                            raters[i] = Integer.parseInt(negocios.get(0).getList_ratings().get(0).getConteo2());
+                        }else if (i==2){
+                            raters[i] = Integer.parseInt(negocios.get(0).getList_ratings().get(0).getConteo3());
+                        }else if (i==3){
+                            raters[i] = Integer.parseInt(negocios.get(0).getList_ratings().get(0).getConteo4());
+                        }else if (i==4){
+                            raters[i] = Integer.parseInt(negocios.get(0).getList_ratings().get(0).getConteo5());
+                        }
+
 
                     }
                     rating_reviews.createRatingBars(100, BarLabels.STYPE3, colors, raters);
@@ -341,6 +390,12 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                     }
 
 
+                    if (negocios.get(0).getList_galeria().size()>0){
+                        adapterGaleria.setWords(negocios.get(0).getList_galeria());
+                    }else{
+                        rcv_galeria.setVisibility(View.GONE);
+                        imagenesLocal.setVisibility(View.GONE);
+                    }
 
                     fecha_actual = negocios.get(0).getFecha_actual();
                     hora_actual = negocios.get(0).getHora_actual();
@@ -479,6 +534,8 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
             Intent i = new Intent(DetalleNegocio.this, PromocionesCanchas.class);
             i.putExtra("id_empresa",id_empresa);
             startActivity(i);
+        }else if (v.equals(masComentarios)){
+
         }
 
     }

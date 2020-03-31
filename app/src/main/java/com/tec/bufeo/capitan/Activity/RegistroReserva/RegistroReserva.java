@@ -124,7 +124,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         telefono2 = getIntent().getStringExtra("telefono2");
         direccion = getIntent().getStringExtra("direccion");
 
-        if (Integer.parseInt(saldo)>0){
+        if (Float.parseFloat(saldo)>0){
             permiso=true;
         }
         hora_reserva.setText(h_reserva);

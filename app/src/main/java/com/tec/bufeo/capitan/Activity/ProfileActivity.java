@@ -370,10 +370,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         }else if (v.equals(verFoto)){
-            preferences.toasVerde("aca veremos la foto");
             if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                 mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
+
+            Intent i = new Intent(getApplicationContext(), DetalleFotoUsuario.class);
+            i.putExtra("foto",preferences.getFotoUsuario());
+            i.putExtra("descripcion","0");
+            i.putExtra("cantidad_comentarios","0");
+            i.putExtra("id_publicacion","0");
+            startActivity(i);
 
         }else if (v.equals(cambiarFoto)){
             preferences.toasVerde("aca Cambiaremos la foto");

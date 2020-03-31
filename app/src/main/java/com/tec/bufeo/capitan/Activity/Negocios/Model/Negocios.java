@@ -4,8 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.SerializedName;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Models.DataConverterChanchas;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Models.DetalleChancha;
+
+import java.util.List;
 
 @Entity(tableName = "negocios")
 public class Negocios {
@@ -74,13 +79,7 @@ public class Negocios {
     private String conteo_empresa;
 
 
-    @ColumnInfo(name = "rating_empresa_valor")
-    @SerializedName("rating_empresa_valor")
-    private String rating_empresa_valor;
 
-    @ColumnInfo(name = "rating_conteo")
-    @SerializedName("rating_conteo")
-    private String rating_conteo;
 
     @ColumnInfo(name = "soy_admin")
     @SerializedName("soy_admin")
@@ -98,6 +97,18 @@ public class Negocios {
     @ColumnInfo(name = "dia_actual")
     @SerializedName("dia_actual")
     private String dia_actual;
+
+    @TypeConverters(DataConverterRatings.class)
+    @ColumnInfo(name = "list_ratings")
+    @SerializedName("list_ratings")
+    private List<Ratings> list_ratings;
+
+
+    @TypeConverters(DataConverterGaleria.class)
+    @ColumnInfo(name = "list_galeria")
+    @SerializedName("list_galeria")
+    private List<Galeria> list_galeria;
+
 
 
 
@@ -214,21 +225,7 @@ public class Negocios {
         this.conteo_empresa = conteo_empresa;
     }
 
-    public String getRating_empresa_valor() {
-        return rating_empresa_valor;
-    }
 
-    public void setRating_empresa_valor(String rating_empresa_valor) {
-        this.rating_empresa_valor = rating_empresa_valor;
-    }
-
-    public String getRating_conteo() {
-        return rating_conteo;
-    }
-
-    public void setRating_conteo(String rating_conteo) {
-        this.rating_conteo = rating_conteo;
-    }
 
     public String getSoy_admin() {
         return soy_admin;
@@ -268,5 +265,21 @@ public class Negocios {
 
     public void setDia_actual(String dia_actual) {
         this.dia_actual = dia_actual;
+    }
+
+    public List<Ratings> getList_ratings() {
+        return list_ratings;
+    }
+
+    public void setList_ratings(List<Ratings> list_ratings) {
+        this.list_ratings = list_ratings;
+    }
+
+    public List<Galeria> getList_galeria() {
+        return list_galeria;
+    }
+
+    public void setList_galeria(List<Galeria> list_galeria) {
+        this.list_galeria = list_galeria;
     }
 }

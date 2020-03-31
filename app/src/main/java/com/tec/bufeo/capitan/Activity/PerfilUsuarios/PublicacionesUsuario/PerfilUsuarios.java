@@ -52,7 +52,7 @@ import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
-public class PerfilUsuarios extends AppCompatActivity {
+public class PerfilUsuarios extends AppCompatActivity implements View.OnClickListener {
 
     TextView posicion_usuarios,Ncamiseta_usuarios,habilidadUsuarios,EmailUsuarios,nombre_perfil_Usuarios;
     LinearLayout InvitarEquipo,RetarEquipo;
@@ -69,6 +69,7 @@ public class PerfilUsuarios extends AppCompatActivity {
     AdaptadorForo adaptadorForo;
     UniversalImageLoader universalImageLoader;
 
+    String fotexPerfil="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +136,7 @@ public class PerfilUsuarios extends AppCompatActivity {
             }
         });
 
+        fotodeperfil_Usuarios.setOnClickListener(this);
 
     }
     private void cargarvista() {
@@ -151,6 +153,7 @@ public class PerfilUsuarios extends AppCompatActivity {
                     EmailUsuarios.setText(datosUsuarios.get(0).getEmail());
                     nombre_perfil_Usuarios.setText(datosUsuarios.get(0).getNombre());
                     UniversalImageLoader.setImage(IP2+"/"+datosUsuarios.get(0).getImg(),fotodeperfil_Usuarios,null);
+                    fotexPerfil =datosUsuarios.get(0).getImg();
                 }else{
 
                 }
@@ -416,5 +419,20 @@ public class PerfilUsuarios extends AppCompatActivity {
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getIntanciaVolley(getApplicationContext()).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(fotodeperfil_Usuarios)){
+            if (!fotexPerfil.equals("")){
+                Intent i = new Intent(getApplicationContext(), DetalleFotoUsuario.class);
+                i.putExtra("foto",fotexPerfil);
+                i.putExtra("descripcion","0");
+                i.putExtra("cantidad_comentarios","0");
+                i.putExtra("id_publicacion","0");
+                startActivity(i);
+            }
+
+        }
     }
 }

@@ -8,12 +8,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +67,7 @@ public class DetalleFotoUsuario extends AppCompatActivity {
     String foto,descripcion,cantidad_comentarios,id_publicacion;
     UniversalImageLoader universalImageLoader;
     Preferences preferences;
+    LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +86,20 @@ public class DetalleFotoUsuario extends AppCompatActivity {
         comentarios = findViewById(R.id.comentarios) ;
         cantidad = findViewById(R.id.cantidad) ;
         tabComen = findViewById(R.id.tabComen) ;
+        layout = findViewById(R.id.layout) ;
 
         foto =  getIntent().getExtras().getString("foto");
         descripcion =  getIntent().getExtras().getString("descripcion");
         cantidad_comentarios =  getIntent().getExtras().getString("cantidad_comentarios");
         id_publicacion =  getIntent().getExtras().getString("id_publicacion");
 
+
+        if (descripcion.equals("0")){
+            comentarios.setVisibility(View.GONE);
+        }
+        if (id_publicacion.equals("0")){
+            layout.setVisibility(View.GONE);
+        }
 
         UniversalImageLoader.setImage(IP2+"/"+ foto,img_iconoPerfil,null);
         //Glide.with(getApplicationContext()).load(IP2 + "/" + foto).error(R.drawable.error).into(img_iconoPerfil);
@@ -102,8 +115,27 @@ public class DetalleFotoUsuario extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        showToolbar("",true);
     }
 
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
 
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
+    }
 
 }

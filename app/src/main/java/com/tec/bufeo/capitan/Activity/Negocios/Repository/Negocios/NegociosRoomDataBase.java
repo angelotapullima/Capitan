@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
 
 
-@Database(entities = {Negocios.class}, version = 2,exportSchema = false)
+@Database(entities = {Negocios.class}, version = 3,exportSchema = false)
 public abstract class NegociosRoomDataBase extends RoomDatabase {
     public abstract NegociosDao postInfoDao();
 

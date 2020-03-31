@@ -150,7 +150,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activity.DetalleNegocio"
+            android:name=".Activity.DetalleNegocio.DetalleNegocio"
             android:theme="@style/AppTheme.NoActionBarTransparent" />
         <activity
             android:name=".Activity.RegistroReserva.RegistroReserva"
