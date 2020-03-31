@@ -113,6 +113,10 @@ public class CanchasWebServiceRepository {
                 cancha.setPrecioN(jsonNode.optString("precioN"));
                 cancha.setFoto(jsonNode.optString("foto"));
                 cancha.setId_empresa(jsonNode.optString("id_empresa"));
+                cancha.setPromo_precio(jsonNode.optString("promo_precio"));
+                cancha.setPromo_inicio(jsonNode.optString("promo_inicio"));
+                cancha.setPromo_fin(jsonNode.optString("promo_fin"));
+                cancha.setPromo_estado(jsonNode.optString("promo_estado"));
 
 
                 apiResults.add(cancha);

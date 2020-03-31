@@ -12,7 +12,7 @@ import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 import com.tec.bufeo.capitan.Activity.Negocios.Model.Canchas;
 
 
-@Database(entities = {Canchas.class}, version = 1,exportSchema = false)
+@Database(entities = {Canchas.class}, version = 2,exportSchema = false)
 public abstract class CanchasRoomDataBase extends RoomDatabase {
     public abstract CanchasDao postInfoDao();
 

@@ -37,6 +37,23 @@ public class Canchas {
     @SerializedName("precioN")
     private String precioN;
 
+    @ColumnInfo(name = "promo_precio")
+    @SerializedName("promo_precio")
+    private String promo_precio;
+
+    @ColumnInfo(name = "promo_inicio")
+    @SerializedName("promo_inicio")
+    private String promo_inicio;
+
+    @ColumnInfo(name = "promo_fin")
+    @SerializedName("promo_fin")
+    private String promo_fin;
+
+    @ColumnInfo(name = "promo_estado")
+    @SerializedName("promo_estado")
+    private String promo_estado;
+
+
     @ColumnInfo(name = "foto")
     @SerializedName("foto")
     private String foto;
@@ -96,5 +113,37 @@ public class Canchas {
 
     public void setId_empresa(String id_empresa) {
         this.id_empresa = id_empresa;
+    }
+
+    public String getPromo_precio() {
+        return promo_precio;
+    }
+
+    public void setPromo_precio(String promo_precio) {
+        this.promo_precio = promo_precio;
+    }
+
+    public String getPromo_inicio() {
+        return promo_inicio;
+    }
+
+    public void setPromo_inicio(String promo_inicio) {
+        this.promo_inicio = promo_inicio;
+    }
+
+    public String getPromo_fin() {
+        return promo_fin;
+    }
+
+    public void setPromo_fin(String promo_fin) {
+        this.promo_fin = promo_fin;
+    }
+
+    public String getPromo_estado() {
+        return promo_estado;
+    }
+
+    public void setPromo_estado(String promo_estado) {
+        this.promo_estado = promo_estado;
     }
 }

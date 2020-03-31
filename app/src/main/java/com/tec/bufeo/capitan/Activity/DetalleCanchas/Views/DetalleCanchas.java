@@ -37,9 +37,11 @@ import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +64,7 @@ public class DetalleCanchas extends AppCompatActivity  {
     ReservasCanchaListViewModel reservasCanchaListViewModel;
 
     public  String cancha_id, precio_dia,precio_noche,
-            cancha_nombre,horario,nombre_empresa,tipo_usuario,fecha_actual,hora_actual;
+            cancha_nombre,horario,nombre_empresa,tipo_usuario,fecha_actual,hora_actual,promo_estado,promo_inicio,promo_fin,promo_precio;
 
 
     ArrayList<Reserva> arrayreservados = new ArrayList<>();
@@ -91,6 +93,11 @@ public class DetalleCanchas extends AppCompatActivity  {
         telefono = getIntent().getStringExtra("telefono");
         telefono2 = getIntent().getStringExtra("telefono2");
         direccion = getIntent().getStringExtra("direccion");
+
+        promo_estado = getIntent().getStringExtra("promo_estado");
+        promo_fin = getIntent().getStringExtra("promo_fin");
+        promo_inicio = getIntent().getStringExtra("promo_inicio");
+        promo_precio = getIntent().getStringExtra("promo_precio");
 
 
         initViews();
@@ -260,23 +267,27 @@ public class DetalleCanchas extends AppCompatActivity  {
 
                 //-----------------------------------
                 /*arrayreservados = new ArrayList<Reserva>();*/
+
                 for (int i = hapertura; i<hcierre;i++){
-                    int hf =i+1;
-                    int ii=i;
-                    if(hf>12){
-                        hf= hf-12;
-                        if(ii>12){
-                            ii=ii-12 ;
+                    int horaFin =i+1;
+                    int hini=i;
+                    if(horaFin>12){
+                        horaFin= horaFin-12;
+                        if(hini>12){
+                            hini=hini-12 ;
                         }
-                        horaFinal =  ii+":00 - "+hf+":00 pm";
+                        horaFinal =  hini+":00 - "+horaFin+":00 pm";
                     }
                     else{
-                        horaFinal =  i+":00 - "+hf+":00 am";
+                        horaFinal =  i+":00 - "+horaFin+":00 am";
                     }
-                    int k = i+1;
-                    String  h_reserva =""+i+":00-"+k+":00";
+                    int hresfin = i+1;
+                    String  h_reserva =""+i+":00-"+hresfin+":00";
                     if(i>=18){
-                        //if(){}
+
+
+                        //precios por la noche
+
                         boolean reservado_pm = false;
                         for(Reserva obj:arrayreservados_WS){
                             String hora =obj.getReserva_hora();
@@ -318,9 +329,91 @@ public class DetalleCanchas extends AppCompatActivity  {
 
 
                         }
-
+                        boolean promocionEstado=false;
                         if(!reservado_pm){
-                            arrayreservados.add(new Reserva("",cancha_id,"-------",fechex,horaFinal,"0","verde","Disponible",precio_noche, h_reserva));
+
+
+
+                            if (promo_estado.equals("1")){
+
+                                try {
+
+                                    String separadorHoraPromocion,HoraInicioPromocion,HoraFinPromocion;
+                                    String[] resultadoPromocion;
+                                    separadorHoraPromocion = Pattern.quote("-");
+                                    resultadoPromocion = h_reserva.split(separadorHoraPromocion);
+                                    HoraInicioPromocion = resultadoPromocion[0];
+                                    HoraFinPromocion = resultadoPromocion[1];
+
+
+                                    String fechaBusqueda;
+                                    fechaBusqueda = fechex+" "+HoraInicioPromocion+":00";
+
+                                    SimpleDateFormat dateFechaServidor = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date fechaQuellegaDelServidor = dateFechaServidor.parse(fechaBusqueda);
+
+                                    Calendar caaal = Calendar.getInstance();
+
+                                    SimpleDateFormat datefpi = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date fpi = datefpi.parse(promo_inicio);
+                                    caaal.setTime(fpi);
+
+                                    caaal.set(Calendar.MINUTE, caaal.get(Calendar.MINUTE)-1);
+                                    fpi =caaal.getTime();
+
+
+                                    Date fpf =datefpi.parse(promo_fin);
+
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTime(fechaQuellegaDelServidor);
+
+                                    Date tempDate = cal.getTime();
+
+                                    /*cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+ horaParaValidarFecha);
+                                    //cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE)- 5);
+                                    tempDate = cal.getTime();*/
+
+
+                                    if (tempDate.after(fpi) ){
+
+                                        //la fecha inicio de promo es mayor
+
+                                        if (tempDate.before(fpf) ){
+                                            //la fecha final de promo es menor
+                                            promocionEstado =true;
+
+                                        }else{
+
+                                            promocionEstado=false;
+                                        }
+
+                                    }else{
+
+                                        //la fecha incio de promo es menor
+                                        promocionEstado=false;
+
+                                    }
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }else{
+
+                                //no hay promo
+                                promocionEstado=false;
+                            }
+
+
+                            if (!promocionEstado){
+                                arrayreservados.add(new Reserva("",cancha_id,"-------",fechex,horaFinal,"0","verde","Disponible",precio_noche, h_reserva));
+
+                            }else{
+                                arrayreservados.add(new Reserva("",cancha_id,"-------",fechex,horaFinal,"0","verde","Disponible",promo_precio, h_reserva));
+
+                            }
+
+
+
 
                         }
 
@@ -371,9 +464,90 @@ public class DetalleCanchas extends AppCompatActivity  {
 
                         }
                         if(!reservado_am) {
-                            arrayreservados.add(new Reserva("", cancha_id, "-------", fechex, horaFinal, "0", "verde", "Disponible", precio_dia, h_reserva));
+
+                            boolean promocionEstadoMañana=false;
+                            if (promo_estado.equals("1")){
+
+                                try {
+
+                                    String separadorHoraPromocion,HoraInicioPromocion,HoraFinPromocion;
+                                    String[] resultadoPromocion;
+                                    separadorHoraPromocion = Pattern.quote("-");
+                                    resultadoPromocion = h_reserva.split(separadorHoraPromocion);
+                                    HoraInicioPromocion = resultadoPromocion[0];
+                                    HoraFinPromocion = resultadoPromocion[1];
+
+
+                                    String fechaBusqueda;
+                                    fechaBusqueda = fechex+" "+HoraInicioPromocion+":00";
+
+                                    SimpleDateFormat dateFechaServidor = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date fechaQuellegaDelServidor = dateFechaServidor.parse(fechaBusqueda);
+
+                                    Calendar caaal = Calendar.getInstance();
+
+                                    SimpleDateFormat datefpi = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date fpi = datefpi.parse(promo_inicio);
+                                    caaal.setTime(fpi);
+
+                                    caaal.set(Calendar.MINUTE, caaal.get(Calendar.MINUTE)-1);
+                                    fpi =caaal.getTime();
+
+
+                                    Date fpf =datefpi.parse(promo_fin);
+
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTime(fechaQuellegaDelServidor);
+
+                                    Date tempDate = cal.getTime();
+
+                                    /*cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+ horaParaValidarFecha);
+                                    //cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE)- 5);
+                                    tempDate = cal.getTime();*/
+
+
+                                    if (tempDate.after(fpi) ){
+
+                                        //la fecha inicio de promo es mayor
+
+                                        if (tempDate.before(fpf) ){
+                                            //la fecha final de promo es menor
+                                            promocionEstadoMañana =true;
+
+                                        }else{
+
+                                            promocionEstadoMañana=false;
+                                        }
+
+                                    }else{
+
+                                        //la fecha incio de promo es menor
+                                        promocionEstadoMañana=false;
+
+                                    }
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }else{
+
+                                //no hay promo
+                                promocionEstadoMañana=false;
+                            }
+
+
+                            if (!promocionEstadoMañana){
+                                arrayreservados.add(new Reserva("", cancha_id, "-------", fechex, horaFinal, "0", "verde", "Disponible", precio_dia, h_reserva));
+
+                            }else{
+                                arrayreservados.add(new Reserva("", cancha_id, "-------", fechex, horaFinal, "0", "verde", "Disponible", promo_precio, h_reserva));
+
+                            }
+
+
                         }
                     }
+
 
                 }
 
