@@ -4,13 +4,17 @@ public class Cancha {
     public Cancha() {
     }
 
+    private String empresas_id;
     private String cancha_id;
-    private String cancha_foto;
     private String cancha_nombre;
     private String cancha_dimenciones;
     private String cancha_precioD;
     private String cancha_precioN;
-    private String empresas_id;
+    private String cancha_foto;
+    private String promo_precio;
+    private String promo_inicio;
+    private String promo_fin;
+    private String promo_estado;
 
     public Cancha(String empresas_id) {
         this.empresas_id = empresas_id;
@@ -73,7 +77,39 @@ public class Cancha {
         this.empresas_id = empresas_id;
     }
 
-    public Cancha(String cancha_id, String cancha_foto,String cancha_nombre, String cancha_dimenciones, String cancha_precioD, String cancha_precioN, String empresas_id) {
+    public String getPromo_precio() {
+        return promo_precio;
+    }
+
+    public void setPromo_precio(String promo_precio) {
+        this.promo_precio = promo_precio;
+    }
+
+    public String getPromo_inicio() {
+        return promo_inicio;
+    }
+
+    public void setPromo_inicio(String promo_inicio) {
+        this.promo_inicio = promo_inicio;
+    }
+
+    public String getPromo_fin() {
+        return promo_fin;
+    }
+
+    public void setPromo_fin(String promo_fin) {
+        this.promo_fin = promo_fin;
+    }
+
+    public String getPromo_estado() {
+        return promo_estado;
+    }
+
+    public void setPromo_estado(String promo_estado) {
+        this.promo_estado = promo_estado;
+    }
+
+    public Cancha(String cancha_id, String cancha_foto, String cancha_nombre, String cancha_dimenciones, String cancha_precioD, String cancha_precioN, String empresas_id) {
         this.cancha_id = cancha_id;
         this.cancha_foto = cancha_foto;
         this.cancha_nombre = cancha_nombre;

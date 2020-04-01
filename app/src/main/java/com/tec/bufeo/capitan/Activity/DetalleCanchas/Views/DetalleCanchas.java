@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -27,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.Models.ReservasCancha;
+import com.tec.bufeo.capitan.Activity.DetalleCanchas.Repository.ReservasCanchaWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.ViewModels.ReservasCanchaListViewModel;
 import com.tec.bufeo.capitan.Activity.DetalleReservaEmpresa;
 import com.tec.bufeo.capitan.Activity.RegistroReserva.RegistroReserva;
@@ -69,7 +71,7 @@ public class DetalleCanchas extends AppCompatActivity  {
 
     ArrayList<Reserva> arrayreservados = new ArrayList<>();
     ArrayList<Reserva> arrayreservados_WS = new ArrayList<>();
-    String separador,part1,part2,separador_part1,part1_res,h_apertura,h_cierre,string_apertura,horaFinal= "",separador_hora,partHoraActual;
+    String separador,part1,part2,separador_part1,part1_res,h_apertura,h_cierre,string_apertura,horaFinal= "",separador_hora,partHoraActual,foto;
     String[] resultado,resultado_part1 ,resultado_horaActual;
     int hapertura = 0, hcierre;
     String telefono,telefono2,direccion;
@@ -93,6 +95,7 @@ public class DetalleCanchas extends AppCompatActivity  {
         telefono = getIntent().getStringExtra("telefono");
         telefono2 = getIntent().getStringExtra("telefono2");
         direccion = getIntent().getStringExtra("direccion");
+        foto = getIntent().getStringExtra("foto");
 
         promo_estado = getIntent().getStringExtra("promo_estado");
         promo_fin = getIntent().getStringExtra("promo_fin");
@@ -591,6 +594,7 @@ public class DetalleCanchas extends AppCompatActivity  {
                                 i.putExtra("telefono",telefono);
                                 i.putExtra("telefono2",telefono2);
                                 i.putExtra("direccion",direccion);
+                                i.putExtra("foto",foto);
                                 startActivity(i);
                             }
 
@@ -616,6 +620,7 @@ public class DetalleCanchas extends AppCompatActivity  {
                                 i.putExtra("telefono",telefono);
                                 i.putExtra("telefono2",telefono2);
                                 i.putExtra("direccion",direccion);
+                                i.putExtra("foto",foto);
                                 startActivity(i);
                             }
 
@@ -691,6 +696,7 @@ public class DetalleCanchas extends AppCompatActivity  {
     EditText nombre_reserva_naranja;
     EditText monto_pagado;
     double monto;
+    StringRequest stringRequest;
 
     public  void dialogoVerdeAdmin(final String hora_reserva, String precio_cancha, final String f_echa){
 
@@ -753,7 +759,7 @@ public class DetalleCanchas extends AppCompatActivity  {
 
     }
 
-    public  void dialogoNaranjaAdmin(final String hora_reserva, String precio_cancha,String pago_abonado,String reserva_nombre,final String id,String f_echa) {
+    public  void dialogoNaranjaAdmin(final String hora_reserva, String precio_cancha, String pago_abonado, String reserva_nombre, final String id, final String f_echa) {
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -795,7 +801,7 @@ public class DetalleCanchas extends AppCompatActivity  {
                     preferences.codeAdvertencia("el monto supero el precio de la cancha");
                 }else{
 
-                    registrarReservaNaranjaAdmin(monto_restante,id);
+                    registrarReservaNaranjaAdmin(monto_restante,id,f_echa);
                 }
 
             }
@@ -813,7 +819,8 @@ public class DetalleCanchas extends AppCompatActivity  {
 
     }
 
-    StringRequest stringRequest;
+    Application application;
+
     private void registrarReservaVerdeAdmin(final String nombre, final String hora, final double monto, final String estado,final String FechaPaReservar){
 
 
@@ -837,6 +844,8 @@ public class DetalleCanchas extends AppCompatActivity  {
                 if (part1.equals("1")){
                     preferences.toasVerde("Registro Completo");
                     //onRefresh();
+                    ReservasCanchaWebServiceRepository reservasCanchaWebServiceRepository = new ReservasCanchaWebServiceRepository(application);
+                    reservasCanchaWebServiceRepository.providesWebService(FechaPaReservar,cancha_id,preferences.getToken());
                     dialog_carga.dismiss();
                 }else{
                     preferences.toasRojo("Fallo al registrar la reserva","intentelo más tarde");
@@ -884,19 +893,8 @@ public class DetalleCanchas extends AppCompatActivity  {
 
     }
 
-    Dialog dialog_carga;
-    public void dialogCarga(Activity activity){
 
-        dialog_carga= new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-        dialog_carga.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog_carga.setCancelable(true);
-        dialog_carga.setContentView(R.layout.dialog_carga_reserva);
-
-
-        dialog_carga.show();
-
-    }
-    private void registrarReservaNaranjaAdmin(final double pago2,final String id ){
+    private void registrarReservaNaranjaAdmin(final double pago2, final String id, final String fechita ){
 
 
         dialog_naranja.dismiss();
@@ -913,6 +911,8 @@ public class DetalleCanchas extends AppCompatActivity  {
                     preferences.toasVerde("Registro Completo");
                     //onRefresh();
                     dialog_carga.dismiss();
+                    ReservasCanchaWebServiceRepository reservasCanchaWebServiceRepository = new ReservasCanchaWebServiceRepository(application);
+                    reservasCanchaWebServiceRepository.providesWebService(fechita,id,preferences.getToken());
                 }else{
                     preferences.toasRojo("Fallo al registrar la reserva","intentelo más tarde");
                     dialog_carga.dismiss();
@@ -946,6 +946,19 @@ public class DetalleCanchas extends AppCompatActivity  {
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
+
+    }
+
+    Dialog dialog_carga;
+    public void dialogCarga(Activity activity){
+
+        dialog_carga= new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog_carga.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_carga.setCancelable(true);
+        dialog_carga.setContentView(R.layout.dialog_carga_reserva);
+
+
+        dialog_carga.show();
 
     }
 }

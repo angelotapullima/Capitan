@@ -1,6 +1,7 @@
 package com.tec.bufeo.capitan.Activity.RegistroReserva;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -8,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +31,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
@@ -35,6 +40,7 @@ import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.Modelo.Saldo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
+import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 import com.tec.bufeo.capitan.WebService.DataConnection;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
 
@@ -42,8 +48,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +63,7 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClickListener {
 
 
-    ImageView backReserva;
+    ImageView img_canchex;
     //yo pago todo
     LinearLayout l_todo;
     Spinner spn_equipex_busqueda;
@@ -78,11 +86,12 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     DataConnection dc4,dc2;
     Preferences preferences;
     RelativeLayout relaitveCarga;
-    String nombre_empresa_dato,empresa_id,h_reserva,fecha,hora,precio,telefono1,telefono2,direccion;
+    String nombre_empresa_dato,empresa_id,h_reserva,fecha,hora,precio,telefono1,telefono2,direccion,foto;
     LinearLayout btn_reservar_busqueda,recargaSaldo;
     TextView nombre_reserva_busqueda,saldo_bufis_busqueda;
     boolean permiso =false;
 
+    UniversalImageLoader universalImageLoader;
 
     ArrayList<String> arrayEquipo_busqueda,arrayCanchaBusqueda;
     ArrayList<Mequipos> ListEquipos_busqueda = new ArrayList<>();
@@ -91,11 +100,17 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     ArrayList<Saldo> saldo;
     String saldo_cargado;
     RelativeLayout relRes;
+    double PrecioInicialTotal=0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserva_en_busqueda);
+
+
+        universalImageLoader= new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
+
 
         misEquiposViewModel= ViewModelProviders.of(this).get(MisEquiposViewModel.class);
         nombre_empresa_dato = getIntent().getExtras().getString("nombre_empresa");
@@ -105,12 +120,15 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         telefono1 = getIntent().getExtras().getString("telefono1");
         telefono2 = getIntent().getExtras().getString("telefono2");
         direccion = getIntent().getExtras().getString("direccion");
+        foto = getIntent().getExtras().getString("foto");
 
         dc4 = new DataConnection(ReservaEnBusqueda.this,"ObtenerSaldo",false);
         new ReservaEnBusqueda.GetSaldo().execute();
 
         dc2 = new DataConnection(ReservaEnBusqueda.this,"listarcanchasEmpresas",new Cancha(empresa_id),false);
         new GetListadoCanchas().execute();
+
+
 
         Date hoy = new Date();
         SimpleDateFormat objSDF = new SimpleDateFormat("yyyy-MM-dd");
@@ -129,6 +147,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         comision  = findViewById(R.id.comision);
         relRes  = findViewById(R.id.relRes);
         costo  = findViewById(R.id.costo);
+        img_canchex  = findViewById(R.id.img_canchex);
         //pago1_todo = findViewById(R.id.pago1_todo);
         total= findViewById(R.id.total);
         noChanchas= findViewById(R.id.noChanchas);
@@ -138,7 +157,9 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
         costo.setText(precio);
 
-        total.setText(String.valueOf(comision_todo_dato + Double.parseDouble(precio)));
+        comision.setText(comision_todo_dato);
+        PrecioInicialTotal = Double.parseDouble(comision_todo_dato) + Double.parseDouble(precio);
+        total.setText(String.valueOf(PrecioInicialTotal));
         /*  Widgets que trabajan con Chancha*/
         //layout para ocultar contenido de Chancha
         l_chancha = findViewById(R.id.l_chancha);
@@ -153,10 +174,9 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         spn_cancha_busqueda = findViewById(R.id.spn_cancha_busqueda);
         nombre_reserva_busqueda  = findViewById(R.id.nombre_reserva_busqueda);
         relaitveCarga  = findViewById(R.id.relaitveCarga);
-        backReserva  = findViewById(R.id.backReserva);
 
 
-
+        universalImageLoader.setImage(IP2+"/"+ foto,img_canchex,null);
 
 
 
@@ -218,10 +238,11 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         });
 
         btn_reservar_busqueda.setOnClickListener(this);
-        backReserva.setOnClickListener(this);
+
         recargaSaldo.setOnClickListener(this);
 
 
+        showToolbar("Reservar Cancha",true);
     }
 
     @Override
@@ -271,8 +292,6 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
             }
 
 
-        }else if (v.equals(backReserva)){
-            finish();
         }else if (v.equals(recargaSaldo)){
             Intent i = new Intent(ReservaEnBusqueda.this, RealizarRecarga.class);
             startActivity(i);
@@ -304,7 +323,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 saldo_cargado=saldo.get(0).getSaldo_actual();
                 preferences.saveValuePORT("comision", saldo.get(0).getComision());
                 preferences.saveValuePORT("saldo", saldo.get(0).getSaldo_actual());
-                if (Integer.parseInt(saldo_cargado)>0){
+                if (Float.parseFloat(saldo_cargado)>0){
                     permiso=true;
                 }
 
@@ -635,7 +654,8 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     }
 
 
-    public  ArrayList<Cancha> arraycancha;;
+    public  ArrayList<Cancha> arraycancha;
+
     public  class GetListadoCanchas extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -665,9 +685,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 arrayCanchaBusqueda.add(0,"No tienes Equipos ");
             }
 
-
-
-
+            arrayCanchaBusqueda.add(0,"Seleccionar");
             ArrayAdapter<String > adapchanchas= new ArrayAdapter<String>(getApplicationContext(),R.layout.spiner_item,arrayCanchaBusqueda);
             adapchanchas.setDropDownViewResource(R.layout.spiner_dropdown_item);
             spn_cancha_busqueda.setAdapter(adapchanchas);
@@ -680,7 +698,9 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
 
                     String separador,part1,part2,separador_part1,hora_apertura,hora_cierre,separador_hora;
+                    String cancha_promo_inicio,cancha_promo_fin,cancha_promo_precio;
                     String[] resultado,resultado_part1,resultado_part2,resultado_hora;
+                    int cancha_promo_estado;
 
                     separador = Pattern.quote("-");
                     resultado = h_reserva.split(separador);
@@ -693,20 +713,93 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                     hora_apertura = resultado_part1[0];
                     hora_cierre= resultado_part2[0];
 
+                    if (position!=0){
+                        cancha_promo_estado =Integer.parseInt(arraycancha.get(position-1).getPromo_estado());
+                        cancha_promo_inicio = arraycancha.get(position-1).getPromo_inicio();
+                        cancha_promo_fin = arraycancha.get(position-1).getPromo_fin();
+                        cancha_promo_precio = arraycancha.get(position-1).getPromo_precio();
+                        boolean promocionEstado =false;
 
-                    if (Integer.parseInt(hora_apertura )< 18){
-                        total.setText(arraycancha.get(position).getCancha_precioD());
-                        costo.setText(arraycancha.get(position).getCancha_precioD());
-                    }else{
-                        total.setText(arraycancha.get(position).getCancha_precioN());
-                        costo.setText(arraycancha.get(position).getCancha_precioN());
+
+                        try {
+
+                            SimpleDateFormat dateFechaServidor = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Date fechaQuellegaDelServidor = dateFechaServidor.parse(fecha + " "+part1+":00");
+
+                            if (cancha_promo_estado==1){
+
+
+
+                                SimpleDateFormat datefpi = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Date fpi = datefpi.parse(cancha_promo_inicio);
+                                Date fpf =datefpi.parse(cancha_promo_fin);
+
+
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTime(fechaQuellegaDelServidor);
+
+                                Date tempDate = cal.getTime();
+
+
+
+                                //cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+ aumentarHora);
+                                //cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE)- 5);
+                                tempDate = cal.getTime();
+
+                            /*if (horasuma==12){
+                                String buu = "=0";
+                            }*/
+
+                                if (tempDate.after(fpi) ){
+
+                                    //la fecha inicio de promo es mayor
+
+                                    if (tempDate.before(fpf) ){
+                                        //la fecha final de promo es menor
+                                        promocionEstado =true;
+
+                                    }else{
+
+                                        promocionEstado=false;
+                                    }
+
+                                }else{
+
+                                    //la fecha incio de promo es menor
+                                    promocionEstado=false;
+
+                                }
+
+                            }else{
+
+                                //no hay promo
+                                promocionEstado=false;
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (!promocionEstado){
+                            if (Integer.parseInt(hora_apertura )< 18){
+                                total.setText(arraycancha.get(position-1).getCancha_precioD());
+                                costo.setText(arraycancha.get(position-1).getCancha_precioD());
+                            }else{
+                                total.setText(arraycancha.get(position-1).getCancha_precioN());
+                                costo.setText(arraycancha.get(position-1).getCancha_precioN());
+                            }
+                        }else{
+                            total.setText(cancha_promo_precio);
+                            costo.setText(cancha_promo_precio);
+                        }
+
+                        comision.setText(String.valueOf(comision_todo_dato));
+
+                        double pagoFinalChancha = 0;
+
+
+                        total.setText(String.valueOf(Double.parseDouble(costo.getText().toString()) + Double.parseDouble(comision_todo_dato)));
                     }
-                    comision.setText(String.valueOf(comision_todo_dato));
 
-                    double pagoFinalChancha = 0;
-
-
-                    total.setText(String.valueOf(Double.parseDouble(costo.getText().toString()) + Double.parseDouble(comision_todo_dato)));
 
                 }
 
@@ -715,11 +808,28 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
 
                 }
             });
-            //txt_costo_cancha_busqueda.setText(arraycancha.get());
 
-            //progressbarcanchas.setVisibility(ProgressBar.INVISIBLE);
 
 
         }
+    }
+
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
     }
 }

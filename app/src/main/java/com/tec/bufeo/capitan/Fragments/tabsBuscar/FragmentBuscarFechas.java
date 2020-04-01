@@ -358,6 +358,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                     i.putExtra("h_reserva",empresas.getHora_reserva());
                     i.putExtra("empresa_id",empresas.getEmpresas_id());
                     i.putExtra("precio",empresas.getPrecio());
+                    i.putExtra("foto",empresas.getEmpresas_foto());
                     i.putExtra("telefono1",empresas.getEmpresas_telefono_1());
                     i.putExtra("telefono2",empresas.getEmpresas_telefono_2());
                     i.putExtra("direccion",empresas.getEmpresas_direccion());
@@ -575,6 +576,7 @@ public class FragmentBuscarFechas extends Fragment implements View.OnClickListen
                     i.putExtra("nombre_empresa",item.txt_buscar_nombreEmpresa);
                     i.putExtra("precio",item.txt_buscar_precioCancha);
                     i.putExtra("h_reserva",item.h_reserva);
+                    i.putExtra("foto",item.img_cancha);
                     i.putExtra("empresa_id",item.empresa_id);
                     i.putExtra("telefono1",item.txt_llamar1);
                     i.putExtra("telefono2",item.txt_llamar2);

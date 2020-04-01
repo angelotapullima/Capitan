@@ -241,6 +241,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                         intent.putExtra("promo_fin", cancha.getPromo_fin());
                         intent.putExtra("promo_inicio", cancha.getPromo_inicio());
                         intent.putExtra("promo_precio", cancha.getPromo_precio());
+                        intent.putExtra("foto", cancha.getFoto());
                         context.startActivity(intent);
 
 

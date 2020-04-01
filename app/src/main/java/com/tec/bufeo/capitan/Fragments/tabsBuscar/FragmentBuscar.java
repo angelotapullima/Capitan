@@ -253,6 +253,7 @@ public class FragmentBuscar extends Fragment implements SwipeRefreshLayout.OnRef
                     i.putExtra("precio",item.txt_buscar_precioCancha);
                     i.putExtra("h_reserva",item.h_reserva);
                     i.putExtra("empresa_id",item.empresa_id);
+                    i.putExtra("foto",item.img_cancha);
                     i.putExtra("telefono1",item.txt_llamar1);
                     i.putExtra("telefono2",item.txt_llamar2);
                     i.putExtra("direccion",item.txt_buscar_direccionEmpresa);

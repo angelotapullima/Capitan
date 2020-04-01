@@ -111,6 +111,7 @@ public class ForoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     public static boolean isOnLine(){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
         if(networkInfo != null && networkInfo.isConnectedOrConnecting()){

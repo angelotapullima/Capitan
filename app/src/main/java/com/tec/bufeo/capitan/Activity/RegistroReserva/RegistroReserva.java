@@ -1,12 +1,17 @@
 package com.tec.bufeo.capitan.Activity.RegistroReserva;
 
 
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -32,6 +37,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
+import com.tec.bufeo.capitan.Activity.DetalleCanchas.Repository.ReservasCanchaWebServiceRepository;
+import com.tec.bufeo.capitan.Activity.DetalleCanchas.ViewModels.ReservasCanchaListViewModel;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
@@ -70,11 +77,12 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
     EditText nombre_reserva;
     String comision;
     RecyclerView rcv_colaboraciones;
-    ImageView finishReserva,noChanchas;
+    ImageView noChanchas;
     RelativeLayout relRes;
     boolean permiso =false;
+    ReservasCanchaListViewModel reservasCanchaListViewModel;
 
-    String telefono,telefono2,direccion;
+    String telefono,telefono2,direccion,foto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +90,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_registro_reserva);
 
         misEquiposViewModel= ViewModelProviders.of(this).get(MisEquiposViewModel.class);
+        reservasCanchaListViewModel= ViewModelProviders.of(this).get(ReservasCanchaListViewModel.class);
 
         preferences= new Preferences(this);
 
@@ -105,7 +114,6 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         nombre_reserva = findViewById(R.id.nombre_reserva);
         rcv_colaboraciones = findViewById(R.id.rcv_colaboraciones);
         layout_botones = findViewById(R.id.layout_botones);
-        finishReserva = findViewById(R.id.finishReserva);
         relRes = findViewById(R.id.relRes);
         noChanchas = findViewById(R.id.noChanchas);
 
@@ -123,6 +131,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         telefono = getIntent().getStringExtra("telefono");
         telefono2 = getIntent().getStringExtra("telefono2");
         direccion = getIntent().getStringExtra("direccion");
+        foto = getIntent().getStringExtra("foto");
 
         if (Float.parseFloat(saldo)>0){
             permiso=true;
@@ -193,14 +202,8 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         });
         btn_reservar.setOnClickListener(this);
         recargaSaldo.setOnClickListener(this);
+        showToolbar("Reservar Cancha",true);
 
-
-        finishReserva.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
     }
     String pago_tipo,colaboracion,equipo_id,pago1;
@@ -295,6 +298,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    Application application;
     StringRequest stringRequest;
     private void registrarReservaUsuario(final String id_chancha,final String id_equipo,final String estado_pago){
 
@@ -325,6 +329,8 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
                     i.putExtra("telefono2",telefono2);
                     startActivity(i);
                     dialog_carga.dismiss();
+                    ReservasCanchaWebServiceRepository reservasCanchaWebServiceRepository = new ReservasCanchaWebServiceRepository(application);
+                    reservasCanchaWebServiceRepository.providesWebService(fecha,cancha_id,preferences.getToken());
                     finish();
 
 
@@ -560,5 +566,24 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
 
         }
         return subItemList;
+    }
+
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
+        toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
+        setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
+
+        getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
     }
 }

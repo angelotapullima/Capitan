@@ -487,76 +487,16 @@ public class DataConnection extends AppCompatActivity {
                         cancha.setCancha_precioD(jsonNode.optString("precioD"));
                         cancha.setCancha_precioN(jsonNode.optString("precioN"));
                         cancha.setCancha_foto(jsonNode.optString("foto"));
+                        cancha.setPromo_estado(jsonNode.optString("promo_estado"));
+                        cancha.setPromo_inicio(jsonNode.optString("promo_inicio"));
+                        cancha.setPromo_fin(jsonNode.optString("promo_fin"));
+                        cancha.setPromo_precio(jsonNode.optString("promo_precio"));
 
                         //Llenamos los datos al Array
                         listaCanchaEmpresa.add(cancha);
                     }
                 }
-                if(funcion.equals("listarCanchasDisponibles2")){
 
-                    JSONArray resultJSON = json_data.getJSONArray("results");
-                    int count = resultJSON.length();
-                    final int horaactual = Integer.parseInt(hora);
-                    int horasuma = 0;
-                    int horafinal = 0;
-
-
-                    // Populate our list with groups and it's children
-                    for(int i = 1; i < count;i++) {
-
-                        JSONObject jsonNode = resultJSON.getJSONObject(i);
-
-                        horasuma = horaactual + i;
-                        JSONArray resultJSONhora = jsonNode.optJSONArray(String.valueOf(horasuma));
-                        int counthora = resultJSONhora.length();
-
-
-                        FragmentBuscar.GroupItem item = new FragmentBuscar.GroupItem();
-                        String  horaFinal= "";
-                      //  int hf =0;
-                         int ii=i;
-                         if(ii==0){
-                             ii=12;
-                         }
-                        if(horasuma>12){
-                            horasuma= horasuma-12;
-                            if(ii>12){
-                                ii=ii-12;
-                            }
-                           // horaFinal =  ii+":00 - "+horasuma+":00 pm";
-                           // horafinal = hf + 1 ;
-                            //item.title = hf+":00 - " + horafinal+":00 pm";
-                            item.title = ii+":00 - "+horasuma+":00 pm";
-
-                        }
-                        else{
-                           // horafinal = horasuma + 1 ;
-                            item.title = i+":00 - "+horasuma+":00 am";
-                        }
-
-                        //horafinal = horasuma + 1 ;
-                        //item.title = horasuma+":00 - " + horafinal+":00";
-
-                        for(int i1 = 0; i1 < counthora;i1++) {
-                            JSONObject jsonNodehora = resultJSONhora.getJSONObject(i1);
-
-
-                            FragmentBuscar.ChildItem child = new FragmentBuscar.ChildItem();
-                            child.txt_buscar_nombreEmpresa = jsonNodehora.optString("empresa_nombre") ;
-                            child.txt_buscar_direccionEmpresa = jsonNodehora.optString("empresa_direccion");
-                            child.txt_buscar_precioCancha = jsonNodehora.optString("cancha_precioD");
-                            // child.imb_llamar = jsonNodehora.optString("cancha_telefono");;
-                            child.txt_llamar1 = jsonNodehora.optString("empresa_telefono1");
-                            child.txt_llamar2 = jsonNodehora.optString("empresa_telefono2");
-
-                            item.items.add(child);
-                        }
-
-                        listaCanchasDisponiblesOriginal.add(item);
-                    }
-
-
-                }
 
                 if(funcion.equals("listarCanchasDisponibles")){
 
@@ -664,8 +604,8 @@ public class DataConnection extends AppCompatActivity {
 
                                 Date tempDate = cal.getTime();
 
-                                //este  chorizon de código sirve para validar los precios de las promociones por Hora no me pregunten como funciona ,por que ni yo se ,
-                                // cuando lo hize estaba fumado xD. Arriba el Dios Jupiter.
+                    //este  chorizon de código sirve para validar los precios de las promociones por Hora. No me pregunten como funciona ,por que ni yo se ,
+                    // cuando lo hize estaba fumado,para poder pensar todo y que compile a la primera xD.
 
                                       /* ???+++++++++MM7IIIII?+???+++==+========+++????I$8NNMMMM8INZ?M7+++++++++++??7ZO88
                                         ???+++++++++MND8OZ$777?I?I7?+????+====+==++??+??$DNNMND$7Z7IMZ++++++++++++?7Z8DD
@@ -692,22 +632,12 @@ public class DataConnection extends AppCompatActivity {
                                         +++$7IOI~=?=~~=?I$=~~~~~==Z$77III?I7$$ZZ$77777IIII$D~~~~~~:+?~:~~:~=~::::~+7DNNM
                                         ++?I?7+=+?====+I=====~+?++++$Z7$7$$ZZOZZ$77I7IIII7Z$::~~:::?=~:::::~:::::~+$DNNN
                                         +++7I===?=~~=+7=~~~=II7$$$$ZOZ$O88OOOOOOZ$$777I?I78~::~:~:=+~::::::~~~:::=?ZDNNN
-                                        ++7I===+=~~=7$===~+?7IIZZ77IZ788888O8OOOOOOZ$$$77$:::~:::~~=~::::::~~~:::=?ZDNNN
-                                        $$Z$7$Z7$$$$$$$$$$ZOOZZ8OOOOOO8DDDDDDDDDDDDDDD888D7777777$7$7777777777777$Z8NNNN
-                                */
-
+                                        ++7I===+=~~=7$===~+?7IIZZ77IZ788888O8OOOOOOZ$$$77$:::~:::~~=~::::::~~~:::=?ZDNNN*/
                                 cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+ aumentarHora);
-                                //cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE)- 5);
                                 tempDate = cal.getTime();
-
-                                if (horasuma==12){
-                                    String buu = "=0";
-                                }
-
+                               
                                 if (tempDate.after(fpi) ){
-
                                     //la fecha inicio de promo es mayor
-
                                     if (tempDate.before(fpf) ){
                                         //la fecha final de promo es menor
                                         promocionEstado =true;
@@ -959,20 +889,6 @@ public class DataConnection extends AppCompatActivity {
                     String fecha  = reserva.getReserva_fecha();
                     String horabusqueda  = reserva.getReserva_hora();
 
-                    String fechaBusqueda;
-                    fechaBusqueda= fecha + " " +horabusqueda+":00:00";
-
-                    SimpleDateFormat dateFechaServidor = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date fechaQuellegaDelServidor = dateFechaServidor.parse(fechaBusqueda);
-
-
-
-                    int cancha_promo_estado =0;
-                    boolean promocionEstado =false;
-                    String cancha_promo_inicio,cancha_promo_fin,cancha_promo_precio;
-
-
-
                     JSONArray resultJSON = json_data.getJSONArray("results");
                     int count = resultJSON.length();
                     Empresas empresas;
@@ -998,13 +914,6 @@ public class DataConnection extends AppCompatActivity {
                             l_s = jsonNode.optString("empresa_horario_ls") ;
                         }
 
-
-                        cancha_promo_estado =Integer.parseInt(jsonNode.optString("cancha_promo_estado"));
-                        cancha_promo_inicio = jsonNode.optString("cancha_promo_inicio");
-                        cancha_promo_fin = jsonNode.optString("cancha_promo_fin");
-                        cancha_promo_precio = jsonNode.optString("cancha_promo_precio");
-
-
                         separador = Pattern.quote("-");
                         resultado = l_s.split(separador);
                         part1 = resultado[0];
@@ -1024,57 +933,6 @@ public class DataConnection extends AppCompatActivity {
 
                         int horex = Integer.parseInt(resultado_hora[0]);
 
-                        if (cancha_promo_estado==1){
-
-
-                            Calendar caaal = Calendar.getInstance();
-
-                            SimpleDateFormat datefpi = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            Date fpi = datefpi.parse(cancha_promo_inicio);
-                            caaal.setTime(fpi);
-
-                            caaal.set(Calendar.MINUTE, caaal.get(Calendar.MINUTE)-1);
-                            fpi =caaal.getTime();
-
-
-                            Date fpf =datefpi.parse(cancha_promo_fin);
-
-                            Calendar cal = Calendar.getInstance();
-                            cal.setTime(fechaQuellegaDelServidor);
-
-                            Date tempDate = cal.getTime();
-
-                            /*cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY)+ horaParaValidarFecha);
-                            //cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE)- 5);
-                            tempDate = cal.getTime();*/
-
-
-
-                            if (tempDate.after(fpi) ){
-
-                                //la fecha inicio de promo es mayor
-
-                                if (tempDate.before(fpf) ){
-                                    //la fecha final de promo es menor
-                                    promocionEstado =true;
-
-                                }else{
-
-                                    promocionEstado=false;
-                                }
-
-                            }else{
-
-                                //la fecha incio de promo es menor
-                                promocionEstado=false;
-
-                            }
-
-                        }else{
-
-                            //no hay promo
-                            promocionEstado=false;
-                        }
 
                         if (horex > Integer.parseInt(hora_apertura )&& horex <= Integer.parseInt(hora_cierre)){
 
@@ -1093,23 +951,12 @@ public class DataConnection extends AppCompatActivity {
                             empresas.setEmpresas_foto(jsonNode.optString("empresa_foto"));
                             empresas.setEmpresas_estado(jsonNode.optString("empresa_estado"));
 
-                            if (!promocionEstado){
-                                if (horex<18){
-                                    empresas.setPrecio(jsonNode.optString("cancha_precioD"));
-                                }else{
-                                    empresas.setPrecio(jsonNode.optString("cancha_precioN"));
-                                }
-
-                            }else{
-                                empresas.setPrecio(cancha_promo_precio);
-                            }
-
-                           /* if (horex > 17){
+                            if (horex > 17){
                                 empresas.setPrecio(jsonNode.optString("cancha_precioN"));
                             }else{
                                 empresas.setPrecio(jsonNode.optString("cancha_precioD"));
                             }
-*/
+
                             String horacio = String.valueOf(horex)+":00-"+String.valueOf(horex+1)+":00";
                             empresas.setHora_reserva(horacio);
 

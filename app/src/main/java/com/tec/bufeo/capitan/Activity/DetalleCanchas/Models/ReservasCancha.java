@@ -12,13 +12,13 @@ public class ReservasCancha {
 
     @PrimaryKey()
     @NonNull
-    @ColumnInfo(name = "fecha")
-    @SerializedName("fecha")
-    private String fecha;
-
     @ColumnInfo(name = "reserva_id")
     @SerializedName("reserva_id")
     private String reserva_id;
+
+    @ColumnInfo(name = "fecha")
+    @SerializedName("fecha")
+    private String fecha;
 
     @ColumnInfo(name = "pago_id")
     @SerializedName("pago_id")
@@ -73,20 +73,20 @@ public class ReservasCancha {
     private String estado;
 
     @NonNull
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(@NonNull String fecha) {
-        this.fecha = fecha;
-    }
-
     public String getReserva_id() {
         return reserva_id;
     }
 
-    public void setReserva_id(String reserva_id) {
+    public void setReserva_id(@NonNull String reserva_id) {
         this.reserva_id = reserva_id;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public String getPago_id() {

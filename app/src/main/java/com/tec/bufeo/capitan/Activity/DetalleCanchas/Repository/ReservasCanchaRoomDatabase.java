@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.Models.ReservasCancha;
 
 
-@Database(entities = {ReservasCancha.class}, version = 1,exportSchema = false)
+@Database(entities = {ReservasCancha.class}, version = 2,exportSchema = false)
 public abstract class ReservasCanchaRoomDatabase extends RoomDatabase {
 
     public abstract ReservasCanchaDao postInfoDao();

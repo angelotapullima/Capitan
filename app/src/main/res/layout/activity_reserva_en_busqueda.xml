@@ -1,515 +1,535 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     tools:context=".Activity.RegistroReserva.ReservaEnBusqueda">
 
 
-    <RelativeLayout
+
+
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:id="@+id/top"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:tint="#FFF"
-            android:id="@+id/backReserva"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_arrow_back"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reservar Cancha"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"
-            android:textSize="19sp"
-            android:textColor="#fff"/>
-
-
-    </RelativeLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_below="@+id/top"
+        android:layout_below="@+id/toolbar"
         android:layout_height="wrap_content">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:id="@+id/recargaSaldo"
-                    android:visibility="gone"
-                    android:background="#000">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="#fff"
-                        android:gravity="center"
-                        android:text="presione para recargar su saldo"
-                        android:layout_gravity="center"/>
 
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:layout_centerInParent="true"
                     android:orientation="vertical">
-
-
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:id="@+id/nombre_empresa"
-                            android:layout_gravity="center"
-                            android:layout_margin="2dp"
-                            android:textStyle="bold"
-                            android:textSize="21sp"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:weightSum="10"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_weight="3">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Costo"
-                                android:layout_gravity="center"
-                                android:layout_margin="2dp"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="40dp"
-                                    android:gravity="center"
-                                    android:src="@drawable/bufeo_coin" />
-
-                                <TextView
-                                    android:id="@+id/costo"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:gravity="center"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginRight="2dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/dark_gray"/>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_weight="3">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Comisión"
-                                android:layout_gravity="center"
-                                android:layout_margin="2dp"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="40dp"
-                                    android:src="@drawable/bufeo_coin" />
-
-                                <TextView
-                                    android:id="@+id/comision"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:text="3"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginRight="2dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/dark_gray"/>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_weight="3">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Total"
-                                android:layout_gravity="center"
-                                android:layout_margin="2dp"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="40dp"
-                                    android:gravity="center"
-                                    android:src="@drawable/bufeo_coin" />
-
-                                <TextView
-                                    android:id="@+id/total"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:gravity="center"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:weightSum="10"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/calendar"
-                            />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4"
-                            android:id="@+id/fecha_r"
-                            android:text=""/>
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_clock"
-                            />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:id="@+id/hora_r"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4"
-                            android:text=""/>
-
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nombre de la Reserva"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
-                    <LinearLayout
-                        android:layout_marginBottom="10dp"
-                        style="@style/cajaDeTexto">
-
-                        <EditText
-                            android:id="@+id/nombre_reserva_busqueda"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="@style/InputTexto"
-                            android:hint="Nombre "
-                            android:inputType="textPersonName" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Cancha"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bgnoseleccionado"
-                            android:orientation="vertical">
-
-                            <Spinner
-                                android:id="@+id/spn_cancha_busqueda"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:backgroundTint="@color/colorPrimaryDark"
-                                android:popupBackground="@color/colorCeniza" />
-
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tipo de pago"
-                        android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
-                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:background="@drawable/bgnoseleccionado"
-                        android:orientation="vertical">
-                        <Spinner
-                            android:id="@+id/spn_tipo_pago_busqueda"
+                        android:id="@+id/recargaSaldo"
+                        android:visibility="gone"
+                        android:background="#000">
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:entries="@array/tipo_pago"
-                            android:backgroundTint="@color/colorPrimaryDark"
-                            android:popupBackground="@color/colorCeniza" />
+                            android:layout_height="wrap_content"
+                            android:textColor="#fff"
+                            android:gravity="center"
+                            android:text="presione para recargar su saldo"
+                            android:layout_gravity="center"/>
 
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
+                    </LinearLayout>
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/l_todo"
                         android:orientation="vertical">
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="250dp"
+                                android:id="@+id/img_canchex"
+                                android:src="@drawable/cancha"
+                                android:scaleType="centerCrop"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_alignParentBottom="true"
+                                android:layout_height="wrap_content"
+                                android:background="#59000000"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="gtgetghtehte"
+                                        android:textColor="#FFF"
+                                        android:id="@+id/nombre_empresa"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="2dp"
+                                        android:textStyle="bold"
+                                        android:textSize="21sp"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:weightSum="10"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal">
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        android:layout_weight="3">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Costo"
+                                            android:textColor="#FFF"
+                                            android:layout_gravity="center"
+                                            android:layout_margin="2dp"
+                                            android:textStyle="bold"
+                                            android:textSize="18sp"/>
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal">
+
+                                            <ImageView
+                                                android:layout_width="30dp"
+                                                android:layout_height="40dp"
+                                                android:gravity="center"
+                                                android:src="@drawable/bufeo_coin" />
+
+                                            <TextView
+                                                android:id="@+id/costo"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="5dp"
+                                                android:gravity="center"
+                                                android:textColor="#FFF"
+                                                android:textSize="18sp"
+                                                android:textStyle="bold" />
+
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                    <View
+                                        android:layout_width="1dp"
+                                        android:layout_marginLeft="2dp"
+                                        android:layout_marginRight="2dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#FFF"/>
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        android:layout_weight="3">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Comisión"
+                                            android:layout_gravity="center"
+                                            android:layout_margin="2dp"
+                                            android:textStyle="bold"
+                                            android:textColor="#FFF"
+                                            android:textSize="18sp"/>
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal">
+
+                                            <ImageView
+                                                android:layout_width="30dp"
+                                                android:layout_height="40dp"
+                                                android:src="@drawable/bufeo_coin" />
+
+                                            <TextView
+                                                android:id="@+id/comision"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="match_parent"
+                                                android:gravity="center"
+                                                android:textColor="#FFF"
+                                                android:layout_marginLeft="5dp"
+                                                android:textSize="18sp"
+                                                android:textStyle="bold" />
+
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                    <View
+                                        android:layout_width="1dp"
+                                        android:layout_marginLeft="2dp"
+                                        android:layout_marginRight="2dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#FFF"/>
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        android:layout_weight="3">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Total"
+                                            android:layout_gravity="center"
+                                            android:layout_margin="2dp"
+                                            android:textColor="#FFF"
+                                            android:textStyle="bold"
+                                            android:textSize="18sp"/>
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal">
+
+                                            <ImageView
+                                                android:layout_width="30dp"
+                                                android:layout_height="40dp"
+                                                android:gravity="center"
+                                                android:src="@drawable/bufeo_coin" />
+
+                                            <TextView
+                                                android:id="@+id/total"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="5dp"
+                                                android:gravity="center"
+                                                android:textColor="#FFF"
+                                                android:textSize="18sp"
+                                                android:textStyle="bold" />
+
+                                        </LinearLayout>
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+                        </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
                             android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:weightSum="10"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal">
 
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/calendar"
+                                    />
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/colorRojo"
+                                    android:textStyle="bold"
+                                    android:id="@+id/fecha_r"
+                                    android:text=""/>
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    app:srcCompat="@drawable/ic_clock"
+                                    />
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:id="@+id/hora_r"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/colorRojo"
+                                    android:textStyle="bold"
+                                    android:text=""/>
+
+                            </LinearLayout>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Seleccionar Equipo"
+                                android:text="Nombre de la Reserva"
+                                android:textStyle="bold"
+                                android:textSize="18sp"/>
+                            <LinearLayout
+                                android:layout_marginBottom="10dp"
+                                style="@style/cajaDeTexto">
+
+                                <EditText
+                                    android:id="@+id/nombre_reserva_busqueda"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@style/InputTexto"
+                                    android:hint="Nombre "
+                                    android:inputType="textPersonName" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="Cancha"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/bgnoseleccionado"
+                                    android:orientation="vertical">
+
+                                    <Spinner
+                                        android:id="@+id/spn_cancha_busqueda"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:backgroundTint="@color/colorPrimaryDark"
+                                        android:popupBackground="@color/colorCeniza" />
+
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tipo de pago"
+                                android:layout_marginTop="10dp"
                                 android:textStyle="bold"
                                 android:textSize="18sp"/>
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
                                 android:background="@drawable/bgnoseleccionado"
-                                android:id="@+id/InputSpinner"
                                 android:orientation="vertical">
-
                                 <Spinner
-                                    android:id="@+id/spn_equipex_busqueda"
+                                    android:id="@+id/spn_tipo_pago_busqueda"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:entries="@array/tipo_pago"
                                     android:backgroundTint="@color/colorPrimaryDark"
                                     android:popupBackground="@color/colorCeniza" />
 
 
+
                             </com.google.android.material.textfield.TextInputLayout>
-                        </LinearLayout>
 
 
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="10"
-                            android:padding="5dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/bgnoseleccionado">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_weight="7"
-                                android:layout_height="wrap_content"
-                                android:text="Saldo Actual"
-                                android:layout_marginTop="10dp"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
                             <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_weight="3"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <ImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="40dp"
-                                    android:gravity="center"
-                                    android:src="@drawable/bufeo_coin"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/saldo_bufis_busqueda"
-                                    android:gravity="center"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="10dp"
-                                    android:textStyle="bold"
-                                    android:textSize="18sp"/>
-
-                            </LinearLayout>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            android:orientation="horizontal"
-                            android:weightSum="10">
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:id="@+id/btn_reservar_busqueda"
-                                android:layout_height="40dp"
-                                android:gravity="center"
-                                android:background="@drawable/accent"
-                                android:layout_weight="4.8">
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="#fff"
-                                    android:textSize="17sp"
-                                    android:textStyle="bold"
-                                    android:text="Reservar"
-                                    android:gravity="center"/>
-
-                            </LinearLayout>
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".4"/>
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:id="@+id/btn_cerrar_dialog_busqueda"
-                                android:gravity="center"
-                                android:background="@drawable/agregar_equipo"
-                                android:layout_weight="4.8">
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="#fff"
-                                    android:textSize="17sp"
-                                    android:textStyle="bold"
-                                    android:text="Cancelar"
-                                    android:gravity="center"/>
-
-                            </LinearLayout>
-
-
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginBottom="10dp"
-                        android:id="@+id/l_chancha">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <ImageView
                                 android:layout_width="match_parent"
-                                android:layout_height="280dp"
-                                android:layout_marginTop="20dp"
-                                android:scaleType="fitCenter"
-                                android:id="@+id/noChanchas"
-                                android:src="@drawable/ic_nochanchas"/>
-                        </RelativeLayout>
+                                android:layout_height="wrap_content"
+                                android:id="@+id/l_todo"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Seleccionar Equipo"
+                                        android:textStyle="bold"
+                                        android:textSize="18sp"/>
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="40dp"
+                                        android:background="@drawable/bgnoseleccionado"
+                                        android:id="@+id/InputSpinner"
+                                        android:orientation="vertical">
+
+                                        <Spinner
+                                            android:id="@+id/spn_equipex_busqueda"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:backgroundTint="@color/colorPrimaryDark"
+                                            android:popupBackground="@color/colorCeniza" />
+
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+                                </LinearLayout>
+
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:weightSum="10"
+                                    android:padding="5dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/bgnoseleccionado">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="7"
+                                        android:layout_height="wrap_content"
+                                        android:text="Saldo Actual"
+                                        android:layout_marginTop="10dp"
+                                        android:textStyle="bold"
+                                        android:textSize="18sp"/>
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_weight="3"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+                                        <ImageView
+                                            android:layout_width="30dp"
+                                            android:layout_height="40dp"
+                                            android:gravity="center"
+                                            android:src="@drawable/bufeo_coin"/>
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/saldo_bufis_busqueda"
+                                            android:gravity="center"
+                                            android:layout_marginLeft="5dp"
+                                            android:layout_marginTop="10dp"
+                                            android:textStyle="bold"
+                                            android:textSize="18sp"/>
+
+                                    </LinearLayout>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="60dp"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="10">
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:id="@+id/btn_reservar_busqueda"
+                                        android:layout_height="40dp"
+                                        android:gravity="center"
+                                        android:background="@drawable/accent"
+                                        android:layout_weight="4.8">
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textColor="#fff"
+                                            android:textSize="17sp"
+                                            android:textStyle="bold"
+                                            android:text="Reservar"
+                                            android:gravity="center"/>
+
+                                    </LinearLayout>
+                                    <View
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".4"/>
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="40dp"
+                                        android:id="@+id/btn_cerrar_dialog_busqueda"
+                                        android:gravity="center"
+                                        android:background="@drawable/agregar_equipo"
+                                        android:layout_weight="4.8">
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textColor="#fff"
+                                            android:textSize="17sp"
+                                            android:textStyle="bold"
+                                            android:text="Cancelar"
+                                            android:gravity="center"/>
+
+                                    </LinearLayout>
+
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginBottom="10dp"
+                                android:id="@+id/l_chancha">
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="280dp"
+                                        android:layout_marginTop="20dp"
+                                        android:scaleType="fitCenter"
+                                        android:id="@+id/noChanchas"
+                                        android:src="@drawable/ic_nochanchas"/>
+                                </RelativeLayout>
 
 
 
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/rcv_colaboraciones_busqueda"/>
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/rcv_colaboraciones_busqueda"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+
+
+
                     </LinearLayout>
-
-
-
-
-
-
-
                 </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetStartWithNavigation="0dp"
+        android:background="#59000000">
+
+
+    </androidx.appcompat.widget.Toolbar>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="#fff"
@@ -563,4 +583,8 @@
             />
 
     </RelativeLayout>
-</RelativeLayout>
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
