@@ -31,8 +31,9 @@
                         android:orientation="horizontal"
                         android:background="#fff">
                         <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:id="@+id/cerrarCalificacion"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
                             app:srcCompat="@drawable/barra_cerrar_gris"/>

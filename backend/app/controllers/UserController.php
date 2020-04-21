@@ -616,13 +616,19 @@ class UserController{
     public function recarga_pendiente(){
         try {
             $id_user = $_POST['id_user'];
-            $datos_cuenta = $this->user->listar_cuenta_por_id_user($this->crypt->decrypt($_SESSION['id_user'],_FULL_KEY_));
+            $datos_cuenta = $this->user->listar_cuenta_por_id_user($id_user);
             $recarga_pendiente = $this->cuenta->listar_recarga_pendiente($datos_cuenta->id_cuenta);
             $resources = [];
             $hay = 0;
+            $fecha= date('Y-m-d H:i:s');
             if(isset($recarga_pendiente->id_pagocip)){
-                $resources = $recarga_pendiente;
-                $hay=1;
+                if($recarga_pendiente->pagocip_date_expiracion>$fecha){
+                    $hay=3;
+                    $this->cuenta->expirar_recarga($recarga_pendiente->id_pagocip);
+                }else{
+                    $resources = $recarga_pendiente;
+                    $hay=1;
+                }
             }
         }catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
@@ -635,6 +641,49 @@ class UserController{
         try {
             $id = $_POST['id_pagocip'];
             $result = $this->cuenta->cancelar_recarga($id);
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = [];
+        }
+        $data = array("results" => $result);
+        echo json_encode($data);
+    }
+    public function validar_email(){
+        try {
+            $ok_data = true;
+            if(isset($_POST['id_user']) && isset($_POST['codigo'])){
+                $_POST['id_user'] = $this->clean->clean_post_int($_POST['id_user']);
+                $_POST['codigo'] = $this->clean->clean_post_str($_POST['codigo']);
+
+                $ok_data = $this->clean->validate_post_int($_POST['id_user'], true, $ok_data, 11);
+                $ok_data = $this->clean->validate_post_str($_POST['codigo'], true, $ok_data, 100);
+            }else{
+                $ok_data=false;
+            }
+            if($ok_data){
+                $id = $_POST['id_user'];
+                $codigo = $_POST['codigo'];
+                $datos_user=$this->user->list($id);
+                $result=3;
+                if(isset($datos_user->id_user)){
+                    if($datos_user->user_email_validate_code==$codigo){
+                        $result = $this->user->validar_email($id);
+                    }
+                }
+            }else{
+                $result=6;
+            }
+        }catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        $data = array("results" => $result);
+        echo json_encode($data);
+    }
+    public function expirar_recarga(){
+        try {
+            $id = $_POST['id_pagocip'];
+            $result = $this->cuenta->expirar_recarga($id);
         }catch (Exception $e){
             $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
             $result = [];

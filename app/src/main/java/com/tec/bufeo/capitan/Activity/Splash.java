@@ -4,9 +4,8 @@ import android.app.Application;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -15,13 +14,14 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.Repository.NotificacionesWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Foro.Notificaciones.ViewModels.NotificacionesViewModel;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
+import com.tec.bufeo.capitan.Activity.SliderInicial.MainActivity;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.Notificaciones.Repository.NotificacionesWebServiceRepository;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.Notificaciones.ViewModels.NotificacionesViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.Models.ModelFeed;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.Repository.FeedWebServiceRepository;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.ViewModels.FeedListViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabEquipo.Repository.MisEquiposWebServiceRepository;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
@@ -56,7 +56,7 @@ public class Splash extends AppCompatActivity {
             inicio();
         }
         else{
-            Intent i1= new Intent(getApplicationContext(),Login.class);
+            Intent i1= new Intent(getApplicationContext(), Login.class);
             startActivity(i1);
             finish();
         }

@@ -13,55 +13,84 @@
         android:background="#FFF"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="20dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="19sp"
-            android:id="@+id/texto"
-            android:textColor="#000"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="Se registraron 10 equiposfrgergerggr en el torneo"/>
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="19sp"
-            android:textColor="#000"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:text="¿Desea continuar?"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"
+                android:id="@+id/texto"
+
+                android:textColor="#000"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="Se registraron 10 equiposfrgergerggr en el torneo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"
+                android:layout_marginTop="10dp"
+                android:textColor="#000"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:text="¿Desea continuar?"/>
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/si"
-                android:textSize="22sp"
-                android:textColor="@color/colorPrimary"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:text="SI"/>
 
-            <TextView
-                android:layout_width="50dp"
+            <LinearLayout
+
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight=".1"
+                android:gravity="center"
+                android:id="@+id/si"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SI"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <View
+                android:layout_width="2dp"
                 android:layout_height="wrap_content"
+                android:background="#FFF"/>
+
+            <LinearLayout
+
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight=".1"
                 android:id="@+id/no"
-                android:textSize="22sp"
-                android:textColor="@color/colorPrimary"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:text="NO"/>
+                android:gravity="center"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NO"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+
         </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>

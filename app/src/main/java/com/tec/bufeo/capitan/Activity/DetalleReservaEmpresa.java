@@ -115,7 +115,7 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
     private void cargarVista() {
 
 
-        misReservasViewModel.getAllID(id,preferences.getToken(),"notificacion").observe(this, new Observer<List<MisReservas>>() {
+        /*misReservasViewModel.getAllID(id,preferences.getToken(),"notificacion").observe(this, new Observer<List<MisReservas>>() {
             @Override
             public void onChanged(List<MisReservas> misReservas) {
                 if (misReservas.size()>0){
@@ -198,7 +198,7 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
 
 
             }
-        });
+        });*/
     }
 
 

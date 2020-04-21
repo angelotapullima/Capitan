@@ -9,11 +9,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Application;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Models.Movimientos;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Repository.MovimientosRoomDBRepository;
@@ -30,6 +35,7 @@ public class MisMovimientos extends AppCompatActivity {
     RecyclerView rcv_ver_recargas;
     Preferences preferences;
 
+    TextView saldo_contable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +47,9 @@ public class MisMovimientos extends AppCompatActivity {
         preferences= new Preferences(this);
 
         initViews();
+        dialogCarga();
         cargarvista();
-        setAdapter();
+
         showToolbar("Movimientos",true);
     }
     public void showToolbar(String tittle, boolean upButton){
@@ -66,38 +73,73 @@ public class MisMovimientos extends AppCompatActivity {
     private void initViews(){
 
         rcv_ver_recargas= findViewById(R.id.rcv_ver_recargas);
+        saldo_contable= findViewById(R.id.saldo_contable);
+        saldo_contable.setText(preferences.getSaldo());
     }
     public void cargarvista(){
 
 
-        MovimientosRoomDBRepository movimientosRoomDBRepository = new MovimientosRoomDBRepository(application);
-        movimientosRoomDBRepository.deleteAllEquipos();
+
 
         movimientosViewModel.getAll(preferences.getIdUsuarioPref(),preferences.getToken()).observe(this, new Observer<List<Movimientos>>() {
             @Override
-            public void onChanged(@Nullable List<Movimientos> mequipos) {
-                adaptadorMovimientos.setWords(mequipos);
-                Log.d("mis Equipos", "onChanged: "+mequipos.size() );
+            public void onChanged(@Nullable List<Movimientos> movimientos) {
+
+               /* MovimientosRoomDBRepository movimientosRoomDBRepository = new MovimientosRoomDBRepository(application);
+                movimientosRoomDBRepository.deleteAllEquipos();*/
+                if (movimientos.size()>0){
+
+                    dialog_cargando.dismiss();
+                    adaptadorMovimientos = new AdaptadorMovimientos(getApplicationContext(), movimientos, new AdaptadorMovimientos.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Movimientos mequipos, String tipo, int position) {
+
+                        }
+                    });
+
+
+                    GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
+                    linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
+                    rcv_ver_recargas.setLayoutManager(linearLayoutManager);
+                    rcv_ver_recargas.setAdapter(adaptadorMovimientos);
+                }
+
+                Log.d("mis Equipos", "onChanged: "+movimientos.size() );
             }
         });
 
     }
 
     Application application;
-    private void setAdapter(){
 
 
-        adaptadorMovimientos = new AdaptadorMovimientos(this, new AdaptadorMovimientos.OnItemClickListener() {
+    Dialog dialog_cargando;
+    public void dialogCarga(){
+
+        dialog_cargando= new Dialog(this, android.R.style.Theme_Translucent);
+        dialog_cargando.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_cargando.setCancelable(true);
+        dialog_cargando.setContentView(R.layout.dialogo_cargando_logobufeo);
+        LinearLayout back = dialog_cargando.findViewById(R.id.back);
+        LinearLayout layout = dialog_cargando.findViewById(R.id.layout);
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(Movimientos mequipos, String tipo, int position) {
+            public void onClick(View v) {
+                dialog_cargando.dismiss();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });
 
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(this, 1);
-        linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
-        rcv_ver_recargas.setLayoutManager(linearLayoutManager);
-        rcv_ver_recargas.setAdapter(adaptadorMovimientos);
+        dialog_cargando.show();
 
     }
 }

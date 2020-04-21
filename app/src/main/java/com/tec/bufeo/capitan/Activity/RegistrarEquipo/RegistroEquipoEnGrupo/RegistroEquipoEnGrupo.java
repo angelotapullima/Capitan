@@ -7,15 +7,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -38,9 +35,6 @@ import com.tec.bufeo.capitan.Activity.BusquedaEquipos.ViewModels.BusquedaEquipos
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipoEnGrupo.Model.EquiposGrupo;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipoEnGrupo.Repository.EquiposGrupoRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipoEnGrupo.ViewModel.EquiposGrupoViewModel;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Repository.MisEquiposRoomDBRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;
@@ -55,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
-import static java.security.AccessController.getContext;
 
 public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnClickListener {
 
@@ -346,9 +339,9 @@ public class RegistroEquipoEnGrupo extends AppCompatActivity implements View.OnC
 
 
 
-        TextView si = dialog_completado.findViewById(R.id.si);
+        LinearLayout si = dialog_completado.findViewById(R.id.si);
         TextView texto = dialog_completado.findViewById(R.id.texto);
-        TextView no = dialog_completado.findViewById(R.id.no);
+        LinearLayout no = dialog_completado.findViewById(R.id.no);
 
         String tex = "Se registraron " + listaDatos.size() + " equipos en el torneo";
         texto.setText(tex);

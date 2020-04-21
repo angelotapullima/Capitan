@@ -22,46 +22,64 @@
             android:layout_height="match_parent"
             android:textSize="20sp"
             android:gravity="center"
-            android:textColor="#555050"
-            android:text="@string/estas_seguro_de_cancelar_est_recarga"/>
+            android:id="@+id/texto"
+            android:textColor="#555050"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorPrimary"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/continuarExpirado"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="continuar"
+            android:textSize="16sp"
+            app:strokeColor="#FFF" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:weightSum="10"
-            android:orientation="horizontal">
-
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                android:layout_weight="4.9"
-                app:strokeColor="#FFF"
-                android:id="@+id/continuar"
-                android:textSize="18sp"
-                android:layout_height="wrap_content"
-                android:text="@string/si"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
+            android:layout_height="wrap_content"
+            android:id="@+id/botones"
+            android:orientation="vertical">
             <View
-                android:layout_width="0dp"
-                android:layout_weight="0.05"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/colorPrimary"/>
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                app:strokeColor="#FFF"
-                android:textSize="18sp"
-                android:layout_weight="4.9"
-                android:id="@+id/cancelar"
-                android:layout_height="wrap_content"
-                android:text="@string/no"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:weightSum="10"
+                android:orientation="horizontal">
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_weight="4.9"
+                    app:strokeColor="#FFF"
+                    android:id="@+id/continuar"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="0.05"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"/>
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    app:strokeColor="#FFF"
+                    android:textSize="18sp"
+                    android:layout_weight="4.9"
+                    android:id="@+id/cancelar"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+            </LinearLayout>
         </LinearLayout>
+
 
 
     </LinearLayout>

@@ -76,6 +76,7 @@ class CuentaController{
     }
     public function save_recargar_mi_cuenta(){
         try{
+            $fecha_exp = '';$token = '';
             if(isset($_POST['monto']) && isset($_POST['tipo'])){
                 $fecha = date('Y-m-d H:i:s');
                 $fecha_exp = date('Y-m-d H:i:s',strtotime($fecha." + 1 days"));
@@ -86,29 +87,33 @@ class CuentaController{
                     $id_user = $_POST['id_user'];
                 }
                 $datos_cuenta = $this->user->listar_cuenta_por_id_user($id_user);
-                $model->id_cuenta = $datos_cuenta->id_cuenta;
-                $longitud = 6;
-                $token = '';
-                $pattern = '1234567890';
-                $max = strlen($pattern)-1;
-                do{
-                    for($i=0;$i < $longitud;$i++) $token .= $pattern{mt_rand(0,$max)};
-                    $exists = $this->pagocip->listar_pagocip_pendiente_por_codigo($token);
-                    (isset($exists->id_pagocip))?$exists=true:$exists=false;
-                }while($exists);
-                $model->codigo = $token;
-                $model->monto = $_POST['monto'];
-                $model->tipo = $_POST['tipo'];
-                $model->concepto = 'Recargar mi cuenta';
-                $model->estado = 2;
-                $model->date = $fecha;
-                $model->date_expiracion = $fecha_exp;
-                $result = $this->cuenta->save_recargar_mi_cuenta($model);
-                if($result==1){
-                    $destino = $datos_cuenta->user_email;
-                    $titulo = "Solicitud de recarga";
-                    $contenido = "<p>Su solicitud de recarga de su cuenta de Bufeo Tec se realizó con éxito.<br>Acérquese a cualquier agente autorizado y brinde el siguiente código: </p><h2 style='color: red; font-weight: bold;'>$token</h2><p>El monto a pagar es de S/. ".$_POST['monto']."</p>";
-                    $this->validate->send_email($destino,$titulo,$contenido);
+                $recarga_pendiente = $this->cuenta->listar_recarga_pendiente($datos_cuenta->id_cuenta);
+                if(isset($recarga_pendiente->id_pagocip)){
+                    $result=6;
+                }else{
+                    $model->id_cuenta = $datos_cuenta->id_cuenta;
+                    $longitud = 6;
+                    $pattern = '1234567890';
+                    $max = strlen($pattern)-1;
+                    do{
+                        for($i=0;$i < $longitud;$i++) $token .= $pattern{mt_rand(0,$max)};
+                        $exists = $this->pagocip->listar_pagocip_pendiente_por_codigo($token);
+                        (isset($exists->id_pagocip))?$exists=true:$exists=false;
+                    }while($exists);
+                    $model->codigo = $token;
+                    $model->monto = $_POST['monto'];
+                    $model->tipo = $_POST['tipo'];
+                    $model->concepto = 'Recargar mi cuenta';
+                    $model->estado = 2;
+                    $model->date = $fecha;
+                    $model->date_expiracion = $fecha_exp;
+                    $result = $this->cuenta->save_recargar_mi_cuenta($model);
+                    if($result==1){
+                        $destino = $datos_cuenta->user_email;
+                        $titulo = "Solicitud de recarga";
+                        $contenido = "<p>Su solicitud de recarga de su cuenta de Bufeo Tec se realizó con éxito.<br>Acérquese a cualquier agente autorizado y brinde el siguiente código: </p><h2 style='color: red; font-weight: bold;'>$token</h2><p>El monto a pagar es de S/. ".$_POST['monto']."</p>";
+                        $this->validate->send_email($destino,$titulo,$contenido);
+                    }
                 }
             }else{
                 $result = 6;
@@ -118,6 +123,43 @@ class CuentaController{
             $result = 2;
         }
         $response = array("code" => $result,"codigo" => $token,"monto"=>$_POST['monto'],"date_expiracion"=>$fecha_exp);
+        $data = array("result" => $response);
+        echo json_encode($data);
+    }
+    public function save(){
+        try{
+            if(isset($_POST['id_user']) || isset($_SESSION['id_user'])){
+                $fecha = date('Y-m-d H:i:s');
+                $model = new Cuenta();
+                if(isset($_SESSION['id_user'])){
+                    $id_user = $this->crypt->decrypt($_SESSION['id_user'],_FULL_KEY_);
+                }else{
+                    $id_user = $_POST['id_user'];
+                }
+                $longitud = 8;
+                $token = '011-';
+                $pattern = '1234567890';
+                $max = strlen($pattern)-1;
+                do{
+                    for($i=0;$i < $longitud;$i++) $token .= $pattern{mt_rand(0,$max)};
+                    $exists = $this->cuenta->listar_cuenta_por_codigo($token);
+                    (isset($exists->id_cuenta))?$exists=true:$exists=false;
+                }while($exists);
+                $model->codigo = $token;
+                $model->saldo = 0;
+                $model->id_user = $id_user;
+                $model->moneda = 1;
+                $model->estado = 1;
+                $model->date = $fecha;
+                $result = $this->cuenta->save($model);
+            }else{
+                $result = 6;
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        $response = array("code" => $result,"codigo" => $token);
         $data = array("result" => $response);
         echo json_encode($data);
     }

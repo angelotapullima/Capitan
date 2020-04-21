@@ -44,7 +44,7 @@ public class ReservasNotificacion extends AppCompatActivity implements View.OnCl
     Button guardar;
     ImageView logoBufeoxD;
     TextView nombreEmprex,precioReserva,canchaReserva,nameReserva,fechaReserva,direccionReserva,
-    horaReserva,telefono2Reserva,telefonoReserva;
+            horaReserva,telefono2Reserva,telefonoReserva;
     Activity activity;
     String id;
     Preferences preferences;
@@ -91,7 +91,7 @@ public class ReservasNotificacion extends AppCompatActivity implements View.OnCl
     private void cargarVista() {
 
 
-        misReservasViewModel.getAllID(id,preferences.getToken(),"notificacion").observe(this, new Observer<List<MisReservas>>() {
+        /*misReservasViewModel.getAllID(id,preferences.getToken(),"notificacion").observe(this, new Observer<List<MisReservas>>() {
             @Override
             public void onChanged(List<MisReservas> misReservas) {
                 if (misReservas.size()>0){
@@ -118,7 +118,7 @@ public class ReservasNotificacion extends AppCompatActivity implements View.OnCl
                 }
 
             }
-        });
+        });*/
     }
 
 

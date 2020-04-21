@@ -9,7 +9,6 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Models.Chanchas;
-import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 
 
 @Database(entities = {Chanchas.class}, version = 1,exportSchema = false)

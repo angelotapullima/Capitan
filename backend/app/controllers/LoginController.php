@@ -10,6 +10,7 @@ require 'app/models/Login.php';
 //require 'app/models/Login_Auth.php';
 require 'app/models/Userg.php';
 require 'app/models/Person.php';
+require 'app/models/Cuenta.php';
 require 'app/models/User.php';
 class LoginController{
     private $log;
@@ -20,6 +21,7 @@ class LoginController{
     private $clean;
     private $userg;
     private $person;
+    private $cuenta;
     private $user;
     private $validate;
     public function __construct()
@@ -33,6 +35,7 @@ class LoginController{
         $this->userg = new Userg();
         $this->user = new User();
         $this->person = new Person();
+        $this->cuenta = new Cuenta();
         $this->validate = new Validate();
     }
 
@@ -87,6 +90,7 @@ class LoginController{
                             "id_person" => $singin[0]->id_person,
                             "user_nickname" => $singin[0]->user_nickname,
                             "user_email" => $singin[0]->user_email,
+                            "user_email_validate_code" => $singin[0]->user_email_validate_code,
                             "user_image" => $singin[0]->user_image,
                             "person_name" => $singin[0]->person_name,
                             "person_surname" => $singin[0]->person_surname,
@@ -135,6 +139,120 @@ class LoginController{
                     $result = 1;
                 } else {
                     //Code 3: Wrong Credentials
+                    $result = 3;
+                    $message = "Code 3: Wrong Credentials";
+                }
+            }
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            //Code 2: General Error
+            $result = 2;
+            $message = "Code 2: General Error";
+        }
+
+        if(isset($_POST['app']) && $_POST['app'] == true){
+            $response = array("code" => $result,"message" => $message);
+            $data = array("result" => $response, "data" => $user, "role" => $permisos);
+            echo json_encode($data);
+        } else {
+            $response = array("code" => $result,"message" => $message);
+            $data = array("result" => $response);
+            echo json_encode($data);
+        }
+    }
+    public function validar_usuario_agente(){
+        try{
+            //If All OK, the message does not change
+            $message = "THE END";
+            $result = 0;
+            $user = [];
+            $model = new Login();
+            $model->user_nickname = $_POST['user'];
+            $password = $_POST['pass'];
+            $singin = $this->login->singIn($model);
+            if($singin == 2 || $singin == 3){
+                switch ($singin){
+                    case 2:
+                        //Code 2: General Error
+                        $result = 2;
+                        $message = "Code 2: General Error";
+                        break;
+                    case 3:
+                        //Code 3: Wrong Credentials
+                        $result = 3;
+                        $message = "Code 3: Wrong Credentials";
+                        break;
+                }
+            } else {
+                if(password_verify($password, $singin[0]->user_password)){
+                    $this->login->last_login($singin[0]->id_user);
+                    //Generacion de json si la solicitud es desde app
+                    $permisos = [];
+                    $tiene_negocio_ = $this->user->listar_agente_por_id_user($singin[0]->id_user);
+                    if(isset($tiene_negocio_->id_agente)){
+                        if(isset($_POST['app']) && $_POST['app'] == true){
+                            $user = array(
+                                //token firebase, num, hab ,posicion ubigeo,
+                                "id_user" => $singin[0]->id_user,
+                                "id_person" => $singin[0]->id_person,
+                                "user_nickname" => $singin[0]->user_nickname,
+                                "user_email" => $singin[0]->user_email,
+                                "user_email_validate_code" => $singin[0]->user_email_validate_code,
+                                "user_image" => $singin[0]->user_image,
+                                "person_name" => $singin[0]->person_name,
+                                "person_surname" => $singin[0]->person_surname,
+                                "person_dni" => $singin[0]->person_dni,
+                                "person_birth" => $singin[0]->person_birth,
+                                "person_number_phone" => $singin[0]->person_number_phone,
+                                "person_genre" => $singin[0]->person_genre,
+                                "person_address" => $singin[0]->person_address,
+                                "user_num" => $singin[0]->user_num,
+                                "user_posicion" => $singin[0]->user_posicion,
+                                "user_habilidad" => $singin[0]->user_habilidad,
+                                "ubigeo_id" => $singin[0]->ubigeo_id,
+                                "agente_nombre" => $tiene_negocio_->agente_nombre,
+                                "agente_direccion" => $tiene_negocio_->agente_direccion,
+                                "agente_coord_x" => $tiene_negocio_->agente_coord_x,
+                                "agente_coord_y" => $tiene_negocio_->agente_coord_y,
+                                "agente_saldo" => $tiene_negocio_->cuentae_saldo,
+                                "token" => $this->crypt->tripleencrypt($singin[0]->user_password, $singin[0]->id_user, $singin[0]->user_created_at),
+                                "token_firebase" => $singin[0]->user_token
+                            );
+                            $permisos = $this->login->role_per_user($singin[0]->id_role);
+                        } else {
+                            //Generacion de datos de usuario si la solicitud es desde la web
+                            if(isset($_POST['remember'])){
+                                if($_POST['remember'] == "true"){
+                                    setcookie('id_user', $this->crypt->encrypt($singin[0]->id_user, _FULL_KEY_), time() + 30 * 24 * 60 * 60, "/");
+                                    setcookie('id_person', $this->crypt->encrypt($singin[0]->id_user, _FULL_KEY_), time() + 30 * 24 * 60 * 60, "/");
+                                    setcookie('user_nickname', $this->crypt->encrypt($singin[0]->user_nickname, _FULL_KEY_), time() + 365 * 24 * 60 * 60, "/");
+                                    setcookie('user_image', $this->crypt->encrypt($singin[0]->user_image, _FULL_KEY_), time() + 30 * 24 * 60 * 60, "/");
+                                    setcookie('person_name', $this->crypt->encrypt($singin[0]->person_name, _FULL_KEY_), time() + 30 * 24 * 60 * 60, "/");
+                                    setcookie('person_surname', $this->crypt->encrypt($singin[0]->person_surname, _FULL_KEY_), time() + 30 * 24 * 60 * 60, "/");
+                                    setcookie('person_dni', $this->crypt->encrypt($singin[0]->person_dni, _FULL_KEY_), time() + 30 * 24 * 60 * 60, "/");
+                                    setcookie("role", $this->crypt->encrypt($singin[0]->id_role, _FULL_KEY_), time() + 30* 24 * 60 * 60,"/");
+                                    setcookie("role_name", $this->crypt->encrypt($singin[0]->role_name, _FULL_KEY_), time() + 30* 24 * 60 * 60, "/");
+                                }
+                            }
+                            $_SESSION['id_user'] = $this->crypt->encrypt($singin[0]->id_user, _FULL_KEY_);
+                            $_SESSION['id_person'] = $this->crypt->encrypt($singin[0]->id_user, _FULL_KEY_);
+                            $_SESSION['user_nickname'] = $this->crypt->encrypt($singin[0]->user_nickname, _FULL_KEY_);
+                            $_SESSION['user_image'] = $this->crypt->encrypt($singin[0]->user_image, _FULL_KEY_);
+                            $_SESSION['person_name'] = $this->crypt->encrypt($singin[0]->person_name, _FULL_KEY_);
+                            $_SESSION['person_surname'] = $this->crypt->encrypt($singin[0]->person_surname, _FULL_KEY_);
+                            $_SESSION['person_dni'] = $this->crypt->encrypt($singin[0]->person_surname, _FULL_KEY_);
+                            $_SESSION['role'] = $this->crypt->encrypt($singin[0]->id_role, _FULL_KEY_);
+                            $_SESSION['role_name'] = $this->crypt->encrypt($singin[0]->role_name, _FULL_KEY_);
+                            //$_SESSION['validate_email'] = $this->crypt->encrypt($_POST['email_validate'], _FULL_KEY_);
+                            //$_SESSION['id_auth'] = $this->crypt->encrypt($_POST['id_auth'], _FULL_KEY_);
+                        }
+                        $message = "We did it. Your awesome... and beatiful";
+                        $result = 1;
+                    }else{
+                        $result = 3;
+                        $message = "Code 3: Wrong Credentials";
+                    }
+                } else {
                     $result = 3;
                     $message = "Code 3: Wrong Credentials";
                 }
@@ -617,24 +735,42 @@ class LoginController{
                         $model->user_image = 'media/user/user.jpg';
                         $model->ubigeo_id = $_POST['ubigeo_id'];
                         $model->id_role = $_POST['id_role'];
-                        $model->id_person = $this->person->listByMicrotime($microtime);
-                        $longitud = 6;
-                        $token = '';
-                        $pattern = '1234567890';
-                        $max = strlen($pattern)-1;
-                        for($i=0;$i < $longitud;$i++) $token .= $pattern{mt_rand(0,$max)};
-                        $model->user_email_validate_code = $token;
+                        $id_person = $this->person->listByMicrotime($microtime);
+                        $model->id_person = $id_person;
+                        $model->user_email_validate_code = " ";
                         $result = $this->user->save($model);
                         if($result != 1){
                             $this->person->deletemicrotime($microtime);
                             $result = 2;
                         }else{
-                            $headers = "From: Bufeo Tec Team <bufeotec@gmail.com>\n";
-                            $headers .= "MIME-Version: 1.0\n";
-                            $headers .= "Content-type: text/html; charset=utf-8\r\n";
-                            $mensajeF = "<h1>Bienvenido a Bufeo Tec</h1><p>Ingrese el siguiente código para validar su email:</p><h2 style='color: red; font-weight: bold;'>$token</h2>";
-                            $destino=$_POST['user_email'];
-                            mail($destino,"Bienvenido a Bufeo Tec",$mensajeF,$headers);
+                            $datos_user=$this->user->selectuser_id_person($id_person);
+                            if(isset($datos_user->id_user)){
+                                $longitud = 8;
+                                $token = '011-';
+                                $pattern = '1234567890';
+                                $max = strlen($pattern)-1;
+                                do{
+                                    for($i=0;$i < $longitud;$i++) $token .= $pattern{mt_rand(0,$max)};
+                                    $exists = $this->cuenta->listar_cuenta_por_codigo($token);
+                                    (isset($exists->id_cuenta))?$exists=true:$exists=false;
+                                }while($exists);
+                                $modelCuenta=new Login();
+                                $modelCuenta->id_user=$datos_user->id_user;
+                                $modelCuenta->codigo=$token;
+                                $modelCuenta->saldo=0;
+                                $modelCuenta->moneda=1;
+                                $modelCuenta->date=date('Y-m-d H:i:s');
+                                $modelCuenta->estado=1;
+                                $this->cuenta->save($modelCuenta);
+                                $headers = "From: Bufeo Tec Team <bufeotec@gmail.com>\r\n";
+                                $headers .= "MIME-Version: 1.0\r\n";
+                                $headers .= "Content-type: text/html; charset=utf-8\r\n";
+                                //$mensajeF = "<h1>Bienvenido a Bufeo Tec</h1><p>Ingrese el siguiente código para validar su email:</p><h2 style='color: red; font-weight: bold;'>$token</h2>";
+                                $mensajeF = "<h1>Bienvenido a Bufeo Tec</h1><p>Agradecemos que puedas formar parte de la comunidad de Bufeo Tec y así disfrutar de todos nuestros servicios. A este email te haremos llegar toda la información relevante. Muchas gracias.</p><br><a href='https://www.bufeotec.com'>bufeotec.com</a>";
+                                $destino=$_POST['user_email'];
+                                mail($destino,"Bienvenido a Bufeo Tec",$mensajeF,$headers);
+                            }
+
                         }
                     } else {
                         $this->person->deletemicrotime($microtime);

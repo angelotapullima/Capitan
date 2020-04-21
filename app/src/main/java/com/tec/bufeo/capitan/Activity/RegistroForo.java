@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -34,7 +33,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,12 +41,11 @@ import android.widget.Toast;
 
 
 import com.google.android.material.button.MaterialButton;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.Models.ModelFeed;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.ViewModels.FeedListViewModel;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
-import com.tec.bufeo.capitan.WebService.DataConnection;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import net.gotev.uploadservice.MultipartUploadRequest;

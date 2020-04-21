@@ -37,11 +37,12 @@ import com.tec.bufeo.capitan.Activity.CalificarNegocios;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.Views.DetalleCanchas;
 import com.tec.bufeo.capitan.Activity.DetalleFotoUsuario;
 import com.tec.bufeo.capitan.Activity.EstadisticasEmpresas.EstadisticasEmpresas;
-import com.tec.bufeo.capitan.Activity.Negocios.Model.Canchas;
-import com.tec.bufeo.capitan.Activity.Negocios.Model.Galeria;
-import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
-import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.CanchasViewModel;
-import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.NegociosViewModel;
+import com.tec.bufeo.capitan.Activity.ReviewsComentarios.Views.ReviewComentarios;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.Model.Canchas;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.Model.Galeria;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.Model.Negocios;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.ViewModels.CanchasViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.ViewModels.NegociosViewModel;
 import com.tec.bufeo.capitan.Activity.PromocionesCanchas;
 import com.tec.bufeo.capitan.Activity.ratings.BarLabels;
 import com.tec.bufeo.capitan.Activity.ratings.RatingReviews;
@@ -191,22 +192,7 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
 
 
 
-        rtb_valorar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                //Toast.makeText(getApplicationContext(),"V "+rating,Toast.LENGTH_SHORT).show();
 
-
-
-                Intent i = new Intent(DetalleNegocio.this, CalificarNegocios.class);
-                i.putExtra("valor_rating", Float.toString(rtb_valorar.getRating()));
-                i.putExtra("id_empresa", id_empresa);
-                i.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
-                startActivityForResult(i,LAUNCH_SECOND_ACTIVITY);
-                //dialogCarga();
-
-            }
-        });
 
         // rtb_valoracion.setRating();
 
@@ -303,10 +289,6 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                     String hora = sdf.format(date);
                     int horaactual = Integer.parseInt(hora);
 
-                   /* SimpleDateFormat formatex = new SimpleDateFormat("E");
-                    String dia = formatex.format(date);
-
-                    //dia  = variable creada para identificar el día de la semana y ver que horario usar*/
 
                     if (negocios.get(0).getDia_actual().equals("7")){
                         txt_horario.setText(negocios.get(0).getHorario_d_empresa());
@@ -404,7 +386,32 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
                     frameCarga2.setVisibility(View.GONE);
                     //progressbar.setVisibility(ProgressBar.INVISIBLE);
 
+                    latitud =negocios.get(0).getLatitud();
+                    longitud =negocios.get(0).getLongitud();
 
+                    if (!negocios.get(0).getValoracion_empresa().equals("0")){
+
+                        rtb_valorar.setRating(Float.parseFloat(negocios.get(0).getValoracion_empresa()));
+                    }else{
+
+                    }
+
+                    rtb_valorar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                        @Override
+                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                            //Toast.makeText(getApplicationContext(),"V "+rating,Toast.LENGTH_SHORT).show();
+
+
+
+                            Intent i = new Intent(DetalleNegocio.this, CalificarNegocios.class);
+                            i.putExtra("valor_rating", Float.toString(rtb_valorar.getRating()));
+                            i.putExtra("id_empresa", id_empresa);
+                            i.putExtra("nombre_empresa", txt_nombreEmpresa.getText().toString());
+                            startActivityForResult(i,LAUNCH_SECOND_ACTIVITY);
+                            //dialogCarga();
+
+                        }
+                    });
                     abl_detalleEmpresa.setVisibility(View.VISIBLE);
                     cdv_detalleEmpresa.setVisibility(View.VISIBLE);
                 }
@@ -537,6 +544,9 @@ public class DetalleNegocio extends AppCompatActivity implements View.OnClickLis
             startActivity(i);
         }else if (v.equals(masComentarios)){
 
+            Intent i = new Intent(getApplicationContext(), ReviewComentarios.class);
+            i.putExtra("id_empresa",id_empresa);
+            startActivity(i);
         }
 
     }

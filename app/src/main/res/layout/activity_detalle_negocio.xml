@@ -211,7 +211,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal">
                         <ImageView
                             android:layout_width="wrap_content"
@@ -242,7 +242,7 @@
                         android:id="@+id/lny_telefono"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal">
                         <ImageView
                             android:layout_width="wrap_content"
@@ -391,7 +391,7 @@
                                     android:id="@+id/textView3"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="9.2"
+                                    android:layout_weight="9"
                                     android:text="Valoraciones &amp; Comentarios"
                                     android:textAppearance="@android:style/TextAppearance.Material.WindowTitle"
                                     android:textStyle="bold"
@@ -400,7 +400,7 @@
                                 <ImageButton
                                     android:id="@+id/imb_mas_Comentarios"
                                     android:layout_width="0dp"
-                                    android:layout_weight=".8"
+                                    android:layout_weight="1"
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="10dp"
                                     android:title="Agregar"
@@ -466,7 +466,6 @@
                                     android:numStars="5"
                                     android:progressTint="#0f9d58"
                                     android:backgroundTint="#0f9d58"
-                                    android:rating="4"
                                     android:stepSize="1"
                                     app:layout_constraintBottom_toBottomOf="@+id/rating_reviews"
                                     app:layout_constraintStart_toStartOf="parent"

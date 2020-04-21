@@ -20,17 +20,13 @@ public class MisReservasRoomDBRepository {
         MisReservasRoomDataBase db = MisReservasRoomDataBase.getDatabase(application);
         misReservasDao = db.postInfoDao();
 
-     }
+    }
 
     public LiveData<List<MisReservas>> getmAll() {
         mAllMisReservas=misReservasDao.getAll();
-         return mAllMisReservas;
-    }
-
-    public LiveData<List<MisReservas>> getAllID(String id) {
-        mAllMisReservas=misReservasDao.getAllID(id);
         return mAllMisReservas;
     }
+
 
     public void deleteAllMisReservas() {
         new DeleteAllReservasyncTask(misReservasDao).execute();

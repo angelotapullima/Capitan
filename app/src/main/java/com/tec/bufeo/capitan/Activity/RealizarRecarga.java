@@ -59,6 +59,7 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
     MaterialButton verAgentes,buttonRg2,btnCancelar;
     RadioButton rb;
     RelativeLayout layoutVerAgentes;
+
     boolean estado =false;
 
     @Override
@@ -121,13 +122,13 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
 
                     cantSolicitudes = jsonObject.optString("hay");
 
-                    if (Integer.parseInt(cantSolicitudes)>0){
+                    if (Integer.parseInt(cantSolicitudes)==1){
 
                         JSONObject jsonArray = jsonObject.getJSONObject("results");
                         id_pagocip = jsonArray.optString("id_pagocip");
                         codigo = jsonArray.optString("pagocip_codigo");
                         pagocip_monto = jsonArray.optString("pagocip_monto");
-                        pagocip_date_expiracion = jsonArray.optString("pagocip_monto");
+                        pagocip_date_expiracion = jsonArray.optString("pagocip_date_expiracion");
                         pagocip_tipo = jsonArray.optString("pagocip_tipo");
 
                         String montex = "S/. " + pagocip_monto;
@@ -160,6 +161,8 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
                         layoutRecarguex.setVisibility(View.GONE);
                         buttonRg2.setVisibility(View.GONE);
 
+                    }else if (Integer.parseInt(cantSolicitudes)==3){
+                        dialogCancelar(true);
                     }
 
                 } catch (JSONException e) {
@@ -390,7 +393,7 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
 
     }
     Dialog dialog_cancelar;
-    public void dialogCancelar(){
+    public void dialogCancelar(boolean cantidad){
 
         dialog_cancelar= new Dialog(this, android.R.style.Theme_Translucent);
         dialog_cancelar.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -398,10 +401,29 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
         dialog_cancelar.setContentView(R.layout.dialogo_cancelar_recarga);
         MaterialButton cancelar = dialog_cancelar.findViewById(R.id.cancelar);
         MaterialButton continuar = dialog_cancelar.findViewById(R.id.continuar);
+        MaterialButton continuarExpirado = dialog_cancelar.findViewById(R.id.continuarExpirado);
+        LinearLayout botones = dialog_cancelar.findViewById(R.id.botones);
+        TextView texto = dialog_cancelar.findViewById(R.id.texto);
+
+        if(!cantidad){
+            texto.setText("¿estas seguro de cancelar está recarga?");
+            continuarExpirado.setVisibility(View.GONE);
+            botones.setVisibility(View.VISIBLE);
+        }else{
+            texto.setText("Su recarga ya expiro , por favor intente solicita otra recarga");
+            continuarExpirado.setVisibility(View.VISIBLE);
+            botones.setVisibility(View.GONE);
+        }
 
 
 
         cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_cancelar.dismiss();
+            }
+        });
+        continuarExpirado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog_cancelar.dismiss();
@@ -457,7 +479,7 @@ public class RealizarRecarga extends AppCompatActivity implements View.OnClickLi
         }else if(v.equals(verAgentes)){
 
         }else if(v.equals(btnCancelar)){
-            dialogCancelar();
+            dialogCancelar(false);
         }
     }
 

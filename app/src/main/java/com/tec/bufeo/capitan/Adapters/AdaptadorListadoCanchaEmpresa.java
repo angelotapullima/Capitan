@@ -8,13 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tec.bufeo.capitan.Activity.Negocios.Model.Canchas;
-import com.tec.bufeo.capitan.Modelo.Cancha;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.Model.Canchas;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;

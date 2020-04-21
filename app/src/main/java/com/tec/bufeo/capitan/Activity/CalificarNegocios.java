@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class CalificarNegocios extends AppCompatActivity {
     MaterialButton publicar;
     Preferences preferences;
     LinearLayout layoutEntendido;
+    ImageView cerrarCalificacion;
 
     CoordinatorLayout cordinator;
     @Override
@@ -56,6 +58,7 @@ public class CalificarNegocios extends AppCompatActivity {
         publicar=findViewById(R.id.publicar);
         entendido=findViewById(R.id.entendido);
         layoutEntendido=findViewById(R.id.layoutEntendido);
+        cerrarCalificacion=findViewById(R.id.cerrarCalificacion);
 
         valor_rating = Float.parseFloat(getIntent().getExtras().getString("valor_rating"));
         id_empresa = getIntent().getExtras().getString("id_empresa");
@@ -67,13 +70,26 @@ public class CalificarNegocios extends AppCompatActivity {
         publicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enviarCalificacion();
+
+                if (reseña.getText().toString().isEmpty()){
+                    preferences.codeAdvertencia("Debe ");
+                }else{
+                    enviarCalificacion();
+                }
+
             }
         });
         entendido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layoutEntendido.setVisibility(View.GONE);
+            }
+        });
+
+        cerrarCalificacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

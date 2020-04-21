@@ -17,7 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.tec.bufeo.capitan.Activity.MenuPrincipal;
 import com.tec.bufeo.capitan.Activity.PantallasNotificacion.ChatsNotificacion;
 import com.tec.bufeo.capitan.Activity.RegistroForo;
-import com.tec.bufeo.capitan.MVVM.Torneo.Chats.Mensajes.Views.ChatsActivity;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.Chats.Mensajes.Views.ChatsActivity;
 import com.tec.bufeo.capitan.R;
 
 public class FireBaseMessaging extends FirebaseMessagingService {
@@ -97,17 +97,7 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
 
     }
-    /*public void mensaje (String hora,String fecha,String id_chat,String mmensaje,String mid_usuario,String tipo ){
-        Intent i = new Intent(MenuPrincipal.registro);
-        i.putExtra("tipo",tipo);
-        i.putExtra("hora",hora);
-        i.putExtra("fecha",fecha);
-        i.putExtra("id_chat",id_chat);
-        i.putExtra("id_usuario",mid_usuario);
-        i.putExtra("mensaje",mmensaje);
-        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
 
-    }*/
     public void mensajeChats (String hora,String fecha,String id_chat,String mmensaje,String mid_usuario,String tipo ){
         Intent i = new Intent(ChatsActivity.CHAT);
         i.putExtra("tipo",tipo);

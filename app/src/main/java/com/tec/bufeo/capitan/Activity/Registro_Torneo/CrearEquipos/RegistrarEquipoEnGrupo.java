@@ -50,8 +50,8 @@ public class RegistrarEquipoEnGrupo extends AppCompatActivity implements View.On
         preferences= new Preferences(this);
         rcv_equipos_en_grupos= findViewById(R.id.rcv_equipos_en_grupos);
         btnNext_a_instancias= findViewById(R.id.btnNext_a_instancias);
-        id_torneo= getIntent().getExtras().getString("id_torneo");
-        //id_torneo ="1";
+        //id_torneo= getIntent().getExtras().getString("id_torneo");
+        id_torneo ="3";
 
         pedir_tabla(id_torneo);
         btnNext_a_instancias.setOnClickListener(this);

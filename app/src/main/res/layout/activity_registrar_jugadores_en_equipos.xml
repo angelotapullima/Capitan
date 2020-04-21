@@ -81,7 +81,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="añadir jugadores"
+                android:text="Añadir jugadores"
                 android:textColor="#fff"
                 android:textSize="15sp"/>
         </LinearLayout>

@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData;
 
 
 import com.tec.bufeo.capitan.Activity.BusquedaEquipos.Models.BusquedaEquipos;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 
 import java.util.List;
 

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,12 +31,14 @@ public class AdaptadorBusquedaEquipos extends RecyclerView.Adapter<AdaptadorBusq
     UniversalImageLoader universalImageLoader;
     private  OnItemClickListener listener;
     Preferences preferencesUser;
+    String tipo;
 
 
     class EquiposViewHolder extends RecyclerView.ViewHolder {
         private CircleImageView civ_fotoEquipoRetar;
         private TextView txt_nombreEquipoRetar,txt_capitanReto;
         private Button btn_retar;
+        private CardView card250;
 
         private EquiposViewHolder(View itemView) {
             super(itemView);
@@ -44,6 +47,7 @@ public class AdaptadorBusquedaEquipos extends RecyclerView.Adapter<AdaptadorBusq
             txt_nombreEquipoRetar = itemView.findViewById(R.id.txt_nombreEquipoRetar);
             txt_capitanReto = itemView.findViewById(R.id.txt_capitanReto);
             btn_retar = itemView.findViewById(R.id.btn_retar);
+            card250 = itemView.findViewById(R.id.card250);
 
         }
 
@@ -85,8 +89,9 @@ public class AdaptadorBusquedaEquipos extends RecyclerView.Adapter<AdaptadorBusq
     private List<BusquedaEquipos> mUsers; // Cached copy of users
 
 
-    public AdaptadorBusquedaEquipos(Context context, OnItemClickListener listener) {
+    public AdaptadorBusquedaEquipos(Context context,String tipo, OnItemClickListener listener) {
         this.ctx=context;
+        this.tipo=tipo;
         mInflater = LayoutInflater.from(context);
         preferencesUser = new Preferences(context);
         universalImageLoader = new UniversalImageLoader(context);
@@ -105,11 +110,15 @@ public class AdaptadorBusquedaEquipos extends RecyclerView.Adapter<AdaptadorBusq
         if (mUsers != null) {
             current = mUsers.get(position);
 
+            if (tipo.equals("mas")){
+                holder.card250.setVisibility(View.GONE);
+                UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipoRetar,null);
 
-            UniversalImageLoader.setImage(IP2+"/"+ current.getEquipo_foto(),holder.civ_fotoEquipoRetar,null);
+                holder.txt_nombreEquipoRetar.setText(current.getEquipo_nombre());
+                holder.txt_capitanReto.setText(current.getCapitan_nombre());
+            }
 
-            holder.txt_nombreEquipoRetar.setText(current.getEquipo_nombre());
-            holder.txt_capitanReto.setText(current.getCapitan_nombre());
+
             holder.bid(current,listener);
 
 

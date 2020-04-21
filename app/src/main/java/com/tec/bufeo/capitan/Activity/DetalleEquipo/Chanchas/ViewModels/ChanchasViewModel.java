@@ -8,9 +8,6 @@ import androidx.lifecycle.LiveData;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Models.Chanchas;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Repository.ChanchasRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Repository.ChanchasWebServiceRepository;
-import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
-import com.tec.bufeo.capitan.Activity.MisReservas.Repository.MisReservasRoomDBRepository;
-import com.tec.bufeo.capitan.Activity.MisReservas.Repository.MisReservasWebServiceRepository;
 
 import java.util.List;
 

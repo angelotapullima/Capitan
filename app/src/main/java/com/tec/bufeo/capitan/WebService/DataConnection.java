@@ -15,10 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.Activity.MenuPrincipal;
-import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscar;
-import com.tec.bufeo.capitan.Fragments.tabsBuscar.FragmentBuscarFechas;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
+import com.tec.bufeo.capitan.TabsPrincipales.tabsBuscar.FragmentBuscar;
+import com.tec.bufeo.capitan.TabsPrincipales.tabsBuscar.FragmentBuscarFechas;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabRetos.Models.Retos;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabTorneo.Models.Torneo;
 import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.Modelo.Empresas;
 import com.tec.bufeo.capitan.Modelo.Saldo;

@@ -16,11 +16,9 @@ public interface MisReservasDao {
     void insert(MisReservas resultModel);
 
 
-    @Query("SELECT * from mis_reservas where reserva_tipo = 'cliente'")
+    @Query("SELECT * from mis_reservas")
     LiveData<List<MisReservas>> getAll();
 
-    @Query("SELECT * from mis_reservas where id_reserva =:id ")
-    LiveData<List<MisReservas>> getAllID(String id);
 
     @Query("DELETE FROM mis_reservas")
     void deleteAll();

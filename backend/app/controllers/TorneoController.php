@@ -565,7 +565,7 @@ class TorneoController{
                         $valor_1++;
                         $this->torneo->sumar_estadistica($equipo_id,"torneos",$valor_1);
                         $this->user->guardar_notificacion($datos_equipo->id_user,"Torneo",$datos_torneo->id_torneo,"Tu equipo fue agregado a un torneo",$datos_torneo->torneo_imagen);
-                        $notificar = $this->notificar($datos_equipo->user_token,"Retaron a tu equipo ","Tu equipo fue agregado a un torneo","Torneo","Tu equipo fue agregado a un torneo");
+                        $this->notificar($datos_equipo->user_token,"Tu equipo fue agregado a un torneo ","Tu equipo fue agregado a un torneo","Torneo","Tu equipo fue agregado a un torneo");
                     }
                 }
             }else{
@@ -941,7 +941,7 @@ class TorneoController{
                                 $detalle_Chat = $this->user->listar_chat_por_id($datos_chat->chat_id);
                                 $this->user->enviar_mensaje($detalle_Chat->chat_id,$datos->id_user,"Hola! He retado a tu equipo",$fechahora);
                                 $this->user->guardar_notificacion($datos->id_user,"Reto",$reto_exists2->reto_id,"Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,$datos2->equipo_foto);
-                                $notificar = $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
+                                $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
                             }
                         }else{
                             $microtime = microtime(true);
@@ -951,7 +951,7 @@ class TorneoController{
                                 $detalle_Chat = $this->user->listar_chat_por_microtime($microtime);
                                 $this->user->enviar_mensaje($detalle_Chat->chat_id,$datos2->id_user,"Hola! He retado a tu equipo",$fechahora);
                                 $this->user->guardar_notificacion($datos->id_user,"Reto",$reto_exists2->reto_id,"Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,$datos2->equipo_foto);
-                                $notificar = $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
+                                $this->notificar($datos->user_token,"Retaron a tu equipo ","Tu equipo ".$datos->equipo_nombre." fue retado por el equipo ".$datos2->equipo_nombre,"Reto","Retaron a tu equipo");
                             }
                         }
                         //fin chat
@@ -1143,7 +1143,7 @@ class TorneoController{
         if($result === false){
             die('Curl failed' . curl_error());}
         curl_close($ch);
-        return $result;
+        //return $result;
     }
     public function notificar_dar_resultado($token,$body,$title,$tipo,$contenido){
         $url = 'https://fcm.googleapis.com/fcm/send';
@@ -1430,7 +1430,11 @@ class TorneoController{
             if ($limite_sup == 0) {
                 $model = $this->torneo->listar_publicaciones($id_torneo);
                 $ultima_noticia = $this->torneo->listar_ultima_publicacion($id_torneo);
-                $limite_sup = $ultima_noticia->publicaciones_id;
+                if(isset($ultima_noticia->publicaciones_id)){
+                    $limite_sup = $ultima_noticia->publicaciones_id;
+                }else{
+                    $limite_sup =0;
+                }
                 $new = "0";
             } else {
                 $model = $this->torneo->listar_publicaciones_limite($id_torneo, $limite_inf);

@@ -30,10 +30,10 @@ import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.DetalleT
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.DetalleTorneoViewModel;
 import com.tec.bufeo.capitan.Activity.PerfilUsuarios.PublicacionesUsuario.PerfilUsuarios;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Models.ModelFeed;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Repository.FeedRoomDBRepository;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.ViewModels.FeedListViewModel;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.AdaptadorForo;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.Models.ModelFeed;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.Repository.FeedRoomDBRepository;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.ViewModels.FeedListViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.Views.AdaptadorForo;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.WebService.VolleySingleton;

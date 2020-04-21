@@ -30,7 +30,7 @@ class RecargaAgenteController{
             $this->nav = new Navbar();
             $navs = $this->nav->listMenu($this->crypt->decrypt($_SESSION['role'],_FULL_KEY_));
             $agentes=$this->agente->listar_agentes();
-            $cuentaes=$this->empresa->listar_empresas_activas();
+            $cuentaes=$this->empresa->listar_empresas_por_id_ciudad('Iquitos');
             require _VIEW_PATH_ . 'header.php';
             require _VIEW_PATH_ . 'navbar.php';
             require _VIEW_PATH_ . 'recarga_agente/recargar_agente.php';
@@ -62,26 +62,31 @@ class RecargaAgenteController{
     public function save_recarga_agente(){
         try{
             $model = new RecargaAgente();
+            $model2 = new Agente();
             $ok_data=true;
-            if(isset($_POST['id_emisor']) && isset($_POST['id_agente']) && isset($_POST['monto']) && isset($_POST['nro_operacion']) && isset($_POST['concepto'])){
-                $_POST['id_emisor'] = $this->clean->clean_post_int($_POST['id_emisor']);
+            if(isset($_POST['id_agente']) && isset($_POST['monto'])){
                 $_POST['id_agente'] = $this->clean->clean_post_int($_POST['id_agente']);
-                $_POST['nro_operacion'] = $this->clean->clean_post_str($_POST['nro_operacion']);
-                $_POST['concepto'] = $this->clean->clean_post_str($_POST['concepto']);
-
-                $ok_data = $this->clean->validate_post_int($_POST['id_emisor'], true, $ok_data, 11);
                 $ok_data = $this->clean->validate_post_int($_POST['id_agente'], true, $ok_data, 11);
-                $ok_data = $this->clean->validate_post_str($_POST['nro_operacion'], true, $ok_data, 20);
-                $ok_data = $this->clean->validate_post_str($_POST['concepto'], true, $ok_data, 100);
                 if($ok_data){
-                    $model->emisor = $_POST['id_emisor'];
-                    $model->receptor = $_POST['id_agente'];
-                    $model->monto = $_POST['monto'];
-                    $model->nro_operacion = $_POST['nro_operacion'];
-                    $model->concepto = $_POST['concepto'];
-                    $result = $this->recargaagente->save_recarga_agente($model);
-                    if($result==1){
-                        $this->cuentaempresa->sumar_saldo($model);
+                    $result=2;
+                    $last_data=$this->recargaagente->listar_ultima_transferencia_e_e();
+                    if(isset($last_data->id_transferencia_e_e)){
+                        $new_code= $last_data->transferencia_e_e_nro_operacion * 1 + 1;
+                        $model->emisor =1;
+                        $model->receptor = $_POST['id_agente'];
+                        $model2->receptor = 1;
+                        $model->monto = $_POST['monto'];
+                        $model2->monto = $_POST['monto'];
+                        $model->nro_operacion = $new_code;
+                        $file_path = 'media/t_e_e/'.$new_code.'.jpg';
+                        $model->imagen = $file_path;
+                        $model->concepto = "Recarga de Agente";
+                        $result = $this->recargaagente->save_recarga_agente($model);
+                        if($result==1){
+                            $this->cuentaempresa->sumar_saldo($model);
+                            $this->cuentaempresa->sumar_saldo($model2);
+                            move_uploaded_file($_FILES['imagen']['tmp_name'], $file_path);
+                        }
                     }
                 }else{
                     $result = 6;

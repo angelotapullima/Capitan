@@ -9,9 +9,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.Models.Retos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabRetos.ViewModels.RetosViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabRetos.Models.Retos;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabRetos.ViewModels.RetosViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;

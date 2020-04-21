@@ -16,9 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Repository.TorneosWebServiceRepository;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.TorneosViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabTorneo.Models.Torneo;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabTorneo.Repository.TorneosWebServiceRepository;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabTorneo.ViewModels.TorneosViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 

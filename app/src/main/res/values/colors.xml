@@ -12,6 +12,7 @@
     <color name="colorTransparente">#6e0b0b0b</color>
     <color name="colorControlActivated">#99ff9800</color>
 
+    <color name="colorCardBackground">#031219</color>
     <color name="colorCeniza">#f9f9f9</color>
     <color name="colorRojo">#cf2623</color>
     <color name="colorVerde">#239F23</color>

@@ -15,15 +15,17 @@
         android:layout_height="?attr/actionBarSize"
         app:contentInsetStartWithNavigation="0dp"
         android:background="@color/colorPrimary">
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_registrarEquipo"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_gravity="end"
+            app:strokeColor="@color/colorPrimary"
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@color/colorTextIcons"
             android:textStyle="bold"
-            android:text="Publicar " />
+            android:text="Guardar " />
 
     </androidx.appcompat.widget.Toolbar>
     <androidx.core.widget.NestedScrollView

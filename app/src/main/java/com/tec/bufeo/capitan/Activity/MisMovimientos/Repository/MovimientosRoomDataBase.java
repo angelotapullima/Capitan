@@ -27,7 +27,6 @@ public abstract class MovimientosRoomDataBase extends RoomDatabase {
                             .addCallback(sRoomDatabaseCallback)
                             .fallbackToDestructiveMigration ()
                             .build();
-
                 }
             }
         }

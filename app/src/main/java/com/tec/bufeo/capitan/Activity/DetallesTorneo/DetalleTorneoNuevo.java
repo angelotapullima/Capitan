@@ -23,21 +23,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.GruposYEquipos.GruposYEquiposFragment;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Models.DetalleTorneo;
-import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.DetalleTorneoViewModel;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Views.InfoDtorneoFragment;
 
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.Posiciones.Views.PosicionesFragment;
 import com.tec.bufeo.capitan.Activity.RegistroForo;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.Models.Torneo;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabTorneo.ViewModels.TorneosViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabTorneo.Models.Torneo;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabTorneo.ViewModels.TorneosViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 import com.tec.bufeo.capitan.Util.UniversalImageLoader;
 
 import java.util.List;
-
-import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class DetalleTorneoNuevo extends AppCompatActivity implements View.OnClickListener {
 

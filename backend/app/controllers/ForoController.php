@@ -240,7 +240,11 @@ class ForoController{
             $likes = $this->foro->conteo_likes($model[$i]->publicaciones_id);
             $comentarios = $this->foro->conteo_comentarios($model[$i]->publicaciones_id);
             $dio_like = $this->foro->dio_like($model[$i]->publicaciones_id,$id_usuario);
-            ($dio_like->id_likePublicacion==null)? $dio_like_ = 0:$dio_like_ = 1;
+            if(isset($dio_like->id_likePublicacion)){
+                ($dio_like->id_likePublicacion==null)? $dio_like_ = 0:$dio_like_ = 1;
+            }else{
+                $dio_like_ = 0;
+            }
             if($model[$i]->publicaciones_id_torneo != 0){
                 $torneo_ = $this->torneo->listar_torneo_por_id($model[$i]->publicaciones_id_torneo);
                 $torneo =$torneo_->torneo_nombre;

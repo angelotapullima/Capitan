@@ -21,10 +21,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.tec.bufeo.capitan.Activity.DetalleNegocio.DetalleNegocio;
-import com.tec.bufeo.capitan.Activity.Negocios.Model.Negocios;
-import com.tec.bufeo.capitan.Activity.Negocios.Repository.Negocios.NegociosWebServiceRepository;
-import com.tec.bufeo.capitan.Activity.Negocios.ViewModels.NegociosViewModel;
-import com.tec.bufeo.capitan.Activity.Negocios.Views.AdaptadorListadoEmpresas;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.Model.Negocios;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.Repository.Negocios.NegociosWebServiceRepository;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.ViewModels.NegociosViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Negocios.Views.AdaptadorListadoEmpresas;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 

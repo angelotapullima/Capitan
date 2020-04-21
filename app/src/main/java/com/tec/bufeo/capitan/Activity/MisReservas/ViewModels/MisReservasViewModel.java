@@ -31,17 +31,13 @@ public class MisReservasViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<List<MisReservas>> getAll(String id, String token,String tipo) {
-        movimientosWebServiceRepository.providesWebService(id,token,tipo);
+    public LiveData<List<MisReservas>> getAll(String id, String token) {
+        movimientosWebServiceRepository.providesWebService(id,token);
         mAllMiEquipos= movimientosRoomDBRepository.getmAll();
         return mAllMiEquipos;
     }
 
-    public LiveData<List<MisReservas>> getAllID(String id, String token,String tipo) {
-        movimientosWebServiceRepository.providesWebService(id,token,tipo);
-        mAllMiEquipos= movimientosRoomDBRepository.getAllID(id);
-        return mAllMiEquipos;
-    }
+
 
 
 }

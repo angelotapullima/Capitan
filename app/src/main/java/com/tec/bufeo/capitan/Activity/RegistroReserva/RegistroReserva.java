@@ -40,9 +40,8 @@ import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.Repository.ReservasCanchaWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.ViewModels.ReservasCanchaListViewModel;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
-import com.tec.bufeo.capitan.Modelo.Reserva;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabEquipo.Models.Mequipos;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
 
@@ -68,7 +67,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
             precioDeLaCancha,comisionCancha,precioAPagar;
     Spinner spn_tipo_pago,spn_equipex;
     LinearLayout layout_bufis,layout_equipo,layout_botones;
-    LinearLayout btn_reservar,recargaSaldo;//layout_precio_con_chancha,layout_precios;
+    LinearLayout btn_reservar,recargaSaldo,btn_cerrar;//layout_precio_con_chancha,layout_precios;
     Preferences preferences;
     ArrayList<String> arrayEquipo;
     ArrayList<Mequipos> ListEquipos = new ArrayList<>();
@@ -105,6 +104,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         //layout_precios = findViewById(R.id.layout_precios);
         layout_bufis = findViewById(R.id.layout_bufis);
         layout_equipo = findViewById(R.id.layout_equipo);
+        btn_cerrar = findViewById(R.id.btn_cerrar);
         saldo_bufis = findViewById(R.id.saldo_bufis);
         precioDeLaCancha = findViewById(R.id.precioDeLaCancha);
         comisionCancha = findViewById(R.id.comisionCancha);
@@ -202,6 +202,7 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         });
         btn_reservar.setOnClickListener(this);
         recargaSaldo.setOnClickListener(this);
+        btn_cerrar.setOnClickListener(this);
         showToolbar("Reservar Cancha",true);
 
 
@@ -249,6 +250,8 @@ public class RegistroReserva extends AppCompatActivity implements View.OnClickLi
         }else if (v.equals(recargaSaldo)){
             Intent i = new Intent(RegistroReserva.this, RealizarRecarga.class);
             startActivity(i);
+        }else if(v.equals(btn_cerrar)){
+            finish();
         }
     }
 

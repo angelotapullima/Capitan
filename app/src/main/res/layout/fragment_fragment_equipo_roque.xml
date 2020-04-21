@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".MVVM.Torneo.TabEquipo.Views.FragmentEquipo">
+    tools:context=".TabsPrincipales.Torneo.TabEquipo.Views.FragmentEquipo">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"

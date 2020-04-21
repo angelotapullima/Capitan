@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Models.TorneosDeEquipos;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
+import com.tec.bufeo.capitan.TabsPrincipales.Foro.publicaciones.Views.ForoFragment;
 
 import java.util.List;
 

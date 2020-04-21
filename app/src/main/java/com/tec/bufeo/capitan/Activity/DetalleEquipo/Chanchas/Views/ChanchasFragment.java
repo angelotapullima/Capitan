@@ -59,9 +59,6 @@ public class ChanchasFragment extends Fragment {
     public ChanchasFragment() {
     }
 
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +177,7 @@ public class ChanchasFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!name_chancha.getText().toString().isEmpty()){
-                    if (monto_chancha.getText().toString().isEmpty()){
+                    if (!monto_chancha.getText().toString().isEmpty()){
                         if (Integer.parseInt(monto_chancha.getText().toString())>0){
                             crearChancha(name_chancha.getText().toString(),monto_chancha.getText().toString());
                         }else{

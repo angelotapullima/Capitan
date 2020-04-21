@@ -100,7 +100,7 @@ public class MasEquipos extends AppCompatActivity implements SwipeRefreshLayout.
 
     private void setAdapter(){
 
-        adaptadorBusquedaEquipos = new AdaptadorBusquedaEquipos(this, new AdaptadorBusquedaEquipos.OnItemClickListener() {
+        adaptadorBusquedaEquipos = new AdaptadorBusquedaEquipos(this,"mas", new AdaptadorBusquedaEquipos.OnItemClickListener() {
             @Override
             public void onItemClick(BusquedaEquipos mequipos, String tipo, int position) {
                 Intent intent = new Intent(MasEquipos.this, DetalleEquipoNuevo.class);

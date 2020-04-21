@@ -54,6 +54,7 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cdv_foto_equipo"
         xmlns:android="http://schemas.android.com/apk/res/android"

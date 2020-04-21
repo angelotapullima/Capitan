@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Models.Chanchas;
-import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 
 import java.util.List;
 

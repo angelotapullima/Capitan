@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MVVM.Torneo.Estadisticas.Views.FragmentEstadisticas">
+    tools:context=".TabsPrincipales.Torneo.Estadisticas.Views.FragmentEstadisticas">
 
     <RelativeLayout
         android:layout_width="match_parent"

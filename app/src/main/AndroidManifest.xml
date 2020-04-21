@@ -18,8 +18,23 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name,android:allowBackup">
-        <activity android:name=".Activity.PromocionesCanchas"
+
+        <activity android:name=".Activity.SliderInicial.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Activity.ReviewsComentarios.Views.ReviewComentarios"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.PromocionesCanchas"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.DetalleCanchas.Views.DetalleCanchas"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -96,16 +111,10 @@
             android:name=".Activity.RegistrarEquipo.RegistroEquipoEnGrupo.RegistroEquipoEnGrupo"
             android:theme="@style/AppTheme.NoActionBar">
 
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
+        </activity>
+        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo" >
 
         </activity>
-        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo" />
         <activity android:name=".Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago" />
         <activity
             android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo"
@@ -115,10 +124,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.ResutadoRetos" />
         <activity
-            android:name=".MVVM.Torneo.Chats.Mensajes.Views.ChatsActivity"
+            android:name=".TabsPrincipales.Torneo.Chats.Mensajes.Views.ChatsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MVVM.Foro.comentarios.Views.ComentariosActivity"
+            android:name=".TabsPrincipales.Foro.comentarios.Views.ComentariosActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -127,11 +136,7 @@
         <activity
             android:name=".Activity.Splash"
             android:theme="@style/AppTheme.NoActionBarTransparent">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activity.Login"

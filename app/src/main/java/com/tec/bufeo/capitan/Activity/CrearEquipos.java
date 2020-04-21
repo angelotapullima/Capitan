@@ -11,6 +11,7 @@ import androidx.core.content.FileProvider;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
@@ -36,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.RegistrarJugadoresEnEquipos.Views.RegistrarJugadoresEnEquipos;
 import com.tec.bufeo.capitan.Activity.Registro_Torneo.RegistroTorneo;
@@ -70,7 +72,7 @@ import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 public class CrearEquipos extends AppCompatActivity implements View.OnClickListener {
 
     EditText edt_nombreEquipo;
-    Button btn_registrarEquipo;
+    MaterialButton btn_registrarEquipo;
     ImageView img_equipoFoto,publicar_foto_camara,publicar_foto_galeria,foto_perfil_para_publicacion;
     public Equipo equipo;
     public Context context;
@@ -94,7 +96,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
 
 
         edt_nombreEquipo = (EditText) findViewById(R.id.edt_nombreEquipo);
-        btn_registrarEquipo = (Button) findViewById(R.id.btn_registrarEquipo);
+        btn_registrarEquipo =  findViewById(R.id.btn_registrarEquipo);
         img_equipoFoto = findViewById(R.id.img_equipoFoto);
         foto_perfil_para_publicacion = findViewById(R.id.foto_perfil_para_publicacion);
         publicar_foto_camara = findViewById(R.id.publicar_foto_camara);
@@ -343,8 +345,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
         try {
             String uploadId = UUID.randomUUID().toString();
 
-            PendingIntent clickIntent = PendingIntent.getActivity(
-                    this, 1, new Intent(this, RegistroTorneo.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
             //Creating a multi part request
             new MultipartUploadRequest(this, uploadId, url)
                     .addFileToUpload(path, "imagen") //Adding file
@@ -421,14 +422,7 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
                         }
                     })
 
-                    .startUpload(); //Starting the upload
-                            /*getNotificationConfig().setTitleForAllStatuses("Cargando Imagen")
-                            .setRingToneEnabled(false)
-                            .setClickIntentForAllStatuses(clickIntent)
-                            .setClearOnActionForAllStatuses(true))*/
-
-
-
+                    .startUpload();
 
         } catch (Exception exc) {
 
@@ -443,13 +437,16 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
 
 
 
-        PendingIntent clickIntent = PendingIntent.getActivity(
-                this, 1, new Intent(this, RegistroTorneo.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        /*PendingIntent clickIntent = PendingIntent.getActivity(
+                this, 1, new Intent(this, RegistroTorneo.class), PendingIntent.FLAG_UPDATE_CURRENT);*/
 
 
-        config.setTitleForAllStatuses(getString(title))
+
+
+        /*config.setTitleForAllStatuses(getString(title))
                 .setRingToneEnabled(false)
-                .setClickIntentForAllStatuses(clickIntent);
+                .setClickIntentForAllStatuses(clickIntent);*/
+
 
 
 
@@ -457,14 +454,15 @@ public class CrearEquipos extends AppCompatActivity implements View.OnClickListe
                 + " a " + UPLOAD_RATE + " - " + PROGRESS;
         config.getProgress().iconResourceID = R.drawable.logo;
         config.getProgress().iconColorResourceID = Color.BLUE;
-        config.getProgress().actions.add(new UploadNotificationAction(R.drawable.logo,"Ver progreso",clickIntent));
+        config.getProgress().actions.add(new UploadNotificationAction(R.drawable.logo,"Ver progreso", null));
+
 
 
 
         config.getCompleted().message = "Subida completada exitosamente en " + ELAPSED_TIME;
         config.getCompleted().iconResourceID = R.drawable.logo;
         config.getCompleted().iconColorResourceID = Color.GREEN;
-        config.getCompleted().actions.add(new UploadNotificationAction(R.drawable.logo,"Imagen Cargada Exitosamente",clickIntent));
+        //config.getCompleted().actions.add(new UploadNotificationAction(R.drawable.logo,"Imagen Cargada Exitosamente",clickIntent));
 
         config.getError().message = "Error al Cargar Imagen";
         config.getError().iconResourceID = R.drawable.logo;

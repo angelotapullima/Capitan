@@ -1,119 +1,108 @@
 package com.tec.bufeo.capitan.Activity.MisReservas.Views;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
 import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 import com.tec.bufeo.capitan.R;
 
 import java.util.List;
 
-public class AdaptadorMisReservas extends RecyclerView.Adapter<AdaptadorMisReservas.EquiposViewHolder>  {
+public class AdaptadorMisReservas extends RecyclerView.Adapter<AdaptadorMisReservas.MisReservasItemViewHolder>  {
 
-
-    MisReservas current;
+    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+    private List<MisReservas> tablaTorneoItems;
     Context ctx;
     private  OnItemClickListener listener;
-    //Preferences preferencesUser;
 
 
-    class EquiposViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView nombre_reserva_reserva,monto_final_reserva,empresa_reserva,nombre_cancha_reserva,horaReserva,fechaReserva;
-        private MaterialButton verMas;
-
-        private EquiposViewHolder(View itemView) {
-            super(itemView);
-
-            nombre_reserva_reserva=  itemView.findViewById(R.id.nombre_reserva_reserva);
-            monto_final_reserva = itemView.findViewById(R.id.monto_final_reserva);
-            empresa_reserva = itemView.findViewById(R.id.empresa_reserva);
-            nombre_cancha_reserva = itemView.findViewById(R.id.nombre_cancha_reserva);
-            horaReserva = itemView.findViewById(R.id.horaReserva);
-            fechaReserva = itemView.findViewById(R.id.fechaReserva);
-            verMas = itemView.findViewById(R.id.verMas);
-        }
-
-        public void bid(final MisReservas misReservas, final OnItemClickListener listener){
-
-            verMas.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(misReservas,"verMas",getAdapterPosition());
-                }
-            });
-        }
+    public AdaptadorMisReservas(Context context, List<MisReservas> tablaTorneoItems, OnItemClickListener listener) {
+        this.ctx=context;
+        this.tablaTorneoItems=tablaTorneoItems;
+        this.listener=listener;
     }
 
-    private final LayoutInflater mInflater;
+    class MisReservasItemViewHolder extends RecyclerView.ViewHolder {
+        private TextView fecha_m_reservas;
+        private RecyclerView rcv_detalle_m_reservas;
 
-    private List<MisReservas> mUsers; // Cached copy of users
+
+        private MisReservasItemViewHolder(View itemView) {
 
 
-    public AdaptadorMisReservas(Context context, OnItemClickListener listener) {
-        this.ctx=context;
-        mInflater = LayoutInflater.from(context);
-        /*universalImageLoader = new UniversalImageLoader(context);
-        preferencesUser = new Preferences(context);*/
-        this.listener = listener;}
+            super(itemView);
+            rcv_detalle_m_reservas =  itemView.findViewById(R.id.rcv_detalle_m_reservas);
+            fecha_m_reservas =  itemView.findViewById(R.id.fecha_m_reservas);
+
+        }
+
+        public void bid(final MisReservas movimientos,final OnItemClickListener listener){
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    listener.onItemClick(movimientos,"btn_reservar_en_chancha",getAdapterPosition());
+                }
+            });
+
+        }
+
+    }
 
     @NonNull
     @Override
-    public EquiposViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.rcv_item_mis_reservas, parent, false);
-        return new EquiposViewHolder(itemView);
+    public MisReservasItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_mis_reservas, parent, false);
+        return new MisReservasItemViewHolder(itemView);
     }
-
 
     @Override
-    public void onBindViewHolder(@NonNull final EquiposViewHolder holder, int position) {
-        if (mUsers != null) {
-            current = mUsers.get(position);
-
-            float totalex;
-
-            if (Float.parseFloat(current.getReserva_pago2())>0){
-
-                totalex= Float.parseFloat(current.getReserva_pago1()) + Float.parseFloat(current.getReserva_pago2());
-                holder.monto_final_reserva.setText(String.valueOf(totalex));
-            }else{
-                holder.monto_final_reserva.setText(current.getReserva_pago1());
-            }
-            holder.nombre_reserva_reserva.setText(current.getReserva_nombre());
-            holder.empresa_reserva.setText(current.getEmpresa_nombre());
-            holder.nombre_cancha_reserva.setText(current.getCancha_nombre());
-            holder.horaReserva.setText(current.getReserva_hora());
-            holder.fechaReserva.setText(current.getReserva_fecha());
+    public void onBindViewHolder(@NonNull final MisReservasItemViewHolder holder, int position) {
 
 
-            holder.bid(current,listener);
-        }
+        MisReservas tablaTorneoItem = tablaTorneoItems.get(position);
+
+
+        holder.fecha_m_reservas.setText(tablaTorneoItem.getFecha_reserva());
+
+
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(
+                holder.rcv_detalle_m_reservas.getContext(),
+                LinearLayoutManager.VERTICAL,
+                false
+        );
+        layoutManager.setInitialPrefetchItemCount(tablaTorneoItem.getDetalle_reservas().size());
+
+        // Create sub item view adapter
+        AdaptadorDetalleMisReservas adapterColaboracionesSubItem = new AdaptadorDetalleMisReservas(ctx,tablaTorneoItem.getDetalle_reservas());
+        //AdapterSubItemTablaTorneo adapterSubItemTablaTorneo =  new AdapterSubItemTablaTorneo(ctx,tablaTorneoItem.getTablaTorneoSubItems());
+
+        holder.rcv_detalle_m_reservas.setLayoutManager(layoutManager);
+        holder.rcv_detalle_m_reservas.setAdapter(adapterColaboracionesSubItem);
+        holder.rcv_detalle_m_reservas.setRecycledViewPool(viewPool);
+
+
+
+
+        holder.bid(tablaTorneoItem,listener);
+
+
     }
-    public void setWords(List<MisReservas> users){
-        mUsers = users;
-        notifyDataSetChanged();
-    }
+
 
     @Override
     public int getItemCount() {
-        if (mUsers != null) {
-            return mUsers.size();
-        }else{
-            return  0;
-        }
+
+        return tablaTorneoItems.size();
     }
-
-
-
 
     public interface  OnItemClickListener{
         void onItemClick(MisReservas mequipos, String tipo, int position);

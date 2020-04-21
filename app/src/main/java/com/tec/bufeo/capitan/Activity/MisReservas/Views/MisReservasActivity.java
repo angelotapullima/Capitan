@@ -3,7 +3,6 @@ package com.tec.bufeo.capitan.Activity.MisReservas.Views;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +39,7 @@ public class MisReservasActivity extends AppCompatActivity {
 
         initViews();
         cargarvista();
-        setAdapter();
+
     }
 
     private void initViews(){
@@ -50,12 +49,29 @@ public class MisReservasActivity extends AppCompatActivity {
     public void cargarvista(){
 
 
+        MisReservasRoomDBRepository misReservasRoomDBRepository = new MisReservasRoomDBRepository(application);
+        misReservasRoomDBRepository.deleteAllMisReservas();
 
-
-        misReservasViewModel.getAll(preferences.getIdUsuarioPref(),preferences.getToken(),"normal").observe(this, new Observer<List<MisReservas>>() {
+        misReservasViewModel.getAll(preferences.getIdUsuarioPref(),preferences.getToken()).observe(this, new Observer<List<MisReservas>>() {
             @Override
             public void onChanged(@Nullable List<MisReservas> mequipos) {
-                adaptadorMisReservas.setWords(mequipos);
+
+                if (mequipos.size()>0){
+
+                    adaptadorMisReservas = new AdaptadorMisReservas(getApplicationContext(), mequipos, new AdaptadorMisReservas.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(MisReservas mequipos, String tipo, int position) {
+
+                        }
+                    });
+
+
+
+                    GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
+                    linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
+                    rcv_mis_reservas.setLayoutManager(linearLayoutManager);
+                    rcv_mis_reservas.setAdapter(adaptadorMisReservas);
+                }
 
             }
         });
@@ -63,44 +79,5 @@ public class MisReservasActivity extends AppCompatActivity {
     }
 
     Application application;
-    private void setAdapter(){
 
-
-        adaptadorMisReservas = new AdaptadorMisReservas(this, new AdaptadorMisReservas.OnItemClickListener() {
-            @Override
-            public void onItemClick(MisReservas misReservas, String tipo, int position) {
-
-                if (tipo.equals("verMas")){
-                    Intent i =  new Intent(getApplicationContext(), ConfirmacionReserva.class);
-                    i.putExtra("cancha",misReservas.getCancha_nombre());
-                    i.putExtra("lugar",misReservas.getEmpresa_nombre());
-                    i.putExtra("hora",misReservas.getReserva_hora());
-                    i.putExtra("fecha",misReservas.getReserva_fecha());
-                    i.putExtra("nombre",misReservas.getReserva_nombre());
-                    i.putExtra("direccion",misReservas.getEmpresa_direccion());
-                    i.putExtra("telefono",misReservas.getEmpresa_telefono_1());
-                    i.putExtra("telefono2",misReservas.getEmpresa_telefono_2());
-
-
-                    float totalex;
-
-                    if (Float.parseFloat(misReservas.getReserva_pago2())>0){
-
-                        totalex= Float.parseFloat(misReservas.getReserva_pago1()) + Float.parseFloat(misReservas.getReserva_pago2());
-
-                    }else{
-                        totalex = Float.parseFloat(misReservas.getReserva_pago1());
-                    }
-                    i.putExtra("precio",String.valueOf(totalex));
-                    startActivity(i);
-                }
-            }
-        });
-
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(this, 1);
-        linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
-        rcv_mis_reservas.setLayoutManager(linearLayoutManager);
-        rcv_mis_reservas.setAdapter(adaptadorMisReservas);
-
-    }
 }

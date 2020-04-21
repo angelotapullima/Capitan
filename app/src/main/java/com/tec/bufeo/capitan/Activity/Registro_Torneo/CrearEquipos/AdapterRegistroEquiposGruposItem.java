@@ -99,9 +99,7 @@ public class AdapterRegistroEquiposGruposItem extends RecyclerView.Adapter<Adapt
         }
         layoutManager.setInitialPrefetchItemCount(cantidad);
 
-        // Create sub item view adapter
 
-        //AdapterSubItemTablaTorneo adapterSubItemTablaTorneo =  new AdapterSubItemTablaTorneo(ctx,tablaTorneoItem.getTablaTorneoSubItems());
         AdapterRegistroEquiposGruposSubItem adapterRegistroEquiposGruposSubItem = new AdapterRegistroEquiposGruposSubItem(context,tablaTorneoItem.getTablaTorneoSubItems());
 
         holder.rcv_subitem_tabla.setLayoutManager(layoutManager);

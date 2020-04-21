@@ -305,6 +305,25 @@ class EmpresaController{
         $data = array("results" => $resources);
         echo json_encode($data);
     }
+    public function obtener_saldo_agente() {
+        try{
+            if(isset($_SESSION['id_user'])){
+                $id = $this->crypt->decrypt($_SESSION['id_user'], _FULL_KEY_);
+            }else{
+                $id = $_POST['id'];
+            }
+            $model = $this->user->listar_agente_por_id_user($id);
+            (isset($model->cuentae_saldo))? $saldo = $model->cuentae_saldo:$saldo=0;
+            $resources[] = array(
+                "cuenta_saldo" => $saldo
+            );
+        } catch (Exception $e){
+            $this->log->insert($e->getMessage(), get_class($this).'|'.__FUNCTION__);
+            $result = 2;
+        }
+        $data = array("results" => $resources);
+        echo json_encode($data);
+    }
     public function obtener_chanchas_disponibles() {
         try{
             if(isset($_SESSION['id_user'])){
@@ -387,7 +406,16 @@ class EmpresaController{
             }else{
                 $soy_admin= 1;
             }
-            $detalles = $this->empresa->listar_rating_empresa_agrupado($id_empresa);
+            $detalles=[];
+            for($ivv=1;$ivv<6;$ivv++){
+                $datos= $this->empresa->listar_rating_empresa_agrupado($id_empresa,$ivv);
+                if(isset($datos->rating_empresa_valor)){
+                    $detalles[]=array("rating_empresa_valor"=>$ivv,"conteo"=>$datos->conteo);
+                }else{
+                    $detalles[]=array("rating_empresa_valor"=>$ivv,"conteo"=>"0");
+                }
+            }
+            $galeria = $this->empresa->listar_galeria($id_empresa);
             $conteo = $listado->conteo;
             if($conteo=="0"){$conteo=0;}
             $suma = $listado->suma;
@@ -414,6 +442,7 @@ class EmpresaController{
                 "promedio" => $promedio,
                 "conteo" => $conteo,
                 "rating" => $detalles,
+                "galeria" => $galeria,
                 "soy_admin" => $soy_admin
             );
         }
@@ -433,7 +462,14 @@ class EmpresaController{
         }else{
             $mi_rating_final= $mi_rating_final * 1;
         }
-        $detalles = $this->empresa->listar_rating_empresa_agrupado($id_empresa);
+        for($ivv=1;$ivv<6;$ivv++){
+            $datos= $this->empresa->listar_rating_empresa_agrupado($id_empresa,$ivv);
+            if(isset($datos->rating_empresa_valor)){
+                $detalles[]=array("rating_empresa_valor"=>$ivv,"conteo"=>$datos->conteo);
+            }else{
+                $detalles[]=array("rating_empresa_valor"=>$ivv,"conteo"=>"0");
+            }
+        }
         $conteo = $listado->conteo;
         if($conteo=="0"){$conteo=0;}
         $suma = $listado->suma;
@@ -688,7 +724,9 @@ class EmpresaController{
                                     //guardar transferencia
                                     $modelando_T = new Transferencia();
                                     $datos_empresa = $this->empresa->listar_cancha_por_id($id_cancha);
-                                    $modelando_T->nro_operacion = $datos_empresa->empresa_id."-1111111";
+                                    $last_data=$this->transferencia->listar_ultima_transferencia_u_e();
+                                    (isset($last_data->id_transferencia_u_e)) ?$new_code = $last_data->transferencia_u_e_nro_operacion * 1 + 1:$new_code=121000001;
+                                    $modelando_T->nro_operacion = $new_code;
                                     $modelando_T->id_user = $pago_id_user;
                                     $modelando_T->id_empresa = $datos_empresa->empresa_id;
                                     $modelando_T->id_pago = $pago_id;
@@ -701,7 +739,9 @@ class EmpresaController{
                                     //guardar transferencia
                                     $modelando_T = new Transferencia();
                                     $datos_empresa = $this->empresa->listar_cancha_por_id($id_cancha);
-                                    $modelando_T->nro_operacion = $datos_empresa->empresa_id."-1111111";
+                                    $last_data=$this->transferencia->listar_ultima_transferencia_u_e();
+                                    (isset($last_data->id_transferencia_u_e)) ?$new_code = $last_data->transferencia_u_e_nro_operacion * 1 + 1:$new_code=121000001;
+                                    $modelando_T->nro_operacion = $new_code;
                                     $modelando_T->id_user = $pago_id_user;
                                     $modelando_T->id_empresa = $datos_empresa->empresa_id;
                                     $modelando_T->id_pago = $pago_id;
@@ -733,7 +773,7 @@ class EmpresaController{
                         $datos_cancha = $this->empresa->listar_usuarios_por_id_cancha($id_cancha);
                         foreach ($datos_cancha as $dd){
                             $this->user->guardar_notificacion($dd->id_user,"Reserva",$datos_reserva->id_reserva,"Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora,$dd->cancha_foto);
-                            $notificar = $this->notificar($dd->user_token,"Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora,"Reserva lista!","Reserva","Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora);
+                            $this->notificar($dd->user_token,"Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora,"Reserva lista!","Reserva","Reserva de ".$dd->cancha_nombre." el ".$fecha." a las " . $hora);
                         }
                     }else{
                         if($tipopago!=0){
@@ -790,7 +830,7 @@ class EmpresaController{
         if($result === false){
             die('Curl failed' . curl_error());}
         curl_close($ch);
-        return $result;
+        //return $result;
     }
     public function listar_canchas_libres_por_hora(){
         try {

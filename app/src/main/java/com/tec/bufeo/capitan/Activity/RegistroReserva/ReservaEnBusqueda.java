@@ -34,8 +34,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.Models.Mequipos;
-import com.tec.bufeo.capitan.MVVM.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabEquipo.Models.Mequipos;
+import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;
 import com.tec.bufeo.capitan.Modelo.Cancha;
 import com.tec.bufeo.capitan.Modelo.Saldo;
 import com.tec.bufeo.capitan.R;
@@ -87,7 +87,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
     Preferences preferences;
     RelativeLayout relaitveCarga;
     String nombre_empresa_dato,empresa_id,h_reserva,fecha,hora,precio,telefono1,telefono2,direccion,foto;
-    LinearLayout btn_reservar_busqueda,recargaSaldo;
+    LinearLayout btn_reservar_busqueda,recargaSaldo,btn_cerrar_busqueda;
     TextView nombre_reserva_busqueda,saldo_bufis_busqueda;
     boolean permiso =false;
 
@@ -148,6 +148,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         relRes  = findViewById(R.id.relRes);
         costo  = findViewById(R.id.costo);
         img_canchex  = findViewById(R.id.img_canchex);
+        btn_cerrar_busqueda  = findViewById(R.id.btn_cerrar_busqueda);
         //pago1_todo = findViewById(R.id.pago1_todo);
         total= findViewById(R.id.total);
         noChanchas= findViewById(R.id.noChanchas);
@@ -238,7 +239,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         });
 
         btn_reservar_busqueda.setOnClickListener(this);
-
+        btn_cerrar_busqueda.setOnClickListener(this);
         recargaSaldo.setOnClickListener(this);
 
 
@@ -295,6 +296,8 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         }else if (v.equals(recargaSaldo)){
             Intent i = new Intent(ReservaEnBusqueda.this, RealizarRecarga.class);
             startActivity(i);
+        }else if(v.equals(btn_cerrar_busqueda)){
+            finish();
         }
     }
 
@@ -364,7 +367,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                 arrayEquipo_busqueda.add(0,"No tienes Equipos ");
             }
 
-            arrayEquipo_busqueda.add(0,"Seleccionar Equipo ");
+            arrayEquipo_busqueda.add(0,"Seleccionar Equipo");
 
 
             ArrayAdapter<String > adapchanchas= new ArrayAdapter<String>(getApplicationContext(),R.layout.spiner_item,arrayEquipo_busqueda);
@@ -729,16 +732,22 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                             if (cancha_promo_estado==1){
 
 
-
+                                Calendar caaal = Calendar.getInstance();
                                 SimpleDateFormat datefpi = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 Date fpi = datefpi.parse(cancha_promo_inicio);
+                                caaal.setTime(fpi);
+
+                                caaal.set(Calendar.MINUTE, caaal.get(Calendar.MINUTE)-1);
+                                fpi =caaal.getTime();
+
+
                                 Date fpf =datefpi.parse(cancha_promo_fin);
 
 
                                 Calendar cal = Calendar.getInstance();
                                 cal.setTime(fechaQuellegaDelServidor);
 
-                                Date tempDate = cal.getTime();
+                                Date tempDate;
 
 
 
@@ -746,9 +755,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
                                 //cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE)- 5);
                                 tempDate = cal.getTime();
 
-                            /*if (horasuma==12){
-                                String buu = "=0";
-                            }*/
+
 
                                 if (tempDate.after(fpi) ){
 

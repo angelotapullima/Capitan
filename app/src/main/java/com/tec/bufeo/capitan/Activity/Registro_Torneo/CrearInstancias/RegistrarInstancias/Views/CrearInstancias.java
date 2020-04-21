@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,7 +44,6 @@ import static com.tec.bufeo.capitan.WebService.DataConnection.IP2;
 
 public class CrearInstancias extends AppCompatActivity implements View.OnClickListener {
 
-    //TextView nombre_torneo_grupo;
 
     Button btn_agregar_instancias,btnNext_a_listaInstancias;
     InstanciasViewModel instanciasViewModel;
@@ -99,6 +99,24 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
 
 
 
+
+        spn_tipo_instancias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==0) {
+
+                }else if(position==1){
+                    nombre_instancia.setHint("Fecha 1, Fecha 2 , Fecha 3, etc");
+                }else if(position==2){
+                    nombre_instancia.setHint("8vos de Final, 4tos de final , Semifinal, etc");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         btn_agregar_instancias.setOnClickListener(this);
         btnNext_a_listaInstancias.setOnClickListener(this);
     }
@@ -217,19 +235,29 @@ public class CrearInstancias extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
 
         if (view.equals(btn_agregar_instancias)){
+            if (!spn_tipo_instancias.getSelectedItem().toString().equals("Seleccione")){
+                if(!nombre_instancia.getText().toString().isEmpty()){
+                    valor_spinner = spn_tipo_instancias.getSelectedItem().toString();
 
-            valor_spinner = spn_tipo_instancias.getSelectedItem().toString();
+                    if (valor_spinner.equals("Eliminatorias")){
+                        valor_tipo = "2";
+                    }else{
+                        valor_tipo = "1";
+                    }
+                    if (!nombre_instancia.getText().equals("")){
 
-            if (valor_spinner.equals("Eliminatorias")){
-                valor_tipo = "2";
+                        agregar_instancia_a_bd();
+                    }
+                    crear_instancia();
             }else{
-                valor_tipo = "1";
-            }
-            if (!nombre_instancia.getText().equals("")){
+                    preferences.codeAdvertencia("debe seleccionar el tipo de instancia");
+                }
 
-                agregar_instancia_a_bd();
+
+            }else{
+                preferences.codeAdvertencia("el nombre de la instancia no debe quedar vacio");
             }
-            crear_instancia();
+
         }if (view.equals(btnNext_a_listaInstancias)) {
 
 

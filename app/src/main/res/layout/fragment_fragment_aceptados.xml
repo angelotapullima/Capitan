@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MVVM.Torneo.TabRetos.Views.FragmentAceptados">
+    tools:context=".TabsPrincipales.Torneo.TabRetos.Views.FragmentAceptados">
 
     <LinearLayout
         android:layout_width="match_parent"

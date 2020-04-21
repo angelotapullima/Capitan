@@ -100,14 +100,14 @@ public class ChanchasWebServiceRepository {
 
             int count = resultJSON.length();
 
-            /*MisReservasRoomDBRepository movimientosRoomDBRepository = new MisReservasRoomDBRepository(application);
-            movimientosRoomDBRepository.deleteAllEquipos();*/
+
 
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
                 Chanchas chanchas = new Chanchas();
 
                 chanchas.setId_chancha(jsonNode.optString("id"));
+
                 chanchas.setId_equipo(jsonNode.optString("id_equipo"));
                 chanchas.setEquipo_nombre(jsonNode.optString("equipo"));
                 chanchas.setNombre_chancha(jsonNode.optString("nombre"));
@@ -144,7 +144,7 @@ public class ChanchasWebServiceRepository {
 
     }
 
-    JSONArray jsonArray;
+
     JSONObject jsonNode2,jsonNodecito;
     DetalleChancha detalleChancha;
 

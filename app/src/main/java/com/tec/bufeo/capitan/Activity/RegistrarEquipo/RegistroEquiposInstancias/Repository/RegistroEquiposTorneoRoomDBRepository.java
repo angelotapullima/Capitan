@@ -6,7 +6,6 @@ import android.util.Log;
 
 
 import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquiposInstancias.Models.RegistroEquiposTorneo;
-import com.tec.bufeo.capitan.MVVM.Foro.publicaciones.Views.ForoFragment;
 
 import java.util.List;
 
