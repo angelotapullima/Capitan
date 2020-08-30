@@ -18,20 +18,23 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name,android:allowBackup">
-
-        <activity android:name=".Activity.SliderInicial.MainActivity"
-            android:screenOrientation="portrait"
+        <activity android:name=".Activity.DetalleMovimientosActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
+        </activity>
+        <activity
+            android:name=".Activity.SliderInicial.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Activity.ReviewsComentarios.Views.ReviewComentarios"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.ReviewsComentarios.Views.ReviewComentarios"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.PromocionesCanchas"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -51,7 +54,7 @@
             android:name=".Activity.DetalleReservaEmpresa"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activity.PantallasNotificacion.ReservasNotificacion"
+            android:name=".Activity.NOUSADOSCSMARE.ReservasNotificacion"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.PantallasNotificacion.ChatsNotificacion"
@@ -68,7 +71,7 @@
             android:name=".Activity.InformacionGeneral"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activity.ConfirmacionReserva"
+            android:name=".Activity.NOUSADOSCSMARE.ConfirmacionReserva"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.MasTorneos.MasTorneosActivity"
@@ -109,12 +112,8 @@
         <activity android:name=".Activity.Registro_Torneo.CrearInstancias.RegistrarInstancias.Views.CrearInstancias" />
         <activity
             android:name=".Activity.RegistrarEquipo.RegistroEquipoEnGrupo.RegistroEquipoEnGrupo"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo" >
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Activity.Registro_Torneo.CrearEquipos.RegistrarEquipoEnGrupo"></activity>
         <activity android:name=".Activity.Registro_Torneo.CrearGrupos.Views.CrearGrupoRelampago" />
         <activity
             android:name=".Activity.DetalleEquipo.DetalleEquipoNuevo"
@@ -135,9 +134,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Splash"
-            android:theme="@style/AppTheme.NoActionBarTransparent">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBarTransparent"></activity>
         <activity
             android:name=".Activity.Login"
             android:configChanges="orientation|screenSize"

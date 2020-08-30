@@ -1,6 +1,7 @@
 package com.tec.bufeo.capitan.Activity.MisReservas.Views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.tec.bufeo.capitan.Activity.DetalleReservaEmpresa;
 import com.tec.bufeo.capitan.Activity.MisReservas.Models.DetalleReservas;
 import com.tec.bufeo.capitan.R;
 
@@ -63,7 +65,7 @@ public class AdaptadorDetalleMisReservas extends RecyclerView.Adapter<AdaptadorD
     @Override
     public void onBindViewHolder(@NonNull final DetallesMisReservasViewHolder holder, int position) {
 
-        DetalleReservas current = tablaTorneoSubItems.get(position);
+        final DetalleReservas current = tablaTorneoSubItems.get(position);
 
             float totalex;
 
@@ -81,6 +83,16 @@ public class AdaptadorDetalleMisReservas extends RecyclerView.Adapter<AdaptadorD
             holder.fechaReserva.setText(current.getReserva_fecha());
 
 
+            holder.verMas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(ctx, DetalleReservaEmpresa.class);
+                    i.putExtra("id",current.getId_reserva());
+                    i.putExtra("fecha",current.getPago_date());
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ctx.startActivity(i);
+                }
+            });
 
     }
 

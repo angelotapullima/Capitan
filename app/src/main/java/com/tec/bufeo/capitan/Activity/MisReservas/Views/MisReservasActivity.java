@@ -1,8 +1,9 @@
 package com.tec.bufeo.capitan.Activity.MisReservas.Views;
 
 import android.app.Application;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
 import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
-import com.tec.bufeo.capitan.Activity.MisReservas.Repository.MisReservasRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.MisReservas.ViewModels.MisReservasViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -26,6 +25,7 @@ public class MisReservasActivity extends AppCompatActivity {
     AdaptadorMisReservas adaptadorMisReservas;
     RecyclerView rcv_mis_reservas;
     Preferences preferences;
+    ImageView back;
 
 
     @Override
@@ -45,14 +45,19 @@ public class MisReservasActivity extends AppCompatActivity {
     private void initViews(){
 
         rcv_mis_reservas= findViewById(R.id.rcv_mis_reservas);
+        back= findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     public void cargarvista(){
 
 
-        MisReservasRoomDBRepository misReservasRoomDBRepository = new MisReservasRoomDBRepository(application);
-        misReservasRoomDBRepository.deleteAllMisReservas();
-
-        misReservasViewModel.getAll(preferences.getIdUsuarioPref(),preferences.getToken()).observe(this, new Observer<List<MisReservas>>() {
+        misReservasViewModel.getAll(preferences.getIdUsuarioPref(),preferences.getToken(),"normal").observe(this, new Observer<List<MisReservas>>() {
             @Override
             public void onChanged(@Nullable List<MisReservas> mequipos) {
 

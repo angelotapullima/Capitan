@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Models.DetalleMovimientos;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Models.Movimientos;
 import com.tec.bufeo.capitan.Util.APIUrl;
+import com.tec.bufeo.capitan.Util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,8 +32,10 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class MovimientosWebServiceRepository {
 
     Application application;
+    Preferences preferences;
     public MovimientosWebServiceRepository(Application application){
         this.application = application;
+        preferences = new Preferences(application);
     }
     private static OkHttpClient providesOkHttpClientBuilder(){
 
@@ -172,6 +175,8 @@ public class MovimientosWebServiceRepository {
                     detalleMovimientos.setFecha(jsonNode2.optString("fecha"));
                     detalleMovimientos.setSolo_fecha(jsonNode2.optString("solo_fecha"));
                     detalleMovimientos.setInd(jsonNode2.optInt("ind"));
+                    detalleMovimientos.setComision(jsonNode2.optString("comision"));
+                    detalleMovimientos.setCliente(preferences.getPersonName() +" "+ preferences.getPersonSurname());
                     subItemList.add(detalleMovimientos);
                 }
 

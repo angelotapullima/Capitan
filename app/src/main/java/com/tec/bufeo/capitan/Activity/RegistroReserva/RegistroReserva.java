@@ -36,7 +36,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
+import com.tec.bufeo.capitan.Activity.NOUSADOSCSMARE.ConfirmacionReserva;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.Repository.ReservasCanchaWebServiceRepository;
 import com.tec.bufeo.capitan.Activity.DetalleCanchas.ViewModels.ReservasCanchaListViewModel;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;

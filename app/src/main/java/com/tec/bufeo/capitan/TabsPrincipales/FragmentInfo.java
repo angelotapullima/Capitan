@@ -21,17 +21,37 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tec.bufeo.capitan.Activity.BusquedaEquipos.Repository.BusquedaEquiposRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.BusquedaEquipos.ViewModels.BusquedaEquiposViewModel;
 import com.tec.bufeo.capitan.Activity.ChanchasEquipos;
+import com.tec.bufeo.capitan.Activity.DetalleCanchas.Repository.ReservasCanchaRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.DetalleCanchas.ViewModels.ReservasCanchaListViewModel;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.Repository.ChanchasRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.DetalleEquipo.Chanchas.ViewModels.ChanchasViewModel;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.Repository.EequiposRoomDbRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabEstadisticasEquipos.ViewModels.EequiposViewModel;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.Repository.TequiposRoomDbRepository;
 import com.tec.bufeo.capitan.Activity.DetalleEquipo.TabTorneosDeEquipos.ViewModels.TequiposViewModel;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.EstadisticasTorneo.Repository.GoleadoresRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.EstadisticasTorneo.ViewModels.GoleadoresListViewModel;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.Repository.Detalle.DetalleTorneoRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.DetallesTorneo.InfoDtorneo.ViewModels.DetalleTorneoViewModel;
 import com.tec.bufeo.capitan.Activity.Login;
 import com.tec.bufeo.capitan.Activity.MenuPrincipal;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Repository.MovimientosRoomDBRepository;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.ViewModels.MovimientosViewModel;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Views.MisMovimientos;
+import com.tec.bufeo.capitan.Activity.MisReservas.Repository.MisReservasRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.MisReservas.ViewModels.MisReservasViewModel;
 import com.tec.bufeo.capitan.Activity.MisReservas.Views.MisReservasActivity;
+import com.tec.bufeo.capitan.Activity.PerfilUsuarios.DatosUsuarios.Repository.DatosUsuarioRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.PerfilUsuarios.DatosUsuarios.ViewModels.DatosUsuarioViewModel;
+import com.tec.bufeo.capitan.Activity.PerfilUsuarios.EquiposUsuarios.Repository.EquiposUsuariosRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.PerfilUsuarios.EquiposUsuarios.ViewModels.EquiposUsuariosViewModel;
+import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipoEnGrupo.Repository.EquiposGrupoRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.RegistrarEquipo.RegistroEquipoEnGrupo.ViewModel.EquiposGrupoViewModel;
+import com.tec.bufeo.capitan.Activity.ReviewsComentarios.Repository.ReseñasRoomDBRepository;
+import com.tec.bufeo.capitan.Activity.ReviewsComentarios.ViewModels.ReseñasViewModel;
 import com.tec.bufeo.capitan.TabsPrincipales.Negocios.Repository.Negocios.NegociosRoomDBRepository;
 import com.tec.bufeo.capitan.TabsPrincipales.Negocios.ViewModels.NegociosViewModel;
 import com.tec.bufeo.capitan.Activity.ProfileActivity;
@@ -76,14 +96,21 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
 
 
   CircleImageView civ_iconoPerfil;
-  TextView txt_tituloPerfil,email;
+  TextView txt_tituloPerfil,email,perfil;
   SharedPreferences preferencesUser;
   UniversalImageLoader universalImageLoader;
   LinearLayout misMovimientos,logout,realizarRecarga,bufis,mensajes,detalleMisReservas,Chanchex;
 
 
+  BusquedaEquiposViewModel busquedaEquiposViewModel;
+  ReservasCanchaListViewModel reservasCanchaListViewModel;
+  ChanchasViewModel chanchasViewModel;
   EequiposViewModel eequiposViewModel;
   TequiposViewModel tequiposViewModel;
+  MisReservasViewModel misReservasViewModel;
+  DetalleTorneoViewModel detalleTorneoViewModel;
+  DatosUsuarioViewModel datosUsuarioViewModel;
+  GoleadoresListViewModel goleadoresListViewModel;
   RegistroEquiposTorneoViewModel registroEquiposTorneoViewModel;
   JugadoresViewModel jugadoresViewModel;
   SeleccionadosViewModel seleccionadosViewModel;
@@ -100,6 +127,9 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
   MovimientosViewModel movimientosViewModel;
   NegociosViewModel negociosViewModel;
   NotificacionesViewModel notificacionesViewModel;
+  EquiposUsuariosViewModel equiposUsuariosViewModel;
+  EquiposGrupoViewModel equiposGrupoViewModel;
+  ReseñasViewModel reseñasViewModel;
 
 
 
@@ -120,6 +150,14 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         universalImageLoader= new UniversalImageLoader(getContext());
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
+        busquedaEquiposViewModel = ViewModelProviders.of(getActivity()).get(BusquedaEquiposViewModel.class);
+        reservasCanchaListViewModel = ViewModelProviders.of(getActivity()).get(ReservasCanchaListViewModel.class);
+        chanchasViewModel = ViewModelProviders.of(getActivity()).get(ChanchasViewModel.class);
+        misReservasViewModel = ViewModelProviders.of(getActivity()).get(MisReservasViewModel.class);
+        goleadoresListViewModel = ViewModelProviders.of(getActivity()).get(GoleadoresListViewModel.class);
+        datosUsuarioViewModel = ViewModelProviders.of(getActivity()).get(DatosUsuarioViewModel.class);
+        equiposUsuariosViewModel = ViewModelProviders.of(getActivity()).get(EquiposUsuariosViewModel.class);
+        detalleTorneoViewModel = ViewModelProviders.of(getActivity()).get(DetalleTorneoViewModel.class);
         torneosViewModel = ViewModelProviders.of(getActivity()).get(TorneosViewModel.class);
         misEquiposViewModel = ViewModelProviders.of(getActivity()).get(MisEquiposViewModel.class);
         chatsListViewModel = ViewModelProviders.of(getActivity()).get(ChatsListViewModel.class);
@@ -138,6 +176,8 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         movimientosViewModel = ViewModelProviders.of(getActivity()).get(MovimientosViewModel.class);
         negociosViewModel = ViewModelProviders.of(getActivity()).get(NegociosViewModel.class);
         notificacionesViewModel = ViewModelProviders.of(getActivity()).get(NotificacionesViewModel.class);
+        equiposGrupoViewModel = ViewModelProviders.of(getActivity()).get(EquiposGrupoViewModel.class);
+        reseñasViewModel = ViewModelProviders.of(getActivity()).get(ReseñasViewModel.class);
 
 
         civ_iconoPerfil = view.findViewById(R.id.civ_iconoPerfil);
@@ -150,6 +190,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         detalleMisReservas = view.findViewById(R.id.detalleMisReservas);
         logout = view.findViewById(R.id.logout);
         bufis = view.findViewById(R.id.bufis);
+        perfil = view.findViewById(R.id.perfil);
 
 
 
@@ -172,7 +213,7 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
         realizarRecarga.setOnClickListener(this);
         mensajes.setOnClickListener(this);
         logout.setOnClickListener(this);
-
+        perfil.setOnClickListener(this);
         Chanchex.setOnClickListener(this);
 
         showToolbar("Cuenta",false,view);
@@ -227,15 +268,45 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
     private void EliminarDBs() {
 
 
+        BusquedaEquiposRoomDBRepository busquedaEquiposRoomDBRepository = new BusquedaEquiposRoomDBRepository(application);
+        busquedaEquiposRoomDBRepository.deleteAllEquipos();
+
+
+        ReservasCanchaRoomDBRepository reservasCanchaRoomDBRepository = new ReservasCanchaRoomDBRepository(application);
+        reservasCanchaRoomDBRepository.deleteAllGoleadores();
+
+        ChanchasRoomDBRepository chanchasRoomDBRepository = new ChanchasRoomDBRepository(application);
+        chanchasRoomDBRepository.deleteAllMisReservas();
+
         NotificacionesRoomDBRepository notificacionesRoomDBRepository = new NotificacionesRoomDBRepository(application);
         notificacionesRoomDBRepository.deleteAllMisReservas();
 
+        MisReservasRoomDBRepository misReservasRoomDBRepository = new MisReservasRoomDBRepository(application);
+        misReservasRoomDBRepository.deleteAllMisReservas();
+
+        GoleadoresRoomDBRepository goleadoresRoomDBRepository = new GoleadoresRoomDBRepository(application);
+        goleadoresRoomDBRepository.deleteAllGoleadores();
+
+        DatosUsuarioRoomDBRepository datosUsuarioRoomDBRepository =  new DatosUsuarioRoomDBRepository(application);
+        datosUsuarioRoomDBRepository.deleteAllDatosUsuario();
+
+        EquiposGrupoRoomDBRepository equiposGrupoRoomDBRepository = new EquiposGrupoRoomDBRepository(application);
+        equiposGrupoRoomDBRepository.deleteAllEquipos();
+
+        EquiposUsuariosRoomDBRepository equiposUsuariosRoomDBRepository = new EquiposUsuariosRoomDBRepository(application);
+        equiposUsuariosRoomDBRepository.deleteAllEquipos();
+
+        ReseñasRoomDBRepository reseñasRoomDBRepository = new ReseñasRoomDBRepository(application);
+        reseñasRoomDBRepository.deleteAllMisReseñas();
 
         EequiposRoomDbRepository eequiposRoomDbRepository =  new EequiposRoomDbRepository(application);
         eequiposRoomDbRepository.DeleteAllEstadisticasEquipos();
 
         TequiposRoomDbRepository tequiposRoomDbRepository = new TequiposRoomDbRepository(application);
         tequiposRoomDbRepository.deleteAllTorneosEquipos();
+
+        DetalleTorneoRoomDBRepository detalleTorneoRoomDBRepository = new DetalleTorneoRoomDBRepository(application);
+        detalleTorneoRoomDBRepository.deleteAllFeed();
 
         NegociosRoomDBRepository negociosRoomDBRepository = new NegociosRoomDBRepository(application);
         negociosRoomDBRepository.deleteAllMisNegocios();
@@ -308,6 +379,9 @@ public class FragmentInfo extends Fragment implements View.OnClickListener {
             startActivity(i);
         }else if (v.equals(Chanchex)){
             Intent i = new Intent(getContext(), ChanchasEquipos.class);
+            startActivity(i);
+        }else if (v.equals(perfil)){
+            Intent i = new Intent(getContext(),ProfileActivity.class);
             startActivity(i);
         }
     }

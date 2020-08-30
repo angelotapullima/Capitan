@@ -16,8 +16,11 @@ public interface MisReservasDao {
     void insert(MisReservas resultModel);
 
 
-    @Query("SELECT * from mis_reservas")
+    @Query("SELECT * from mis_reservas ORDER BY  fecha_reserva  DESC ")
     LiveData<List<MisReservas>> getAll();
+
+    @Query("SELECT * from mis_reservas where fecha_reserva = :fecha")
+    LiveData<List<MisReservas>> getAllDetalle(String fecha);
 
 
     @Query("DELETE FROM mis_reservas")

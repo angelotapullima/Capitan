@@ -38,6 +38,14 @@ public class DetalleMovimientos {
     @SerializedName("solo_fecha")
     private String solo_fecha;
 
+    @ColumnInfo(name = "cliente")
+    @SerializedName("cliente")
+    private String cliente;
+
+    @ColumnInfo(name = "comision")
+    @SerializedName("comision")
+    private String comision;
+
 
     // ind = 0 indica que es egreso ?  ind =1 indica que es ingreso
     @ColumnInfo(name = "ind")
@@ -100,5 +108,21 @@ public class DetalleMovimientos {
 
     public void setInd(int ind) {
         this.ind = ind;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getComision() {
+        return comision;
+    }
+
+    public void setComision(String comision) {
+        this.comision = comision;
     }
 }

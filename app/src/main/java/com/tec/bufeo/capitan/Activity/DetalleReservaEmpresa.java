@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+import com.tec.bufeo.capitan.Activity.MisReservas.Models.DetalleReservas;
 import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 import com.tec.bufeo.capitan.Activity.MisReservas.ViewModels.MisReservasViewModel;
 import com.tec.bufeo.capitan.R;
@@ -31,13 +35,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.NombreCapeta;
 
-public class DetalleReservaEmpresa extends AppCompatActivity {
+public class DetalleReservaEmpresa extends AppCompatActivity implements View.OnClickListener {
 
-    String id;
+    String id,fecha;
     Preferences preferences;
     MisReservasViewModel misReservasViewModel;
     Activity activity;
@@ -47,9 +53,10 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
     RelativeLayout carga_Reservasss;
     LinearLayout layoutSolo,layout1,layout2;
     TextView detalleCompraSolo,precioSolo,cantidadSolo,totalSolo;
-    TextView detalleCompra1,precio1,cantidad1,total1;
+    TextView detalleCompra1,precio1,cantidad1,total1,nOperacion;
     TextView detalleCompra2,precio2,cantidad2,total2;
-    LinearLayout lCliente;
+    LinearLayout lCliente,loperacion;
+    MaterialButton compartir;
 
 
     @Override
@@ -60,6 +67,8 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
         preferences= new Preferences(this);
 
         id = getIntent().getExtras().getString("id");
+        fecha = formatearFecha(getIntent().getExtras().getString("fecha"));
+        //fecha = formatearFecha(fecha);
 
         initViews();
         cargarVista();
@@ -78,6 +87,9 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
         clienteReserva= findViewById(R.id.clienteReserva);
         NameReserrva= findViewById(R.id.NameReserrva);
         lCliente= findViewById(R.id.lCliente);
+        compartir= findViewById(R.id.compartir);
+        loperacion= findViewById(R.id.loperacion);
+        nOperacion= findViewById(R.id.nOperacion);
         carga_Reservasss= findViewById(R.id.carga_Reservasss);
 
         detalleCompraSolo= findViewById(R.id.detalleCompraSolo);
@@ -110,61 +122,121 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
         textoMensaje= findViewById(R.id.textoMensaje);
         Comision= findViewById(R.id.Comision);
 
+        compartir.setOnClickListener(this);
+
     }
 
+    private String formatearFecha(String dato){
+
+        String salida ="",separador;
+        String[] resultado;
+
+        separador = Pattern.quote(" ");
+        resultado = dato.split(separador);
+        salida = resultado[0];
+        return  salida;
+    }
+    List<DetalleReservas> detallitos =  new ArrayList<>();
     private void cargarVista() {
 
-
-        /*misReservasViewModel.getAllID(id,preferences.getToken(),"notificacion").observe(this, new Observer<List<MisReservas>>() {
+      detallitos.clear();
+        misReservasViewModel.getAllDetalle(id,fecha,preferences.getToken(),"detalle").observe(this, new Observer<List<MisReservas>>() {
             @Override
             public void onChanged(List<MisReservas> misReservas) {
-                if (misReservas.size()>0){
+                DetalleReservas detalleReservas = new DetalleReservas();
+                if(misReservas.size()>0){
+
+                    for (int i= 0 ; i< misReservas.get(0).getDetalle_reservas().size();i++){
+
+                        if (misReservas.get(0).getDetalle_reservas().get(i).getId_reserva().equals(id)){
+                            detalleReservas.setId_reserva(misReservas.get(0).getDetalle_reservas().get(i).getId_reserva());
+                            detalleReservas.setCancha_id(misReservas.get(0).getDetalle_reservas().get(i).getCancha_id());
+                            detalleReservas.setReserva_tipopago(misReservas.get(0).getDetalle_reservas().get(i).getReserva_tipopago());
+                            detalleReservas.setPago_id(misReservas.get(0).getDetalle_reservas().get(i).getPago_id());
+                            detalleReservas.setReserva_nombre(misReservas.get(0).getDetalle_reservas().get(i).getReserva_nombre());
+                            detalleReservas.setReserva_fecha(misReservas.get(0).getDetalle_reservas().get(i).getReserva_fecha());
+                            detalleReservas.setReserva_hora(misReservas.get(0).getDetalle_reservas().get(i).getReserva_hora());
+                            detalleReservas.setReserva_pago1(misReservas.get(0).getDetalle_reservas().get(i).getReserva_pago1());
+                            detalleReservas.setReserva_pago1_date(misReservas.get(0).getDetalle_reservas().get(i).getReserva_pago1_date());
+                            detalleReservas.setReserva_pago2(misReservas.get(0).getDetalle_reservas().get(i).getReserva_pago2());
+                            detalleReservas.setReserva_pago2_date(misReservas.get(0).getDetalle_reservas().get(i).getReserva_pago2_date());
+                            detalleReservas.setReserva_estado(misReservas.get(0).getDetalle_reservas().get(i).getReserva_estado());
+                            detalleReservas.setEmpresa_id(misReservas.get(0).getDetalle_reservas().get(i).getEmpresa_id());
+                            detalleReservas.setCancha_nombre(misReservas.get(0).getDetalle_reservas().get(i).getCancha_nombre());
+                            detalleReservas.setEmpresa_nombre(misReservas.get(0).getDetalle_reservas().get(i).getEmpresa_nombre());
+                            detalleReservas.setEmpresa_direccion(misReservas.get(0).getDetalle_reservas().get(i).getEmpresa_direccion());
+                            detalleReservas.setEmpresa_coord_x(misReservas.get(0).getDetalle_reservas().get(i).getEmpresa_coord_x());
+                            detalleReservas.setEmpresa_coord_y(misReservas.get(0).getDetalle_reservas().get(i).getEmpresa_coord_y());
+                            detalleReservas.setEmpresa_telefono_1(misReservas.get(0).getDetalle_reservas().get(i).getEmpresa_telefono_1());
+                            detalleReservas.setEmpresa_telefono_2(misReservas.get(0).getDetalle_reservas().get(i).getEmpresa_telefono_2());
+                            detalleReservas.setEmpresa_descripcion(misReservas.get(0).getDetalle_reservas().get(i).getEmpresa_descripcion());
+                            detalleReservas.setEmpresa_valoracion(misReservas.get(0).getDetalle_reservas().get(i).getEmpresa_valoracion());
+                            detalleReservas.setNombre_user(misReservas.get(0).getDetalle_reservas().get(i).getNombre_user());
+                            detalleReservas.setReserva_tipo(misReservas.get(0).getDetalle_reservas().get(i).getReserva_tipo());
+                            detalleReservas.setNombre_user(misReservas.get(0).getDetalle_reservas().get(i).getNombre_user());
+                            detalleReservas.setPago_comision(misReservas.get(0).getDetalle_reservas().get(i).getPago_comision());
+                            detalleReservas.setTransferencia_u_e_nro_operacion(misReservas.get(0).getDetalle_reservas().get(i).getTransferencia_u_e_nro_operacion());
+                        }
+
+                        detallitos.add(detalleReservas);
+                    }
+
+
                     carga_Reservasss.setVisibility(View.GONE);
                     String detalle1,detalle2 ;
                     String textInfo;
                     float totalex,totalex2;
 
-                    if (misReservas.get(0).getReserva_tipopago().equals("0")){
-                        Comision.setText("0.0");
+                    Comision.setText(detallitos.get(0).getPago_comision());
+                    nOperacion.setText(detallitos.get(0).getTransferencia_u_e_nro_operacion());
+
+                    if (detallitos.get(0).getTransferencia_u_e_nro_operacion().equals("") || detallitos.get(0).getTransferencia_u_e_nro_operacion().isEmpty()){
+                        loperacion.setVisibility(View.GONE);
+                    }
+                    if (detallitos.get(0).getReserva_tipopago().equals("0")){
+
                         lCliente.setVisibility(View.GONE);
                     }else{
-                        Comision.setText("3.0");
+
                         lCliente.setVisibility(View.VISIBLE);
                     }
 
-                    NameReserrva.setText(misReservas.get(0).getReserva_nombre());
+                    NameReserrva.setText(detallitos.get(0).getReserva_nombre());
+                    clienteReserva.setText(detallitos.get(0).getNombre_user());
 
-                    if (Float.parseFloat(misReservas.get(0).getReserva_pago2())>0){
+                    if (Float.parseFloat(detallitos.get(0).getReserva_pago2())>0){
 
-                        detalle1 = "Reserva de " + misReservas.get(0).getCancha_nombre()
-                                + " de " + misReservas.get(0).getReserva_hora() + " por el primer pago";
+                        detalle1 = "Reserva de " + detallitos.get(0).getCancha_nombre()
+                                + " de " + detallitos.get(0).getReserva_hora() + " por el primer pago";
 
-                        detalle2 = "Reserva de " + misReservas.get(0).getCancha_nombre()
-                                + " de " + misReservas.get(0).getReserva_hora() + " por el segundo pago";
+                        detalle2 = "Reserva de " + detallitos.get(0).getCancha_nombre()
+                                + " de " + detallitos.get(0).getReserva_hora() + " por el segundo pago";
 
 
                         detalleCompra1.setText(detalle1);
                         detalleCompra2.setText(detalle2);
-                        fechaPago1.setText(misReservas.get(0).getReserva_pago1_date());
-                        fechaPago2.setText(misReservas.get(0).getReserva_pago2_date());
-                        precio1.setText(misReservas.get(0).getReserva_pago1());
-                        precio2.setText(misReservas.get(0).getReserva_pago2());
+                        fechaPago1.setText(detallitos.get(0).getReserva_pago1_date());
+                        fechaPago2.setText(detallitos.get(0).getReserva_pago2_date());
+                        precio1.setText(detallitos.get(0).getReserva_pago1());
+                        precio2.setText(detallitos.get(0).getReserva_pago2());
 
-                        totalex= Float.parseFloat(misReservas.get(0).getReserva_pago1()) * Float.parseFloat(cantidad1.getText().toString());
-                        totalex2= Float.parseFloat(misReservas.get(0).getReserva_pago2()) * Float.parseFloat(cantidad2.getText().toString());
+
+                        totalex= Float.parseFloat(detallitos.get(0).getReserva_pago1()) * Float.parseFloat(cantidad1.getText().toString());
+                        totalex2= Float.parseFloat(detallitos.get(0).getReserva_pago2()) * Float.parseFloat(cantidad2.getText().toString());
                         total1.setText(String.valueOf(totalex));
                         total2.setText(String.valueOf(totalex2));
 
                         SubTotal.setText(String.valueOf(Float.parseFloat(total1.getText().toString())
                                 + Float.parseFloat(total2.getText().toString())) );
                         layoutSolo.setVisibility(View.GONE);
-                    }else{
-                        detalle1 = "Reserva de " + misReservas.get(0).getCancha_nombre()
-                                + " de " + misReservas.get(0).getReserva_hora() ;
+                    }
+                    else{
+                        detalle1 = "Reserva de " + detallitos.get(0).getCancha_nombre()
+                                + " de " + detallitos.get(0).getReserva_hora() ;
                         detalleCompraSolo.setText(detalle1);
-                        fechaPago1.setText(misReservas.get(0).getReserva_pago1_date());
-                        precioSolo.setText(misReservas.get(0).getReserva_pago1());
-                        totalex= Float.parseFloat(misReservas.get(0).getReserva_pago1()) * Float.parseFloat(cantidadSolo.getText().toString());
+                        fechaPago1.setText(detallitos.get(0).getReserva_pago1_date());
+                        precioSolo.setText(detallitos.get(0).getReserva_pago1());
+                        totalex= Float.parseFloat(detallitos.get(0).getReserva_pago1()) * Float.parseFloat(cantidadSolo.getText().toString());
                         totalSolo.setText(String.valueOf(totalex));
 
                         SubTotal.setText(String.valueOf(Float.parseFloat(totalSolo.getText().toString())) );
@@ -180,36 +252,42 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
                             + Float.parseFloat(Comision.getText().toString())));
 
 
-                    if (misReservas.get(0).getReserva_tipopago().equals("0")){
+                    if (detallitos.get(0).getReserva_tipopago().equals("0")){
                         textInfo = "Reserva generada a travez de la App Capitán, creada por el Administrador  "
-                                + misReservas.get(0).getNombre_user() + " del Negocio " + misReservas.get(0).getEmpresa_nombre();
+                                + detallitos.get(0).getNombre_user() + " del Negocio " + detallitos.get(0).getEmpresa_nombre();
                         textoMensaje.setText(textInfo);
 
                     }else{
                         textInfo = "Reserva generada a travez de la App Capitán, creada por el Usuario  "
-                                + misReservas.get(0).getNombre_user() ;
+                                + detallitos.get(0).getNombre_user() ;
                         textoMensaje.setText(textInfo);
                     }
 
-                }
-                else{
+
+
+
+                }else{
                     carga_Reservasss.setVisibility(View.VISIBLE);
                 }
 
-
             }
-        });*/
+        });
+
+
     }
 
 
     public void showToolbar(String tittle, boolean upButton){
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);      //asociamos el toolbar con el archivo xml
-        toolbar.setTitleTextColor(Color.rgb(76,175,80));                     //el titulo color blanco
+        toolbar.setTitleTextColor(Color.WHITE);                     //el titulo color blanco
         toolbar.setSubtitleTextColor(Color.GREEN);                  //el subtitulo color blanco
         setSupportActionBar(toolbar);                               //pasamos los parametros anteriores a la clase Actionbar que controla el toolbar
 
         getSupportActionBar().setTitle(tittle);                     //asiganmos el titulo que llega
         getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);//y habilitamos la flacha hacia atras
     }
 
     public static Bitmap loadBitmapFromView(View v, int width, int height) {
@@ -294,11 +372,6 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
         File imagen = new File(carpetas,nombre);
 
 
-
-        /*Toast.makeText(getApplicationContext(), "ensayo"+String.valueOf(contador)+".png",
-                Toast.LENGTH_LONG).show();*/
-
-
         boolean success = false;
 
         // Encode the file as a PNG image.
@@ -346,4 +419,10 @@ public class DetalleReservaEmpresa extends AppCompatActivity {
 
     Uri imageUri;
 
+    @Override
+    public void onClick(View v) {
+        if (v.equals(compartir)){
+            guardarImagen();
+        }
+    }
 }

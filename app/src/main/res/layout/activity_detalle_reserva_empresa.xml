@@ -62,95 +62,142 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFF"
-        android:id="@+id/llscrol"
+
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:src="@drawable/logobufeopng"/>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="10"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:text="Fecha de Pago1"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/fechaPago1"/>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:layout_marginTop="5dp"
-                    android:textStyle="bold"
-                    android:id="@+id/pago2"
-                    android:textColor="#000"
-                    android:text="Fecha de Pago2"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/fechaPago2"/>
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="end"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:textSize="17sp"
-                    android:layout_height="wrap_content"
-                    android:text="Estado De reserva"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="end"
-                    android:id="@+id/estadoReserva"
-                    android:layout_height="wrap_content"
-                    android:text="PAGADO"/>
-
-
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/lCliente"
+            android:layout_height="match_parent"
+            android:background="#FFF"
+            android:id="@+id/llscrol"
             android:orientation="vertical">
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logobufeopng"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:id="@+id/loperacion"
+                android:layout_marginLeft="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:text="Número de operación"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/nOperacion"
+                    android:layout_height="wrap_content"/>
+
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:text="Fecha de Primer pago"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fechaPago1"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
+                        android:id="@+id/pago2"
+                        android:textColor="#000"
+                        android:text="Fecha de Segundo pago"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fechaPago2"/>
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="end"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:textSize="17sp"
+                        android:layout_height="wrap_content"
+                        android:text="Estado De reserva"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="end"
+                        android:id="@+id/estadoReserva"
+                        android:layout_height="wrap_content"
+                        android:text="PAGADO"/>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lCliente"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:layout_marginTop="20dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="#000"
+                    android:text="Cliente"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:id="@+id/clienteReserva"/>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -159,330 +206,322 @@
                 android:textStyle="bold"
                 android:layout_marginLeft="16dp"
                 android:textColor="#000"
-                android:text="Cliente"/>
+                android:text="Nombre de la Reserva"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:id="@+id/clienteReserva"/>
+                android:id="@+id/NameReserrva"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/borde_negro"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="10"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:layout_weight="4"
+                        android:padding="5dp"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:text="Nombre "/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:padding="5dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:text="Precio "/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:gravity="center"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:text="Cant. "/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:padding="5dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#000"
+                        android:text="Total"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="10"
+                    android:id="@+id/layoutSolo"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:padding="8dp"
+                        android:id="@+id/detalleCompraSolo"/>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:padding="8dp"
+                        android:id="@+id/precioSolo"
+                        android:gravity="center"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:padding="8dp"
+                        android:text="1"
+                        android:id="@+id/cantidadSolo"
+                        android:gravity="center"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:id="@+id/totalSolo"
+                        android:padding="8dp"
+                        android:gravity="center"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="10"
+                    android:id="@+id/layout1"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:padding="8dp"
+                        android:id="@+id/detalleCompra1"/>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:padding="8dp"
+                        android:id="@+id/precio1"
+                        android:gravity="center"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="1"
+                        android:id="@+id/cantidad1"
+                        android:padding="8dp"
+                        android:gravity="center"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:padding="8dp"
+                        android:id="@+id/total1"
+                        android:gravity="center"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="10"
+                    android:id="@+id/layout2"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:padding="8dp"
+                        android:id="@+id/detalleCompra2"/>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:padding="8dp"
+                        android:id="@+id/precio2"
+                        android:gravity="center"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:padding="8dp"
+                        android:text="1"
+                        android:id="@+id/cantidad2"
+                        android:gravity="center"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:padding="8dp"
+                        android:id="@+id/total2"
+                        android:gravity="center"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000"/>
+
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp"
+                        android:text="Sub Total"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp"
+                        android:id="@+id/SubTotal"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp"
+                        android:text="Comisión"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp"
+                        android:id="@+id/Comision"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:text="Total"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:id="@+id/totalFinal"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textoMensaje"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp" />
         </LinearLayout>
 
-
-
-
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:layout_marginTop="20dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="16dp"
-            android:textColor="#000"
-            android:text="Nombre de la Reserva"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:id="@+id/NameReserrva"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/borde_negro"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:weightSum="10"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:layout_weight="4"
-                    android:padding="5dp"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:text="Nombre "/>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:padding="5dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:text="Precio "/>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:gravity="center"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:text="Cant. "/>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:padding="5dp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textColor="#000"
-                    android:text="Total"/>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:weightSum="10"
-                android:id="@+id/layoutSolo"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:padding="8dp"
-                    android:id="@+id/detalleCompraSolo"/>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:padding="8dp"
-                    android:id="@+id/precioSolo"
-                    android:gravity="center"/>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:padding="8dp"
-                    android:text="1"
-                    android:id="@+id/cantidadSolo"
-                    android:gravity="center"/>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:id="@+id/totalSolo"
-                    android:padding="8dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
-
-           <LinearLayout
-                android:layout_width="match_parent"
-                android:weightSum="10"
-               android:id="@+id/layout1"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:padding="8dp"
-                    android:id="@+id/detalleCompra1"/>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:padding="8dp"
-                    android:id="@+id/precio1"
-                    android:gravity="center"/>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:text="1"
-                    android:id="@+id/cantidad1"
-                    android:padding="8dp"
-                    android:gravity="center"/>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:padding="8dp"
-                    android:id="@+id/total1"
-                    android:gravity="center"/>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:weightSum="10"
-                android:id="@+id/layout2"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:padding="8dp"
-                    android:id="@+id/detalleCompra2"/>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:padding="8dp"
-                    android:id="@+id/precio2"
-                    android:gravity="center"/>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:padding="8dp"
-                    android:text="1"
-                    android:id="@+id/cantidad2"
-                    android:gravity="center"/>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:padding="8dp"
-                    android:id="@+id/total2"
-                    android:gravity="center"/>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
-
-
-
-
-
-        </LinearLayout>
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginRight="16dp"
-           android:orientation="vertical">
-           <LinearLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="end"
-               android:orientation="horizontal">
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:padding="8dp"
-                   android:text="Sub Total"/>
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:padding="8dp"
-                   android:id="@+id/SubTotal"/>
-           </LinearLayout>
-           <LinearLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="end"
-               android:orientation="horizontal">
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:padding="8dp"
-                   android:text="Comisión"/>
-
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:padding="8dp"
-                   android:id="@+id/Comision"/>
-           </LinearLayout>
-           <LinearLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="end"
-               android:orientation="horizontal">
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:padding="8dp"
-                   android:textSize="17sp"
-                   android:textStyle="bold"
-                   android:textColor="#000"
-                   android:text="Total"/>
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:padding="8dp"
-                   android:textSize="17sp"
-                   android:textStyle="bold"
-                   android:textColor="#000"
-                   android:id="@+id/totalFinal"/>
-           </LinearLayout>
-       </LinearLayout>
-
-        <TextView
-            android:id="@+id/textoMensaje"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp" />
+            android:layout_gravity="end"
+            android:id="@+id/compartir"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Compartir"/>
 
 
     </LinearLayout>

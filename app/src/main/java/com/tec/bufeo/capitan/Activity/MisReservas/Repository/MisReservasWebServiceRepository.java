@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.tec.bufeo.capitan.Activity.MisReservas.Models.DetalleReservas;
 import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 import com.tec.bufeo.capitan.Util.APIUrl;
+import com.tec.bufeo.capitan.Util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,9 +43,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MisReservasWebServiceRepository {
 
+    Preferences preferences;
     Application application;
     public MisReservasWebServiceRepository(Application application){
         this.application = application;
+        preferences = new Preferences(application);
     }
     private static OkHttpClient providesOkHttpClientBuilder(){
 
@@ -57,7 +60,7 @@ public class MisReservasWebServiceRepository {
 
     List<MisReservas> webserviceResponseList = new ArrayList<>();
 
-    public LiveData<List<MisReservas>> providesWebService(String id_user, String token) {
+    public LiveData<List<MisReservas>> providesWebService(String id_user, String token,String tipo) {
 
         final MutableLiveData<List<MisReservas>> data = new MutableLiveData<>();
 
@@ -70,6 +73,7 @@ public class MisReservasWebServiceRepository {
                     .build();
 
 
+            if (tipo.equals("normal")){
                 MisReservasAPIService service = retrofit.create(MisReservasAPIService.class);
                 //response = service.getEquipo(id,"true",token).execute().body();
                 service.getEquipo(id_user,"true",token).enqueue(new Callback<String>() {
@@ -88,6 +92,27 @@ public class MisReservasWebServiceRepository {
                         Log.d("Repository","Failed:::");
                     }
                 });
+            }else{
+                MisReservasNotificacionAPIService service = retrofit.create(MisReservasNotificacionAPIService.class);
+                //response = service.getEquipo(id,"true",token).execute().body();
+                service.getEquipo(id_user,"true",token).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Log.d("Repository mis reservas","Response::::"+response.body());
+                        webserviceResponseList = parseJsonNotificacion(response.body());
+                        MisReservasRoomDBRepository movimientosRoomDBRepository = new MisReservasRoomDBRepository(application);
+                        movimientosRoomDBRepository.insertEquipos(webserviceResponseList);
+                        data.setValue(webserviceResponseList);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.d("Repository","Failed:::");
+                    }
+                });
+            }
+
 
 
         }catch (Exception e){
@@ -181,6 +206,7 @@ public class MisReservasWebServiceRepository {
                     detalleReservas = new DetalleReservas();
 
                     detalleReservas.setId_reserva(jsonNode2.optString("reserva_id"));
+                    detalleReservas.setPago_date(dato);
                     detalleReservas.setCancha_id(jsonNode2.optString("cancha_id"));
                     detalleReservas.setReserva_tipopago(jsonNode2.optString("reserva_tipopago"));
                     detalleReservas.setPago_id(jsonNode2.optString("pago_id"));
@@ -204,6 +230,9 @@ public class MisReservasWebServiceRepository {
                     detalleReservas.setEmpresa_telefono_2(jsonNode2.optString("empresa_telefono_2"));
                     detalleReservas.setEmpresa_descripcion(jsonNode2.optString("empresa_descripcion"));
                     detalleReservas.setEmpresa_valoracion(jsonNode2.optString("empresa_valoracion"));
+                    detalleReservas.setPago_comision(jsonNode2.optString("pago_comision"));
+                    detalleReservas.setTransferencia_u_e_nro_operacion(jsonNode2.optString("transferencia_u_e_nro_operacion"));
+                    detalleReservas.setNombre_user(preferences.getPersonName() + " " + preferences.getPersonSurname());
                     detalleReservas.setReserva_tipo("cliente");
                     subItemList.add(detalleReservas);
                 }
@@ -229,4 +258,66 @@ public class MisReservasWebServiceRepository {
         return  salida;
     }
 
+
+    private List<MisReservas> parseJsonNotificacion(String response ) {
+
+
+        List<MisReservas> apiResults = new ArrayList<>();
+
+        JSONObject jsonObject;
+
+        JSONArray jsonArray;
+
+        try {
+            jsonObject = new JSONObject(response);
+            JSONObject jsonNode = jsonObject.getJSONObject("results");
+
+            List<DetalleReservas> subItemList = new ArrayList<>();
+
+            MisReservas misReservas = new MisReservas();
+            detalleReservas =  new DetalleReservas();
+
+            detalleReservas.setId_reserva(jsonNode.optString("reserva_id"));
+            detalleReservas.setCancha_id(jsonNode.optString("cancha_id"));
+            detalleReservas.setReserva_tipopago(jsonNode.optString("reserva_tipopago"));
+            detalleReservas.setPago_id(jsonNode.optString("pago_id"));
+            detalleReservas.setReserva_nombre(jsonNode.optString("reserva_nombre"));
+            detalleReservas.setReserva_fecha(jsonNode.optString("reserva_fecha"));
+            detalleReservas.setReserva_hora(jsonNode.optString("reserva_hora"));
+            detalleReservas.setReserva_pago1(jsonNode.optString("reserva_pago1"));
+            detalleReservas.setReserva_pago1_date(jsonNode.optString("reserva_pago1_date"));
+            detalleReservas.setReserva_pago2(jsonNode.optString("reserva_pago2"));
+            detalleReservas.setReserva_pago2_date(jsonNode.optString("reserva_pago2_date"));
+            detalleReservas.setReserva_estado(jsonNode.optString("reserva_estado"));
+            detalleReservas.setEmpresa_id(jsonNode.optString("empresa_id"));
+            detalleReservas.setCancha_nombre(jsonNode.optString("cancha_nombre"));
+            detalleReservas.setEmpresa_nombre(jsonNode.optString("empresa_nombre"));
+            detalleReservas.setEmpresa_direccion(jsonNode.optString("empresa_direccion"));
+            detalleReservas.setEmpresa_coord_x(jsonNode.optString("empresa_coord_x"));
+            detalleReservas.setEmpresa_coord_y(jsonNode.optString("empresa_coord_y"));
+            detalleReservas.setEmpresa_telefono_1(jsonNode.optString("empresa_telefono_1"));
+            detalleReservas.setEmpresa_telefono_2(jsonNode.optString("empresa_telefono_2"));
+            detalleReservas.setEmpresa_descripcion(jsonNode.optString("empresa_descripcion"));
+            detalleReservas.setEmpresa_valoracion(jsonNode.optString("empresa_valoracion"));
+            detalleReservas.setNombre_user(jsonNode.optString("nombre_user"));
+            detalleReservas.setReserva_tipo("empresa");
+
+            subItemList.add(detalleReservas);
+
+            misReservas.setFecha_reserva(formatearFecha(jsonNode.optString("reserva_pago1_date")));
+            misReservas.setDetalle_reservas(subItemList);
+            apiResults.add(misReservas);
+
+
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d(getClass().getSimpleName(), String.valueOf(apiResults.size()));
+        return apiResults;
+
+    }
 }

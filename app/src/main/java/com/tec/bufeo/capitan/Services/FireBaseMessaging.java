@@ -28,14 +28,12 @@ public class FireBaseMessaging extends FirebaseMessagingService {
     private static final String TOKEN= "token";
     public final static int NOTIFICACION_ID = 0;
 
-
     //CARGA UTIL DE MENSAJES
     private static final String MHORA= "hora";
     private static final String MFECHA= "fecha";
     private static final String MID_CHAT= "id_chat";
     private static final String MID_USUARIO= "id_usuario";
     private static final String MMENSAJE= "mensaje";
-
 
     String tipo, token,mhora,mfecha, mid_chat,mid_usuario,mmensaje;
     @Override
@@ -48,24 +46,19 @@ public class FireBaseMessaging extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-
         tipo=remoteMessage.getData().get(TIPO);
         token=remoteMessage.getData().get(TOKEN);
-
         mhora=remoteMessage.getData().get(MHORA);
         mfecha=remoteMessage.getData().get(MFECHA);
         mid_chat=remoteMessage.getData().get(MID_CHAT);
         mid_usuario=remoteMessage.getData().get(MID_USUARIO);
         mmensaje=remoteMessage.getData().get(MMENSAJE);
 
-
         NotificacionesService notificacionesService = new NotificacionesService();
         notificacionesService.setTitle(remoteMessage.getNotification().getTitle());
         notificacionesService.setDescription(remoteMessage.getNotification().getBody());
         notificacionesService.getDescount(remoteMessage.getData().get(TIPO));
         createNotificationChannel();
-
-        //ShowNotification(notificaciones);
 
         if (tipo==null){
             ShowNotification(notificacionesService);
@@ -82,20 +75,15 @@ public class FireBaseMessaging extends FirebaseMessagingService {
                 notificacionesService.setTitle(mid_usuario);
                 notificacionesService.setDescription(mmensaje);
                 ShowNotification(notificacionesService);
-
             }
-
         }
     }
-
-
 
     public void alarma (String tokena ){
         Intent i = new Intent(RegistroForo.registro);
         i.putExtra("tipo",tokena);
         i.putExtra("concepto","publicacion");
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
-
     }
 
     public void mensajeChats (String hora,String fecha,String id_chat,String mmensaje,String mid_usuario,String tipo ){
@@ -107,8 +95,8 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         i.putExtra("id_usuario",mid_usuario);
         i.putExtra("mensaje",mmensaje);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
-
     }
+
     public void mensajeNotificacionChats (String hora,String fecha,String id_chat,String mmensaje,String mid_usuario,String tipo ){
         Intent i = new Intent(ChatsNotificacion.CHATNOTIFICACION);
         i.putExtra("tipo",tipo);
@@ -118,8 +106,8 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         i.putExtra("id_usuario",mid_usuario);
         i.putExtra("mensaje",mmensaje);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
-
     }
+
     public void createNotificationChannel(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             CharSequence name = "Noticacion";
@@ -153,8 +141,5 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         if (notificationManager != null) {
             notificationManager.notify(NOTIFICACION_ID,notificacionBuilder.build());
         }
-
-
     }
-
 }

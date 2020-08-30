@@ -28,6 +28,14 @@ public class DetalleReservas {
     @SerializedName("pago_id")
     private String pago_id;
 
+    @ColumnInfo(name = "pago_comision")
+    @SerializedName("pago_comision")
+    private String pago_comision;
+
+    @ColumnInfo(name = "transferencia_u_e_nro_operacion")
+    @SerializedName("transferencia_u_e_nro_operacion")
+    private String transferencia_u_e_nro_operacion;
+
 
     @ColumnInfo(name = "pago_total")
     @SerializedName("pago_total")
@@ -134,6 +142,10 @@ public class DetalleReservas {
     @ColumnInfo(name = "empresa_estado")
     @SerializedName("empresa_estado")
     private String empresa_estado;
+
+    @ColumnInfo(name = "pago_date")
+    @SerializedName("pago_date")
+    private String pago_date;
 
     @ColumnInfo(name = "nombre_user")
     @SerializedName("nombre_user")
@@ -382,5 +394,29 @@ public class DetalleReservas {
 
     public void setPago_tipo(String pago_tipo) {
         this.pago_tipo = pago_tipo;
+    }
+
+    public String getPago_date() {
+        return pago_date;
+    }
+
+    public void setPago_date(String pago_date) {
+        this.pago_date = pago_date;
+    }
+
+    public String getPago_comision() {
+        return pago_comision;
+    }
+
+    public void setPago_comision(String pago_comision) {
+        this.pago_comision = pago_comision;
+    }
+
+    public String getTransferencia_u_e_nro_operacion() {
+        return transferencia_u_e_nro_operacion;
+    }
+
+    public void setTransferencia_u_e_nro_operacion(String transferencia_u_e_nro_operacion) {
+        this.transferencia_u_e_nro_operacion = transferencia_u_e_nro_operacion;
     }
 }

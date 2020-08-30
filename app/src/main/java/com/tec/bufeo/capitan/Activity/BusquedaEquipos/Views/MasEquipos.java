@@ -57,19 +57,16 @@ public class MasEquipos extends AppCompatActivity implements SwipeRefreshLayout.
 
         swipeOtrosEquipos.setColorSchemeResources(R.color.colorPrimary,R.color.colorAccent);
         swipeOtrosEquipos.setOnRefreshListener(this);
-
         txt_busqueda_equipos.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
-            @Override
+           @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 String v = String.valueOf(s);
                 buscar(v);
-
             }
 
             @Override

@@ -25,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.tec.bufeo.capitan.Activity.DetalleReservaEmpresa;
 import com.tec.bufeo.capitan.Activity.DetallesTorneo.DetalleTorneoNuevo;
 import com.tec.bufeo.capitan.Activity.PantallasNotificacion.ChatsNotificacion;
 import com.tec.bufeo.capitan.Activity.PantallasNotificacion.RetosNotificacion;
@@ -49,6 +50,7 @@ public class NotificacionesList extends DialogFragment {
     RecyclerView rcv_partidos;
     AdapterNotificacionesList adapterNotificacionesList;
     Preferences preferences;
+
     public NotificacionesList() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
@@ -122,7 +124,8 @@ public class NotificacionesList extends DialogFragment {
 
 
     public void cargarvista(){
-        notificacionesViewModel.getAllNotificaciones(preferences.getIdUsuarioPref(),preferences.getToken()).observe(this, new Observer<List<Notificaciones>>() {
+        notificacionesViewModel.getAllNotificaciones(preferences.getIdUsuarioPref(),preferences.getToken())
+                .observe(this, new Observer<List<Notificaciones>>() {
             @Override
             public void onChanged(List<Notificaciones> notificaciones) {
                 adapterNotificacionesList.setWords(notificaciones);
@@ -153,6 +156,11 @@ public class NotificacionesList extends DialogFragment {
                     }else if (notificaciones.getNotificacion_tipo().equals("Torneo")){
                         Intent i = new Intent(getActivity(), DetalleTorneoNuevo.class);
                         i.putExtra("id_torneo",notificaciones.getNotificacion_id_rel());
+                        startActivity(i);
+                    }else if(notificaciones.getNotificacion_tipo().equals("Reservas")){
+                        Intent i = new Intent(getActivity(), DetalleReservaEmpresa.class);
+                        i.putExtra("id",notificaciones.getNotificacion_id_rel());
+                        i.putExtra("fecha",notificaciones.getNotificacion_datetime());
                         startActivity(i);
                     }
 

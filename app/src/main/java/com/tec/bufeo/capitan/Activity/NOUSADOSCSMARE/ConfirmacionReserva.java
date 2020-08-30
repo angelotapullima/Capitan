@@ -1,4 +1,4 @@
-package com.tec.bufeo.capitan.Activity;
+package com.tec.bufeo.capitan.Activity.NOUSADOSCSMARE;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,14 +9,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,10 +22,8 @@ import android.widget.TextView;
 
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
-import com.tec.bufeo.capitan.WebService.DataConnection;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -114,11 +108,7 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
 
         return b;
     }
-    @Override
-        public boolean onSupportNavigateUp() {
-            onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
-            return false;
-    }
+
 
     public void enviarADondeSea(Uri ur){ //Recibimos el string y lo convertimos a Uri
         try {
@@ -242,5 +232,10 @@ public class ConfirmacionReserva extends AppCompatActivity implements View.OnCli
         if (v.equals(guardar)){
             guardarImagen();
         }
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();                        //definimos que al dar click a la flecha, nos lleva a la pantalla anterior
+        return false;
     }
 }

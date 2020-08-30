@@ -1,9 +1,8 @@
-package com.tec.bufeo.capitan.Activity.PantallasNotificacion;
+package com.tec.bufeo.capitan.Activity.NOUSADOSCSMARE;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
@@ -23,8 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
-import com.tec.bufeo.capitan.Activity.MisReservas.Models.MisReservas;
 import com.tec.bufeo.capitan.Activity.MisReservas.ViewModels.MisReservasViewModel;
 import com.tec.bufeo.capitan.R;
 import com.tec.bufeo.capitan.Util.Preferences;
@@ -33,7 +30,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 import static com.tec.bufeo.capitan.WebService.DataConnection.NombreCapeta;
 
@@ -59,6 +55,7 @@ public class ReservasNotificacion extends AppCompatActivity implements View.OnCl
         preferences= new Preferences(this);
 
         id = getIntent().getExtras().getString("id");
+
         //id = "30";
         initViews();
         cargarVista();

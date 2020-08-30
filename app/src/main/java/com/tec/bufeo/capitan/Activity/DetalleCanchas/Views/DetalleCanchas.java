@@ -572,6 +572,7 @@ public class DetalleCanchas extends AppCompatActivity  {
                         if (tipo_usuario.equals("admin")){
                             Intent i = new Intent(getApplicationContext(), DetalleReservaEmpresa.class);
                             i.putExtra("id",reserva.getReserva_id());
+                            i.putExtra("fecha",reserva.getReserva_fecha());
                             startActivity(i);
                         }
 
@@ -834,14 +835,8 @@ public class DetalleCanchas extends AppCompatActivity  {
 
                 Log.d("registrar_reserva", "onResponse: "+response );
 
-                String separador,part1;
-                String[] resultado;
 
-                separador = Pattern.quote("}");
-                resultado = response.split(separador);
-                part1 = resultado[2];
-
-                if (part1.equals("1")){
+                if (response.equals("1")){
                     preferences.toasVerde("Registro Completo");
                     //onRefresh();
                     ReservasCanchaWebServiceRepository reservasCanchaWebServiceRepository = new ReservasCanchaWebServiceRepository(application);

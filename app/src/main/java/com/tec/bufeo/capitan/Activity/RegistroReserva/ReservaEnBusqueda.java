@@ -32,7 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tec.bufeo.capitan.Activity.ConfirmacionReserva;
+import com.tec.bufeo.capitan.Activity.NOUSADOSCSMARE.ConfirmacionReserva;
 import com.tec.bufeo.capitan.Activity.RealizarRecarga;
 import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabEquipo.Models.Mequipos;
 import com.tec.bufeo.capitan.TabsPrincipales.Torneo.TabEquipo.ViewModels.MisEquiposViewModel;

@@ -1,16 +1,19 @@
 package com.tec.bufeo.capitan.Activity.MisMovimientos.Views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tec.bufeo.capitan.Activity.DetalleMovimientosActivity;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Models.DetalleMovimientos;
 import com.tec.bufeo.capitan.Activity.MisMovimientos.Models.Movimientos;
 import com.tec.bufeo.capitan.R;
@@ -34,6 +37,7 @@ public class AdaptadorDetalleMovimientos extends RecyclerView.Adapter<AdaptadorD
 
         private TextView mov_monto,mov_nombre,mov_fecha;
         private ImageView ic_add,ic_remove;
+        private LinearLayout detalleM;
 
         private DetalleMovViewHolder(View itemView) {
             super(itemView);
@@ -43,6 +47,7 @@ public class AdaptadorDetalleMovimientos extends RecyclerView.Adapter<AdaptadorD
             mov_fecha = itemView.findViewById(R.id.mov_fecha);
             ic_add = itemView.findViewById(R.id.ic_add);
             ic_remove = itemView.findViewById(R.id.ic_remove);
+            detalleM = itemView.findViewById(R.id.detalleM);
 
         }
 
@@ -62,7 +67,7 @@ public class AdaptadorDetalleMovimientos extends RecyclerView.Adapter<AdaptadorD
     @Override
     public void onBindViewHolder(@NonNull final DetalleMovViewHolder holder, int position) {
 
-        DetalleMovimientos current = tablaTorneoSubItems.get(position);
+        final DetalleMovimientos current = tablaTorneoSubItems.get(position);
 
 
 
@@ -77,13 +82,28 @@ public class AdaptadorDetalleMovimientos extends RecyclerView.Adapter<AdaptadorD
                 holder.ic_remove.setVisibility(View.GONE);
                 holder.mov_monto.setTextColor(Color.rgb(76,175,80));
 
-            /*holder.bid(current,listener);*/
-        }
+
+
+            }
+
+            holder.detalleM.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(ctx, DetalleMovimientosActivity.class);
+                    i.putExtra("nro_operacion",current.getNro_operacion());
+                    i.putExtra("concepto",current.getConcepto());
+                    i.putExtra("tipo_pago",current.getTipo_pago());
+                    i.putExtra("monto",current.getMonto());
+                    i.putExtra("comision",current.getComision());
+                    i.putExtra("fecha",current.getFecha());
+                    i.putExtra("ind",current.getInd());
+                    i.putExtra("cliente",current.getCliente());
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ctx.startActivity(i);
+                }
+            });
     }
-   /* public void setWords(List<Movimientos> users){
-        mUsers = users;
-        notifyDataSetChanged();
-    }*/
+
 
     @Override
     public int getItemCount() {

@@ -1025,6 +1025,7 @@ public class DataConnection extends AppCompatActivity {
 
                     for (int i = 0; i < count;i++){
 
+
                         JSONObject jsonNode = resultJSON.getJSONObject(i);
 
                         obj = new Empresas();

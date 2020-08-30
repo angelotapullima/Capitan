@@ -16,7 +16,7 @@ public interface MovimientosDao {
     void insert(Movimientos resultModel);
 
 
-    @Query("SELECT * from Movimientos ")
+    @Query("SELECT * from Movimientos ORDER BY fecha  DESC ")
     LiveData<List<Movimientos>> getAll();
 
     @Query("DELETE FROM Movimientos")

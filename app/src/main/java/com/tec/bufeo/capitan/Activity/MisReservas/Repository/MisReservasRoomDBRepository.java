@@ -26,6 +26,10 @@ public class MisReservasRoomDBRepository {
         mAllMisReservas=misReservasDao.getAll();
         return mAllMisReservas;
     }
+    public LiveData<List<MisReservas>> getAllDetalle(String fecha) {
+        mAllMisReservas=misReservasDao.getAllDetalle(fecha);
+        return mAllMisReservas;
+    }
 
 
     public void deleteAllMisReservas() {
