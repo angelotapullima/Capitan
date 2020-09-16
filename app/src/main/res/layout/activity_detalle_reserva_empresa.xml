@@ -16,7 +16,7 @@
         app:contentInsetStartWithNavigation="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <RelativeLayout
+        <!--<RelativeLayout
             android:layout_width="match_parent"
             android:background="#B3FFFFFF"
             android:id="@+id/carga_Reservasss"
@@ -53,7 +53,7 @@
             </LinearLayout>
 
 
-        </RelativeLayout>
+        </RelativeLayout>-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -92,6 +92,29 @@
                     android:textStyle="bold"
                     android:textColor="#000"
                     android:text="Número de operación"/>
+
+                <LinearLayout
+                    android:id="@+id/lCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Cliente"
+                        android:textColor="#000"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/clienteReserva"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -175,28 +198,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/lCliente"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:layout_marginTop="20dp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="16dp"
-                    android:textColor="#000"
-                    android:text="Cliente"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:id="@+id/clienteReserva"/>
-            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -184,28 +184,36 @@ public class DetalleCanchas extends AppCompatActivity  {
                 arrayreservados_WS.clear();
 
 
-
+                //obtenemos el horario de la cancha por un getIntent
+                //y separamos al hora de apertura y hora de cierre
                 separador = Pattern.quote("-");
                 resultado = horario.split(separador);
                 part1 = resultado[0];
                 part2 = resultado[1];
 
+                //part1 es hora de apertura de la cancha 9:00
+                //part2 es hora de cierre de la cancha  23:00
+
                 separador_part1 = Pattern.quote(":");
                 resultado_part1 = part1.split(separador_part1);
                 part1_res = resultado_part1[0];
 
-
+                // hora_actual por un getIntent
                 separador_hora = Pattern.quote(":");
                 resultado_horaActual = hora_actual.split(separador_hora);
                 partHoraActual = resultado_horaActual[0];
                 partHoraActual = partHoraActual.trim();
 
+                // partHoraActual es la hora en un formato de solo hora ejemplo 10
+
                 if(tipo_usuario.equals("admin")){
+                    //si es admin la hora de apertura es de acuerdo a lo que manda el servidor
+                    // es decir no se restringe hora
                     part1_res = resultado_part1[0];
                 }else{
                     if (fecha_actual.equals(fechex)){
-                        if (Integer.parseInt(partHoraActual) >= Integer.parseInt(part1_res)){
-
+                        if (Integer.parseInt(partHoraActual) >= Integer.parseInt(part1_res)) {
+                        //para usuarios clientes se preparea la viste de acuerdo a la hora que llega del servidor
                             part1_res = partHoraActual;
                         }else{
                             part1_res = resultado_part1[0];

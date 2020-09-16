@@ -50,7 +50,7 @@ public class DetalleReservaEmpresa extends AppCompatActivity implements View.OnC
     LinearLayout llscrol ;
     TextView Comision;
     TextView fechaPago1,fechaPago2,pago2,clienteReserva,NameReserrva,SubTotal,totalFinal,textoMensaje;
-    RelativeLayout carga_Reservasss;
+    //RelativeLayout carga_Reservasss;
     LinearLayout layoutSolo,layout1,layout2;
     TextView detalleCompraSolo,precioSolo,cantidadSolo,totalSolo;
     TextView detalleCompra1,precio1,cantidad1,total1,nOperacion;
@@ -90,7 +90,7 @@ public class DetalleReservaEmpresa extends AppCompatActivity implements View.OnC
         compartir= findViewById(R.id.compartir);
         loperacion= findViewById(R.id.loperacion);
         nOperacion= findViewById(R.id.nOperacion);
-        carga_Reservasss= findViewById(R.id.carga_Reservasss);
+        //carga_Reservasss= findViewById(R.id.carga_Reservasss);
 
         detalleCompraSolo= findViewById(R.id.detalleCompraSolo);
         precioSolo= findViewById(R.id.precioSolo);
@@ -182,7 +182,7 @@ public class DetalleReservaEmpresa extends AppCompatActivity implements View.OnC
                     }
 
 
-                    carga_Reservasss.setVisibility(View.GONE);
+                    //carga_Reservasss.setVisibility(View.GONE);
                     String detalle1,detalle2 ;
                     String textInfo;
                     float totalex,totalex2;
@@ -267,7 +267,7 @@ public class DetalleReservaEmpresa extends AppCompatActivity implements View.OnC
 
 
                 }else{
-                    carga_Reservasss.setVisibility(View.VISIBLE);
+                    //carga_Reservasss.setVisibility(View.VISIBLE);
                 }
 
             }

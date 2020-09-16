@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Capitan.iml" filepath="$PROJECT_DIR$/Capitan.iml" group="Capitan" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CapitanAndroid.iml" filepath="$PROJECT_DIR$/.idea/modules/CapitanAndroid.iml" group="CapitanAndroid" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CapitanAndroid-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CapitanAndroid-app.iml" group="CapitanAndroid/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Capitan/app" />
       <module fileurl="file://$PROJECT_DIR$/reviewrating/reviewrating.iml" filepath="$PROJECT_DIR$/reviewrating/reviewrating.iml" />
     </modules>

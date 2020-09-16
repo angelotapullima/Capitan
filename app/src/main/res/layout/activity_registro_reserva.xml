@@ -488,7 +488,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <RelativeLayout
+   <RelativeLayout
         android:layout_width="match_parent"
         android:background="#FFF"
         android:id="@+id/relRes"
