@@ -299,6 +299,11 @@
                                 android:textColor="#000"
                                 android:text="Editar Perfil "/>
 
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recycler_equipos"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"
@@ -343,10 +348,6 @@
                     android:layout_marginRight="@dimen/spacing_large"
                     android:textStyle="bold"
                     android:text="Mis Equipos"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_equipos"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
 
 
             </LinearLayout>

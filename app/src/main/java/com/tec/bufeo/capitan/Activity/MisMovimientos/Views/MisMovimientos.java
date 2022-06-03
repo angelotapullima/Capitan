@@ -90,7 +90,8 @@ public class MisMovimientos extends AppCompatActivity {
                 if (movimientos.size()>0){
 
                     dialog_cargando.dismiss();
-                    adaptadorMovimientos = new AdaptadorMovimientos(getApplicationContext(), movimientos, new AdaptadorMovimientos.OnItemClickListener() {
+                    adaptadorMovimientos = new AdaptadorMovimientos(getApplicationContext(),
+                            movimientos, new AdaptadorMovimientos.OnItemClickListener() {
                         @Override
                         public void onItemClick(Movimientos mequipos, String tipo, int position) {
 

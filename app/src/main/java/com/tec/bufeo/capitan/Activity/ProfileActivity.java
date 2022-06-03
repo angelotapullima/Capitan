@@ -265,7 +265,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     i.putExtra("cantidad_comentarios",feedTorneo.getCant_Comentarios());
                     i.putExtra("id_publicacion",feedTorneo.getPublicacion_id());
                     startActivity(i);
-                }if(dato.equals("pedir")){
+                }else if(dato.equals("pedir")){
                     //feed();
                     preferences.codeAdvertencia(String.valueOf(position));
                 }else if(dato.equals("verMasTorneo")){

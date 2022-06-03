@@ -283,7 +283,7 @@ public class RegistroTorneo extends AppCompatActivity implements View.OnClickLis
                 parametros.put("app", "true");
                 parametros.put("token", preferences.getToken());
 
-                Log.d("torneo", "getParams: "+parametros.toString() );
+                Log.e("torneo paranmetros", "getParams: "+parametros.toString() );
                 return parametros;
 
             }

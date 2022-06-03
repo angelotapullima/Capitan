@@ -65,7 +65,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
     SeleccionadosDBRepository seleccionadosDBRepository;
     Application application;
     JugadoresSeleccionados jugadoresSeleccionados ;
-    ImageView finishRegistroEquipo;
+    ImageView backButton;
 
     FloatingActionButton fab_terminar_equipos;
     public ArrayList<JugadoresSeleccionados> listaDatos=new ArrayList();
@@ -101,7 +101,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
         txt_busqueda =  findViewById(R.id.txt_busqueda);
         name_equipo =  findViewById(R.id.name_equipo);
         fab_terminar_equipos =  findViewById(R.id.fab_terminar_equipos);
-        finishRegistroEquipo =  findViewById(R.id.finishRegistroEquipo);
+        backButton =  findViewById(R.id.finishRegistroEquipo);
 
 
 
@@ -128,7 +128,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
             }
         });
         fab_terminar_equipos.setOnClickListener(this);
-        finishRegistroEquipo.setOnClickListener(this);
+        backButton.setOnClickListener(this);
     }
 
     private void buscar(String v) {
@@ -242,7 +242,7 @@ public class RegistrarJugadoresEnEquipos extends AppCompatActivity implements Vi
             }else{
                 Toast.makeText(RegistrarJugadoresEnEquipos.this, "No hay datos para enviar ", Toast.LENGTH_SHORT).show();
             }
-        }else if(view.equals(finishRegistroEquipo)){
+        }else if(view.equals(backButton)){
             finish();
         }
     }

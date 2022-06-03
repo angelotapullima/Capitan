@@ -172,17 +172,11 @@ public class CrearGrupoRelampago extends AppCompatActivity implements View.OnCli
                     e.printStackTrace();
                 }
             }
-
-
-
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 nombre_grupo_grupos.setText("");
                 //Toast.makeText(context,"error ",Toast.LENGTH_SHORT).show();
-
-
-
             }
         })  {
             @Override

@@ -174,7 +174,7 @@ public class ReservaEnBusqueda extends AppCompatActivity implements View.OnClick
         spn_equipex_busqueda = findViewById(R.id.spn_equipex_busqueda);
         spn_cancha_busqueda = findViewById(R.id.spn_cancha_busqueda);
         nombre_reserva_busqueda  = findViewById(R.id.nombre_reserva_busqueda);
-        relaitveCarga  = findViewById(R.id.relaitveCarga);
+        //relaitveCarga  = findViewById(R.id.relaitveCarga);
 
 
         universalImageLoader.setImage(IP2+"/"+ foto,img_canchex,null);
