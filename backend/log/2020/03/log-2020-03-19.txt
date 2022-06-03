@@ -1,8 +1,0 @@
-2020-03-19 17:58:56[UTC -5] [ip] 190.235.95.215 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 348[MESSAGGE]Undefined index: id_usuario
-
-2020-03-19 17:58:56[UTC -5] [ip] 190.235.95.215 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
-
-2020-03-19 17:59:03[UTC -5] [ip] 190.235.95.215 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/EmpresaController.php: 348[MESSAGGE]Undefined index: id_usuario
-
-2020-03-19 17:59:18[UTC -5] [ip] 190.235.95.215 [location] Excepcion No Manejada [text] [LEVEL]: 8 IN /home/guabba/public_html/capitan2/app/controllers/TorneoController.php: 1199[MESSAGGE]Undefined variable: user_respuesta
-
